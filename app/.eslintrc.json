@@ -1,0 +1,37 @@
+{
+  "extends": ["airbnb-base", "airbnb-typescript/base"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-useless-constructor": "off",
+    "no-param-reassign": [2, { "props": false }],
+    "no-return-await": "off",
+	"no-console": "off",
+    "no-confusing-arrow": [
+      "warn",
+      { "allowParens": true }
+    ],
+    "implicit-arrow-linebreak": 0,
+	"arrow-body-style": 0,
+	"max-len": [
+	  "error",
+	  {
+		  "code": 120,
+		  "ignoreStrings": true
+	  }
+	],
+	"operator-linebreak": [
+	  "error",
+	  "after",
+	  {
+		  "overrides": {
+			  "?": "before",
+			  ":": "before"
+		  }
+	  }
+	]
+  }
+}

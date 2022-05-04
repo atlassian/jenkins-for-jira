@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2019",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable"],
+    "esModuleInterop": true,
+    "types": ["node", "jest"],
+    "jsx": "react",
+    "baseUrl": ".",
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}

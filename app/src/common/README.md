@@ -1,0 +1,1 @@
+The files which are placed in common folder are shared between App UI and backend. 

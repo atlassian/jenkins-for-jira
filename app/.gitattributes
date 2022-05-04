@@ -1,0 +1,3 @@
+# To allow multi developer work in Forge.
+# See app/README.md for more information in the "Install app to your JIRA instance" section
+manifest.yml filter=setid

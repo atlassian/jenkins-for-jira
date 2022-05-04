@@ -1,0 +1,71 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": false,
+		"jest": true
+	},
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"sourceType": "module"
+	},
+	"ignorePatterns": ["**/*.config.js", "coverage/*"],
+	"plugins": [
+		"@typescript-eslint",
+		"jest",
+		"import",
+		"react-hooks"
+	],
+	"extends": [
+		"../.eslintrc.json",
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:jest/recommended",
+		"plugin:import/recommended",
+		"plugin:import/typescript",
+		"plugin:import/errors",
+    "plugin:import/warnings",
+		"plugin:jsx-a11y/recommended"
+	],
+	"rules": {
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": ["error"],
+		"indent": "off",
+		"@typescript-eslint/indent": ["error", "tab", {
+			"SwitchCase": 1
+		}],
+		"@typescript-eslint/comma-dangle": ["error", "never"],
+		"jest/no-conditional-expect": "warn",
+		"no-tabs": "off",
+		"function-paren-newline": ["error", "consistent"],
+		"object-shorthand": ["error", "always"],
+		"no-trailing-spaces": "error",
+		"@typescript-eslint/quotes": [
+			"error",
+			"single",
+			{
+				"avoidEscape": true,
+				"allowTemplateLiterals": true
+			}
+		],
+		"no-plusplus": "off",
+		"import/no-relative-packages": "off",
+		"react-hooks/exhaustive-deps": "error" // Checks effect dependencies
+	},
+	"settings": {
+		"import/parsers": {
+			"@typescript-eslint/parser": [
+				".ts",
+				".tsx"
+			]
+		},
+		"import/resolver": {
+			"typescript": {
+				"alwaysTryTypes": true
+			}
+		}
+	}
+}
