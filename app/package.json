@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:coverage": "npm test --coverage --watchAll=false && open coverage/index.html",
+    "test:coverage": "yarn test --coverage --watchAll=false && open coverage/index.html",
     "lint": "eslint src/**",
     "ci": "run-p lint test"
   },

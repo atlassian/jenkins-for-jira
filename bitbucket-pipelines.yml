@@ -1,0 +1,54 @@
+image: node:14.17.0
+
+aliases:
+  - &sidekick_script
+    pipe: atlassian/artifactory-sidekick:v1
+  - &base_pipeline
+    name: ✨ Test and Lint
+    script:
+      - cd app
+      - yarn install --frozen-lockfile && yarn run ci
+      - cd jenkins-for-jira-ui
+      - yarn install --frozen-lockfile && yarn run ci
+
+pipelines:
+  default:
+    - step: *base_pipeline
+
+  branches:
+    master:
+      - step: *base_pipeline
+      - step:
+          name: 🚀 Staging deploy
+          deployment: staging
+          script:
+            - chmod 755 bin/*
+            - cd app/jenkins-for-jira-ui
+            - yarn install --frozen-lockfile
+            - yarn run build
+            - cd ..
+            - yarn install --frozen-lockfile
+            - yarn global add @forge/cli
+            - ../bin/deploy-staging.sh staging
+      - step:
+          name: 🧪 Pollinator PDV
+          script:
+            - set -ex
+            - export POLLIDEV_PASSWORD=$POLLIDEV_BOT_PASSWORD
+            - curl -LO https://statlas.prod.atl-paas.net/pollidev/release/$(curl -s https://statlas.prod.atl-paas.net/pollidev/release/CURRENT)/linux/amd64/pollidev
+            - chmod +x ./pollidev
+            - ./pollidev version
+            - ./pollidev login -U=$POLLIDEV_BOT_USERNAME --password=false
+            - ./pollidev run-once --synthetic $PDV_POLLINATOR_UUID "Jenkins Forge App PDV test"
+      - step:
+          name: 🚀 Prod deploy
+          deployment: production
+          script:
+            - chmod 755 bin/*
+            - cd app/jenkins-for-jira-ui
+            - yarn install --frozen-lockfile
+            - yarn run build
+            - cd ..
+            - yarn install --frozen-lockfile
+            - yarn global add install @forge/cli
+            - ../bin/deploy-production.sh production
