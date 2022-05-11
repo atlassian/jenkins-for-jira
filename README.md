@@ -29,7 +29,7 @@ The main use case is to show information about Jenkins [builds and deployments i
 
 This is an app that you can install on your Jira site and connect with a Jenkins server. It's built on top of Atlassian's [Forge platform](https://developer.atlassian.com/platform/forge/).
 
-After you instal the app, it will guide you through the process of setting everything up.
+After you install the app, it will guide you through the process of setting everything up.
 
 ### Architecture 
 
