@@ -46,7 +46,7 @@ To get up and running, follow the steps below.
 
 1. Create your `.env` file based on the `.env.example` file in **/app/jenkins-for-jira-ui**.
 2. Switch to the correct `node` version. You can run `nvm use` in the folders: **/app/jenkins-for-jira-ui** and **/app**.
-3. In the folders **/app** and **/app/jenkins-for-jira-ui**, run `npm install`;
+3. In the folders **/app** and **/app/jenkins-for-jira-ui**, run `yarn install`;
 
 #### Register your Forge app
 
@@ -70,7 +70,7 @@ The filter `setid` is used in `/app/.gitattributes` so that it replaces your app
 
 #### Install the app to your Jira instance
 
-1. Build your app by running `npm run build` in **/app/jenkins-for-jira-ui**.
+1. Build your app by running `yarn run build` in **/app/jenkins-for-jira-ui**.
 2. Deploy your app by running `forge deploy` in **/app**.
 3. Install your app to your Jira site by running `forge install` in **/app**.
 
@@ -83,7 +83,7 @@ To run the app, ensure you have installed the app on your site as described abov
 
 ### Run the app locally
 
-To start the app locally, run `npm run start` in **/app/jenkins-for-jira-ui**.
+To start the app locally, run `yarn run start` in **/app/jenkins-for-jira-ui**.
 
 The command line will suggest navigating to `localhost:3000` but this does not work for `Custom UI` Forge apps. For more information, see [here](https://community.developer.atlassian.com/t/forge-tunneling-customui-with-ui-resolver-error-cannot-read-property-callbridge-of-undefined/47010/3).
 
@@ -97,14 +97,14 @@ To find your app, go to the `Manage apps` page (`https://<your-site-name>.atlass
 
 To push your latest local changes to the Atlassian cloud, run the following commands:
 
-1. In **/app/jenkins-for-jira-ui** run `npm run build`.
+1. In **/app/jenkins-for-jira-ui** run `yarn run build`.
 2. In **/app**, run `forge deploy`.
 
 Doing this, your local changes will be propagated to **all Jira sites that have the app installed** (unless one runs `forge tunnel`, as that will take priority).
 
 ### Running tests
 
-In the **/app/jenkins-for-jira-ui** dir, run `npm test`.
+In the **/app/jenkins-for-jira-ui** dir, run `yarn test`.
 
 ## Deploying the app
 TBD
