@@ -35,15 +35,15 @@
     prop-types "^15.5.10"
     use-memo-one "^1.1.1"
 
-"@atlaskit/avatar@20.5.4":
-  version "20.5.4"
-  resolved "https://registry.npmjs.org/@atlaskit/avatar/-/avatar-20.5.4.tgz"
-  integrity sha512-EZZVf/NHkjQskmVcbdVnynAOEdjp4D41c5t59hwlYMeRibrXyu4swgOQavWFt04bKCdYcH8ydIgIJcnvRIDDnw==
+"@atlaskit/avatar@20.5.10":
+  version "20.5.10"
+  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-20.5.10.tgz#cb26b7bd1e5f886c2ce6470ecf5285d4b97d64a6"
+  integrity sha512-9lJHTetlqHEVPu1yj8wKru5SiFBYocgP67HRJKeu426IF2Pc87oVT7fghXAWBDV9f9JWVwkyQKmz12Bkongx4g==
   dependencies:
     "@atlaskit/analytics-next" "^8.0.0"
     "@atlaskit/icon" "^21.10.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
@@ -324,6 +324,16 @@
     "@atlaskit/ds-lib" "^1.4.0"
     "@atlaskit/tokens" "^0.7.0"
     "@babel/runtime" "^7.0.0"
+
+"@atlaskit/tokens@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-0.10.0.tgz#34339915b5d9423f3065b4801b050145f6d04ed2"
+  integrity sha512-y7ClaaFbLSpnS1hwfgkU12vdHY+aZ2h/1DrA/CIPo2yThEirSOhtpTgU6nITnZTKGjNd2oIVvUodK5UZwXAUFA==
+  dependencies:
+    "@atlaskit/ds-lib" "^1.4.0"
+    "@babel/runtime" "^7.0.0"
+    "@babel/traverse" "^7.15.0"
+    "@babel/types" "^7.15.0"
 
 "@atlaskit/tokens@^0.6.0":
   version "0.6.0"
