@@ -6,7 +6,7 @@
   "dependencies": {
     "@atlaskit/avatar": "20.5.4",
     "@atlaskit/button": "16.1.6",
-    "@atlaskit/css-reset": "6.3.6",
+    "@atlaskit/css-reset": "6.3.13",
     "@atlaskit/dropdown-menu": "11.1.0",
     "@atlaskit/dynamic-table": "14.5.0",
     "@atlaskit/empty-state": "7.3.5",
