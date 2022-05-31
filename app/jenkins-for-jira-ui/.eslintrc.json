@@ -19,7 +19,8 @@
 		"react-hooks"
 	],
 	"extends": [
-		"../.eslintrc.json",
+    "airbnb-base", 
+    "airbnb-typescript/base",
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
@@ -53,7 +54,37 @@
 		],
 		"no-plusplus": "off",
 		"import/no-relative-packages": "off",
-		"react-hooks/exhaustive-deps": "error" // Checks effect dependencies
+		"react-hooks/exhaustive-deps": "error", // Checks effect dependencies
+    //previous extends from folder app
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-useless-constructor": "off",
+    "no-param-reassign": [2, { "props": false }],
+    "no-return-await": "off",
+    "no-console": "off",
+    "no-confusing-arrow": [
+      "warn",
+      { "allowParens": true }
+    ],
+    "implicit-arrow-linebreak": 0,
+    "arrow-body-style": 0,
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreStrings": true
+      }
+    ],
+    "operator-linebreak": [
+      "error",
+      "after",
+      {
+        "overrides": {
+          "?": "before",
+          ":": "before"
+        }
+      }
+    ]
 	},
 	"settings": {
 		"import/parsers": {
