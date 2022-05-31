@@ -1,7 +1,7 @@
 import {
   ListResult, QueryBuilder, Result,
 } from '@forge/api';
-import { JenkinsServer } from '../common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { getAllJenkinsServers } from './get-all-jenkins-servers';
 
 jest.mock('@forge/api', () => ({

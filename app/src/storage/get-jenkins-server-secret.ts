@@ -1,6 +1,6 @@
 import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX } from './constants';
-import { NoJenkinsServerError } from '../common/error';
+import { NoJenkinsServerError } from 'jenkins-for-jira-common/error';
 
 export const getJenkinsServerSecret = async (jenkinsServerUuid: string): Promise<string> => {
   try {

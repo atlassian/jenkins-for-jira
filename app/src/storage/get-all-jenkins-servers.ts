@@ -2,7 +2,7 @@ import {
   startsWith, storage, ListResult, Result,
 } from '@forge/api';
 import { log } from '../analytics-logger';
-import { JenkinsPipeline, JenkinsServer } from '../common/types';
+import { JenkinsPipeline, JenkinsServer } from 'jenkins-for-jira-common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {

@@ -1,4 +1,4 @@
-import { JenkinsServer } from '../common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { connectJenkinsServer } from './connect-jenkins-server';
 
 describe('Connect Jenkins Server Suite', () => {

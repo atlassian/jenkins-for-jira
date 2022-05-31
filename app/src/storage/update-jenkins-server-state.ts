@@ -1,6 +1,6 @@
 import { storage } from '@forge/api';
-import { NoJenkinsServerError } from '../common/error';
-import { JenkinsPipeline, JenkinsServer } from '../common/types';
+import { NoJenkinsServerError } from 'jenkins-for-jira-common/error';
+import { JenkinsPipeline, JenkinsServer } from 'jenkins-for-jira-common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 
 export const updatePipelines = (

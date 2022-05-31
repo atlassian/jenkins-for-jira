@@ -11,7 +11,7 @@ import {
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from '../storage/constants';
 import { sendEventToJira } from '../jira-client/send-event-to-jira';
 import { JiraResponse } from '../jira-client/types';
-import { EventType } from '../common/types';
+import { EventType } from 'jenkins-for-jira-common/types';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 
 jest.mock('../jira-client/send-event-to-jira');

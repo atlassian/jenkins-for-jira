@@ -1,6 +1,6 @@
 import { storage } from '@forge/api';
-import { NoJenkinsServerError } from '../common/error';
-import { EventType, BuildEventStatus } from '../common/types';
+import { NoJenkinsServerError } from 'jenkins-for-jira-common/error';
+import { EventType, BuildEventStatus } from 'jenkins-for-jira-common/types';
 import { updateJenkinsServerState } from './update-jenkins-server-state';
 import {
   testUuid,

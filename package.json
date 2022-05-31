@@ -1,0 +1,12 @@
+{
+  "name": "jenkins-for-jira",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "repository": "git@github.com:atlassian/jenkins-for-jira.git",
+  "license": "MIT",
+  "workspaces": {
+    "packages": ["common", "ui", "app"],
+    "nohoist": ["**"]
+  }
+}

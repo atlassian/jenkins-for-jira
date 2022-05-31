@@ -1,5 +1,5 @@
 import { storage } from '@forge/api';
-import { JenkinsServer } from '../common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { getJenkinsServerWithSecret } from './get-jenkins-server-with-secret';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { log } from '../analytics-logger';

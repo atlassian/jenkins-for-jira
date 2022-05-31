@@ -2,7 +2,7 @@ import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
-import { InvalidPayloadError } from '../common/error';
+import { InvalidPayloadError } from 'jenkins-for-jira-common/error';
 import { extractCloudId } from './helpers';
 import { extractBodyFromJwt, verifyJwt } from './jwt';
 import {

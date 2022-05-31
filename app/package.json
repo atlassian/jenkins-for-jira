@@ -11,6 +11,7 @@
     "ci": "run-p lint test"
   },
   "dependencies": {
+    "jenkins-for-jira-common": "1.0.0",
     "@forge/api": "2.6.0",
     "@forge/resolver": "1.4.2",
     "jsonwebtoken": "8.5.1"

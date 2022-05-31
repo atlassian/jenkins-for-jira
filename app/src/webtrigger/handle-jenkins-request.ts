@@ -8,11 +8,11 @@ import {
   WebtriggerResponse,
 } from './types';
 import { sendEventToJira } from '../jira-client/send-event-to-jira';
-import { EventType, JenkinsPipeline } from '../common/types';
+import { EventType, JenkinsPipeline } from 'jenkins-for-jira-common/types';
 import { extractCloudId, getQueryParameterValue } from './helpers';
 import { updateJenkinsServerState } from '../storage/update-jenkins-server-state';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
-import { InvalidPayloadError, NoJenkinsServerError } from '../common/error';
+import { InvalidPayloadError, NoJenkinsServerError } from 'jenkins-for-jira-common/error';
 import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';

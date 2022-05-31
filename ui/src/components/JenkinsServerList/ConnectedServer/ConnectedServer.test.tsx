@@ -5,12 +5,13 @@ import {
 	mapLastEventStatus,
 	mapLastEventStatusIcons
 } from './ConnectedServers';
-import { mockMaxNumberJenkinsPipelines } from '../../../../../src/storage/mockData';
-import { EventType, JenkinsPipeline } from '../../../../../src/common/types';
+import { EventType, JenkinsPipeline } from 'jenkins-for-jira-common/types';
 import { InProgressIcon } from '../../icons/InProgressIcon';
 import { FailedIcon } from '../../icons/FailedIcon';
 import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
+
+const mockMaxNumberJenkinsPipelines = getMockMaxNumberJenkinsPipelines();
 
 describe('ConnectedServers Suite', () => {
 	describe('ConnectedServers helper functions', () => {
@@ -137,3 +138,82 @@ describe('ConnectedServers Suite', () => {
 		});
 	});
 });
+
+function getMockMaxNumberJenkinsPipelines() {
+	const timeOneMinuteAgo = new Date(Date.now() - 1000 * 60);
+	const oldestPipelineData = new Date(Date.now() - 10000 * 60);
+	const buildEvent: EventType = EventType.BUILD;
+	const deploymentEvent: EventType = EventType.DEPLOYMENT;
+
+	const testUuid = 'test-uuid';
+
+	const SERVER_STORAGE_KEY_PREFIX = 'jenkinsServer-';
+
+	return {
+		uuid: testUuid,
+		name: 'my server',
+		secret: `${SERVER_STORAGE_KEY_PREFIX}${testUuid}`,
+		pipelines: [
+			{
+				name: 'pipeline-1',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'pending',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-2',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'in_progress',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-3',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'successful',
+				lastEventType: deploymentEvent
+			},
+			{
+				name: 'pipeline-4',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'cancelled',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-5',
+				lastEventDate: oldestPipelineData,
+				lastEventStatus: 'in_progress',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-6',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'unknown',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-7',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'pending',
+				lastEventType: buildEvent
+			},
+			{
+				name: 'pipeline-8',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'rolled_back',
+				lastEventType: deploymentEvent
+			},
+			{
+				name: 'pipeline-9',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'failed',
+				lastEventType: deploymentEvent
+			},
+			{
+				name: 'pipeline-10',
+				lastEventDate: timeOneMinuteAgo,
+				lastEventStatus: 'in_progress',
+				lastEventType: deploymentEvent
+			}
+		]
+	};
+}

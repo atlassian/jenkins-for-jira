@@ -1,4 +1,4 @@
-import { JenkinsServer, EventType } from '../common/types';
+import { JenkinsServer, EventType } from 'jenkins-for-jira-common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 
 export const currentTime = new Date();

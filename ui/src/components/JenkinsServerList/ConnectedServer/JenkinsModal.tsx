@@ -1,4 +1,4 @@
-import Button, { LoadingButton } from '@atlaskit/button';
+import Button, { LoadingButton, Appearance as ButtonAppearance } from '@atlaskit/button';
 import React from 'react';
 import Modal, {
 	Appearance,
@@ -9,8 +9,7 @@ import Modal, {
 	ModalTitle,
 	ModalTransition
 } from '@atlaskit/modal-dialog';
-import { Appearance as ButtonAppearance } from '@atlaskit/button';
-import { JenkinsServer } from '../../../../../src/common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { loadingIcon } from './JenkinsModal.styles';
 
 type ModalProps = {
@@ -64,9 +63,9 @@ const JenkinsModal: React.FC<ModalProps> = ({
 							:	<Button
 								appearance={secondaryButtonAppearance}
 								onClick={(event: JenkinsServer | KeyboardOrMouseEvent) =>
-									dataTestId === 'disconnectModal'
+									(dataTestId === 'disconnectModal'
 										? secondaryButtonOnClick(server)
-										: secondaryButtonOnClick(event)
+										: secondaryButtonOnClick(event))
 								}
 								testId='secondaryButton'
 							>

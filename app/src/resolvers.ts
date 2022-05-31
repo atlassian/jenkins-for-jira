@@ -1,7 +1,7 @@
 import Resolver from '@forge/resolver';
 import { webTrigger } from '@forge/api';
 import { connectJenkinsServer } from './storage/connect-jenkins-server';
-import { JenkinsServer } from './common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { getAllJenkinsServers } from './storage/get-all-jenkins-servers';
 import { disconnectJenkinsServer } from './storage/disconnect-jenkins-server';
 import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-secret';

@@ -1,4 +1,4 @@
-import { BuildEventStatus, DeploymentEventStatus, EventType } from '../common/types';
+import { BuildEventStatus, DeploymentEventStatus, EventType } from 'jenkins-for-jira-common/types';
 
 export enum RequestType {
   EVENT = 'event',

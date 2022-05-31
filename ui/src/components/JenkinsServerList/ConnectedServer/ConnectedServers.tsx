@@ -19,16 +19,14 @@ import {
 	StyledConnectedServerTableCellIconContainer,
 	StyledConnectedServerTableHeaderContainer,
 	StyledConnectedServerTableContainer,
-	StyledConnectedServerTableHeaderTitle, waitingForDeploymentText
-} from './ConnectedServers.styles';
-import {
+	StyledConnectedServerTableHeaderTitle, waitingForDeploymentText,
 	StyledConnectedServerContainer,
 	StyledConnectedServerLatestEventIconContainer,
 	StyledConnectedServerTableCellContainer,
 	StyledConnectedServerTableCellDescription,
 	StyledConnectedServerTableCellDescriptionEvent
 } from './ConnectedServers.styles';
-import { JenkinsPipeline, JenkinsServer } from '../../../../../src/common/types';
+import { JenkinsPipeline, JenkinsServer } from 'jenkins-for-jira-common/types';
 import { disconnectJenkinsServer } from '../../../api/disconnectJenkinsServer';
 import { JenkinsModal } from './JenkinsModal';
 import { InProgressIcon } from '../../icons/InProgressIcon';

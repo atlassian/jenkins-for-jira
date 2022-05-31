@@ -1,5 +1,5 @@
-import { EventType } from '../common/types';
-import { InvalidPayloadError } from '../common/error';
+import { EventType } from 'jenkins-for-jira-common/types';
+import { InvalidPayloadError } from 'jenkins-for-jira-common/error';
 import { JiraResponse } from './types';
 
 async function invokeApi(url: string, payload: object): Promise<JiraResponse> {

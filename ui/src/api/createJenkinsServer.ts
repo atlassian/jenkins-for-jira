@@ -1,5 +1,5 @@
 import { invoke } from '@forge/bridge';
-import { JenkinsServer } from '../../../src/common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 
 const createJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<JenkinsServer> => {
 	await invoke('connectJenkinsServer', { ...jenkinsServer });

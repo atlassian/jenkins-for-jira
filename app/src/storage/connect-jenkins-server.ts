@@ -1,8 +1,8 @@
 import { storage } from '@forge/api';
 import { log } from '../analytics-logger';
-import { JenkinsServer } from '../common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { JenkinsServerStorageError } from '../common/error';
+import { JenkinsServerStorageError } from 'jenkins-for-jira-common/error';
 
 const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boolean> => {
   try {

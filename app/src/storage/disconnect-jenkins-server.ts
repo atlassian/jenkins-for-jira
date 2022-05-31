@@ -1,6 +1,6 @@
 import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { JenkinsServerStorageError } from '../common/error';
+import { JenkinsServerStorageError } from 'jenkins-for-jira-common/error';
 import { log } from '../analytics-logger';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {

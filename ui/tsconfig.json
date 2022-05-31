@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es5",
+    "sourceMap": true,
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -9,12 +10,15 @@
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
-		"module": "esnext",
+		"module": "es2015",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
+    "isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"types": ["jest", "node", "@testing-library/jest-dom", "@emotion/react/types/css-prop"]
 	},
 	"include": ["src"]
 }
+
+

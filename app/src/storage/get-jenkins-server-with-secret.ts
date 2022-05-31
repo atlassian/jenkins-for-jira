@@ -1,8 +1,8 @@
 import { storage } from '@forge/api';
 import { getJenkinsServerSecret } from './get-jenkins-server-secret';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { JenkinsServer } from '../common/types';
-import { NoJenkinsServerError } from '../common/error';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
+import { NoJenkinsServerError } from 'jenkins-for-jira-common/error';
 
 const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<JenkinsServer> => {
   try {

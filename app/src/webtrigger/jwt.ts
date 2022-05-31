@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error';
+import { InvalidPayloadError, JwtVerificationFailedError } from 'jenkins-for-jira-common/error';
 
 /**
  * Verifies the signature of a JWT.

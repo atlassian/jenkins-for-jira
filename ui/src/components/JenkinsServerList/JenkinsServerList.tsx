@@ -8,7 +8,7 @@ import { ConnectedServers } from './ConnectedServer/ConnectedServers';
 import { StyledDescription, headerContainer } from './JenkinsServerList.styles';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
-import { JenkinsServer } from '../../../../src/common/types';
+import { JenkinsServer } from 'jenkins-for-jira-common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 
 const JenkinsServerList = (): JSX.Element => {

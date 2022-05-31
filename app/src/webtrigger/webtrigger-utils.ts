@@ -1,4 +1,4 @@
-import { JenkinsAppError } from '../common/error';
+import { JenkinsAppError } from 'jenkins-for-jira-common/error';
 import { WebtriggerRequest, WebtriggerResponse } from './types';
 
 /**
