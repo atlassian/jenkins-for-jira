@@ -60,11 +60,11 @@ Add the following content to you `.git/config` file:
 
 ```
 [filter "setid"]
-    clean = sed "s/<YOUR_APP_UUID>/3446ee2c-f453-4e83-952a-9c15807e5de1/g"
-    smudge = sed "s/3446ee2c-f453-4e83-952a-9c15807e5de1/<YOUR_APP_UUID>/g"
+  clean = sed "s/<YOUR_APP_UUID>/21696c93-1a1d-4dd0-bac0-dfed80a62aba/g"
+  smudge = sed "s/21696c93-1a1d-4dd0-bac0-dfed80a62aba/<YOUR_APP_UUID>/g"
 ```
 
-Replace `<YOUR_APP_UUID>` with the UUID part of your APP ID that you can find in your `manifest.yml`. The UUID `344...` is the ID of our "production" app.
+Replace `<YOUR_APP_UUID>` with the UUID part of your APP ID that you can find in your `manifest.yml`. The UUID `21696c93-1a1d-4dd0-bac0-dfed80a62aba` is the ID of our "production" app.
 
 The filter `setid` is used in `/app/.gitattributes` so that it replaces your app ID with the ID of our "production" app every time you commit and and the other way around every time you pull, so that you can't accidentally commit your own app ID.
 
