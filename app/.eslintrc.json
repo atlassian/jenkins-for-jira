@@ -8,8 +8,8 @@
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-useless-constructor": "off",
     "no-param-reassign": [2, { "props": false }],
+    "no-console": "off",
     "no-return-await": "off",
-	"no-console": "off",
     "no-confusing-arrow": [
       "warn",
       { "allowParens": true }
