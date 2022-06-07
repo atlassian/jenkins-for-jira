@@ -16,3 +16,5 @@ Prior to accepting your contributions we ask that you please follow the appropri
 
 * [CLA for corporate contributors](https://opensource.atlassian.com/corporate)
 * [CLA for individuals](https://opensource.atlassian.com/individual)
+
+For more information on working with this app, see [this README](app/README.md).

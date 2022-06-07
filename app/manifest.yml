@@ -38,6 +38,9 @@ resources:
       port: 3000
 app:
   id: ari:cloud:ecosystem::app/21696c93-1a1d-4dd0-bac0-dfed80a62aba
+  # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out
+  runtime:
+    snapshots: false
 permissions:
   content:
     styles:
