@@ -4,6 +4,27 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": ["error"],
+		"indent": "off",
+		"@typescript-eslint/indent": ["warn", "tab", {
+			"SwitchCase": 1
+		}],
+		"@typescript-eslint/comma-dangle": ["warn", "never"],
+		"no-tabs": "off",
+		"function-paren-newline": ["error", "consistent"],
+		"object-shorthand": ["error", "always"],
+		"no-trailing-spaces": "error",
+		"@typescript-eslint/quotes": [
+			"error",
+			"single",
+			{
+				"avoidEscape": true,
+				"allowTemplateLiterals": true
+			}
+		],
+		"no-plusplus": "off",
+		"import/no-relative-packages": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-useless-constructor": "off",
@@ -15,23 +36,23 @@
       { "allowParens": true }
     ],
     "implicit-arrow-linebreak": 0,
-	"arrow-body-style": 0,
-	"max-len": [
-	  "error",
-	  {
-		  "code": 120,
-		  "ignoreStrings": true
-	  }
-	],
-	"operator-linebreak": [
-	  "error",
-	  "after",
-	  {
-		  "overrides": {
-			  "?": "before",
-			  ":": "before"
-		  }
-	  }
-	]
+		"arrow-body-style": 0,
+		"max-len": [
+			"error",
+			{
+				"code": 120,
+				"ignoreStrings": true
+			}
+		],
+		"operator-linebreak": [
+			"error",
+			"after",
+			{
+				"overrides": {
+					"?": "before",
+					":": "before"
+				}
+			}
+		]
   }
 }
