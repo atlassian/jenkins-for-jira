@@ -8,6 +8,7 @@ import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-se
 import { updateJenkinsServer } from './storage/update-jenkins-server';
 import { deleteBuilds } from './jira-client/delete-builds';
 import { deleteDeployments } from './jira-client/delete-deployments';
+import { isAdmin } from './check-permissions';
 
 const resolver = new Resolver();
 
@@ -16,6 +17,9 @@ resolver.define('fetchJenkinsEventHandlerUrl', async () => ({
 }));
 
 resolver.define('connectJenkinsServer', async (req) => {
+	if (!isAdmin) {
+		throw Error();
+	}
 	const payload = req.payload as JenkinsServer;
 	return connectJenkinsServer(payload);
 });
@@ -25,7 +29,12 @@ resolver.define('updateJenkinsServer', async (req) => {
 	return updateJenkinsServer(payload);
 });
 
-resolver.define('getAllJenkinsServers', async () => getAllJenkinsServers());
+resolver.define('getAllJenkinsServers', async () => {
+	if (!isAdmin) {
+		throw Error();
+	}
+	await getAllJenkinsServers();
+});
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
 	const jenkinsServerUuid = req.payload.uuid as string;

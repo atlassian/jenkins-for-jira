@@ -2,6 +2,10 @@
  * This is an integration test of the whole code path from the webtrigger through the app
  * to the Jira API.
  */
+
+/* Updating error to warning as there are reasonable exceptions to the rule in this file */
+/* eslint max-len: ["warn", { "code": 120 }] */
+
 import { when } from 'jest-when';
 import { storage } from '@forge/api';
 import { handleJenkinsRequest } from '../index';
