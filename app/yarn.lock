@@ -316,13 +316,6 @@
   dependencies:
     tslib "^1.11.0"
 
-"@forge/bridge@^2.4.0":
-  version "2.4.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/bridge/-/bridge-2.4.0.tgz#6542a1bd5ad400002254a5cf755850fbcec55cee"
-  integrity sha512-ySILbSdJsCPLwQyL+ctZADo8EVjQXya0gjKMUmXSTlts9SgL5W4QgmT8ac1ZWxUDpvhGsaC7txQIsOWRzqAlSA==
-  dependencies:
-    "@types/history" "^4.7.8"
-
 "@forge/resolver@1.4.2":
   version "1.4.2"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/resolver/-/resolver-1.4.2.tgz#2fbdf3894c1a4a2c96d7e0dedb64bfd5eaa0dbd7"
@@ -653,11 +646,6 @@
   integrity sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==
   dependencies:
     "@types/node" "*"
-
-"@types/history@^4.7.8":
-  version "4.7.11"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/history/-/history-4.7.11.tgz#56588b17ae8f50c53983a524fc3cc47437969d64"
-  integrity sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"
