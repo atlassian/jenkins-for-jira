@@ -2,11 +2,11 @@ import api, { route } from '@forge/api';
 
 const isAdmin = async (accountId: any): Promise<boolean> => {
 	const permissionRequestBody = `{
-      "globalPermissions": [
-        "ADMINISTER"
-      ],
-      "accountId": "${accountId}"
-    }`;
+		"globalPermissions": [
+			"ADMINISTER"
+		],
+		"accountId": "${accountId}"
+	}`;
 
 	const permissions = await api.asApp().requestJira(route`/rest/api/3/permissions/check`, {
 		method: 'POST',
