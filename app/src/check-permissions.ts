@@ -1,6 +1,9 @@
 import api, { route } from '@forge/api';
 
-const isAdmin = async (accountId: any): Promise<boolean> => {
+// Forge does not export their Request type, so we have to resort to 'any' for now.
+export const adminPermissionCheck = async (req: any): Promise<void> => {
+	const { accountId } = req.context;
+
 	const permissionRequestBody = `{
 		"globalPermissions": [
 			"ADMINISTER"
@@ -8,7 +11,7 @@ const isAdmin = async (accountId: any): Promise<boolean> => {
 		"accountId": "${accountId}"
 	}`;
 
-	const permissions = await api.asApp().requestJira(route`/rest/api/3/permissions/check`, {
+	const permissions = await api.asUser().requestJira(route`/rest/api/3/permissions/check`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -18,13 +21,12 @@ const isAdmin = async (accountId: any): Promise<boolean> => {
 	});
 
 	if (permissions.status === 403) {
-		return false;
+		throw new Error('Only Jira administrators can perform this operation.');
 	}
 
 	const permissionDetails = await permissions.json();
-	return permissionDetails?.globalPermissions?.includes('ADMINISTER');
-};
 
-export {
-	isAdmin
+	if (!permissionDetails?.globalPermissions?.includes('ADMINISTER')) {
+		throw new Error('Only Jira administrators can perform this operation.');
+	}
 };

@@ -8,49 +8,42 @@ import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-se
 import { updateJenkinsServer } from './storage/update-jenkins-server';
 import { deleteBuilds } from './jira-client/delete-builds';
 import { deleteDeployments } from './jira-client/delete-deployments';
-import { isAdmin } from './check-permissions';
+import { adminPermissionCheck } from './check-permissions';
 
 const resolver = new Resolver();
 
-const checkPermissions = async (accountId: string) => {
-	const admin = await isAdmin(accountId);
-	if (!admin) {
-		throw new Error('Only Jira administrators can perform this operation.');
-	}
-};
-
 resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	return {
 		url: await webTrigger.getUrl('jenkins-webtrigger')
 	};
 });
 
 resolver.define('connectJenkinsServer', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
 	return connectJenkinsServer(payload);
 });
 
 resolver.define('updateJenkinsServer', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
 	return updateJenkinsServer(payload);
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	return getAllJenkinsServers();
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	const jenkinsServerUuid = req.payload.uuid as string;
 	return getJenkinsServerWithSecret(jenkinsServerUuid);
 });
 
 resolver.define('disconnectJenkinsServer', async (req) => {
-	await checkPermissions(req.context.accountId);
+	await adminPermissionCheck(req);
 	const { cloudId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
 	return Promise.all([
