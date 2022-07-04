@@ -21,12 +21,12 @@ export const adminPermissionCheck = async (req: any): Promise<void> => {
 	});
 
 	if (permissions.status === 403) {
-		throw new Error('Only Jira administrators can perform this operation.');
+		throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
 	}
 
 	const permissionDetails = await permissions.json();
 
 	if (!permissionDetails?.globalPermissions?.includes('ADMINISTER')) {
-		throw new Error('Only Jira administrators can perform this operation.');
+		throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
 	}
 };
