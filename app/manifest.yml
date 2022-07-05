@@ -51,3 +51,4 @@ permissions:
     - 'delete:build-info:jira'
     - 'write:deployment-info:jira'
     - 'delete:deployment-info:jira'
+    - 'read:permission:jira'

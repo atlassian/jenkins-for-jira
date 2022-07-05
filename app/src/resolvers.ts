@@ -8,31 +8,42 @@ import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-se
 import { updateJenkinsServer } from './storage/update-jenkins-server';
 import { deleteBuilds } from './jira-client/delete-builds';
 import { deleteDeployments } from './jira-client/delete-deployments';
+import { adminPermissionCheck } from './check-permissions';
 
 const resolver = new Resolver();
 
-resolver.define('fetchJenkinsEventHandlerUrl', async () => ({
-	url: await webTrigger.getUrl('jenkins-webtrigger')
-}));
+resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
+	await adminPermissionCheck(req);
+	return {
+		url: await webTrigger.getUrl('jenkins-webtrigger')
+	};
+});
 
 resolver.define('connectJenkinsServer', async (req) => {
+	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
 	return connectJenkinsServer(payload);
 });
 
 resolver.define('updateJenkinsServer', async (req) => {
+	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
 	return updateJenkinsServer(payload);
 });
 
-resolver.define('getAllJenkinsServers', async () => getAllJenkinsServers());
+resolver.define('getAllJenkinsServers', async (req) => {
+	await adminPermissionCheck(req);
+	return getAllJenkinsServers();
+});
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
+	await adminPermissionCheck(req);
 	const jenkinsServerUuid = req.payload.uuid as string;
 	return getJenkinsServerWithSecret(jenkinsServerUuid);
 });
 
 resolver.define('disconnectJenkinsServer', async (req) => {
+	await adminPermissionCheck(req);
 	const { cloudId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
 	return Promise.all([
