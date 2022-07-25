@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { ServerConfigurationFormWebhookUrl } from './ServerConfigurationFormWebhookUrl';
 
-describe('ServerConfigurationFormName component', () => {
+describe('ServerConfigurationFormWebhookUrl component', () => {
 	it('Should render server webhook url field with supplied webhook url', async () => {
 		const { getByTestId } = await render(
 			<ServerConfigurationFormWebhookUrl
