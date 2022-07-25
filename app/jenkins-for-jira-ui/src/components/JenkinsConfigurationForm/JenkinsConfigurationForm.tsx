@@ -1,22 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import Button, { LoadingButton } from '@atlaskit/button';
-import Textfield from '@atlaskit/textfield';
 import Form, {
-	FormFooter,
-	Field,
-	HelperMessage
+	FormFooter
 } from '@atlaskit/form';
-import WatchIcon from '@atlaskit/icon/glyph/watch';
 import {
-	StyledWatchIcon,
-	StyledInputHeaderContainer,
-	textfieldContainer,
 	loadingIcon
 } from './JenkinsConfigurationForm.styles';
-import { FormTooltip } from '../Tooltip/Tooltip';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { ServerConfigurationFormName } from './ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ServerConfigurationFormWebhookUrl } from './ServerConfigurationFormElements/ServerConfigurationFormWebhokUrl/ServerConfigurationFormWebhookUrl';
+import { ServerConfigurationFormSecret } from './ServerConfigurationFormElements/ServerConfigurationFormSecret/ServerConfigurationFormSecret';
 
 // TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
@@ -63,17 +56,8 @@ const JenkinsConfigurationForm = ({
 	setHasError,
 	isLoading
 }: JenkinsConfigurationFormProps) => {
-	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
-
-	const togglePassword = () => {
-		setPasswordIsVisible(!passwordIsVisible);
-	};
-
-	const onClickRefresh = async () => {
-		setShowConfirmRefreshSecret(true);
-	};
 
 	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
@@ -90,14 +74,6 @@ const JenkinsConfigurationForm = ({
 			<Form onSubmit={onSubmit}>
 				{({ formProps }: any) => (
 					<form {...formProps} name='jenkins-configuration-form' data-testid="jenkinsConfigurationForm">
-						<StyledInputHeaderContainer>
-							<h3>Jenkins server </h3>
-							<FormTooltip
-								content='Create a display name for your Jenkins server.'
-								label='Jenkins Server'
-							/>
-						</StyledInputHeaderContainer>
-
 						<ServerConfigurationFormName
 							serverName={serverName}
 							setServerName={setServerName}
@@ -110,61 +86,10 @@ const JenkinsConfigurationForm = ({
 							webhookUrl={webhookUrl}
 						/>
 
-						<StyledInputHeaderContainer>
-							<h3>Secret</h3>
-							<FormTooltip
-								content={
-									<span>
-										On your Jenkins server, navigate to{' '}
-										<b>Manage Jenkins {'>'} Configure system.</b> Find the{' '}
-										<b>Jira Software Cloud Integration</b> plugin and create a
-										Jira Cloud site with this secret. Choose <b>Secret text</b>{' '}
-										as the kind of secret.
-									</span>
-								}
-								label='Secret'
-							/>
-						</StyledInputHeaderContainer>
-
-						<Field
-							label='Unique secret'
-							name='server-webhook-url-label'
-						>
-							{() => (
-								<>
-									<div className={textfieldContainer}>
-										<Textfield
-											name='server-secret'
-											type={passwordIsVisible ? 'text' : 'password'}
-											aria-label='server secret field'
-											value={secret}
-											readOnly
-											testId='server-secret'
-											elemAfterInput={
-												<StyledWatchIcon
-													onClick={togglePassword}
-													data-testid='watch-icon'
-												>
-													<WatchIcon label='Toggle Password View' />
-												</StyledWatchIcon>
-											}
-											isCompact
-										/>
-										<Button
-											onClick={() => onClickRefresh()}
-											testId='openRefreshModal'
-										>
-											Refresh
-										</Button>
-									</div>
-
-									<HelperMessage>
-										Copy and paste this secret into Jenkins to retrieve your build or deployment data.{' '}
-										Click refresh to generate a new secret.
-									</HelperMessage>
-								</>
-							)}
-						</Field>
+						<ServerConfigurationFormSecret
+							secret={secret}
+							setShowConfirmRefreshSecret={setShowConfirmRefreshSecret}
+						/>
 
 						<FormFooter>
 							{isLoading
