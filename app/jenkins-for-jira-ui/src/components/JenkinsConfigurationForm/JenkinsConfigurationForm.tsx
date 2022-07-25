@@ -16,6 +16,7 @@ import {
 import { FormTooltip } from '../Tooltip/Tooltip';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { ServerConfigurationFormName } from './ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
+import { ServerConfigurationFormWebhookUrl } from './ServerConfigurationFormElements/ServerConfigurationFormWebhokUrl/ServerConfigurationFormWebhookUrl';
 
 // TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
@@ -105,43 +106,9 @@ const JenkinsConfigurationForm = ({
 							setHasError={setHasError}
 						/>
 
-						<StyledInputHeaderContainer>
-							<h3>Webhook URL</h3>
-							<FormTooltip
-								content={
-									<span>
-										On your Jenkins server, navigate to{' '}
-										<b>Manage Jenkins {'>'} Configure system.</b> Find the{' '}
-										<b>Jira Software Cloud Integration</b> plugin and create a
-										Jira Cloud site with this webhook URL.
-									</span>
-								}
-								label='Webhook Url'
-							/>
-						</StyledInputHeaderContainer>
-						<Field
-							label='Unique webhook'
-							name='server-webhook-url-label'
-						>
-							{() => (
-								<>
-									<div className={textfieldContainer}>
-										<Textfield
-											name='server-webhook-url'
-											aria-label='webhook url field'
-											value={webhookUrl}
-											readOnly
-											isRequired
-											isCompact
-										/>
-									</div>
-									<HelperMessage>
-										Copy and paste this webhook into your Jenkins server
-										configuration. This is unique to your site.
-									</HelperMessage>
-								</>
-							)}
-						</Field>
+						<ServerConfigurationFormWebhookUrl
+							webhookUrl={webhookUrl}
+						/>
 
 						<StyledInputHeaderContainer>
 							<h3>Secret</h3>
