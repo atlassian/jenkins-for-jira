@@ -1,4 +1,5 @@
 import React from 'react';
+import { Status } from '@atlaskit/progress-tracker/dist/types/types';
 // TODO: Find out why the Atlassian and Forge packages break ESLint
 // eslint-disable-next-line
 import { ProgressTracker, Stages } from '@atlaskit/progress-tracker';
@@ -7,6 +8,17 @@ import { progressTrackerContainer } from './ConfigurationSteps.styles';
 
 type AppProps = {
 	currentStage: string;
+};
+
+const mapCreateStatus = (currentStage: unknown): Status => {
+	switch (currentStage) {
+		case 'create':
+			return 'current';
+		case 'connect':
+			return 'visited';
+		default:
+			return 'unvisited';
+	}
 };
 
 // This is not reusable for other configuration steps.
@@ -30,8 +42,18 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 			onClick: () => { history.push('/install'); }
 		},
 		{
+			id: 'create',
+			label: 'Create server',
+			percentageComplete:
+				currentStage === 'create' || currentStage === 'install'
+					? 0
+					: 100,
+			status: mapCreateStatus(currentStage),
+			href: '#'
+		},
+		{
 			id: 'connect',
-			label: 'Connect your app',
+			label: 'Connect server',
 			percentageComplete: 0,
 			status:
 				currentStage === 'connect'

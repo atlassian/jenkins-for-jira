@@ -3,7 +3,7 @@ import { B200, B400 } from '@atlaskit/theme/colors';
 import { JiraSoftwareIcon } from '@atlaskit/logo';
 import CheckCircle from '../../assets/CheckCircle.svg';
 import { JenkinsIcon } from '../../icons/JenkinsIcon';
-import { StyledCheckSpacer, StyledConnectLogosContainer } from './ConnectLogos.style';
+import { StyledCheckSpacer, StyledConnectLogosContainer } from './ConnectLogos.styles';
 
 const ConnectLogos = () => (
 	<StyledConnectLogosContainer>

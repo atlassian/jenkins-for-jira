@@ -1,0 +1,676 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfigurationSteps Page Suite Should render correctly with connect as currentStage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="css-17crxen"
+      >
+        <ul
+          aria-label="Progress"
+          class="css-t7ahcc"
+          style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+        >
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 50ms; --ds--pt--td: 0ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(23, 43, 77); font-weight: 600;"
+              >
+                <a
+                  class="css-diynhl-Link"
+                  href="#"
+                >
+                  Install plugin
+                </a>
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 50ms; --ds--pt--td: 50ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(23, 43, 77); font-weight: 600;"
+              >
+                <a
+                  class="css-diynhl-Link"
+                  href="#"
+                >
+                  Create server
+                </a>
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="step"
+            class="css-ln603f"
+            style="--ds--pt--ts: 50ms; --ds--pt--td: 0ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(0, 101, 255); font-weight: 600;"
+              >
+                Connect server
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="css-17crxen"
+    >
+      <ul
+        aria-label="Progress"
+        class="css-t7ahcc"
+        style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+      >
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 50ms; --ds--pt--td: 0ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(23, 43, 77); font-weight: 600;"
+            >
+              <a
+                class="css-diynhl-Link"
+                href="#"
+              >
+                Install plugin
+              </a>
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 50ms; --ds--pt--td: 50ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(23, 43, 77); font-weight: 600;"
+            >
+              <a
+                class="css-diynhl-Link"
+                href="#"
+              >
+                Create server
+              </a>
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="step"
+          class="css-ln603f"
+          style="--ds--pt--ts: 50ms; --ds--pt--td: 0ms; --ds--pt--te: linear; --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(0, 101, 255); font-weight: 600;"
+            >
+              Connect server
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`ConfigurationSteps Page Suite Should render correctly with create as currentStage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="css-17crxen"
+      >
+        <ul
+          aria-label="Progress"
+          class="css-t7ahcc"
+          style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+        >
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(23, 43, 77); font-weight: 600;"
+              >
+                <a
+                  class="css-diynhl-Link"
+                  href="#"
+                >
+                  Install plugin
+                </a>
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="step"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(0, 101, 255); font-weight: 600;"
+              >
+                Create server
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(94, 108, 132); font-weight: 400;"
+              >
+                Connect server
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="css-17crxen"
+    >
+      <ul
+        aria-label="Progress"
+        class="css-t7ahcc"
+        style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+      >
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(23, 43, 77); font-weight: 600;"
+            >
+              <a
+                class="css-diynhl-Link"
+                href="#"
+              >
+                Install plugin
+              </a>
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="step"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(0, 101, 255); font-weight: 600;"
+            >
+              Create server
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(94, 108, 132); font-weight: 400;"
+            >
+              Connect server
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`ConfigurationSteps Page Suite Should render correctly with install as currentStage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="css-17crxen"
+      >
+        <ul
+          aria-label="Progress"
+          class="css-t7ahcc"
+          style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+        >
+          <li
+            aria-current="step"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(0, 101, 255); font-weight: 600;"
+              >
+                Install plugin
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(94, 108, 132); font-weight: 400;"
+              >
+                Create server
+              </div>
+            </div>
+          </li>
+          <li
+            aria-current="false"
+            class="css-ln603f"
+            style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+          >
+            <div
+              class="css-1kxonj9"
+            >
+              <div
+                class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+              />
+              <div
+                class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+              />
+              <div
+                class="css-9d8jpc fade-appear fade-appear-active"
+                style="color: rgb(94, 108, 132); font-weight: 400;"
+              >
+                Connect server
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="css-17crxen"
+    >
+      <ul
+        aria-label="Progress"
+        class="css-t7ahcc"
+        style="grid-template-columns: repeat(3, 1fr); --ds--pt--sp: 16px; max-width: 480px;"
+      >
+        <li
+          aria-current="step"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #0065FF; --ds--pt--bg: #0065FF;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(0, 101, 255); font-weight: 600;"
+            >
+              Install plugin
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(94, 108, 132); font-weight: 400;"
+            >
+              Create server
+            </div>
+          </div>
+        </li>
+        <li
+          aria-current="false"
+          class="css-ln603f"
+          style="--ds--pt--ts: 300ms; --ds--pt--td: 0ms; --ds--pt--te: cubic-bezier(0.15,1,0.3,1); --ds--pt--mc: #A5ADBA; --ds--pt--bg: #A5ADBA;"
+        >
+          <div
+            class="css-1kxonj9"
+          >
+            <div
+              class="css-gilxpy-ProgressMarker fade-appear fade-appear-active"
+            />
+            <div
+              class="css-15hmvtc-ProgressBar fade-appear fade-appear-active"
+            />
+            <div
+              class="css-9d8jpc fade-appear fade-appear-active"
+              style="color: rgb(94, 108, 132); font-weight: 400;"
+            >
+              Connect server
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
