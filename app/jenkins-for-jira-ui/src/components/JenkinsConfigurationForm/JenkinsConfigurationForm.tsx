@@ -3,7 +3,6 @@ import Button, { LoadingButton } from '@atlaskit/button';
 import Textfield from '@atlaskit/textfield';
 import Form, {
 	FormFooter,
-	ErrorMessage,
 	Field,
 	HelperMessage
 } from '@atlaskit/form';
@@ -11,12 +10,12 @@ import WatchIcon from '@atlaskit/icon/glyph/watch';
 import {
 	StyledWatchIcon,
 	StyledInputHeaderContainer,
-	StyledTextfieldErrorContainer,
 	textfieldContainer,
 	loadingIcon
 } from './JenkinsConfigurationForm.styles';
 import { FormTooltip } from '../Tooltip/Tooltip';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
+import { ServerConfigurationFormName } from './ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 
 // TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
@@ -98,26 +97,13 @@ const JenkinsConfigurationForm = ({
 							/>
 						</StyledInputHeaderContainer>
 
-						<StyledTextfieldErrorContainer hasError={hasError}>
-							<Field label='Server name' name='server-name-label'>
-								{() => (
-									<Textfield
-										name='server-name'
-										value={serverName}
-										aria-label='server name field'
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-											setServerName(event);
-											setHasError(false);
-										}}
-									/>
-								)}
-							</Field>
-							{hasError && (
-								<ErrorMessage testId='error-message'>
-									{errorMessage}
-								</ErrorMessage>
-							)}
-						</StyledTextfieldErrorContainer>
+						<ServerConfigurationFormName
+							serverName={serverName}
+							setServerName={setServerName}
+							hasError={hasError}
+							errorMessage={errorMessage}
+							setHasError={setHasError}
+						/>
 
 						<StyledInputHeaderContainer>
 							<h3>Webhook URL</h3>

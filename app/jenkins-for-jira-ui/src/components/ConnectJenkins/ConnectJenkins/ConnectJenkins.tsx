@@ -46,6 +46,10 @@ const ConnectJenkins = () => {
 		}
 	};
 
+	// TODO YVO: Expected
+	// 3 steps, 3 components
+	// this is step 2
+
 	return (
 		<StyledInstallationContainer>
 			<ConfigurationSteps currentStage={'connect'} />
