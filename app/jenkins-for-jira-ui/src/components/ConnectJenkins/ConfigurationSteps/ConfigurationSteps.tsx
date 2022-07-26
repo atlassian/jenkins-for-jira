@@ -22,7 +22,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				percentageComplete: 0,
 				status: 'current',
 				href: '#',
-				onClick: () => { history.push('/install'); }
+				onClick: () => history.push('/install')
 			},
 			{
 				id: 'create',
@@ -46,7 +46,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				percentageComplete: 100,
 				status: 'visited',
 				href: '#',
-				onClick: () => { history.push('/install'); }
+				onClick: () => history.push('/install')
 			},
 			{
 				id: 'create',
@@ -54,7 +54,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				percentageComplete: 0,
 				status: 'current',
 				href: '#',
-				onClick: () => { history.push('/create'); }
+				onClick: () => history.push('/create')
 			},
 			{
 				id: 'connect',
@@ -71,7 +71,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				percentageComplete: 100,
 				status: 'visited',
 				href: '#',
-				onClick: () => { history.push('/install'); }
+				onClick: () => history.push('/install')
 			},
 			{
 				id: 'create',
@@ -79,7 +79,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				percentageComplete: 100,
 				status: 'visited',
 				href: '#',
-				onClick: () => { history.push('/create'); }
+				onClick: () => history.push('/create')
 			},
 			{
 				id: 'connect',
