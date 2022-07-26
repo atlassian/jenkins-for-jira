@@ -14,36 +14,86 @@ type AppProps = {
 const ConfigurationSteps = ({ currentStage }: AppProps) => {
 	const history = useHistory();
 
-	const stages: Stages = [
-		{
-			id: 'install',
-			label: 'Install plugin',
-			percentageComplete:
-				currentStage === 'install'
-					? 0
-					: 100,
-			status:
-				currentStage === 'install'
-					? 'current'
-					: 'visited',
-			href: '#',
-			onClick: () => { history.push('/install'); }
-		},
-		{
-			id: 'connect',
-			label: 'Connect your app',
-			percentageComplete: 0,
-			status:
-				currentStage === 'connect'
-					? 'current'
-					: 'unvisited',
-			href: '#'
-		}
-	];
+	const stages: { [key: string]: Stages } = {
+		install: [
+			{
+				id: 'install',
+				label: 'Install plugin',
+				percentageComplete: 0,
+				status: 'current',
+				href: '#',
+				onClick: () => history.push('/install')
+			},
+			{
+				id: 'create',
+				label: 'Create server',
+				percentageComplete: 0,
+				status: 'unvisited',
+				href: '#'
+			},
+			{
+				id: 'connect',
+				label: 'Connect server',
+				percentageComplete: 0,
+				status: 'unvisited',
+				href: '#'
+			}
+		],
+		create: [
+			{
+				id: 'install',
+				label: 'Install plugin',
+				percentageComplete: 100,
+				status: 'visited',
+				href: '#',
+				onClick: () => history.push('/install')
+			},
+			{
+				id: 'create',
+				label: 'Create server',
+				percentageComplete: 0,
+				status: 'current',
+				href: '#',
+				onClick: () => history.push('/create')
+			},
+			{
+				id: 'connect',
+				label: 'Connect server',
+				percentageComplete: 0,
+				status: 'unvisited',
+				href: '#'
+			}
+		],
+		connect: [
+			{
+				id: 'install',
+				label: 'Install plugin',
+				percentageComplete: 100,
+				status: 'visited',
+				href: '#',
+				onClick: () => history.push('/install')
+			},
+			{
+				id: 'create',
+				label: 'Create server',
+				percentageComplete: 100,
+				status: 'visited',
+				href: '#',
+				onClick: () => history.push('/create')
+			},
+			{
+				id: 'connect',
+				label: 'Connect server',
+				percentageComplete: 0,
+				status: 'current',
+				href: '#'
+			}
+		]
+	};
 
 	return (
 		<div className={progressTrackerContainer}>
-			<ProgressTracker items={stages} />
+			<ProgressTracker items={stages[currentStage]} />
 		</div>
 	);
 };
