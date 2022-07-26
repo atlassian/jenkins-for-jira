@@ -13,6 +13,7 @@ import { ManageConnection } from './components/ManageConnection/ManageConnection
 import { spinnerHeight } from './common/styles/spinner.styles';
 import { JenkinsSpinner } from './components/JenkinsSpinner/JenkinsSpinner';
 import { PendingDeploymentState } from './components/JenkinsServerList/PendingDeploymentState/PendingDeploymentState';
+import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
 
 const AppContainer = styled.div`
 	color: #172B4D;
@@ -38,6 +39,9 @@ const App = () => {
 						</Route>
 						<Route path="/install">
 							<InstallJenkins />
+						</Route>
+						<Route path="/create">
+							<CreateServer />
 						</Route>
 						<Route path="/connect">
 							<ConnectJenkins />
