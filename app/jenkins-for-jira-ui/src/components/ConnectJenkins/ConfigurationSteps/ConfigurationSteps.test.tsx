@@ -30,7 +30,7 @@ describe('ConfigurationSteps Page Suite', () => {
 		const ConnectServerStep = screen.getByText('Connect server');
 
 		// Visited steps are styled via parent container
-		expect(InstallJenkinsStepParentContainer).toHaveAttribute('style', 'color: rgb(23, 43, 77); font-weight: 600;');
+		expect(InstallJenkinsStepParentContainer).toHaveAttribute('style', 'color: rgb(165, 173, 186); font-weight: 600;');
 		expect(CreateServerStep).toHaveAttribute('style', 'color: rgb(0, 101, 255); font-weight: 600;');
 		expect(ConnectServerStep).toHaveAttribute('style', 'color: rgb(94, 108, 132); font-weight: 400;');
 	});
@@ -42,8 +42,8 @@ describe('ConfigurationSteps Page Suite', () => {
 		const ConnectServerStep = screen.getByText('Connect server');
 
 		// Visited steps are styled via parent container
-		expect(InstallJenkinsStepParentContainer).toHaveAttribute('style', 'color: rgb(23, 43, 77); font-weight: 600;');
-		expect(CreateServerStepParentContainer).toHaveAttribute('style', 'color: rgb(23, 43, 77); font-weight: 600;');
+		expect(InstallJenkinsStepParentContainer).toHaveAttribute('style', 'color: rgb(165, 173, 186); font-weight: 600;');
+		expect(CreateServerStepParentContainer).toHaveAttribute('style', 'color: rgb(165, 173, 186); font-weight: 600;');
 		expect(ConnectServerStep).toHaveAttribute('style', 'color: rgb(0, 101, 255); font-weight: 600;');
 	});
 });

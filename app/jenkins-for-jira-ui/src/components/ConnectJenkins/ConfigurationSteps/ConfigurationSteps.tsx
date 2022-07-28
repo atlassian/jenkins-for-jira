@@ -2,7 +2,6 @@ import React from 'react';
 // TODO: Find out why the Atlassian and Forge packages break ESLint
 // eslint-disable-next-line
 import { ProgressTracker, Stages } from '@atlaskit/progress-tracker';
-import { useHistory } from 'react-router';
 import { progressTrackerContainer } from './ConfigurationSteps.styles';
 
 type AppProps = {
@@ -12,8 +11,6 @@ type AppProps = {
 // This is not reusable for other configuration steps.
 // Choosing to apply YAGNI for now.
 const ConfigurationSteps = ({ currentStage }: AppProps) => {
-	const history = useHistory();
-
 	const stages: { [key: string]: Stages } = {
 		install: [
 			{
@@ -21,8 +18,7 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				label: 'Install plugin',
 				percentageComplete: 0,
 				status: 'current',
-				href: '#',
-				onClick: () => history.push('/install')
+				href: '#'
 			},
 			{
 				id: 'create',
@@ -44,17 +40,15 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				id: 'install',
 				label: 'Install plugin',
 				percentageComplete: 100,
-				status: 'visited',
-				href: '#',
-				onClick: () => history.push('/install')
+				status: 'disabled',
+				href: '#'
 			},
 			{
 				id: 'create',
 				label: 'Create server',
 				percentageComplete: 0,
 				status: 'current',
-				href: '#',
-				onClick: () => history.push('/create')
+				href: '#'
 			},
 			{
 				id: 'connect',
@@ -69,17 +63,15 @@ const ConfigurationSteps = ({ currentStage }: AppProps) => {
 				id: 'install',
 				label: 'Install plugin',
 				percentageComplete: 100,
-				status: 'visited',
-				href: '#',
-				onClick: () => history.push('/install')
+				status: 'disabled',
+				href: '#'
 			},
 			{
 				id: 'create',
 				label: 'Create server',
 				percentageComplete: 100,
-				status: 'visited',
-				href: '#',
-				onClick: () => history.push('/create')
+				status: 'disabled',
+				href: '#'
 			},
 			{
 				id: 'connect',
