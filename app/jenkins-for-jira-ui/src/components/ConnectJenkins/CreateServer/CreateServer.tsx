@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Form, {
 	FormFooter
@@ -18,28 +18,20 @@ import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
 
 const CreateServer = () => {
 	const history = useHistory();
-	const [uuid] = useState(uuidv4);
 	const [serverName, setServerName] = useState('');
-	const [secret, setSecret] = useState('');
 	const [hasError, setHasError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	useEffect(() => {
-		setSecret(generateNewSecret());
-	}, [uuid]);
-
-	const createServer = async () => {
-		const isValidForm = isFormValid(serverName, setHasError, setErrorMessage);
-
-		if (isValidForm) {
+	const onSubmitCreateServer = async () => {
+		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
 
 			try {
 				await createJenkinsServer({
 					name: serverName,
-					uuid,
-					secret,
+					uuid: uuidv4(),
+					secret: generateNewSecret(),
 					pipelines: []
 				});
 				history.push('/connect');
@@ -57,7 +49,7 @@ const CreateServer = () => {
 
 			<StyledH1>Create your Jenkins Server</StyledH1>
 			<StyledInstallationContent>
-				<Form onSubmit={createServer}>
+				<Form onSubmit={onSubmitCreateServer}>
 					{({ formProps }: any) => (
 						<form {...formProps} name='create-server-form' data-testid="createServerForm">
 							<ServerConfigurationFormName
