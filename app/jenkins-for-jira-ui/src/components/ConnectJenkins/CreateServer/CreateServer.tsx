@@ -26,15 +26,16 @@ const CreateServer = () => {
 	const onSubmitCreateServer = async () => {
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
+			const uuid = uuidv4();
 
 			try {
 				await createJenkinsServer({
 					name: serverName,
-					uuid: uuidv4(),
+					uuid,
 					secret: generateNewSecret(),
 					pipelines: []
 				});
-				history.push('/connect');
+				history.push(`/connect/${uuid}`);
 			} catch (e) {
 				console.error('Error: ', e);
 				setIsLoading(false);
@@ -60,13 +61,14 @@ const CreateServer = () => {
 								hasError={hasError}
 								errorMessage={errorMessage}
 								setHasError={setHasError}
+								serverNameHelperText={'Enter a name for your server. You can change this at any time.'}
 							/>
 
 							<FormFooter>
 								{isLoading
 									? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button' />
 									:	<Button type='submit' appearance='primary' testId='submit-button'>
-										Next
+										Create
 									</Button>
 								}
 							</FormFooter>
