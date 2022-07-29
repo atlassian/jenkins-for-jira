@@ -43,7 +43,7 @@ const App = () => {
 						<Route path="/create">
 							<CreateServer />
 						</Route>
-						<Route path="/connect">
+						<Route path="/connect/:id">
 							<ConnectJenkins />
 						</Route>
 						<Route path="/manage/:id">
