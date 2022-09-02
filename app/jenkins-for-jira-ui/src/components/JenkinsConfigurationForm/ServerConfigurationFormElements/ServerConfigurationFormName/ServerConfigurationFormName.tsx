@@ -32,7 +32,7 @@ const ServerConfigurationFormName = ({
 			<StyledInputHeaderContainer>
 				<h3>Jenkins server name</h3>
 				<FormTooltip
-					content='Create a display name for your Jenkins server.'
+					content='Edit the display name for your Jenkins server.'
 					label='Jenkins Server'
 				/>
 			</StyledInputHeaderContainer>
