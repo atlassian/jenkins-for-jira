@@ -1,8 +1,5 @@
-import { useEffect } from 'react';
-import { renderHook } from '@testing-library/react-hooks';
 import {
 	render,
-	waitFor,
 	screen
 } from '@testing-library/react';
 import { ConnectJenkins } from './ConnectJenkins';
@@ -15,26 +12,14 @@ jest.mock('uuid', () => {
 	return { v4: uuidGen };
 });
 
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
+	useParams: jest.fn().mockReturnValue({ id: 'uuid_1' })
+}));
+
 describe('ConnectJenkins Page Suite', () => {
 	it('Should not render form if there is no webhookUrl', () => {
 		render(<ConnectJenkins />);
 		expect(screen.queryByTestId('jenkinsConfigurationForm')).not.toBeInTheDocument();
-	});
-
-	it('Should render form if there request as returned webhookUrl', async () => {
-		render(<ConnectJenkins />);
-
-		const { rerender } = renderHook(
-			({ uuid }) => {
-				useEffect(() => {}, [uuid]);
-			},
-			{
-				initialProps: { uuid: '' }
-			}
-		);
-
-		rerender({ uuid: 'uuid_1' });
-
-		expect(await waitFor(() => screen.getByTestId('jenkinsConfigurationForm'))).toBeInTheDocument();
 	});
 });
