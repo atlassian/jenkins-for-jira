@@ -1,5 +1,6 @@
 {
   "title": "Jenkins for Jira Renovate configuration",
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "properties": {
     "reviewers": [
       "bgvozdev",
