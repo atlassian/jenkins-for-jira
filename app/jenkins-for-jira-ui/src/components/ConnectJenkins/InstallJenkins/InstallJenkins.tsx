@@ -15,7 +15,7 @@ const InstallJenkins = () => {
 	const history = useHistory();
 
 	const onClickNext = () => {
-		history.push('/connect');
+		history.push('/create');
 	};
 
 	return (

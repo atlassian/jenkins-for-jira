@@ -1,10 +1,10 @@
 interface AnalyticsEvent {
-  eventType: string;
-  data?: Object;
+	eventType: string;
+	data?: Object;
 }
 
 function log(event: AnalyticsEvent) {
-  console.log('Analytics Data', event);
+	console.log('Analytics Data', event);
 }
 
 export { log };

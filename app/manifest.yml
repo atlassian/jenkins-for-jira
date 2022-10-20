@@ -37,7 +37,10 @@ resources:
     tunnel:
       port: 3000
 app:
-  id: ari:cloud:ecosystem::app/21696c93-1a1d-4dd0-bac0-dfed80a62aba
+  id: ari:cloud:ecosystem::app/df76f661-4cbe-4768-a119-13992dc4ce2d
+  # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out
+  runtime:
+    snapshots: false
 permissions:
   content:
     styles:
@@ -48,3 +51,4 @@ permissions:
     - 'delete:build-info:jira'
     - 'write:deployment-info:jira'
     - 'delete:deployment-info:jira'
+    - 'read:permission:jira'

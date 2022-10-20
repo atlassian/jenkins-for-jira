@@ -7,13 +7,13 @@ import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error
  * @param secret the secret which was used to generate the JWT.
  */
 export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
-  try {
-    jwt.verify(jwtToken, secret, claims);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`JWT verification failed: ${error}`);
-    throw new JwtVerificationFailedError('JWT verification failed. Please make sure you configured the same secret in Jenkins and Jira.');
-  }
+	try {
+		jwt.verify(jwtToken, secret, claims);
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.log(`JWT verification failed: ${error}`);
+		throw new JwtVerificationFailedError('JWT verification failed. Please make sure you configured the same secret in Jenkins and Jira.');
+	}
 };
 
 /**
@@ -22,19 +22,19 @@ export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
  * @param jwtToken string representation of the JWT to extract the body from.
  */
 export const extractBodyFromJwt = (jwtToken: string): any => {
-  const decodedToken = jwt.decode(jwtToken) as JwtPayload;
+	const decodedToken = jwt.decode(jwtToken) as JwtPayload;
 
-  if (!decodedToken) {
-    throw new InvalidPayloadError('JWT could not be decoded!');
-  }
+	if (!decodedToken) {
+		throw new InvalidPayloadError('JWT could not be decoded!');
+	}
 
-  const bodyAsString = decodedToken.request_body_json;
+	const bodyAsString = decodedToken.request_body_json;
 
-  try {
-    return JSON.parse(bodyAsString);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`Could not parse payload as JSON: ${bodyAsString} because of: ${error}`);
-    throw new InvalidPayloadError(`Could not parse payload as JSON: ${bodyAsString}`);
-  }
+	try {
+		return JSON.parse(bodyAsString);
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.log(`Could not parse payload as JSON: ${bodyAsString} because of: ${error}`);
+		throw new InvalidPayloadError(`Could not parse payload as JSON: ${bodyAsString}`);
+	}
 };

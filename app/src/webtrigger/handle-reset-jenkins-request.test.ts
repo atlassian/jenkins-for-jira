@@ -14,14 +14,14 @@ jest.mock('../jira-client/delete-deployments');
 const CLOUD_ID = '97eaf652-4b6e-46cf-80c2-d99327a63bc1';
 
 describe('Reset Jenkins Server Suite', () => {
-  when(disconnectJenkinsServer).mockImplementation(() => Promise.resolve(true));
-  when(getAllJenkinsServers).mockImplementation(() => Promise.resolve([mockSingleJenkinsPipeline]));
+	when(disconnectJenkinsServer).mockImplementation(() => Promise.resolve(true));
+	when(getAllJenkinsServers).mockImplementation(() => Promise.resolve([mockSingleJenkinsPipeline]));
 
-  it('Should delete all Jenkins server configuration from Forge Storage', async () => {
-    await resetJenkinsServer(CLOUD_ID);
-    expect(getAllJenkinsServers).toBeCalled();
-    expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
-    expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-    expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-  });
+	it('Should delete all Jenkins server configuration from Forge Storage', async () => {
+		await resetJenkinsServer(CLOUD_ID);
+		expect(getAllJenkinsServers).toBeCalled();
+		expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
+		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+	});
 });

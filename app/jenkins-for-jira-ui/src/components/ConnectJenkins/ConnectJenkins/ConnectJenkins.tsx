@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useHistory } from 'react-router';
-import { createJenkinsServer } from '../../../api/createJenkinsServer';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { ConfigurationSteps } from '../ConfigurationSteps/ConfigurationSteps';
-import { StyledInstallationContainer, StyledInstallationContent } from '../ConnectJenkins.styles';
-import { JenkinsConfigurationForm, generateNewSecret } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
+import { StyledH1, StyledInstallationContainer, StyledInstallationContent } from '../ConnectJenkins.styles';
+import { JenkinsConfigurationForm } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
 import { getWebhookUrl, isFormValid, setName } from '../../../common/util/jenkinsConnectionsUtils';
 import { spinnerMarginTop } from '../../../common/styles/spinner.styles';
 import { JenkinsSpinner } from '../../JenkinsSpinner/JenkinsSpinner';
+import { getJenkinsServerWithSecret } from '../../../api/getJenkinsServerWithSecret';
+import { updateJenkinsServer } from '../../../api/updateJenkinsServer';
+import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
+
+interface ParamTypes {
+	id: string;
+}
 
 const ConnectJenkins = () => {
 	const history = useHistory();
-	const [uuid] = useState(uuidv4);
+	const { id: uuid } = useParams<ParamTypes>();
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [serverName, setServerName] = useState('');
 	const [secret, setSecret] = useState('');
@@ -19,25 +24,34 @@ const ConnectJenkins = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	useEffect(() => {
-		getWebhookUrl(setWebhookUrl, uuid);
-		setSecret(generateNewSecret());
+	const getServer = useCallback(async () => {
+		try {
+			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
+			setServerName(name);
+			setSecret(retrievedSecret!);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
 	}, [uuid]);
 
-	const connectServer = async () => {
-		const isValidForm = isFormValid(serverName, setHasError, setErrorMessage);
+	useEffect(() => {
+		getWebhookUrl(setWebhookUrl, uuid);
+		getServer();
+	}, [uuid, getServer]);
 
-		if (isValidForm) {
+	const onSubmitUpdateServer = async () => {
+		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
-
+			// Pass in empty pipelines. The update function will retrieve the latest pipelines
+			// This prevents out of date pipelines overwriting the latest version
 			try {
-				await createJenkinsServer({
+				await updateJenkinsServer({
 					name: serverName,
 					uuid,
 					secret,
 					pipelines: []
 				});
-				// TODO: Update this when API is available
+
 				history.push('/');
 			} catch (e) {
 				console.error('Error: ', e);
@@ -49,14 +63,15 @@ const ConnectJenkins = () => {
 	return (
 		<StyledInstallationContainer>
 			<ConfigurationSteps currentStage={'connect'} />
+			<ConnectLogos />
 
-			<h1>Connect Jenkins to your Jira site</h1>
+			<StyledH1>Connect Jenkins to your Jira site</StyledH1>
 
 			{webhookUrl && secret
 				? <>
 					<StyledInstallationContent>
 						<JenkinsConfigurationForm
-							onSubmit={connectServer}
+							onSubmit={onSubmitUpdateServer}
 							submitButtonText='Done'
 							webhookUrl={webhookUrl}
 							serverName={serverName}
