@@ -33,3 +33,7 @@ const mockStorageGetApi = jest.fn((key) => {
 		});
 	}
 });
+
+afterEach(() => {
+	jest.clearAllMocks();
+});
