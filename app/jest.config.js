@@ -19,5 +19,5 @@ module.exports = {
       '^.+\\.(ts|tsx)$': 'ts-jest',
     },
     coverageDirectory: 'coverage',
-	  setupFiles: ['./jest-setup.js'],
+    setupFilesAfterEnv: ['./jest-setup.js']
   };
