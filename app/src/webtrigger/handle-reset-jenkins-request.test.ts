@@ -38,5 +38,4 @@ describe('Reset Jenkins Server Suite', () => {
 		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 	});
-
 });
