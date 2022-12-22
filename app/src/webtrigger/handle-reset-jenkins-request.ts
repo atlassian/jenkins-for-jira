@@ -28,13 +28,6 @@ async function handleResetJenkinsRequest(
 			const cloudId = extractCloudId(context.installContext);
 			await resetJenkinsServer(cloudId, jenkinsRequest.data?.excludeUuid);
 			return createWebtriggerResponse(200, '{"success": true}');
-		} else if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
-			const cloudId = extractCloudId(context.installContext);
-			if (jenkinsRequest.data?.uuid) {
-				await deleteBuildsAndDeployments(cloudId, jenkinsRequest.data.uuid);
-				return createWebtriggerResponse(200, '{"success": true}');
-			}
-			return createWebtriggerResponse(400, '{"error": "No uuid found"}');
 		}
 		if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
 			const cloudId = extractCloudId(context.installContext);
