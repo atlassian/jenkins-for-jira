@@ -161,16 +161,16 @@
     "@babel/runtime" "^7.0.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/dynamic-table@14.5.0":
-  version "14.5.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/dynamic-table/-/dynamic-table-14.5.0.tgz#f1f631a724462d6611d90ede1db1f76c4fc4c287"
-  integrity sha512-L/6QciYBqVV05TaRuTfw5E2ZWG6CEbZKwfo5dup7Z/BUlAXdilO4Z8Gj3WUzK1IuaQ/dSLyN/ZXj3hHPJL66Dg==
+"@atlaskit/dynamic-table@14.5.5":
+  version "14.5.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.5.5.tgz#045938ac2b09062ef8172b68a63cc8233e186899"
+  integrity sha512-zfzPsG81Tc3KA4AqxOFtQiS/wiJsp/Nj8+5lrVh3MTf1xaA+dFYO1/+bWiFafmIp5zjEuf18/NX+HPEHGqPJQg==
   dependencies:
     "@atlaskit/analytics-next" "^8.0.0"
     "@atlaskit/pagination" "^14.0.0"
     "@atlaskit/spinner" "^15.0.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
     react-beautiful-dnd "^12.1.1"
@@ -2785,18 +2785,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@17.0.2", "@types/react@>=16.9.0", "@types/react@^17":
-  version "17.0.2"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/react/-/react-17.0.2.tgz#3de24c4efef902dd9795a49c75f760cbe4f7a5a8"
-  integrity sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA==
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^3.0.2"
-
-"@types/react@17.0.39":
-  version "17.0.39"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/react/-/react-17.0.39.tgz#d0f4cde092502a6db00a1cded6e6bf2abb7633ce"
-  integrity sha512-UVavlfAxDd/AgAacMa60Azl7ygyQNRwC/DsHZmKgNvPmRR5p70AJ5Q9EAmL2NWOJmeV+vVUI4IAP7GZrN8h8Ug==
+"@types/react@*", "@types/react@17.0.53", "@types/react@>=16.9.0", "@types/react@^17":
+  version "17.0.53"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.53.tgz#10d4d5999b8af3d6bc6a9369d7eb953da82442ab"
+  integrity sha512-1yIpQR2zdYu1Z/dc1OxC+MA6GR240u3gcnP4l6mvj/PJiVaqHsQPmWttsvHsfnhfPbU2FuGmo0wSITPygjBmsw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
