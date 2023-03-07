@@ -87,9 +87,9 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/codemod-utils@^3.4.0":
+"@atlaskit/codemod-utils@^3.2.0", "@atlaskit/codemod-utils@^3.4.0":
   version "3.4.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/codemod-utils/-/codemod-utils-3.4.0.tgz#8ec854b6b935e290eafe701b83167450af9c2efa"
+  resolved "https://registry.yarnpkg.com/@atlaskit/codemod-utils/-/codemod-utils-3.4.0.tgz#8ec854b6b935e290eafe701b83167450af9c2efa"
   integrity sha512-cmKbsIQXA52HhMJf5qau8WZyqwvFvc7ToADa3Omv2KHY3DdBK2KBPg1YWVtw7I+FnzPRBLFyWNVaQTlHsUstew==
   dependencies:
     "@babel/runtime" "^7.0.0"
@@ -118,20 +118,20 @@
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
 
-"@atlaskit/dropdown-menu@11.1.5":
-  version "11.1.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-11.1.5.tgz#516fc2a17ec4bebb58cbd59ee6626ba8570735d1"
-  integrity sha512-F0b59xc9vd1T6A+RXvREIDJKYt/lVS6CoPVbPLY/LnA2M4sW1iux2cjECRcOvXML/eiNrkRwN30LPl3pqX6Qiw==
+"@atlaskit/dropdown-menu@11.1.0":
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-11.1.0.tgz#2d2d1109c393bfdd8a833a8989af2e1966934773"
+  integrity sha512-0XI5jAlk1yeWkBUWbBWjePVUc6a89O18Gdsu8l03UQO861zDj08V6vOjtw9z6hKNjvuYLeTcQ6XyTub/nA1HVQ==
   dependencies:
-    "@atlaskit/button" "^16.3.0"
-    "@atlaskit/codemod-utils" "^4.0.0"
+    "@atlaskit/button" "^16.1.0"
+    "@atlaskit/codemod-utils" "^3.2.0"
     "@atlaskit/ds-lib" "^1.4.0"
     "@atlaskit/icon" "^21.10.0"
-    "@atlaskit/menu" "^1.3.0"
+    "@atlaskit/menu" "^1.0.0"
     "@atlaskit/popup" "^1.3.0"
     "@atlaskit/spinner" "^15.0.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.10.0"
+    "@atlaskit/tokens" "^0.6.0"
     "@atlaskit/visually-hidden" "^1.0.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
@@ -161,16 +161,16 @@
     "@babel/runtime" "^7.0.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/dynamic-table@14.5.0":
-  version "14.5.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/dynamic-table/-/dynamic-table-14.5.0.tgz#f1f631a724462d6611d90ede1db1f76c4fc4c287"
-  integrity sha512-L/6QciYBqVV05TaRuTfw5E2ZWG6CEbZKwfo5dup7Z/BUlAXdilO4Z8Gj3WUzK1IuaQ/dSLyN/ZXj3hHPJL66Dg==
+"@atlaskit/dynamic-table@14.5.5":
+  version "14.5.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.5.5.tgz#045938ac2b09062ef8172b68a63cc8233e186899"
+  integrity sha512-zfzPsG81Tc3KA4AqxOFtQiS/wiJsp/Nj8+5lrVh3MTf1xaA+dFYO1/+bWiFafmIp5zjEuf18/NX+HPEHGqPJQg==
   dependencies:
     "@atlaskit/analytics-next" "^8.0.0"
     "@atlaskit/pagination" "^14.0.0"
     "@atlaskit/spinner" "^15.0.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
     react-beautiful-dnd "^12.1.1"
@@ -252,7 +252,7 @@
     "@emotion/core" "^10.0.9"
     react-uid "^2.2.0"
 
-"@atlaskit/menu@^1.3.0":
+"@atlaskit/menu@^1.0.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/menu/-/menu-1.5.0.tgz#f11d8d5eb1b91b48c5255f5926744650f2441552"
   integrity sha512-ZgtLAqnR1J8kBDegHw8Zx7ZIwwZ0iVqA3aH7CEyLljdL7/Bn3qu9gMHl6BFzCrvw94Ez5AvPBu0ZMKcfMs4tVA==
