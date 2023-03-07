@@ -175,15 +175,15 @@
     "@emotion/core" "^10.0.9"
     react-beautiful-dnd "^12.1.1"
 
-"@atlaskit/empty-state@7.3.5":
-  version "7.3.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/empty-state/-/empty-state-7.3.5.tgz#bdb790f3f4178a6e264febf26e700f9b3063bd79"
-  integrity sha512-5eO9iXIydOv95jWvI+Ji/xAsKgueJiMmYVriT2iOcjeu/eKvHVa2Oe0Mi0C+wtY+Ej6xf4Ox0sPYmzBMuTmPlw==
+"@atlaskit/empty-state@7.3.12":
+  version "7.3.12"
+  resolved "https://registry.yarnpkg.com/@atlaskit/empty-state/-/empty-state-7.3.12.tgz#e8adb92f73aac08a13ae20523e76f671400f8ff0"
+  integrity sha512-sKy/fdULltGyPd/SjZMAnP9NnyciIx32Wf/Pds+JaFTP1577GTtDKQcA1MuxEx9V5nwbutJdI4ccSUlcYBxFZg==
   dependencies:
-    "@atlaskit/button" "^16.1.0"
+    "@atlaskit/button" "^16.3.0"
     "@atlaskit/spinner" "^15.1.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
