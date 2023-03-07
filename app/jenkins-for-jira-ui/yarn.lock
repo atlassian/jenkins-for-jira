@@ -108,13 +108,13 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/css-reset@6.3.13":
-  version "6.3.13"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/css-reset/-/css-reset-6.3.13.tgz#217e91c9451592f17c14ff18e1c222beb62214e5"
-  integrity sha512-bezlMjS4iU65dOSQ8k8Ig14afV7yInJElkiZj5JyeJudW3LNcZ5EG0agKpfGZyVhyX5KSqPaKSvr6t0AbBu32A==
+"@atlaskit/css-reset@6.3.20":
+  version "6.3.20"
+  resolved "https://registry.yarnpkg.com/@atlaskit/css-reset/-/css-reset-6.3.20.tgz#712e376614fb69a6663c753f608d61ae7c157236"
+  integrity sha512-KBhiuRbSbDhtJbv/6QksLSSYpfo9z3a3YhsuXAkTATmco3woLZYNoRpwYI3lF0xDQUc+2JNlAv+lIpqqnkEkZg==
   dependencies:
-    "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.10.0"
+    "@atlaskit/theme" "^12.2.0"
+    "@atlaskit/tokens" "^1.0.0"
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
 
@@ -451,7 +451,7 @@
     "@babel/traverse" "^7.15.0"
     "@babel/types" "^7.15.0"
 
-"@atlaskit/tokens@^1.2.0":
+"@atlaskit/tokens@^1.0.0", "@atlaskit/tokens@^1.2.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.2.1.tgz#2f3900b781c3715b2bd240ed5edc9c72a26110b7"
   integrity sha512-E9bF8OLXVIr69QxELGgbS2rSM3uCAbjU6SlimE2Spu+CVWA3GU+lUeLBggBhz1eP1LzpuOzLCdm1ECMJBNBreg==
