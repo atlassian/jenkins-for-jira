@@ -265,23 +265,24 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/modal-dialog@12.2.3":
-  version "12.2.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/modal-dialog/-/modal-dialog-12.2.3.tgz#3d8cb4968f608cc09bec1a45f7cac851fbf2e070"
-  integrity sha512-edIubAgmDw2TuKzs4C8ft0PAPlTXRzfpbbKe0XuVpDjEmIvBcl6+o0/f5reXJcNQad6vZf7cmMnG3s4EQGHMJQ==
+"@atlaskit/modal-dialog@12.2.15":
+  version "12.2.15"
+  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-12.2.15.tgz#81b5737f4beddc6588b5976a82d8fa6028d3e43c"
+  integrity sha512-HScJEHIcR+6/0pxPv0VF2XPRHH8BXxc5evFVEXwVd7oJPevgUrV0YIyAkE631MkjpdfH9BAD57vl1WxUuc4zGw==
   dependencies:
     "@atlaskit/analytics-next" "^8.2.0"
     "@atlaskit/blanket" "^12.2.0"
-    "@atlaskit/codemod-utils" "^3.4.0"
-    "@atlaskit/ds-lib" "^1.4.0"
+    "@atlaskit/codemod-utils" "^4.1.0"
+    "@atlaskit/ds-lib" "^2.1.0"
     "@atlaskit/focus-ring" "^1.0.0"
     "@atlaskit/icon" "^21.10.0"
-    "@atlaskit/motion" "^1.0.0"
+    "@atlaskit/motion" "^1.2.0"
     "@atlaskit/portal" "^4.1.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
+    bind-event-listener "^2.1.1"
     raf-schd "^4.0.3"
     react-focus-lock "^2.5.2"
     react-scrolllock "^5.0.1"
@@ -294,6 +295,16 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
+
+"@atlaskit/motion@^1.2.0":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/motion/-/motion-1.3.1.tgz#1c1e7739f19dffd34ba35305376004ab90de39e7"
+  integrity sha512-mQ9zarob01s3H/8wTOTmpczgkAfp5w85AzBlHAkDr4htR3UHa2dknJIORbxCcOilNGXhSnQxAErnRNS4NPkM3w==
+  dependencies:
+    "@atlaskit/ds-lib" "^2.1.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+    bind-event-listener "^2.1.1"
 
 "@atlaskit/page-header@10.2.2":
   version "10.2.2"
