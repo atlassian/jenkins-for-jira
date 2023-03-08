@@ -295,12 +295,12 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/page-header@10.2.2":
-  version "10.2.2"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/page-header/-/page-header-10.2.2.tgz#bcdb3d2fc2c45ca002387b9a3f1472e573243b0a"
-  integrity sha512-iDLJFGTKTBprxVCfcZVaW2NyGxziO7+532naBJwq7XL5fY80LDvVi8S0n5v+y/ogEOJRLfReKJM6UYe7ffr9UA==
+"@atlaskit/page-header@10.2.4":
+  version "10.2.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/page-header/-/page-header-10.2.4.tgz#8d161f25f99ed5b5dac5b9dc14f5dcc44cd93b5a"
+  integrity sha512-U6nzvoquV17Rj21NhF1sDs1Y7NlqFceFBaMg/dyi3GPUrgMYP899dgH4N7u1e+qaCfR4fU8E+vL/R+1g72iJHw==
   dependencies:
-    "@atlaskit/theme" "^12.0.0"
+    "@atlaskit/theme" "^12.1.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
