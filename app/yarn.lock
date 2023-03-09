@@ -666,10 +666,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest-when@3.5.0":
-  version "3.5.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/jest-when/-/jest-when-3.5.0.tgz#6a573cd521da131e6801f0991b4f1d4dee2ebab5"
-  integrity sha512-rNUuZ3Mn/HDzpImPXDeOtW18zqyerPoOS2aKU0zUFbirWgJ7sN7LnRv73RmbBQ/uzw28sxf/nUofxbhJ5DWB0w==
+"@types/jest-when@3.5.2":
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/@types/jest-when/-/jest-when-3.5.2.tgz#7e6225e827267d26f115dc97da6403a3b37556c5"
+  integrity sha512-1WP+wJDW7h4TYAVLoIebxRIVv8GPk66Qsq2nU7PkwKZ6usurnDQZgk0DfBNKAJ9gVzapCXSV53Vn/3nBHBNzAw==
   dependencies:
     "@types/jest" "*"
 
@@ -699,10 +699,10 @@
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/jsonwebtoken@8.5.8":
-  version "8.5.8"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/jsonwebtoken/-/jsonwebtoken-8.5.8.tgz#01b39711eb844777b7af1d1f2b4cf22fda1c0c44"
-  integrity sha512-zm6xBQpFDIDM6o9r6HSgDeIcLy82TKWctCXEPbJJcXb5AKmi5BNNdLXneixK4lplX3PqIVcwLBCGE/kAGnlD4A==
+"@types/jsonwebtoken@8.5.9":
+  version "8.5.9"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.9.tgz#2c064ecb0b3128d837d2764aa0b117b0ff6e4586"
+  integrity sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==
   dependencies:
     "@types/node" "*"
 
@@ -2560,10 +2560,10 @@ jest-watcher@^27.5.1:
     jest-util "^27.5.1"
     string-length "^4.0.1"
 
-jest-when@3.5.1:
-  version "3.5.1"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/jest-when/-/jest-when-3.5.1.tgz#33ab6f923661cf878cd08fe9df64b507934603db"
-  integrity sha512-o+HiaIVCg1IC95sMDKHU9G5v5N5l3UHqXvJpf0PgAMThZeQo4Hf5Sgoj+wpCBRGg4/KtzSAZZZEKNiLqE0i4eQ==
+jest-when@3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/jest-when/-/jest-when-3.5.2.tgz#651d8a73751ab55c29698d388dffd3460cd52bdc"
+  integrity sha512-4rDvnhaWh08RcPsoEVXgxRnUIE9wVIbZtGqZ5x2Wm9Ziz9aQs89PipQFmOK0ycbEhVAgiV3MUeTXp3Ar4s2FcQ==
 
 jest-worker@^27.5.1:
   version "27.5.1"
