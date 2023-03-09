@@ -4,7 +4,8 @@ export enum RequestType {
 	EVENT = 'event',
 	GATING_STATUS = 'gatingStatus',
 	PING = 'ping',
-	RESET_JENKINS_SERVER = 'resetJenkinsServer'
+	RESET_JENKINS_SERVER = 'resetJenkinsServer',
+	DELETE_BUILDS_DEPLOYMENTS = 'deleteBuildsDeployments'
 }
 
 export interface WebtriggerRequest {
@@ -23,7 +24,8 @@ export interface ForgeTriggerContext {
 }
 
 export interface JenkinsRequest {
-	requestType: RequestType
+	requestType: RequestType,
+	data?: any;
 }
 
 export interface JenkinsEvent extends JenkinsRequest {

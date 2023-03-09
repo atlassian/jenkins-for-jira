@@ -2,7 +2,7 @@ import { when } from 'jest-when';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
 import { mockSingleJenkinsPipeline } from '../storage/mockData';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
-import { resetJenkinsServer } from './handle-reset-jenkins-request';
+import { resetJenkinsServer, deleteBuildsAndDeployments } from './handle-reset-jenkins-request';
 import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 
@@ -21,6 +21,20 @@ describe('Reset Jenkins Server Suite', () => {
 		await resetJenkinsServer(CLOUD_ID);
 		expect(getAllJenkinsServers).toBeCalled();
 		expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
+		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+	});
+
+	it('Should not delete excluded server from Forge Storage', async () => {
+		await resetJenkinsServer(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+		expect(getAllJenkinsServers).toBeCalled();
+		expect(disconnectJenkinsServer).toBeCalledTimes(0);
+		expect(deleteBuilds).toBeCalledTimes(0);
+		expect(deleteDeployments).toBeCalledTimes(0);
+	});
+
+	it('Should delete builds and deployments', async () => {
+		await deleteBuildsAndDeployments(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 	});

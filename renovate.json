@@ -1,6 +1,39 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "@atlassian:fusion-arc-renovate-config"
+    "config:base"
+  ],
+  "reviewers": [
+    "bgvozdev",
+    "atrigueiro",
+    "rrathbone",
+    "mboudreau",
+    "jkay",
+    "gxue",
+    "hsingh5",
+    "kmaharjan4"
+  ],
+  "reviewersSampleSize": 1,
+  "separateMinorPatch": true,
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "aws-sdk"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    }
+  ],
+  "timezone": "Australia/Sydney",
+  "schedule": [
+    "on Monday and Wednesday"
+  ],
+  "dependencyDashboard": true,
+  "prBodyNotes": [
+    "Have a look at your [dependency dashboard](https://statlas.prod.atl-paas.net/renovate-dashboards/{{repository}}.html)"
   ]
 }
