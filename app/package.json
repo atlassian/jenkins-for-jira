@@ -11,7 +11,7 @@
     "ci": "run-p lint test"
   },
   "dependencies": {
-    "@forge/api": "2.6.0",
+    "@forge/api": "2.6.1",
     "@forge/resolver": "1.4.2",
     "jsonwebtoken": "8.5.1"
   },
