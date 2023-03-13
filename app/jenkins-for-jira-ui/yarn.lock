@@ -92,13 +92,6 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/codemod-utils@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/codemod-utils/-/codemod-utils-3.4.0.tgz#8ec854b6b935e290eafe701b83167450af9c2efa"
-  integrity sha512-cmKbsIQXA52HhMJf5qau8WZyqwvFvc7ToADa3Omv2KHY3DdBK2KBPg1YWVtw7I+FnzPRBLFyWNVaQTlHsUstew==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
 "@atlaskit/codemod-utils@^4.0.0":
   version "4.1.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/codemod-utils/-/codemod-utils-4.1.0.tgz#63541c7f112c4baba5e22f0e98ddd2acd324f203"
@@ -273,6 +266,13 @@
     react-scrolllock "^5.0.1"
     react-uid "^2.2.0"
 
+"@atlaskit/motion@^1.0.0":
+  version "1.1.0"
+  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/motion/-/motion-1.1.0.tgz#7ad5b2ec49df1424febf3c11014368d8284e53d7"
+  integrity sha512-DqziWm16WQFCtW7LhUwqnTz/CVco8X74TVvXPeq7VrqBrGmv46Ee2Ig2WqNEAgwj6EmgJL/tBOZxsgvsuk94QQ==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    "@emotion/core" "^10.0.9"
 "@atlaskit/motion@^1.2.0":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/motion/-/motion-1.3.1.tgz#1c1e7739f19dffd34ba35305376004ab90de39e7"
@@ -363,25 +363,25 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/textfield@5.1.6":
-  version "5.1.6"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/textfield/-/textfield-5.1.6.tgz#2b063ec285354506be25cdf86b748b410dd8ab80"
-  integrity sha512-h1MwJ9hxzypN/Sch+zMhIGk9FCX63TiGBrOyPnctfsQ6zSPSvqKhYf5byqCvKN8T/c1CD0qTsKRidiqW5YtnXA==
+"@atlaskit/textfield@5.1.13":
+  version "5.1.13"
+  resolved "https://registry.yarnpkg.com/@atlaskit/textfield/-/textfield-5.1.13.tgz#59ec8e4e2f5f7fbb506613915c0bd7dedfe335ee"
+  integrity sha512-AJ81FXJB3StANcBouK2azzlgv/otLjNcHtVSqabr7Kj6Ulf7ARhVhpFkfVnsYFbUjSioaakGzDjoHBdBlXv8UA==
   dependencies:
     "@atlaskit/analytics-next" "^8.2.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/theme@12.1.4":
-  version "12.1.4"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/theme/-/theme-12.1.4.tgz#6f7b9d4f318e8a6d765ecf6b8c84d364218a6c67"
-  integrity sha512-i2jea79jGnBetvLIAY6WMF20ZkoQnlo/ElnU1GEJ+Ui5LVUpXece/nFBU6Msa2vXPoCSByJPZh6FZiMiVkkKVg==
+"@atlaskit/theme@12.1.10":
+  version "12.1.10"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-12.1.10.tgz#729ef014b5a1104deb9cf6b72419469f1e0c535a"
+  integrity sha512-WIl91PsruXW/eCiSlYLCzj2EpM8ciAvPEbN2eBotp2cq8s8REUKRL4v0/wuzxQh+gK/iiZJSrohvT47k6v/r8A==
   dependencies:
-    "@atlaskit/codemod-utils" "^3.4.0"
-    "@atlaskit/ds-lib" "^1.4.0"
-    "@atlaskit/tokens" "^0.7.0"
+    "@atlaskit/codemod-utils" "^4.1.0"
+    "@atlaskit/ds-lib" "^2.1.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
 
 "@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0":
