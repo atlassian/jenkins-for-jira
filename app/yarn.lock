@@ -320,6 +320,16 @@
     "@types/node-fetch" "^2.5.7"
     node-fetch "^2.6.1"
 
+"@forge/api@2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.6.1.tgz#8bed707ac395795feacc17e46310e78a491f4005"
+  integrity sha512-HFw4BUr66VhKO7W6P1Vnh638kvO7RxJB92tDRYPD8DsJ8NC4GzgPxrgBNZDOFhvlIqfddTnE0nSnNmj+XvO9ug==
+  dependencies:
+    "@forge/auth" "^0.0.1"
+    "@forge/storage" "^1.2.0"
+    "@types/node-fetch" "^2.5.7"
+    node-fetch "2.6.1"
+
 "@forge/auth@^0.0.1":
   version "0.0.1"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/auth/-/auth-0.0.1.tgz#3fb4e82e90bd555d4ae9ef45b3aed6782a282d0c"
