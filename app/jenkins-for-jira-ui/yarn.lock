@@ -343,13 +343,13 @@
     "@emotion/core" "^10.0.9"
     react-transition-group "^4.4.1"
 
-"@atlaskit/spinner@15.1.7":
-  version "15.1.7"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/spinner/-/spinner-15.1.7.tgz#0893a67882b41d10c0e638a208741b8c09d29408"
-  integrity sha512-xGCv1STVhpXY+7UzluDtuQFM5tHYqhQ3APTXkjXyF/3sGiyUj4g/YSczLsV0Y9dDwGGF+qyhwSPHtvzmk51dmQ==
+"@atlaskit/spinner@15.1.17":
+  version "15.1.17"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-15.1.17.tgz#2a63e9d7be8dce68498cfde270005eadbce220c3"
+  integrity sha512-AiMZsUzyJ7Vd8MyG5QsKBKdejJTsJdhbQ7ViDJNWnQCiKBczuXiJKk5OQXSV0ay2hsWRZB3FGd91yEsOvIDPzg==
   dependencies:
-    "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.7.0"
+    "@atlaskit/theme" "^12.2.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
