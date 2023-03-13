@@ -363,14 +363,14 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/textfield@5.1.6":
-  version "5.1.6"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/textfield/-/textfield-5.1.6.tgz#2b063ec285354506be25cdf86b748b410dd8ab80"
-  integrity sha512-h1MwJ9hxzypN/Sch+zMhIGk9FCX63TiGBrOyPnctfsQ6zSPSvqKhYf5byqCvKN8T/c1CD0qTsKRidiqW5YtnXA==
+"@atlaskit/textfield@5.1.13":
+  version "5.1.13"
+  resolved "https://registry.yarnpkg.com/@atlaskit/textfield/-/textfield-5.1.13.tgz#59ec8e4e2f5f7fbb506613915c0bd7dedfe335ee"
+  integrity sha512-AJ81FXJB3StANcBouK2azzlgv/otLjNcHtVSqabr7Kj6Ulf7ARhVhpFkfVnsYFbUjSioaakGzDjoHBdBlXv8UA==
   dependencies:
     "@atlaskit/analytics-next" "^8.2.0"
     "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 

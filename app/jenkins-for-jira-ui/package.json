@@ -17,7 +17,7 @@
     "@atlaskit/page-header": "10.2.4",
     "@atlaskit/progress-tracker": "8.1.0",
     "@atlaskit/spinner": "15.1.7",
-    "@atlaskit/textfield": "5.1.6",
+    "@atlaskit/textfield": "5.1.13",
     "@atlaskit/theme": "12.1.10",
     "@atlaskit/tooltip": "17.5.17",
     "@emotion/css": "11.7.1",
