@@ -273,14 +273,6 @@
     react-scrolllock "^5.0.1"
     react-uid "^2.2.0"
 
-"@atlaskit/motion@^1.0.0":
-  version "1.1.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/motion/-/motion-1.1.0.tgz#7ad5b2ec49df1424febf3c11014368d8284e53d7"
-  integrity sha512-DqziWm16WQFCtW7LhUwqnTz/CVco8X74TVvXPeq7VrqBrGmv46Ee2Ig2WqNEAgwj6EmgJL/tBOZxsgvsuk94QQ==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
-
 "@atlaskit/motion@^1.2.0":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/motion/-/motion-1.3.1.tgz#1c1e7739f19dffd34ba35305376004ab90de39e7"
@@ -453,21 +445,21 @@
     "@babel/types" "^7.15.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/tooltip@17.5.4":
-  version "17.5.4"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tooltip/-/tooltip-17.5.4.tgz#78eba13f43b5dcc302d0fd36a9568e6a91eee271"
-  integrity sha512-XDwqsPgSezZv7vZuQXcymfU9jtCZoXhaKmUU3lAFWtI0BeCbVycbimXYr3F+DBZluRjqxajDjyRJPHi8Tq7aNQ==
+"@atlaskit/tooltip@17.5.17":
+  version "17.5.17"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-17.5.17.tgz#c0e236f53282339af6823ef8a195952f11ad9827"
+  integrity sha512-auyOVARX26jV1hn5Dp2Zx6+SvNnNc7QAJWb/KKbQQ4uVAgBzdJw3enyo4mzi0TI1ONINRVX7BUVN5/NmxMJe/A==
   dependencies:
     "@atlaskit/analytics-next" "^8.2.0"
-    "@atlaskit/ds-lib" "^1.3.0"
-    "@atlaskit/motion" "^1.0.0"
+    "@atlaskit/ds-lib" "^2.1.0"
+    "@atlaskit/motion" "^1.2.0"
     "@atlaskit/popper" "^5.0.0"
     "@atlaskit/portal" "^4.1.0"
-    "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/theme" "^12.2.0"
+    "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
-    bind-event-listener "^1.0.2"
+    bind-event-listener "^2.1.1"
     react-uid "^2.2.0"
 
 "@atlaskit/visually-hidden@^1.0.0":
@@ -3590,11 +3582,6 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
-
-bind-event-listener@^1.0.2:
-  version "1.0.2"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/bind-event-listener/-/bind-event-listener-1.0.2.tgz#3af1ab15f64aff0b95ba38e0e9d7d2c78b85dc0b"
-  integrity sha512-50S1ecl2UzqyHabspfZkZ0zp+V92ueggSm5BUFYGCHq9cD48a6bDqZeEykSWF4yFEbWDIOkl1Ly7igta9l3E7Q==
 
 bind-event-listener@^2.1.0:
   version "2.1.0"
