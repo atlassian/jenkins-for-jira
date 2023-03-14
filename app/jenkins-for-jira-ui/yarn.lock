@@ -266,13 +266,6 @@
     react-scrolllock "^5.0.1"
     react-uid "^2.2.0"
 
-"@atlaskit/motion@^1.0.0":
-  version "1.1.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/motion/-/motion-1.1.0.tgz#7ad5b2ec49df1424febf3c11014368d8284e53d7"
-  integrity sha512-DqziWm16WQFCtW7LhUwqnTz/CVco8X74TVvXPeq7VrqBrGmv46Ee2Ig2WqNEAgwj6EmgJL/tBOZxsgvsuk94QQ==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
 "@atlaskit/motion@^1.2.0":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/motion/-/motion-1.3.1.tgz#1c1e7739f19dffd34ba35305376004ab90de39e7"
@@ -418,16 +411,6 @@
   version "0.6.3"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tokens/-/tokens-0.6.3.tgz#365e3d23a810115007f31c9068a374df30a2b106"
   integrity sha512-lUYTej7rfy+CdIJaBQRTq6EiyTcGI23B7ZnSTYj8SGwdxlFyZtnKnAFRhcsPzvGJKYNtKwkmeMn1xUsaK06avw==
-  dependencies:
-    "@atlaskit/ds-lib" "^1.4.0"
-    "@babel/runtime" "^7.0.0"
-    "@babel/traverse" "^7.15.0"
-    "@babel/types" "^7.15.0"
-
-"@atlaskit/tokens@^0.7.0":
-  version "0.7.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tokens/-/tokens-0.7.3.tgz#0b0e9c6cb2f4740cd59e74007d7efc177f79993a"
-  integrity sha512-zdzdylIgyoUhXMsUr0gCZhIbqROx5HgWfDQOhRx7fDHvtSw0zaGSnE99Gia9qOYjGkMy+DHF1GJrFJIYkq0AvQ==
   dependencies:
     "@atlaskit/ds-lib" "^1.4.0"
     "@babel/runtime" "^7.0.0"
@@ -4863,10 +4846,10 @@ eslint-plugin-import@^2.25.3:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-jest@26.1.5:
-  version "26.1.5"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.1.5.tgz#6cfca264818d6d6aa120b019dab4d62b6aa8e775"
-  integrity sha512-su89aDuljL9bTjEufTXmKUMSFe2kZUL9bi7+woq+C2ukHZordhtfPm4Vg+tdioHBaKf8v3/FXW9uV0ksqhYGFw==
+eslint-plugin-jest@26.9.0:
+  version "26.9.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.9.0.tgz#7931c31000b1c19e57dbfb71bbf71b817d1bf949"
+  integrity sha512-TWJxWGp1J628gxh2KhaH1H1paEdgE2J61BBF1I59c6xWeL5+D1BzMxGDN/nXAfX+aSkR5u80K+XhskK6Gwq9ng==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
