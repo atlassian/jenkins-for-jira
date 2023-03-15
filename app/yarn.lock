@@ -310,16 +310,6 @@
     "@types/node-fetch" "^2.5.7"
     node-fetch "2.6.7"
 
-"@forge/api@2.6.0":
-  version "2.6.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/api/-/api-2.6.0.tgz#17df76756b998f550c7407bbc14bd67b3a6c0e45"
-  integrity sha512-71mYOEThZ67uPtYn6EUSgqNOWm/hcEJNCbW6iVLQxvY1fh4KHGcPHf/RDP8+9+pJ49+NzZAWv3nAiv9VcQENuQ==
-  dependencies:
-    "@forge/auth" "^0.0.1"
-    "@forge/storage" "^1.1.0"
-    "@types/node-fetch" "^2.5.7"
-    node-fetch "^2.6.1"
-
 "@forge/api@2.6.1":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.6.1.tgz#8bed707ac395795feacc17e46310e78a491f4005"
@@ -351,12 +341,7 @@
   dependencies:
     "@forge/api" "2.11.0"
 
-"@forge/storage@^1.1.0":
-  version "1.2.0"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/storage/-/storage-1.2.0.tgz#6d048644f8d7a50e4411a1ee853f160da1dc5a2d"
-  integrity sha512-/pRNxvKcjv/nEShk6p3tSefmYDBjmInc9kUtvjsr183t8dF72gbSl70YVD73+DwCJYUkFsvsQ4zR7h93/K0oLw==
-
-"@forge/storage@^1.3.1":
+"@forge/storage@^1.2.0", "@forge/storage@^1.3.1":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@forge/storage/-/storage-1.3.2.tgz#accd5cf78524b09148182a17eaf64726f075c2e6"
   integrity sha512-+VgbIpeN+t+bfpIVUSuJoclkywmdh+pQsnKNjgS+hb/9IiKNSPhtgy1NIhB2rwARREXO7atqH5estbIhzd1lkA==
@@ -2962,7 +2947,12 @@ nice-try@^1.0.4:
   resolved "https://packages.atlassian.com/api/npm/npm-remote/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-fetch@2.6.7, node-fetch@^2.6.1:
+node-fetch@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
+node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
@@ -3759,10 +3749,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@4.5.5:
-  version "4.5.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+typescript@4.9.5:
+  version "4.9.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
+  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
