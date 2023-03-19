@@ -185,23 +185,23 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/form@8.4.8":
-  version "8.4.8"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/form/-/form-8.4.8.tgz#f8a351b5b4de798207e6bcecd390dbc5c8606a78"
-  integrity sha512-uwk4GLWjpocIBv9kwHmGYSCH7suUDLM9JLdClCaqhfehQhBieqkZmmpVCGIfTKbmc264ERmKtzH3ZAJoS6gT1Q==
+"@atlaskit/form@8.8.4":
+  version "8.8.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.8.4.tgz#9680cb15dfac13d904b678cc08e9bd13134c1351"
+  integrity sha512-X0JAUZv6izrwBDGygTJtUI09etIMacFMXuNx+TXhGAmK8tpUtP/Qh4Djl1Vz5zduCj86VG/kiUNSQglnU+p8kg==
   dependencies:
-    "@atlaskit/icon" "^21.10.0"
-    "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.6.0"
+    "@atlaskit/icon" "^21.11.0"
+    "@atlaskit/theme" "^12.2.0"
+    "@atlaskit/tokens" "^1.0.0"
     "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
+    "@emotion/react" "^11.7.1"
     final-form "^4.20.1"
     final-form-focus "^1.1.2"
     lodash "^4.17.21"
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/icon@21.11.5":
+"@atlaskit/icon@21.11.5", "@atlaskit/icon@^21.11.0":
   version "21.11.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-21.11.5.tgz#c2a52238bad5eb3cc9483aaff498372aed9043e0"
   integrity sha512-84wTZvu7JepRQlCBvyxGSwAw7r0Sn5s4BxIfHgVvgDOnHZ2xnrHfGgK4DnDnMmQkRhaYbAEBFG/kCx9ZTqb+mg==
