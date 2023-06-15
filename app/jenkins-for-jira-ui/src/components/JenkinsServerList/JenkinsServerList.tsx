@@ -6,6 +6,7 @@ import PageHeader from '@atlaskit/page-header';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ConnectedServers } from './ConnectedServer/ConnectedServers';
 import { StyledDescription, headerContainer } from './JenkinsServerList.styles';
+import analyticsClient from '../../common/analytics/analytics';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
@@ -20,7 +21,26 @@ const JenkinsServerList = (): JSX.Element => {
 		setJenkinsServers(servers);
 	};
 
+	// TODO: Remove after finishing testing
+	const fireEventsFE = () => {
+		analyticsClient.sendTrackEvent({
+			source: 'rapidboard',
+			actionSubject: 'button',
+			action: 'clicked',
+			attributes: {
+				whatever: 'fine'
+			}
+		});
+	};
+
 	useEffect(() => {
+		// TODO: Remove after finishing testing
+		analyticsClient.sendScreenEvent({
+			name: 'firstPage',
+			attributes: {
+				whatever: 'fine'
+			}
+		});
 		fetchAllJenkinsServers();
 	}, []);
 
@@ -45,6 +65,8 @@ const JenkinsServerList = (): JSX.Element => {
 			<div className={headerContainer}>
 				<PageHeader actions={pageHeaderActions}>Jenkins configuration</PageHeader>
 			</div>
+
+			<button onClick={fireEventsFE}>Fire Events in frontend</button>
 
 			<StyledDescription>
 				After you connect your Jenkins server to Jira and send a deployment
