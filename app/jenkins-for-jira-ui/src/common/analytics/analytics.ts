@@ -5,7 +5,7 @@ import AnalyticsWebClient, {
 import { view } from '@forge/bridge';
 
 const analyticsClient = new AnalyticsWebClient({
-	env: envType.STAGING,
+	env: envType.PROD,
 	product: 'jenkinsForJira',
 	subproduct: 'app'
 }, {
