@@ -45,7 +45,6 @@ permissions:
   external:
     fetch:
       client:
-        - 'https://api-private.stg.atlassian.com'
         - 'https://api-private.atlassian.com'
 
   content:
