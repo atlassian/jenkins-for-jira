@@ -42,6 +42,11 @@ app:
   runtime:
     snapshots: false
 permissions:
+  external:
+    fetch:
+      client:
+        - 'https://api-private.atlassian.com'
+
   content:
     styles:
       - 'unsafe-inline'

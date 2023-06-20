@@ -14,7 +14,6 @@ import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
-
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers();
 		setJenkinsServers(servers);
