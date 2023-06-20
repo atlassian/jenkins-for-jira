@@ -1,13 +1,13 @@
 import { view } from '@forge/bridge';
 
-async function checkIfAnalyticsPackageInstalled() {
+const checkIfAnalyticsPackageInstalled = async () => {
 	try {
 		await importDynamic('@atlassiansox/analytics-web-client');
 		return true;
 	} catch (error) {
 		return false;
 	}
-}
+};
 
 const importDynamic = (modulePath: string) => {
 	try {
