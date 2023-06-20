@@ -1,6 +1,6 @@
 import { view } from '@forge/bridge';
 
-const checkIfAnalyticsPackageInstalled = async () => {
+const checkIfAnalyticsPackageInstalled = async (): Promise<boolean> => {
 	try {
 		await importDynamic('@atlassiansox/analytics-web-client');
 		return true;
@@ -39,7 +39,7 @@ export class AnalyticsClient {
 		this.analyticsWebClient = null;
 	}
 
-	static async sendEvent(eventType: string, name: string, promise: Promise<any>) {
+	static async sendEvent(eventType: string, name: string, promise: Promise<void>) {
 		promise?.catch((error: any) => {
 			console.error('Failed to send analytics event', error);
 		});
@@ -49,35 +49,30 @@ export class AnalyticsClient {
 		eventType: string,
 		eventName: string,
 		attributes?: AnalyticsAttributes
-	) {
+	): Promise<void> {
 		const isAnalyticsPackageInstalled = await checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || EnvType.PROD) {
-			console.log('Analytics client not found');
+		if (!isAnalyticsPackageInstalled || !EnvType.PROD) {
+			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
 
 		if (!this.analyticsWebClient) {
 			const analyticsWebClient = await importDynamic('@atlassiansox/analytics-web-client');
-			if (analyticsWebClient) {
-				const userType = analyticsWebClient?.userType;
-				const tenantType = analyticsWebClient?.tenantType;
+			const userType = analyticsWebClient?.userType;
+			const tenantType = analyticsWebClient?.tenantType;
 
-				this.analyticsWebClient = new analyticsWebClient.AnalyticsWebClient(
-					{
-						env: EnvType.PROD,
-						product: 'jenkinsForJira'
-					},
-					{
-						useLegacyUrl: true
-					}
-				);
+			this.analyticsWebClient = new analyticsWebClient.AnalyticsWebClient(
+				{
+					env: EnvType.PROD,
+					product: 'jenkinsForJira'
+				},
+				{
+					useLegacyUrl: true
+				}
+			);
 
-				this.getContext(userType, tenantType);
-			} else {
-				console.warn('Analytics Web Client module not found. Ignoring the dependency.');
-				return;
-			}
+			this.getContext(userType, tenantType);
 		}
 
 		const baseAttributes: BaseAttributes = {
@@ -118,7 +113,6 @@ export class AnalyticsClient {
 					}
 				});
 			case 'track':
-				console.log('sending TRACK analytics...');
 				return (this.analyticsWebClient as any)?.sendTrackEvent?.({
 					source: attributes?.source || '',
 					action: attributes?.action || eventName,
@@ -128,7 +122,6 @@ export class AnalyticsClient {
 					}
 				});
 			case 'operational':
-				console.log('sending OPERATIONAL analytics...');
 				return (this.analyticsWebClient as any)?.sendOperationalEvent?.({
 					source: attributes?.source || '',
 					action: attributes?.action || eventName,
@@ -142,7 +135,7 @@ export class AnalyticsClient {
 		}
 	}
 
-	getContext(userType?: any, tenantType?: any) {
+	getContext(userType?: any, tenantType?: any): void {
 		view.getContext().then((ctx) => {
 			const { cloudId, accountId } = ctx as any;
 			this.analyticsWebClient?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
