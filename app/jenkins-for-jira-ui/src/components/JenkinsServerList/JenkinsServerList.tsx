@@ -10,11 +10,6 @@ import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
-import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import {
-	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum
-} from '../../common/analytics/analytics-events';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
@@ -25,12 +20,6 @@ const JenkinsServerList = (): JSX.Element => {
 	};
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
-		analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.JiraConfigurationEmptyStateScreenName
-		);
-
 		fetchAllJenkinsServers();
 	}, []);
 
