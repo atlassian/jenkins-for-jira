@@ -31,7 +31,7 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) === EnvType.PROD) {
+		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) !== EnvType.PROD) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
