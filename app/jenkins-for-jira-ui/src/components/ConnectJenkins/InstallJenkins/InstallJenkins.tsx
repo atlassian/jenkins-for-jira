@@ -30,7 +30,6 @@ const InstallJenkins = () => {
 	}, []);
 
 	const onClickNext = () => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.NextInstallJenkinsName,

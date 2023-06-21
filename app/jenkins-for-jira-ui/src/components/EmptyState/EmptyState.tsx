@@ -25,7 +25,6 @@ const EmptyStateJenkins = () => {
 	}, []);
 
 	const onClickConnect = () => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ConnectJenkinsServerEmptyStateName,
@@ -39,7 +38,6 @@ const EmptyStateJenkins = () => {
 	};
 
 	const onClickLearnMore = () => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.LearnMoreEmptyStateName,

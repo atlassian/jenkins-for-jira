@@ -124,7 +124,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	}, [jenkinsServerList]);
 
 	const onClickManage = async (jenkinsServerUuid: string, serverName: string) => {
-		const analyticsClient = new AnalyticsClient();
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
@@ -140,7 +139,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	};
 
 	const onClickPendingDeployment = async (jenkinsServerUuid: string) => {
-		const analyticsClient = new AnalyticsClient();
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.PendingDeploymentConfiguredStateName,
@@ -157,7 +155,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
 
-		const analyticsClient = new AnalyticsClient();
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
@@ -171,7 +168,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
-		const analyticsClient = new AnalyticsClient();
 		setIsLoading(true);
 		await disconnectJenkinsServer(serverToDelete.uuid);
 		const updatedServerList = jenkinsServers.filter(
@@ -199,8 +195,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	const closeConfirmServerDisconnect = async () => {
 		setShowConfirmServerDisconnect(false);
 		setIsLoading(false);
-
-		const analyticsClient = new AnalyticsClient();
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
