@@ -9,6 +9,12 @@ import { JenkinsSpinner } from '../../JenkinsSpinner/JenkinsSpinner';
 import { getJenkinsServerWithSecret } from '../../../api/getJenkinsServerWithSecret';
 import { updateJenkinsServer } from '../../../api/updateJenkinsServer';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum
+} from '../../../common/analytics/analytics-events';
 
 interface ParamTypes {
 	id: string;
@@ -23,6 +29,7 @@ const ConnectJenkins = () => {
 	const [hasError, setHasError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const jiraHost = window.location.ancestorOrigins['0'];
 
 	const getServer = useCallback(async () => {
 		try {
@@ -35,13 +42,20 @@ const ConnectJenkins = () => {
 	}, [uuid]);
 
 	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+			{ jiraHost }
+		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
-	}, [uuid, getServer]);
+	}, [jiraHost, uuid, getServer]);
 
 	const onSubmitUpdateServer = async () => {
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
+			const analyticsClient = new AnalyticsClient();
 			// Pass in empty pipelines. The update function will retrieve the latest pipelines
 			// This prevents out of date pipelines overwriting the latest version
 			try {
@@ -52,9 +66,28 @@ const ConnectJenkins = () => {
 					pipelines: []
 				});
 
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.ConnectedJenkinsServerSuccessName,
+					{
+						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+						actionSubject: 'connectServerForm',
+						jiraHost
+					}
+				);
 				history.push('/');
 			} catch (e) {
 				console.error('Error: ', e);
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.ConnectedJenkinsServerErrorName,
+					{
+						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+						actionSubject: 'connectServerForm',
+						jiraHost,
+						error: e
+					}
+				);
 				setIsLoading(false);
 			}
 		}

@@ -12,6 +12,12 @@ import {
 	textfieldContainer
 } from '../../JenkinsConfigurationForm.styles';
 import { FormTooltip } from '../../../Tooltip/Tooltip';
+import { AnalyticsClient } from '../../../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../../common/analytics/analytics-events';
 
 type ServerConfigurationFormSecretProps = {
 	secret: string;
@@ -28,6 +34,19 @@ const ServerConfigurationFormSecret = ({
 	};
 
 	const onClickRefresh = async () => {
+		const analyticsClient = new AnalyticsClient();
+		const jiraHost = window.location.ancestorOrigins['0'];
+
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerRefreshName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedRefresh',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		setShowConfirmRefreshSecret(true);
 	};
 

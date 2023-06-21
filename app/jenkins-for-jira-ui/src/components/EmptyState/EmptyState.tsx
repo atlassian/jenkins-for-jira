@@ -6,25 +6,40 @@ import { useHistory } from 'react-router';
 import { router } from '@forge/bridge';
 import PlugInImage from '../assets/PlugIn.svg';
 import {
-	AnalyticsEventTypes,
+	AnalyticsEventTypes, AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
 const EmptyStateJenkins = () => {
 	const history = useHistory();
+	const analyticsClient = new AnalyticsClient();
 	const jiraHost = window.location.ancestorOrigins['0'];
 	const onClickConnect = () => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ConnectJenkinsServerEmptyStateName,
-			{ jiraHost }
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
+				action: 'clickedConnectJenkinsServerEmptyState',
+				actionSubject: 'button',
+				jiraHost
+			}
 		);
 		history.push('/install');
 	};
 
 	const onClickLearnMore = () => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.LearnMoreEmptyStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
+				action: 'clickedLearnMoreEmptyState',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		router.open('https://plugins.jenkins.io/atlassian-jira-software-cloud/');
 	};
 

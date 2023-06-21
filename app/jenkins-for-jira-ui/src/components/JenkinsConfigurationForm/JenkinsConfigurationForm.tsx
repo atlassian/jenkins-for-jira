@@ -10,6 +10,12 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { ServerConfigurationFormName } from './ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ServerConfigurationFormWebhookUrl } from './ServerConfigurationFormElements/ServerConfigurationFormWebhokUrl/ServerConfigurationFormWebhookUrl';
 import { ServerConfigurationFormSecret } from './ServerConfigurationFormElements/ServerConfigurationFormSecret/ServerConfigurationFormSecret';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 
 // TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
@@ -58,14 +64,36 @@ const JenkinsConfigurationForm = ({
 }: JenkinsConfigurationFormProps) => {
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
+	const analyticsClient = new AnalyticsClient();
+	const jiraHost = window.location.ancestorOrigins['0'];
 
 	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		setSecret(generateNewSecret());
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerRefreshSecretConfirmName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedRefreshConfirm',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		setShowConfirmRefreshSecret(false);
 	};
 
 	const closeConfirmRefreshSecret = () => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerRefreshSecretCancelName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedRefreshCancel',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		setShowConfirmRefreshSecret(false);
 	};
 

@@ -13,7 +13,7 @@ import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum
+	AnalyticsScreenEventsEnum, AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 
 const JenkinsServerList = (): JSX.Element => {
@@ -31,22 +31,34 @@ const JenkinsServerList = (): JSX.Element => {
 	const analyticsClient = new AnalyticsClient();
 	const jiraHost = window.location.ancestorOrigins['0'];
 
-	if (jenkinsServers?.length) {
+	if (!jenkinsServers) {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.JiraConfigurationConfiguredStateScreenName,
-			{ jiraHost }
-		);
-	} else {
-		analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.JiraConfigurationEmptyStateScreenName,
+			AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
 			{ jiraHost }
 		);
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
+	if (jenkinsServers.length) {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+			{ jiraHost }
+		);
+	}
+
 	const onClickConnect = () => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerConfiguredStateName,
+			{
+				source: AnalyticsUiEventsEnum.ConnectJenkinsServerConfiguredStateName,
+				action: 'clickedConnectJenkinsServerConfiguredState',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		history.push('/install');
 	};
 

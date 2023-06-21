@@ -5,10 +5,10 @@ interface AnalyticsAttributes {
 }
 
 interface BaseAttributes {
-	userId: string;
-	userIdType: string;
-	tenantIdType: string;
-	tenantId: string;
+	userId: string,
+	userIdType: string,
+	tenantIdType: string,
+	tenantId: string,
 }
 
 enum EnvType {
@@ -104,7 +104,7 @@ export class AnalyticsClient {
 				});
 			case 'ui':
 				return (this.analyticsWebClient as any)?.sendUIEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
@@ -114,7 +114,7 @@ export class AnalyticsClient {
 				});
 			case 'track':
 				return (this.analyticsWebClient as any)?.sendTrackEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
@@ -124,7 +124,7 @@ export class AnalyticsClient {
 				});
 			case 'operational':
 				return (this.analyticsWebClient as any)?.sendOperationalEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {

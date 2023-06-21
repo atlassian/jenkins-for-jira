@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { useHistory } from 'react-router';
 import { ConfigurationSteps } from '../ConfigurationSteps/ConfigurationSteps';
@@ -10,11 +10,38 @@ import {
 	StyledInstallationContainer,
 	StyledInstallationContent
 } from '../ConnectJenkins.styles';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
 
 const InstallJenkins = () => {
 	const history = useHistory();
+	const jiraHost = window.location.ancestorOrigins['0'];
+
+	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.InstallJenkinsScreenName,
+			{ jiraHost }
+		);
+	}, [jiraHost]);
 
 	const onClickNext = () => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.NextInstallJenkinsName,
+			{
+				source: AnalyticsUiEventsEnum.NextInstallJenkinsName,
+				action: 'clickedNextInstallJenkins',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		history.push('/create');
 	};
 

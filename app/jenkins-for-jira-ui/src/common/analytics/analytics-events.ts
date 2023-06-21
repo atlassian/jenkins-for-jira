@@ -8,15 +8,42 @@ export enum AnalyticsEventTypes {
 }
 
 export enum AnalyticsScreenEventsEnum {
-	JiraConfigurationEmptyStateScreenName = 'jiraConfigurationEmptyStateScreen',
-	JiraConfigurationConfiguredStateScreenName = 'jiraConfigurationConfiguredStateScreen'
+	ConfigurationEmptyStateScreenName = 'configurationEmptyStateScreen',
+	ConfigurationConfiguredStateScreenName = 'configurationConfiguredStateScreen',
+	InstallJenkinsScreenName = 'installJenkinsScreen',
+	CreateJenkinsServerScreenName = 'createJenkinsServerScreen',
+	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen',
+	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen'
 }
 
 export enum AnalyticsUiEventsEnum {
 	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState',
-	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState'
+	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState',
+	LearnMoreEmptyStateName = 'learnMoreEmptyState',
+	NextInstallJenkinsName = 'nextInstallJenkins',
+	ConnectJenkinsServerRefreshName = 'connectJenkinsServerRefresh',
+	ConnectJenkinsServerRefreshSecretCancelName = 'connectJenkinsServerRefreshSecretCancel',
+	ConnectJenkinsServerRefreshSecretConfirmName = 'connectJenkinsServerRefreshSecretConfirm',
+	ConfigurationManageConnectionName = 'configurationManageConnnection',
+	ManageConnectionNavigateBackName = 'manageConnectionNavigateBack',
+	ConfigurationPendingDeploymentName = 'pendingDeploymentName',
+	ConfigurationDisconnectServerName = 'disconnectServer',
+	ConfigurationDisconnectServerModalClosedName = 'disconnectServerModalClosed',
+	ConfigurationDisconnectServerConfirmName = 'disconnectServerConfirm'
 }
 
-export enum AnalyticsTrackEventsEnum {}
+export enum AnalyticsTrackEventsEnum {
+	CreatedJenkinsServerSuccessName = 'createdJenkinsServerSuccess',
+	CreatedJenkinsServerErrorName = 'createdJenkinsServerError',
+	ConnectedJenkinsServerSuccessName = 'connectedJenkinsServerSuccess',
+	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError',
+	UpdateServerSuccessName = 'updateServerSuccessName',
+	UpdateServerErrorName = 'updateServerErrorName'
+}
 
-export enum AnalyticsOperationalEventsEnum {}
+export enum AnalyticsOperationalEventsEnum {
+	GetServerManageConnectionSuccessName = 'getServerManageConnectionSuccess',
+	GetServerManageConnectionErrorName = 'getServerManageConnectionError',
+	DisconnectServerManageConnectionSuccessName = 'disconnectedServerManageConnectionSuccess',
+	DisconnectServerManageConnectionErrorName = 'disconnectServerManageConnectionError'
+}

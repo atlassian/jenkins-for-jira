@@ -35,6 +35,12 @@ import { InProgressIcon } from '../../icons/InProgressIcon';
 import { FailedIcon } from '../../icons/FailedIcon';
 import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
+import {
+	AnalyticsEventTypes, AnalyticsOperationalEventsEnum,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 export const mapLastEventStatus = (
 	lastEventStatus: string
@@ -100,6 +106,8 @@ type ConnectedServersProps = {
 
 const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedServersTableProps): JSX.Element => {
 	const history = useHistory();
+	const analyticsClient = new AnalyticsClient();
+	const jiraHost = window.location.ancestorOrigins['0'];
 
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
@@ -110,24 +118,77 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
-	const onClickManage = (jenkinsServerUuid: string) => {
+	const onClickManage = (jenkinsServerUuid: string, serverName: string) => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfigurationManageConnectionName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clickedManageConnectionConfiguredState',
+				actionSubject: 'button',
+				jiraHost,
+				serverName
+			}
+		);
 		history.push(`/manage/${jenkinsServerUuid}`);
 	};
 
-	const onClickPendingDeployment = (jenkinsServerUuid: string) => {
+	const onClickPendingDeployment = async (jenkinsServerUuid: string) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfigurationPendingDeploymentName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		history.push(`/pending/${jenkinsServerUuid}`);
 	};
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfigurationDisconnectServerName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 	};
 
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
 		setIsLoading(true);
-		await disconnectJenkinsServer(serverToDelete.uuid);
+		try {
+			await disconnectJenkinsServer(serverToDelete.uuid);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerManageConnectionSuccessName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+					actionSubject: 'disconnectServer',
+					jiraHost
+				}
+			);
+		} catch (e) {
+			console.log('Failed to disconnect server', e);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerManageConnectionErrorName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+					actionSubject: 'disconnectServer',
+					jiraHost,
+					error: e
+				}
+			);
+		}
+
 		const updatedServerList = jenkinsServers.filter(
 			(server) => server.uuid !== serverToDelete.uuid
 		);
@@ -137,10 +198,31 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			refreshServers();
 		}
 
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfigurationDisconnectServerConfirmName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedDisconnectServer',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
+
 		closeConfirmServerDisconnect();
 	};
 
 	const closeConfirmServerDisconnect = () => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfigurationDisconnectServerModalClosedName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedCancelOrDisconnectedServer',
+				actionSubject: 'button',
+				jiraHost
+			}
+		);
 		setShowConfirmServerDisconnect(false);
 		setIsLoading(false);
 	};
@@ -257,7 +339,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 							</StyledConnectedServerTableHeaderTitleContainer>
 
 							<StyledButtonContainerConnectedServers>
-								<Button onClick={() => onClickManage(server.uuid)}>
+								<Button onClick={() => onClickManage(server.uuid, server.name)}>
 									Manage connection
 								</Button>
 								<DropdownMenu testId="action-drop-down">
