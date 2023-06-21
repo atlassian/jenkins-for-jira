@@ -133,7 +133,6 @@ export class AnalyticsClient {
 				if (this.analyticsWebClient) {
 					this.analyticsWebClient.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
 					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
-					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
 					this.analyticsWebClient.siteUrl = siteUrl;
 					resolve({ cloudId, accountId, siteUrl }); // Resolve the promise with the context information
 				} else {
