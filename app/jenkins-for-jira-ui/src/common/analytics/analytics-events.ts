@@ -7,7 +7,14 @@ export enum AnalyticsEventTypes {
 	OperationalEvent = 'operational' // help measure usages or performance of implementation detail
 }
 
-export enum AnalyticsScreenEventsEnum {}
+export enum AnalyticsScreenEventsEnum {
+	ConfigurationEmptyStateScreenName = 'configurationEmptyStateScreen',
+	ConfigurationConfiguredStateScreenName = 'configurationConfiguredStateScreen',
+	InstallJenkinsScreenName = 'installJenkinsScreen',
+	CreateJenkinsServerScreenName = 'createJenkinsServerScreen',
+	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen',
+	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen'
+}
 
 export enum AnalyticsUiEventsEnum {
 	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState',

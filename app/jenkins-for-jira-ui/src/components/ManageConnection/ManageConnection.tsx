@@ -15,6 +15,8 @@ import {
 	helpLink,
 	navigateBackContainer
 } from './ManageConnection.styles';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 
 interface ParamTypes {
 	id: string;
@@ -51,6 +53,11 @@ const ManageConnection = () => {
 	}, [uuid]);
 
 	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
+		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
 	}, [uuid, getServer]);
