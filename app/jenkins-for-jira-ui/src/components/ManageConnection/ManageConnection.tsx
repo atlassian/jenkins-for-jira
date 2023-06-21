@@ -26,6 +26,8 @@ interface ParamTypes {
 	id: string;
 }
 
+const analyticsClient = new AnalyticsClient();
+
 const ManageConnection = () => {
 	const history = useHistory();
 	const { id: uuid } = useParams<ParamTypes>();
@@ -37,7 +39,6 @@ const ManageConnection = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const handleNavigateBackClick = async (): Promise<void> => {
-		const analyticsClient = new AnalyticsClient();
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
@@ -50,9 +51,8 @@ const ManageConnection = () => {
 		history.push('/');
 	};
 
-	const handleNavigateBackKeyDown = async (event: React.KeyboardEvent): void => {
+	const handleNavigateBackKeyDown = async (event: React.KeyboardEvent): Promise<void> => {
 		if (event.code === 'Enter') {
-			const analyticsClient = new AnalyticsClient();
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
@@ -76,7 +76,6 @@ const ManageConnection = () => {
 	}, [uuid]);
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName

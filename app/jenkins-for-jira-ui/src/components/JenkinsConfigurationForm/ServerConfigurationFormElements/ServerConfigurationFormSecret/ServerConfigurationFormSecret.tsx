@@ -12,12 +12,12 @@ import {
 	textfieldContainer
 } from '../../JenkinsConfigurationForm.styles';
 import { FormTooltip } from '../../../Tooltip/Tooltip';
-import {AnalyticsClient} from "../../../../common/analytics/analytics-client";
+import { AnalyticsClient } from '../../../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
-} from "../../../../common/analytics/analytics-events";
+} from '../../../../common/analytics/analytics-events';
 
 type ServerConfigurationFormSecretProps = {
 	secret: string;
