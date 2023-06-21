@@ -15,6 +15,8 @@ import {
 	helpLink,
 	navigateBackContainer
 } from './ManageConnection.styles';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 
 interface ParamTypes {
 	id: string;
@@ -22,6 +24,7 @@ interface ParamTypes {
 
 const ManageConnection = () => {
 	const history = useHistory();
+	const jiraHost = window.location.ancestorOrigins['0'];
 	const { id: uuid } = useParams<ParamTypes>();
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [serverName, setServerName] = useState('');
@@ -51,9 +54,15 @@ const ManageConnection = () => {
 	}, [uuid]);
 
 	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+			{ jiraHost }
+		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
-	}, [uuid, getServer]);
+	}, [jiraHost, uuid, getServer]);
 
 	const updateServer = async () => {
 		const isValidForm = isFormValid(serverName, setHasError, setErrorMessage);

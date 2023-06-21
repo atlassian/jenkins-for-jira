@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Form, {
 	FormFooter
@@ -15,6 +15,8 @@ import { generateNewSecret } from '../../JenkinsConfigurationForm/JenkinsConfigu
 import { isFormValid, setName } from '../../../common/util/jenkinsConnectionsUtils';
 import { ServerConfigurationFormName } from '../../JenkinsConfigurationForm/ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
 
 const CreateServer = () => {
 	const history = useHistory();
@@ -22,6 +24,17 @@ const CreateServer = () => {
 	const [hasError, setHasError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const jiraHost = window.location.ancestorOrigins['0'];
+
+	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
+			{ jiraHost }
+		);
+	}, [jiraHost]);
 
 	const onSubmitCreateServer = async () => {
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
