@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@atlaskit/button';
 import EmptyState from '@atlaskit/empty-state';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import { useHistory } from 'react-router';
 import { router } from '@forge/bridge';
 import PlugInImage from '../assets/PlugIn.svg';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+
+const analyticsClient = new AnalyticsClient();
 
 const EmptyStateJenkins = () => {
 	const history = useHistory();
+
+	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName
+		);
+	}, []);
 
 	const onClickConnect = () => {
 		history.push('/install');

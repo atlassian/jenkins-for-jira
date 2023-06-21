@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { useHistory } from 'react-router';
 import { ConfigurationSteps } from '../ConfigurationSteps/ConfigurationSteps';
@@ -10,9 +10,20 @@ import {
 	StyledInstallationContainer,
 	StyledInstallationContent
 } from '../ConnectJenkins.styles';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+
+const analyticsClient = new AnalyticsClient();
 
 const InstallJenkins = () => {
 	const history = useHistory();
+
+	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.InstallJenkinsScreenName
+		);
+	}, []);
 
 	const onClickNext = () => {
 		history.push('/create');

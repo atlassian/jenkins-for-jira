@@ -9,10 +9,14 @@ import { JenkinsSpinner } from '../../JenkinsSpinner/JenkinsSpinner';
 import { getJenkinsServerWithSecret } from '../../../api/getJenkinsServerWithSecret';
 import { updateJenkinsServer } from '../../../api/updateJenkinsServer';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 interface ParamTypes {
 	id: string;
 }
+
+const analyticsClient = new AnalyticsClient();
 
 const ConnectJenkins = () => {
 	const history = useHistory();
@@ -35,6 +39,10 @@ const ConnectJenkins = () => {
 	}, [uuid]);
 
 	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName
+		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
 	}, [uuid, getServer]);
