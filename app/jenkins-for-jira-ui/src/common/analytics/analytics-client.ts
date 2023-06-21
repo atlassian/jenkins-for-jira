@@ -1,22 +1,5 @@
 import { view } from '@forge/bridge';
 
-const checkIfAnalyticsPackageInstalled = async (): Promise<boolean> => {
-	try {
-		await importDynamic('@atlassiansox/analytics-web-client');
-		return true;
-	} catch (error) {
-		return false;
-	}
-};
-
-const importDynamic = (modulePath: string) => {
-	try {
-		return import(modulePath);
-	} catch (error) {
-		return null;
-	}
-};
-
 interface AnalyticsAttributes {
 	[key: string]: any;
 }
@@ -29,6 +12,9 @@ interface BaseAttributes {
 }
 
 enum EnvType {
+	LOCAL = 'local',
+	DEV = 'dev',
+	STAGING = 'staging',
 	PROD = 'prod'
 }
 
@@ -50,19 +36,22 @@ export class AnalyticsClient {
 		eventName: string,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-		const isAnalyticsPackageInstalled = await checkIfAnalyticsPackageInstalled();
+		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || !EnvType.PROD) {
+		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) === EnvType.PROD) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
 
 		if (!this.analyticsWebClient) {
-			const analyticsWebClient = await importDynamic('@atlassiansox/analytics-web-client');
-			const userType = analyticsWebClient?.userType;
-			const tenantType = analyticsWebClient?.tenantType;
+			const { default: AnalyticsWebClient, tenantType, userType } = isAnalyticsPackageInstalled;
 
-			this.analyticsWebClient = new analyticsWebClient.AnalyticsWebClient(
+			if (!AnalyticsWebClient || !userType || !tenantType) {
+				console.warn('Failed to initialize Analytics Web Client. Ignoring analytics event.');
+				return;
+			}
+
+			this.analyticsWebClient = new AnalyticsWebClient(
 				{
 					env: EnvType.PROD,
 					product: 'jenkinsForJira'
@@ -89,7 +78,16 @@ export class AnalyticsClient {
 		);
 	}
 
-	async getEventData(
+	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {
+		try {
+			const analyticsWebClient = await import('@atlassiansox/analytics-web-client');
+			return analyticsWebClient;
+		} catch (error) {
+			return false;
+		}
+	}
+
+	private async getEventData(
 		eventType: string,
 		eventName: string,
 		baseAttributes: BaseAttributes,
@@ -100,34 +98,38 @@ export class AnalyticsClient {
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
 					name: eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'ui':
 				return (this.analyticsWebClient as any)?.sendUIEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'track':
 				return (this.analyticsWebClient as any)?.sendTrackEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'operational':
 				return (this.analyticsWebClient as any)?.sendOperationalEvent?.({
-					source: attributes?.source || '',
+					source: attributes?.source || 'unknown',
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			default:
@@ -135,7 +137,7 @@ export class AnalyticsClient {
 		}
 	}
 
-	getContext(userType?: any, tenantType?: any): void {
+	private getContext(userType?: any, tenantType?: any): void {
 		view.getContext().then((ctx) => {
 			const { cloudId, accountId } = ctx as any;
 			this.analyticsWebClient?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
