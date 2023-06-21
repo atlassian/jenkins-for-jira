@@ -25,16 +25,13 @@ const CreateServer = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const jiraHost = window.location.ancestorOrigins['0'];
-
 	useEffect(() => {
 		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName
 		);
-	}, [jiraHost]);
+	}, []);
 
 	const onSubmitCreateServer = async () => {
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {

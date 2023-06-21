@@ -26,13 +26,11 @@ const JenkinsServerList = (): JSX.Element => {
 	}, []);
 
 	const analyticsClient = new AnalyticsClient();
-	const jiraHost = window.location.ancestorOrigins['0'];
 
 	if (!jenkinsServers) {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName
 		);
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
@@ -40,8 +38,7 @@ const JenkinsServerList = (): JSX.Element => {
 	if (jenkinsServers.length) {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
 		);
 	}
 

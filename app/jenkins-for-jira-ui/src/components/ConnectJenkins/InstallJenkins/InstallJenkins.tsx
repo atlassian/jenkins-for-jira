@@ -15,16 +15,14 @@ import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/
 
 const InstallJenkins = () => {
 	const history = useHistory();
-	const jiraHost = window.location.ancestorOrigins['0'];
 
 	useEffect(() => {
 		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.InstallJenkinsScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.InstallJenkinsScreenName
 		);
-	}, [jiraHost]);
+	}, []);
 
 	const onClickNext = () => {
 		history.push('/create');

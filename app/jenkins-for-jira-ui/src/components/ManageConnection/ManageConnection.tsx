@@ -24,7 +24,6 @@ interface ParamTypes {
 
 const ManageConnection = () => {
 	const history = useHistory();
-	const jiraHost = window.location.ancestorOrigins['0'];
 	const { id: uuid } = useParams<ParamTypes>();
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [serverName, setServerName] = useState('');
@@ -57,12 +56,11 @@ const ManageConnection = () => {
 		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
 		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
-	}, [jiraHost, uuid, getServer]);
+	}, [uuid, getServer]);
 
 	const updateServer = async () => {
 		const isValidForm = isFormValid(serverName, setHasError, setErrorMessage);

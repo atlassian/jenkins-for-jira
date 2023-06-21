@@ -26,8 +26,6 @@ const ConnectJenkins = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const jiraHost = window.location.ancestorOrigins['0'];
-
 	const getServer = useCallback(async () => {
 		try {
 			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
@@ -42,12 +40,11 @@ const ConnectJenkins = () => {
 		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-			{ jiraHost }
+			AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName
 		);
 		getWebhookUrl(setWebhookUrl, uuid);
 		getServer();
-	}, [jiraHost, uuid, getServer]);
+	}, [uuid, getServer]);
 
 	const onSubmitUpdateServer = async () => {
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
