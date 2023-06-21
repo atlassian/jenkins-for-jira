@@ -76,7 +76,7 @@ const JenkinsConfigurationForm = ({
 			AnalyticsUiEventsEnum.RefreshSecretConfirmConnectJenkinsServerName,
 			{
 				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-				action: 'clickedRefreshConfirm',
+				action: 'clicked refresh confirm',
 				actionSubject: 'button'
 			}
 		);
@@ -90,7 +90,7 @@ const JenkinsConfigurationForm = ({
 			AnalyticsUiEventsEnum.RefreshSecretCancelConnectJenkinsServerName,
 			{
 				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-				action: 'clickedRefreshCancel',
+				action: 'clicked refresh cancel',
 				actionSubject: 'button'
 			}
 		);

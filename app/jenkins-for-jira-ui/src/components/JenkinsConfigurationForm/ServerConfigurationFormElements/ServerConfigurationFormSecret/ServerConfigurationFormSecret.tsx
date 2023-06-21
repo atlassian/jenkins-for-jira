@@ -42,7 +42,7 @@ const ServerConfigurationFormSecret = ({
 			AnalyticsUiEventsEnum.RefreshSecretConnectJenkinsServerName,
 			{
 				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-				action: 'clickedRefresh',
+				action: 'clicked refresh',
 				actionSubject: 'button'
 			}
 		);

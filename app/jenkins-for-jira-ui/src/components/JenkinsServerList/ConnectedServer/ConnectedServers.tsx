@@ -129,7 +129,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedManageConnectionConfiguredState',
+				action: 'clickedManageConnection',
 				actionSubject: 'button',
 				serverName
 			}
@@ -144,6 +144,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.PendingDeploymentConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked waiting for build or deployment event',
 				actionSubject: 'button'
 			}
 		);
@@ -160,6 +161,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked disconnect Jenkins server',
 				actionSubject: 'button'
 			}
 		);
@@ -184,7 +186,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfirmConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedDisconnectServer',
+				action: 'clicked disconnect',
 				actionSubject: 'button'
 			}
 		);
@@ -201,7 +203,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerModalClosedConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedCancelOrDisconnectedServer',
+				action: 'clicked cancel or disconnected server',
 				actionSubject: 'button'
 			}
 		);

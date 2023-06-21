@@ -44,6 +44,7 @@ const ManageConnection = () => {
 			AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
 			{
 				source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+				action: 'clicked back',
 				actionSubject: 'button'
 			}
 		);
@@ -58,7 +59,8 @@ const ManageConnection = () => {
 				AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-					actionSubject: 'pressed enter key'
+					action: 'pressed enter key',
+					actionSubject: 'keydown'
 				}
 			);
 			history.push('/');

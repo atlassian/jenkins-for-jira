@@ -40,7 +40,7 @@ const JenkinsServerList = (): JSX.Element => {
 			AnalyticsUiEventsEnum.ConnectJenkinsServerConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedConnectJenkinsServerConfiguredState',
+				action: 'clicked connect Jenkins server',
 				actionSubject: 'button'
 			}
 		);

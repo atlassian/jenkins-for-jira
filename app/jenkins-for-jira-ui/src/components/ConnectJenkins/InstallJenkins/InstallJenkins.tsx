@@ -35,7 +35,7 @@ const InstallJenkins = () => {
 			AnalyticsUiEventsEnum.NextInstallJenkinsName,
 			{
 				source: AnalyticsScreenEventsEnum.InstallJenkinsScreenName,
-				action: 'clickedNextInstallJenkins',
+				action: 'clicked Next install Jenkins',
 				actionSubject: 'button'
 			}
 		);
