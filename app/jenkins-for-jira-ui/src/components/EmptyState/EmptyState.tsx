@@ -8,11 +8,12 @@ import PlugInImage from '../assets/PlugIn.svg';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 
+const analyticsClient = new AnalyticsClient();
+
 const EmptyStateJenkins = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName

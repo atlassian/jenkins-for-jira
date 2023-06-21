@@ -18,6 +18,8 @@ import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
 
+const analyticsClient = new AnalyticsClient();
+
 const CreateServer = () => {
 	const history = useHistory();
 	const [serverName, setServerName] = useState('');
@@ -26,7 +28,6 @@ const CreateServer = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName

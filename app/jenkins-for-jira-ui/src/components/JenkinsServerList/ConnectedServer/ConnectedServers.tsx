@@ -100,6 +100,8 @@ type ConnectedServersProps = {
 	refreshServers(): void
 };
 
+const analyticsClient = new AnalyticsClient();
+
 const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedServersTableProps): JSX.Element => {
 	const history = useHistory();
 
@@ -109,7 +111,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName

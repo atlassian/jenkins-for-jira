@@ -22,6 +22,8 @@ interface ParamTypes {
 	id: string;
 }
 
+const analyticsClient = new AnalyticsClient();
+
 const ManageConnection = () => {
 	const history = useHistory();
 	const { id: uuid } = useParams<ParamTypes>();
@@ -53,7 +55,6 @@ const ManageConnection = () => {
 	}, [uuid]);
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName

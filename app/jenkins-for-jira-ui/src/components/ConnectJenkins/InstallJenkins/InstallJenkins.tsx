@@ -13,11 +13,12 @@ import {
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
 
+const analyticsClient = new AnalyticsClient();
+
 const InstallJenkins = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.InstallJenkinsScreenName
