@@ -7,6 +7,7 @@ export enum AnalyticsEventTypes {
 	OperationalEvent = 'operational' // help measure usages or performance of implementation detail
 }
 
+<<<<<<< HEAD
 export enum AnalyticsScreenEventsEnum {
 	ConfigurationEmptyStateScreenName = 'configurationEmptyStateScreen',
 	ConfigurationConfiguredStateScreenName = 'configurationConfiguredStateScreen',
@@ -47,3 +48,12 @@ export enum AnalyticsOperationalEventsEnum {
 	DisconnectServerManageConnectionSuccessName = 'disconnectedServerManageConnectionSuccess',
 	DisconnectServerManageConnectionErrorName = 'disconnectServerManageConnectionError'
 }
+=======
+export enum AnalyticsScreenEventsEnum {}
+
+export enum AnalyticsUiEventsEnum {}
+
+export enum AnalyticsTrackEventsEnum {}
+
+export enum AnalyticsOperationalEventsEnum {}
+>>>>>>> master
