@@ -16,6 +16,8 @@ interface ParamTypes {
 	id: string;
 }
 
+const analyticsClient = new AnalyticsClient();
+
 const ConnectJenkins = () => {
 	const history = useHistory();
 	const { id: uuid } = useParams<ParamTypes>();
@@ -37,7 +39,6 @@ const ConnectJenkins = () => {
 	}, [uuid]);
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName
