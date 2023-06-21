@@ -5,10 +5,10 @@ interface AnalyticsAttributes {
 }
 
 interface BaseAttributes {
-	userId: string,
-	userIdType: string,
-	tenantIdType: string,
-	tenantId: string,
+	userId: string;
+	userIdType: string;
+	tenantIdType: string;
+	tenantId: string;
 }
 
 enum EnvType {
