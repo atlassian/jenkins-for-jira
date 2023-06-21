@@ -25,16 +25,24 @@ const JenkinsServerList = (): JSX.Element => {
 	};
 
 	useEffect(() => {
-		const analyticsClient = new AnalyticsClient();
-		analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.JiraConfigurationEmptyStateScreenName
-		);
-
 		fetchAllJenkinsServers();
 	}, []);
 
-	if (!jenkinsServers) {
+	const analyticsClient = new AnalyticsClient();
+	const jiraHost = window.location.ancestorOrigins['0'];
+
+	if (jenkinsServers?.length) {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.JiraConfigurationConfiguredStateScreenName,
+			{ jiraHost }
+		);
+	} else {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.JiraConfigurationEmptyStateScreenName,
+			{ jiraHost }
+		);
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 

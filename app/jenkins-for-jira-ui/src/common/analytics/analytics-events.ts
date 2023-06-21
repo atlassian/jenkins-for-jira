@@ -8,10 +8,14 @@ export enum AnalyticsEventTypes {
 }
 
 export enum AnalyticsScreenEventsEnum {
-	JiraConfigurationEmptyStateScreenName = 'jiraConfigurationEmptyStateScreen'
+	JiraConfigurationEmptyStateScreenName = 'jiraConfigurationEmptyStateScreen',
+	JiraConfigurationConfiguredStateScreenName = 'jiraConfigurationConfiguredStateScreen'
 }
 
-export enum AnalyticsUiEventsEnum {}
+export enum AnalyticsUiEventsEnum {
+	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState',
+	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState'
+}
 
 export enum AnalyticsTrackEventsEnum {}
 

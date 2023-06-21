@@ -12,6 +12,9 @@ interface BaseAttributes {
 }
 
 enum EnvType {
+	LOCAL = 'local',
+	DEV = 'dev',
+	STAGING = 'staging',
 	PROD = 'prod'
 }
 
@@ -35,7 +38,7 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled) {
+		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) === EnvType.PROD) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
@@ -95,7 +98,8 @@ export class AnalyticsClient {
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
 					name: eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'ui':
@@ -104,7 +108,8 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'track':
@@ -113,7 +118,8 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			case 'operational':
@@ -122,7 +128,8 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes
+						...baseAttributes,
+						...attributes
 					}
 				});
 			default:
