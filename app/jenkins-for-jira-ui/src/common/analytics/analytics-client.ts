@@ -1,77 +1,90 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-// import { optionalRequire } from 'optional-require/dist';
 import { view } from '@forge/bridge';
 
-// const {
-// 	envType, tenantType, userType
-// } = optionalRequire('@atlassiansox/analytics-web-client');
-
-import AnalyticsWebClient, {
-	envType, tenantType, userType
-} from '@atlassiansox/analytics-web-client';
-
-// const PROD_ENV = envType.PROD;
-
 interface AnalyticsAttributes {
-	source?: string,
-	action?: string,
-	actionSubject?: string,
 	[key: string]: any;
 }
 
 interface BaseAttributes {
-	userId: string,
-	userIdType: string,
-	tenantIdType: string,
-	tenantId: string
+	userId: string;
+	userIdType: string;
+	tenantIdType: string;
+	tenantId: string;
+}
+
+enum EnvType {
+	PROD = 'prod'
 }
 
 export class AnalyticsClient {
-	private readonly analyticsClient: any;
-
-	private analyticsWebClient: AnalyticsWebClient | null;
+	private analyticsWebClient: any;
 
 	constructor() {
-		this.analyticsClient = AnalyticsWebClient;
-		// this.analyticsClient = optionalRequire('@atlassiansox/analytics-node-client', true) || {};
 		this.analyticsWebClient = null;
 	}
 
-	sendAnalytics(eventType: string, eventName: string, attributes?: AnalyticsAttributes) {
-		// if (!this.analyticsClient || PROD_ENV) {
-		if (!this.analyticsClient) {
-			console.log('no client');
+	static async sendEvent(eventType: string, name: string, promise: Promise<void>) {
+		promise?.catch((error: any) => {
+			console.error('Failed to send analytics event', error);
+		});
+	}
+
+	async sendAnalytics(
+		eventType: string,
+		eventName: string,
+		attributes?: AnalyticsAttributes
+	): Promise<void> {
+		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
+
+		if (!isAnalyticsPackageInstalled) {
+			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
 
 		if (!this.analyticsWebClient) {
-			// Values defined by DataPortal.
-			// Do not change their values as it will affect our metrics logs and dashboards.
-			this.analyticsWebClient = new AnalyticsWebClient({
-				env: envType.PROD, // This needs to be 'prod' as we're using prod Jira instances.
-				product: 'jenkinsForJira'
-			}, {
-				useLegacyUrl: true
-			});
+			const { default: AnalyticsWebClient, tenantType, userType } = isAnalyticsPackageInstalled;
 
-			this.getContext();
+			if (!AnalyticsWebClient || !userType || !tenantType) {
+				console.warn('Failed to initialize Analytics Web Client. Ignoring analytics event.');
+				return;
+			}
+
+			this.analyticsWebClient = new AnalyticsWebClient(
+				{
+					env: EnvType.PROD,
+					product: 'jenkinsForJira'
+				},
+				{
+					useLegacyUrl: true
+				}
+			);
+
+			this.getContext(userType, tenantType);
 		}
 
 		const baseAttributes: BaseAttributes = {
 			userId: 'anonymousId',
-			userIdType: 'atlassianAccount',
-			tenantIdType: 'cloudId',
+			userIdType: this.analyticsWebClient?.userType?.ATLASSIAN_ACCOUNT,
+			tenantIdType: this.analyticsWebClient?.tenantType?.CLOUD_ID,
 			tenantId: 'NONE'
 		};
 
-		AnalyticsClient.sendEvent(
+		await AnalyticsClient.sendEvent(
 			eventType,
 			eventName,
 			this.getEventData(eventType, eventName, baseAttributes, attributes)
 		);
 	}
 
-	getEventData(
+	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {
+		try {
+			const analyticsWebClient = await import('@atlassiansox/analytics-web-client');
+			return analyticsWebClient;
+		} catch (error) {
+			return false;
+		}
+	}
+
+	private async getEventData(
 		eventType: string,
 		eventName: string,
 		baseAttributes: BaseAttributes,
@@ -79,7 +92,6 @@ export class AnalyticsClient {
 	): Promise<void> {
 		switch (eventType) {
 			case 'screen':
-				console.log('sending SCREEN analytics...');
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
 					name: eventName,
 					attributes: {
@@ -87,7 +99,6 @@ export class AnalyticsClient {
 					}
 				});
 			case 'ui':
-				console.log('sending UI analytics...');
 				return (this.analyticsWebClient as any)?.sendUIEvent?.({
 					source: attributes?.source || '',
 					action: attributes?.action || eventName,
@@ -97,7 +108,6 @@ export class AnalyticsClient {
 					}
 				});
 			case 'track':
-				console.log('sending TRACK analytics...');
 				return (this.analyticsWebClient as any)?.sendTrackEvent?.({
 					source: attributes?.source || '',
 					action: attributes?.action || eventName,
@@ -107,7 +117,6 @@ export class AnalyticsClient {
 					}
 				});
 			case 'operational':
-				console.log('sending OPERATIONAL analytics...');
 				return (this.analyticsWebClient as any)?.sendOperationalEvent?.({
 					source: attributes?.source || '',
 					action: attributes?.action || eventName,
@@ -121,17 +130,11 @@ export class AnalyticsClient {
 		}
 	}
 
-	static sendEvent(eventType: string, name: string, promise: Promise<any>) {
-		promise?.catch((error: any) => {
-			console.log('Need a bloody logger', error);
-		});
-	}
-
-	getContext() {
+	private getContext(userType?: any, tenantType?: any): void {
 		view.getContext().then((ctx) => {
 			const { cloudId, accountId } = ctx as any;
-			(this.analyticsWebClient as any)?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
-			(this.analyticsWebClient as any)?.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
+			this.analyticsWebClient?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
+			this.analyticsWebClient?.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
 		});
 	}
 }
