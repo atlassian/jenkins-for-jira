@@ -45,6 +45,7 @@ export class AnalyticsClient {
 
 		if (!this.analyticsWebClient) {
 			const { default: AnalyticsWebClient, tenantType, userType } = isAnalyticsPackageInstalled;
+			console.log('isAnalyticsPackageInstalled', isAnalyticsPackageInstalled);
 
 			if (!AnalyticsWebClient || !userType || !tenantType) {
 				console.warn('Failed to initialize Analytics Web Client. Ignoring analytics event.');
@@ -61,7 +62,7 @@ export class AnalyticsClient {
 				}
 			);
 
-			this.getContext(userType, tenantType);
+			await this.getContext(userType, tenantType);
 		}
 
 		const baseAttributes: BaseAttributes = {
@@ -74,7 +75,13 @@ export class AnalyticsClient {
 		await AnalyticsClient.sendEvent(
 			eventType,
 			eventName,
-			this.getEventData(eventType, eventName, baseAttributes, attributes)
+			this.getEventData(
+				eventType,
+				eventName,
+				baseAttributes,
+				this.analyticsWebClient?.siteUrl,
+				attributes
+			)
 		);
 	}
 
@@ -91,15 +98,18 @@ export class AnalyticsClient {
 		eventType: string,
 		eventName: string,
 		baseAttributes: BaseAttributes,
+		siteUrl: string | undefined,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
+		console.log('siteUrl', siteUrl);
 		switch (eventType) {
 			case 'screen':
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
 					name: eventName,
 					attributes: {
 						...baseAttributes,
-						...attributes
+						...attributes,
+						siteUrl
 					}
 				});
 			case 'ui':
@@ -137,11 +147,19 @@ export class AnalyticsClient {
 		}
 	}
 
-	private getContext(userType?: any, tenantType?: any): void {
-		view.getContext().then((ctx) => {
-			const { cloudId, accountId } = ctx as any;
-			this.analyticsWebClient?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
-			this.analyticsWebClient?.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
+	private getContext(userType?: any, tenantType?: any): Promise<any> {
+		return new Promise((resolve, reject) => {
+			view.getContext().then((ctx) => {
+				const { cloudId, accountId, siteUrl } = ctx as any;
+				if (this.analyticsWebClient) {
+					this.analyticsWebClient.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
+					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
+					this.analyticsWebClient.siteUrl = siteUrl;
+					resolve({ cloudId, accountId, siteUrl }); // Resolve the promise with the context information
+				} else {
+					reject(new Error('Analytics Web Client is not initialized.'));
+				}
+			}).catch(reject);
 		});
 	}
 }
