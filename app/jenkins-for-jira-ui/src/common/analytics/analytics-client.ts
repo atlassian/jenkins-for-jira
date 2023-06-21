@@ -4,13 +4,6 @@ interface AnalyticsAttributes {
 	[key: string]: any;
 }
 
-interface BaseAttributes {
-	userId: string;
-	userIdType: string;
-	tenantIdType: string;
-	tenantId: string;
-}
-
 enum EnvType {
 	LOCAL = 'local',
 	DEV = 'dev',
@@ -38,14 +31,13 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) === EnvType.PROD) {
+		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) !== EnvType.PROD) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
 
 		if (!this.analyticsWebClient) {
 			const { default: AnalyticsWebClient, tenantType, userType } = isAnalyticsPackageInstalled;
-			console.log('isAnalyticsPackageInstalled', isAnalyticsPackageInstalled);
 
 			if (!AnalyticsWebClient || !userType || !tenantType) {
 				console.warn('Failed to initialize Analytics Web Client. Ignoring analytics event.');
@@ -65,20 +57,12 @@ export class AnalyticsClient {
 			await this.getContext(userType, tenantType);
 		}
 
-		const baseAttributes: BaseAttributes = {
-			userId: 'anonymousId',
-			userIdType: this.analyticsWebClient?.userType?.ATLASSIAN_ACCOUNT,
-			tenantIdType: this.analyticsWebClient?.tenantType?.CLOUD_ID,
-			tenantId: 'NONE'
-		};
-
 		await AnalyticsClient.sendEvent(
 			eventType,
 			eventName,
 			this.getEventData(
 				eventType,
 				eventName,
-				baseAttributes,
 				this.analyticsWebClient?.siteUrl,
 				attributes
 			)
@@ -97,17 +81,14 @@ export class AnalyticsClient {
 	private async getEventData(
 		eventType: string,
 		eventName: string,
-		baseAttributes: BaseAttributes,
 		siteUrl: string | undefined,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-		console.log('siteUrl', siteUrl);
 		switch (eventType) {
 			case 'screen':
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
 					name: eventName,
 					attributes: {
-						...baseAttributes,
 						...attributes,
 						siteUrl
 					}
@@ -118,7 +99,6 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes,
 						...attributes
 					}
 				});
@@ -128,7 +108,6 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes,
 						...attributes
 					}
 				});
@@ -138,7 +117,6 @@ export class AnalyticsClient {
 					action: attributes?.action || eventName,
 					actionSubject: attributes?.actionSubject || eventName,
 					attributes: {
-						...baseAttributes,
 						...attributes
 					}
 				});
@@ -151,8 +129,10 @@ export class AnalyticsClient {
 		return new Promise((resolve, reject) => {
 			view.getContext().then((ctx) => {
 				const { cloudId, accountId, siteUrl } = ctx as any;
+
 				if (this.analyticsWebClient) {
 					this.analyticsWebClient.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
+					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
 					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
 					this.analyticsWebClient.siteUrl = siteUrl;
 					resolve({ cloudId, accountId, siteUrl }); // Resolve the promise with the context information

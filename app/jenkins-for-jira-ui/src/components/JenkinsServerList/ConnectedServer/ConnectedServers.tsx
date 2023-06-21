@@ -35,6 +35,8 @@ import { InProgressIcon } from '../../icons/InProgressIcon';
 import { FailedIcon } from '../../icons/FailedIcon';
 import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 export const mapLastEventStatus = (
 	lastEventStatus: string
@@ -107,6 +109,12 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
+		);
+
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
