@@ -15,18 +15,17 @@ import moment from 'moment';
 import { StyledButtonContainerConnectedServers } from '../../ConnectJenkins/ConnectJenkins.styles';
 import { JenkinsIcon } from '../../icons/JenkinsIcon';
 import {
+	StyledConnectedServerContainer,
+	StyledConnectedServerLatestEventIconContainer,
 	StyledConnectedServerTableHeaderTitleContainer,
+	StyledConnectedServerTableCellContainer,
+	StyledConnectedServerTableCellDescription,
+	StyledConnectedServerTableCellDescriptionEvent,
 	StyledConnectedServerTableCellIconContainer,
 	StyledConnectedServerTableHeaderContainer,
 	StyledConnectedServerTableContainer,
-	StyledConnectedServerTableHeaderTitle, waitingForDeploymentText
-} from './ConnectedServers.styles';
-import {
-	StyledConnectedServerContainer,
-	StyledConnectedServerLatestEventIconContainer,
-	StyledConnectedServerTableCellContainer,
-	StyledConnectedServerTableCellDescription,
-	StyledConnectedServerTableCellDescriptionEvent
+	StyledConnectedServerTableHeaderTitle,
+	waitingForDeploymentText
 } from './ConnectedServers.styles';
 import { JenkinsPipeline, JenkinsServer } from '../../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../../api/disconnectJenkinsServer';
