@@ -9,7 +9,11 @@ import { JenkinsSpinner } from '../../JenkinsSpinner/JenkinsSpinner';
 import { getJenkinsServerWithSecret } from '../../../api/getJenkinsServerWithSecret';
 import { updateJenkinsServer } from '../../../api/updateJenkinsServer';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum
+} from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 interface ParamTypes {
@@ -60,9 +64,31 @@ const ConnectJenkins = () => {
 					pipelines: []
 				});
 
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.ConnectedJenkinsServerSuccessName,
+					{
+						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+						action: 'submitted connect server form',
+						actionSubject: 'button'
+					}
+				);
+
 				history.push('/');
 			} catch (e) {
 				console.error('Error: ', e);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.ConnectedJenkinsServerErrorName,
+					{
+						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+						action: 'submitted connect server form',
+						actionSubject: 'button',
+						error: e
+					}
+				);
+
 				setIsLoading(false);
 			}
 		}
