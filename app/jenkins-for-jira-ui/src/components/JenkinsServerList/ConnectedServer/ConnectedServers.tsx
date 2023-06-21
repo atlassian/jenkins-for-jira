@@ -37,6 +37,7 @@ import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
 import {
 	AnalyticsEventTypes,
+	AnalyticsOperationalEventsEnum,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
@@ -171,7 +172,28 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		serverToDelete: JenkinsServer
 	) => {
 		setIsLoading(true);
-		await disconnectJenkinsServer(serverToDelete.uuid);
+
+		try {
+			await disconnectJenkinsServer(serverToDelete.uuid);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectSuccessServerManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
+				}
+			);
+		} catch (e) {
+			console.log('Failed to disconnect server', e);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerErrorManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+					error: e
+				}
+			);
+		}
+
 		const updatedServerList = jenkinsServers.filter(
 			(server) => server.uuid !== serverToDelete.uuid
 		);
