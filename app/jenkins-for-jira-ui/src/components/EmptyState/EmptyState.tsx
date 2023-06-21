@@ -6,7 +6,11 @@ import { useHistory } from 'react-router';
 import { router } from '@forge/bridge';
 import PlugInImage from '../assets/PlugIn.svg';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 
 const EmptyStateJenkins = () => {
 	const history = useHistory();
@@ -20,10 +24,30 @@ const EmptyStateJenkins = () => {
 	}, []);
 
 	const onClickConnect = () => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerEmptyStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
+				action: 'clickedConnectJenkinsServerEmptyState',
+				actionSubject: 'button'
+			}
+		);
 		history.push('/install');
 	};
 
 	const onClickLearnMore = () => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.LearnMoreEmptyStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
+				action: 'clickedLearnMoreEmptyState',
+				actionSubject: 'button'
+			}
+		);
 		router.open('https://plugins.jenkins.io/atlassian-jira-software-cloud/');
 	};
 

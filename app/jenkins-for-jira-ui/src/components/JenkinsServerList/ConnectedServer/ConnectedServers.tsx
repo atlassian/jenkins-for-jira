@@ -35,7 +35,11 @@ import { InProgressIcon } from '../../icons/InProgressIcon';
 import { FailedIcon } from '../../icons/FailedIcon';
 import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 export const mapLastEventStatus = (
@@ -118,22 +122,55 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
-	const onClickManage = (jenkinsServerUuid: string) => {
+	const onClickManage = async (jenkinsServerUuid: string, serverName: string) => {
+		const analyticsClient = new AnalyticsClient();
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clickedManageConnectionConfiguredState',
+				actionSubject: 'button',
+				serverName
+			}
+		);
+
 		history.push(`/manage/${jenkinsServerUuid}`);
 	};
 
-	const onClickPendingDeployment = (jenkinsServerUuid: string) => {
+	const onClickPendingDeployment = async (jenkinsServerUuid: string) => {
+		const analyticsClient = new AnalyticsClient();
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.PendingDeploymentConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				actionSubject: 'button'
+			}
+		);
+
 		history.push(`/pending/${jenkinsServerUuid}`);
 	};
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
+
+		const analyticsClient = new AnalyticsClient();
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
+		const analyticsClient = new AnalyticsClient();
 		setIsLoading(true);
 		await disconnectJenkinsServer(serverToDelete.uuid);
 		const updatedServerList = jenkinsServers.filter(
@@ -145,12 +182,34 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			refreshServers();
 		}
 
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerConfirmConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clickedDisconnectServer',
+				actionSubject: 'button'
+			}
+		);
+
 		closeConfirmServerDisconnect();
 	};
 
-	const closeConfirmServerDisconnect = () => {
+	const closeConfirmServerDisconnect = async () => {
 		setShowConfirmServerDisconnect(false);
 		setIsLoading(false);
+
+		const analyticsClient = new AnalyticsClient();
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerModalClosedConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clickedCancelOrDisconnectedServer',
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	const tableHead = (pipelines: JenkinsPipeline[]) => {
@@ -265,7 +324,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 							</StyledConnectedServerTableHeaderTitleContainer>
 
 							<StyledButtonContainerConnectedServers>
-								<Button onClick={() => onClickManage(server.uuid)}>
+								<Button onClick={() => onClickManage(server.uuid, server.name)}>
 									Manage connection
 								</Button>
 								<DropdownMenu testId="action-drop-down">

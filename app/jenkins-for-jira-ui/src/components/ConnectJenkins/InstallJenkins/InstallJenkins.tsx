@@ -11,7 +11,11 @@ import {
 	StyledInstallationContent
 } from '../ConnectJenkins.styles';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
 
 const InstallJenkins = () => {
 	const history = useHistory();
@@ -25,6 +29,16 @@ const InstallJenkins = () => {
 	}, []);
 
 	const onClickNext = () => {
+		const analyticsClient = new AnalyticsClient();
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.NextInstallJenkinsName,
+			{
+				source: AnalyticsScreenEventsEnum.InstallJenkinsScreenName,
+				action: 'clickedNextInstallJenkins',
+				actionSubject: 'button'
+			}
+		);
 		history.push('/create');
 	};
 

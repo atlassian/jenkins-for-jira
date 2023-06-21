@@ -12,6 +12,12 @@ import {
 	textfieldContainer
 } from '../../JenkinsConfigurationForm.styles';
 import { FormTooltip } from '../../../Tooltip/Tooltip';
+import {AnalyticsClient} from "../../../../common/analytics/analytics-client";
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from "../../../../common/analytics/analytics-events";
 
 type ServerConfigurationFormSecretProps = {
 	secret: string;
@@ -22,6 +28,7 @@ const ServerConfigurationFormSecret = ({
 	secret,
 	setShowConfirmRefreshSecret
 }: ServerConfigurationFormSecretProps) => {
+	const analyticsClient = new AnalyticsClient();
 	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 	const togglePassword = () => {
 		setPasswordIsVisible(!passwordIsVisible);
@@ -29,6 +36,16 @@ const ServerConfigurationFormSecret = ({
 
 	const onClickRefresh = async () => {
 		setShowConfirmRefreshSecret(true);
+
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.RefreshSecretConnectJenkinsServerName,
+			{
+				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				action: 'clickedRefresh',
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	return (

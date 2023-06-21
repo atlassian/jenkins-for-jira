@@ -16,7 +16,11 @@ import {
 	navigateBackContainer
 } from './ManageConnection.styles';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 
 interface ParamTypes {
 	id: string;
@@ -32,12 +36,31 @@ const ManageConnection = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const handleNavigateBackClick = (): void => {
+	const handleNavigateBackClick = async (): Promise<void> => {
+		const analyticsClient = new AnalyticsClient();
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
+			{
+				source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+				actionSubject: 'button'
+			}
+		);
+
 		history.push('/');
 	};
 
-	const handleNavigateBackKeyDown = (event: React.KeyboardEvent): void => {
+	const handleNavigateBackKeyDown = async (event: React.KeyboardEvent): void => {
 		if (event.code === 'Enter') {
+			const analyticsClient = new AnalyticsClient();
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.UiEvent,
+				AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+					actionSubject: 'pressed enter key'
+				}
+			);
 			history.push('/');
 		}
 	};

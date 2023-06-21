@@ -26,10 +26,10 @@ export enum AnalyticsUiEventsEnum {
 	RefreshSecretConfirmConnectJenkinsServerName = 'refreshSecretConfirmConnectJenkinsServer',
 	ManageConnectionConfiguredStateName = 'manageConnectionConfiguredState',
 	NavigateBackManageJenkinsConnectionName = 'navigateBackManageJenkinsConnections',
-	ConfigurationPendingDeploymentName = 'pendingDeploymentName',
-	ConfigurationDisconnectServerName = 'disconnectServer',
-	ConfigurationDisconnectServerModalClosedName = 'disconnectServerModalClosed',
-	ConfigurationDisconnectServerConfirmName = 'disconnectServerConfirm'
+	PendingDeploymentConfiguredStateName = 'pendingDeploymentConfiguredStateName',
+	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState',
+	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
+	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState'
 }
 
 export enum AnalyticsTrackEventsEnum {}
