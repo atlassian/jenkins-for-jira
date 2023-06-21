@@ -36,21 +36,14 @@ export class AnalyticsClient {
 		eventName: string,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-<<<<<<< HEAD
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
 		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) === EnvType.PROD) {
-=======
-		const isAnalyticsPackageInstalled = await checkIfAnalyticsPackageInstalled();
-
-		if (!isAnalyticsPackageInstalled || !EnvType.PROD) {
->>>>>>> master
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
 
 		if (!this.analyticsWebClient) {
-<<<<<<< HEAD
 			const { default: AnalyticsWebClient, tenantType, userType } = isAnalyticsPackageInstalled;
 
 			if (!AnalyticsWebClient || !userType || !tenantType) {
@@ -59,13 +52,6 @@ export class AnalyticsClient {
 			}
 
 			this.analyticsWebClient = new AnalyticsWebClient(
-=======
-			const analyticsWebClient = await importDynamic('@atlassiansox/analytics-web-client');
-			const userType = analyticsWebClient?.userType;
-			const tenantType = analyticsWebClient?.tenantType;
-
-			this.analyticsWebClient = new analyticsWebClient.AnalyticsWebClient(
->>>>>>> master
 				{
 					env: EnvType.PROD,
 					product: 'jenkinsForJira'
@@ -92,7 +78,6 @@ export class AnalyticsClient {
 		);
 	}
 
-<<<<<<< HEAD
 	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {
 		try {
 			const analyticsWebClient = await import('@atlassiansox/analytics-web-client');
@@ -103,9 +88,6 @@ export class AnalyticsClient {
 	}
 
 	private async getEventData(
-=======
-	async getEventData(
->>>>>>> master
 		eventType: string,
 		eventName: string,
 		baseAttributes: BaseAttributes,
@@ -155,11 +137,7 @@ export class AnalyticsClient {
 		}
 	}
 
-<<<<<<< HEAD
 	private getContext(userType?: any, tenantType?: any): void {
-=======
-	getContext(userType?: any, tenantType?: any): void {
->>>>>>> master
 		view.getContext().then((ctx) => {
 			const { cloudId, accountId } = ctx as any;
 			this.analyticsWebClient?.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);

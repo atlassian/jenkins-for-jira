@@ -10,8 +10,8 @@ import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
-	AnalyticsClient,
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
