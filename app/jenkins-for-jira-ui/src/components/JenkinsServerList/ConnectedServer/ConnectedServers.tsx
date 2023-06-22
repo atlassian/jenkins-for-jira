@@ -203,7 +203,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerModalClosedConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked cancel or disconnected server',
+				action: 'dismissed the modal',
 				actionSubject: 'button'
 			}
 		);
