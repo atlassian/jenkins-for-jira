@@ -15,18 +15,17 @@ import moment from 'moment';
 import { StyledButtonContainerConnectedServers } from '../../ConnectJenkins/ConnectJenkins.styles';
 import { JenkinsIcon } from '../../icons/JenkinsIcon';
 import {
+	StyledConnectedServerContainer,
+	StyledConnectedServerLatestEventIconContainer,
 	StyledConnectedServerTableHeaderTitleContainer,
+	StyledConnectedServerTableCellContainer,
+	StyledConnectedServerTableCellDescription,
+	StyledConnectedServerTableCellDescriptionEvent,
 	StyledConnectedServerTableCellIconContainer,
 	StyledConnectedServerTableHeaderContainer,
 	StyledConnectedServerTableContainer,
-	StyledConnectedServerTableHeaderTitle, waitingForDeploymentText
-} from './ConnectedServers.styles';
-import {
-	StyledConnectedServerContainer,
-	StyledConnectedServerLatestEventIconContainer,
-	StyledConnectedServerTableCellContainer,
-	StyledConnectedServerTableCellDescription,
-	StyledConnectedServerTableCellDescriptionEvent
+	StyledConnectedServerTableHeaderTitle,
+	waitingForDeploymentText
 } from './ConnectedServers.styles';
 import { JenkinsPipeline, JenkinsServer } from '../../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../../api/disconnectJenkinsServer';
@@ -37,6 +36,7 @@ import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
 import {
 	AnalyticsEventTypes,
+	AnalyticsOperationalEventsEnum,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
@@ -171,7 +171,28 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		serverToDelete: JenkinsServer
 	) => {
 		setIsLoading(true);
-		await disconnectJenkinsServer(serverToDelete.uuid);
+
+		try {
+			await disconnectJenkinsServer(serverToDelete.uuid);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerSuccessServerManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
+				}
+			);
+		} catch (e) {
+			console.log('Failed to disconnect server', e);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerErrorManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+					error: e
+				}
+			);
+		}
+
 		const updatedServerList = jenkinsServers.filter(
 			(server) => server.uuid !== serverToDelete.uuid
 		);

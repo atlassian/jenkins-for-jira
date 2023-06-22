@@ -17,7 +17,7 @@ import {
 } from './ManageConnection.styles';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
-	AnalyticsEventTypes,
+	AnalyticsEventTypes, AnalyticsOperationalEventsEnum,
 	AnalyticsScreenEventsEnum, AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
@@ -72,8 +72,25 @@ const ManageConnection = () => {
 			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
 			setServerName(name);
 			setSecret(retrievedSecret!);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.GetServerSuccessManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
+				}
+			);
 		} catch (e) {
 			console.error('No Jenkins server found.');
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.OperationalEvent,
+				AnalyticsOperationalEventsEnum.DisconnectServerErrorManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+					error: e
+				}
+			);
 		}
 	}, [uuid]);
 

@@ -41,4 +41,9 @@ export enum AnalyticsTrackEventsEnum {
 	UpdatedServerErrorName = 'updatedServerErrorName'
 }
 
-export enum AnalyticsOperationalEventsEnum {}
+export enum AnalyticsOperationalEventsEnum {
+	GetServerSuccessManageConnectionName = 'getServerManageSuccessConnection',
+	GetServerErrorManageConnectionName = 'getServerErrorManageConnection',
+	DisconnectServerSuccessServerManageConnectionName = 'disconnectedServerSuccessManageConnection',
+	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection'
+}
