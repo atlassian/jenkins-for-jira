@@ -176,7 +176,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			await disconnectJenkinsServer(serverToDelete.uuid);
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.OperationalEvent,
-				AnalyticsOperationalEventsEnum.DisconnectSuccessServerManageConnectionName,
+				AnalyticsOperationalEventsEnum.DisconnectServerSuccessServerManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
 				}
