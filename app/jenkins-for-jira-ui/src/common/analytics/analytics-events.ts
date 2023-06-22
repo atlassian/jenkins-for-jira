@@ -16,7 +16,21 @@ export enum AnalyticsScreenEventsEnum {
 	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen'
 }
 
-export enum AnalyticsUiEventsEnum {}
+export enum AnalyticsUiEventsEnum {
+	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState',
+	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState',
+	LearnMoreEmptyStateName = 'learnMoreEmptyState',
+	NextInstallJenkinsName = 'nextInstallJenkins',
+	RefreshSecretConnectJenkinsServerName = 'refreshSecretConnectJenkinsServer',
+	RefreshSecretCancelConnectJenkinsServerName = 'refreshSecretCancelConnectJenkinsServer',
+	RefreshSecretConfirmConnectJenkinsServerName = 'refreshSecretConfirmConnectJenkinsServer',
+	ManageConnectionConfiguredStateName = 'manageConnectionConfiguredState',
+	NavigateBackManageJenkinsConnectionName = 'navigateBackManageJenkinsConnections',
+	PendingDeploymentConfiguredStateName = 'pendingDeploymentConfiguredStateName',
+	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState',
+	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
+	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState'
+}
 
 export enum AnalyticsTrackEventsEnum {}
 

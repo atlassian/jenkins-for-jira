@@ -35,7 +35,11 @@ import { InProgressIcon } from '../../icons/InProgressIcon';
 import { FailedIcon } from '../../icons/FailedIcon';
 import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 export const mapLastEventStatus = (
@@ -119,17 +123,48 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
-	const onClickManage = (jenkinsServerUuid: string) => {
+	const onClickManage = async (jenkinsServerUuid: string, serverName: string) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked manage connection',
+				actionSubject: 'button',
+				serverName
+			}
+		);
+
 		history.push(`/manage/${jenkinsServerUuid}`);
 	};
 
-	const onClickPendingDeployment = (jenkinsServerUuid: string) => {
+	const onClickPendingDeployment = async (jenkinsServerUuid: string) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.PendingDeploymentConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked waiting for build or deployment event',
+				actionSubject: 'button'
+			}
+		);
+
 		history.push(`/pending/${jenkinsServerUuid}`);
 	};
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked disconnect Jenkins server',
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	const disconnectJenkinsServerHandler = async (
@@ -146,12 +181,32 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			refreshServers();
 		}
 
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerConfirmConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked disconnect',
+				actionSubject: 'button'
+			}
+		);
+
 		closeConfirmServerDisconnect();
 	};
 
-	const closeConfirmServerDisconnect = () => {
+	const closeConfirmServerDisconnect = async () => {
 		setShowConfirmServerDisconnect(false);
 		setIsLoading(false);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerModalClosedConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'dismissed the modal',
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	const tableHead = (pipelines: JenkinsPipeline[]) => {
@@ -266,7 +321,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 							</StyledConnectedServerTableHeaderTitleContainer>
 
 							<StyledButtonContainerConnectedServers>
-								<Button onClick={() => onClickManage(server.uuid)}>
+								<Button onClick={() => onClickManage(server.uuid, server.name)}>
 									Manage connection
 								</Button>
 								<DropdownMenu testId="action-drop-down">

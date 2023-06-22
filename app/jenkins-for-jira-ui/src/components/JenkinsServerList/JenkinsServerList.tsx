@@ -10,9 +10,16 @@ import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
+	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers();
@@ -28,6 +35,16 @@ const JenkinsServerList = (): JSX.Element => {
 	}
 
 	const onClickConnect = () => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectJenkinsServerConfiguredStateName,
+			{
+				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
+				action: 'clicked connect Jenkins server',
+				actionSubject: 'button'
+			}
+		);
+
 		history.push('/install');
 	};
 
