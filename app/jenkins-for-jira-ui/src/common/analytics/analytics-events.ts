@@ -38,12 +38,11 @@ export enum AnalyticsTrackEventsEnum {
 	ConnectedJenkinsServerSuccessName = 'connectedJenkinsServerSuccess',
 	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError',
 	UpdatedServerSuccessName = 'updatedServerSuccessName',
-	UpdatedServerErrorName = 'updatedServerErrorName'
-}
-
-export enum AnalyticsOperationalEventsEnum {
+	UpdatedServerErrorName = 'updatedServerErrorName',
 	GetServerSuccessManageConnectionName = 'getServerManageSuccessConnection',
 	GetServerErrorManageConnectionName = 'getServerErrorManageConnection',
 	DisconnectServerSuccessServerManageConnectionName = 'disconnectedServerSuccessManageConnection',
 	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection'
 }
+
+export enum AnalyticsOperationalEventsEnum {}

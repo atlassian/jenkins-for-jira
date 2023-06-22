@@ -17,8 +17,9 @@ import {
 } from './ManageConnection.styles';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
-	AnalyticsEventTypes, AnalyticsOperationalEventsEnum,
-	AnalyticsScreenEventsEnum, AnalyticsTrackEventsEnum,
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 
@@ -44,7 +45,7 @@ const ManageConnection = () => {
 			AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
 			{
 				source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-				action: 'clicked back',
+				action: 'clicked back manage connection',
 				actionSubject: 'button'
 			}
 		);
@@ -74,8 +75,8 @@ const ManageConnection = () => {
 			setSecret(retrievedSecret);
 
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.OperationalEvent,
-				AnalyticsOperationalEventsEnum.GetServerSuccessManageConnectionName,
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.GetServerSuccessManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
 				}
@@ -84,8 +85,8 @@ const ManageConnection = () => {
 			console.error('No Jenkins server found.');
 
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.OperationalEvent,
-				AnalyticsOperationalEventsEnum.DisconnectServerErrorManageConnectionName,
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.GetServerSuccessManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
 					error: e
@@ -123,8 +124,8 @@ const ManageConnection = () => {
 					AnalyticsTrackEventsEnum.UpdatedServerSuccessName,
 					{
 						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-						action: 'submitted manage server form',
-						actionSubject: 'button'
+						action: 'submitted manage server form success',
+						actionSubject: 'form'
 					}
 				);
 
@@ -137,8 +138,8 @@ const ManageConnection = () => {
 					AnalyticsTrackEventsEnum.UpdatedServerErrorName,
 					{
 						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-						action: 'submitted manage server form',
-						actionSubject: 'button',
+						action: 'submitted manage server form error',
+						actionSubject: 'form',
 						error: e
 					}
 				);

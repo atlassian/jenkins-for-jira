@@ -43,7 +43,7 @@ const EmptyStateJenkins = () => {
 			AnalyticsUiEventsEnum.LearnMoreEmptyStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
-				action: 'clickedLearnMoreEmptyState',
+				action: 'clicked Learn more empty state',
 				actionSubject: 'button'
 			}
 		);

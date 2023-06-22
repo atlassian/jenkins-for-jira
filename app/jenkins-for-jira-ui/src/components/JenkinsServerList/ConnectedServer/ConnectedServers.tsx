@@ -36,8 +36,8 @@ import { RolledBackIcon } from '../../icons/RolledBackIcon';
 import { CancelledIcon } from '../../icons/CancelledIcon';
 import {
 	AnalyticsEventTypes,
-	AnalyticsOperationalEventsEnum,
 	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
@@ -161,7 +161,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked disconnect Jenkins server',
+				action: 'clicked disconnect Jenkins server configured state',
 				actionSubject: 'button'
 			}
 		);
@@ -175,8 +175,8 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.OperationalEvent,
-				AnalyticsOperationalEventsEnum.DisconnectServerSuccessServerManageConnectionName,
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerSuccessServerManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
 				}
@@ -184,8 +184,8 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.OperationalEvent,
-				AnalyticsOperationalEventsEnum.DisconnectServerErrorManageConnectionName,
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerErrorManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
 					error: e
@@ -207,7 +207,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfirmConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked disconnect',
+				action: 'clicked disconnect confirm',
 				actionSubject: 'button'
 			}
 		);
