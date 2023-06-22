@@ -33,7 +33,7 @@ const ManageConnection = () => {
 	const { id: uuid } = useParams<ParamTypes>();
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [serverName, setServerName] = useState('');
-	const [secret, setSecret] = useState<string>('');
+	const [secret, setSecret] = useState<string | undefined>('');
 	const [hasError, setHasError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -71,7 +71,7 @@ const ManageConnection = () => {
 		try {
 			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
 			setServerName(name);
-			setSecret(retrievedSecret!);
+			setSecret(retrievedSecret);
 
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.OperationalEvent,
