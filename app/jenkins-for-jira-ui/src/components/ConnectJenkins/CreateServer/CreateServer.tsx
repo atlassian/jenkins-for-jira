@@ -16,7 +16,11 @@ import { isFormValid, setName } from '../../../common/util/jenkinsConnectionsUti
 import { ServerConfigurationFormName } from '../../JenkinsConfigurationForm/ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum
+} from '../../../common/analytics/analytics-events';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -46,9 +50,32 @@ const CreateServer = () => {
 					secret: generateNewSecret(),
 					pipelines: []
 				});
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.CreatedJenkinsServerSuccessName,
+					{
+						source: AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
+						action: 'submitted create server form',
+						actionSubject: 'button'
+					}
+				);
+
 				history.push(`/connect/${uuid}`);
 			} catch (e) {
 				console.error('Error: ', e);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.CreatedJenkinsServerErrorName,
+					{
+						source: AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
+						action: 'submitted create server form',
+						actionSubject: 'button',
+						error: e
+					}
+				);
+
 				setIsLoading(false);
 			}
 		}

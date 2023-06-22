@@ -18,7 +18,7 @@ import {
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum,
+	AnalyticsScreenEventsEnum, AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 
@@ -101,9 +101,31 @@ const ManageConnection = () => {
 					pipelines: []
 				});
 
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.UpdatedServerSuccessName,
+					{
+						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+						action: 'submitted manage server form',
+						actionSubject: 'button'
+					}
+				);
+
 				history.push('/');
 			} catch (e) {
 				console.error('Error: ', e);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.TrackEvent,
+					AnalyticsTrackEventsEnum.UpdatedServerErrorName,
+					{
+						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+						action: 'submitted manage server form',
+						actionSubject: 'button',
+						error: e
+					}
+				);
+
 				setIsLoading(false);
 			}
 		}

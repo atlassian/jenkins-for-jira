@@ -32,6 +32,13 @@ export enum AnalyticsUiEventsEnum {
 	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState'
 }
 
-export enum AnalyticsTrackEventsEnum {}
+export enum AnalyticsTrackEventsEnum {
+	CreatedJenkinsServerSuccessName = 'createdJenkinsServerSuccess',
+	CreatedJenkinsServerErrorName = 'createdJenkinsServerError',
+	ConnectedJenkinsServerSuccessName = 'connectedJenkinsServerSuccess',
+	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError',
+	UpdatedServerSuccessName = 'updatedServerSuccessName',
+	UpdatedServerErrorName = 'updatedServerErrorName'
+}
 
 export enum AnalyticsOperationalEventsEnum {}
