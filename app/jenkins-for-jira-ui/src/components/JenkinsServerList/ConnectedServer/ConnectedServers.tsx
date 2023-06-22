@@ -129,7 +129,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedManageConnection',
+				action: 'clicked manage connection',
 				actionSubject: 'button',
 				serverName
 			}
@@ -203,7 +203,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerModalClosedConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked cancel or disconnected server',
+				action: 'dismissed the modal',
 				actionSubject: 'button'
 			}
 		);

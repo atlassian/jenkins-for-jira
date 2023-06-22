@@ -30,7 +30,7 @@ const EmptyStateJenkins = () => {
 			AnalyticsUiEventsEnum.ConnectJenkinsServerEmptyStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationEmptyStateScreenName,
-				action: 'clickedConnectJenkinsServerEmptyState',
+				action: 'clicked Connect Jenkins server empty state',
 				actionSubject: 'button'
 			}
 		);
