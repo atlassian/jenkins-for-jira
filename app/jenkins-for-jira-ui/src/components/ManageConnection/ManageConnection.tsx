@@ -44,7 +44,7 @@ const ManageConnection = () => {
 			AnalyticsUiEventsEnum.NavigateBackManageJenkinsConnectionName,
 			{
 				source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-				action: 'clicked back',
+				action: 'clicked back manage connection',
 				actionSubject: 'button'
 			}
 		);
@@ -123,8 +123,8 @@ const ManageConnection = () => {
 					AnalyticsTrackEventsEnum.UpdatedServerSuccessName,
 					{
 						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-						action: 'submitted manage server form',
-						actionSubject: 'button'
+						action: 'submitted manage server form success',
+						actionSubject: 'form'
 					}
 				);
 
@@ -137,8 +137,8 @@ const ManageConnection = () => {
 					AnalyticsTrackEventsEnum.UpdatedServerErrorName,
 					{
 						source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
-						action: 'submitted manage server form',
-						actionSubject: 'button',
+						action: 'submitted manage server form error',
+						actionSubject: 'form',
 						error: e
 					}
 				);

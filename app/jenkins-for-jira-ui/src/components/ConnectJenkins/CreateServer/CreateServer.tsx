@@ -56,8 +56,8 @@ const CreateServer = () => {
 					AnalyticsTrackEventsEnum.CreatedJenkinsServerSuccessName,
 					{
 						source: AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
-						action: 'submitted create server form',
-						actionSubject: 'button'
+						action: 'submitted create server form success',
+						actionSubject: 'form'
 					}
 				);
 
@@ -70,8 +70,8 @@ const CreateServer = () => {
 					AnalyticsTrackEventsEnum.CreatedJenkinsServerErrorName,
 					{
 						source: AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
-						action: 'submitted create server form',
-						actionSubject: 'button',
+						action: 'submitted create server form error',
+						actionSubject: 'form',
 						error: e
 					}
 				);

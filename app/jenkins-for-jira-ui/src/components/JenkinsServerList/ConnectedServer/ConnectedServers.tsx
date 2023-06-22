@@ -161,7 +161,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked disconnect Jenkins server',
+				action: 'clicked disconnect Jenkins server configured state',
 				actionSubject: 'button'
 			}
 		);
@@ -207,7 +207,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.DisconnectServerConfirmConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clicked disconnect',
+				action: 'clicked disconnect confirm',
 				actionSubject: 'button'
 			}
 		);

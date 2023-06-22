@@ -69,8 +69,8 @@ const ConnectJenkins = () => {
 					AnalyticsTrackEventsEnum.ConnectedJenkinsServerSuccessName,
 					{
 						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-						action: 'submitted connect server form',
-						actionSubject: 'button'
+						action: 'submitted connect server form success',
+						actionSubject: 'form'
 					}
 				);
 
@@ -83,8 +83,8 @@ const ConnectJenkins = () => {
 					AnalyticsTrackEventsEnum.ConnectedJenkinsServerErrorName,
 					{
 						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
-						action: 'submitted connect server form',
-						actionSubject: 'button',
+						action: 'submitted connect server form error',
+						actionSubject: 'form',
 						error: e
 					}
 				);
