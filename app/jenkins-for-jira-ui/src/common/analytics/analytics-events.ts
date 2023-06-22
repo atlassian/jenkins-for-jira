@@ -40,4 +40,5 @@ export enum AnalyticsTrackEventsEnum {
 	UpdatedServerSuccessName = 'updatedServerSuccessName',
 	UpdatedServerErrorName = 'updatedServerErrorName'
 }
+
 export enum AnalyticsOperationalEventsEnum {}
