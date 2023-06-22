@@ -129,7 +129,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
-				action: 'clickedManageConnection',
+				action: 'clicked manage connection',
 				actionSubject: 'button',
 				serverName
 			}
