@@ -4,12 +4,34 @@ interface AnalyticsAttributes {
 	[key: string]: any;
 }
 
+interface UserType {
+	ATLASSIAN_ACCOUNT: string,
+	HASHED_EMAIL: string,
+	TRELLO: string,
+	OPSGENIE: string,
+	HALP: string
+}
+
+interface TenantType {
+	CLOUD_ID: string,
+	HALP_TEAM_ID: string,
+	NONE: string,
+	OPSGENIE_CUSTOMER_ID: string,
+	ORG_ID: string,
+	TRELLO_WORKSPACE_ID: string
+}
+
 enum EnvType {
 	LOCAL = 'local',
-	DEV = 'development',
+	DEV = 'dev',
 	STAGING = 'staging',
-	PROD = 'production'
+	PROD = 'prod'
 }
+
+const isProductionEnv = (): boolean => {
+	const env = (process.env.NODE_ENV || '').toLowerCase();
+	return ['production', 'prod'].includes(env);
+};
 
 export class AnalyticsClient {
 	private analyticsWebClient: any;
@@ -31,7 +53,7 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || (process.env.NODE_ENV as EnvType) !== EnvType.PROD) {
+		if (!isAnalyticsPackageInstalled || isProductionEnv()) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
@@ -84,6 +106,7 @@ export class AnalyticsClient {
 		siteUrl: string | undefined,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
+		console.log('this.analyticsWebClient', this.analyticsWebClient);
 		switch (eventType) {
 			case 'screen':
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
@@ -125,12 +148,12 @@ export class AnalyticsClient {
 		}
 	}
 
-	private getContext(userType?: any, tenantType?: any): Promise<any> {
+	private getContext(userType?: UserType, tenantType?: TenantType): Promise<any> {
 		return new Promise((resolve, reject) => {
 			view.getContext().then((ctx) => {
 				const { cloudId, accountId, siteUrl } = ctx as any;
 
-				if (this.analyticsWebClient) {
+				if (this.analyticsWebClient && userType && tenantType) {
 					this.analyticsWebClient.setTenantInfo?.(tenantType.CLOUD_ID, cloudId);
 					this.analyticsWebClient.setUserInfo?.(userType.ATLASSIAN_ACCOUNT, accountId);
 					this.analyticsWebClient.siteUrl = siteUrl;
