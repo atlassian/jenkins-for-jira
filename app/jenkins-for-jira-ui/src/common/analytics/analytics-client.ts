@@ -28,9 +28,9 @@ enum EnvType {
 	PROD = 'prod'
 }
 
-const isProductionEnv = (): boolean => {
+const isNotProductionEnv = (): boolean => {
 	const env = (process.env.NODE_ENV || '').toLowerCase();
-	return ['production', 'prod'].includes(env);
+	return !['production', 'prod'].includes(env);
 };
 
 export class AnalyticsClient {
@@ -53,7 +53,7 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || isProductionEnv()) {
+		if (!isAnalyticsPackageInstalled || isNotProductionEnv()) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}
@@ -106,7 +106,6 @@ export class AnalyticsClient {
 		siteUrl: string | undefined,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-		console.log('this.analyticsWebClient', this.analyticsWebClient);
 		switch (eventType) {
 			case 'screen':
 				return (this.analyticsWebClient as any)?.sendScreenEvent?.({
