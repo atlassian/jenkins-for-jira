@@ -6,9 +6,9 @@ interface AnalyticsAttributes {
 
 enum EnvType {
 	LOCAL = 'local',
-	DEV = 'dev',
+	DEV = 'development',
 	STAGING = 'staging',
-	PROD = 'prod'
+	PROD = 'production'
 }
 
 export class AnalyticsClient {
