@@ -8,41 +8,52 @@ export enum AnalyticsEventTypes {
 }
 
 export enum AnalyticsScreenEventsEnum {
-	ConfigurationEmptyStateScreenName = 'configurationEmptyStateScreen',
-	ConfigurationConfiguredStateScreenName = 'configurationConfiguredStateScreen',
-	InstallJenkinsScreenName = 'installJenkinsScreen',
-	CreateJenkinsServerScreenName = 'createJenkinsServerScreen',
-	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen',
-	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen'
+	ConfigurationEmptyStateScreenName = 'configurationEmptyStateScreen', // DONE
+	ConfigurationConfiguredStateScreenName = 'configurationConfiguredStateScreen', // DONE
+	InstallJenkinsScreenName = 'installJenkinsScreen', // DONE
+	CreateJenkinsServerScreenName = 'createJenkinsServerScreen', // DONE
+	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen', // DONE
+	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen' // DONE
 }
 
 export enum AnalyticsUiEventsEnum {
-	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState',
-	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState',
-	LearnMoreEmptyStateName = 'learnMoreEmptyState',
-	NextInstallJenkinsName = 'nextInstallJenkins',
-	RefreshSecretConnectJenkinsServerName = 'refreshSecretConnectJenkinsServer',
-	RefreshSecretCancelConnectJenkinsServerName = 'refreshSecretCancelConnectJenkinsServer',
-	RefreshSecretConfirmConnectJenkinsServerName = 'refreshSecretConfirmConnectJenkinsServer',
-	ManageConnectionConfiguredStateName = 'manageConnectionConfiguredState',
+	ConnectJenkinsServerEmptyStateName = 'connectJenkinsServerEmptyState', // DONE
+	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState', // DONE
+	LearnMoreEmptyStateName = 'learnMoreEmptyState', // DONE
+	NextInstallJenkinsName = 'nextInstallJenkins', // DONE
+	CreateJenkinsServerName = 'createJenkinsServer',
+	RefreshSecretConnectJenkinsServerName = 'refreshSecretConnectJenkinsServer', // DONE
+	RefreshSecretCancelConnectJenkinsServerName = 'refreshSecretCancelConnectJenkinsServer', // DONE
+	RefreshSecretConfirmConnectJenkinsServerName = 'refreshSecretConfirmConnectJenkinsServer', // DONE,
+	RefreshSecretManageJenkinsServerName = 'refreshSecretManageJenkinsServer',
+	RefreshSecretCancelManageJenkinsServerName = 'refreshSecretCancelManageJenkinsServer',
+	RefreshSecretConfirmManageJenkinsServerName = 'refreshSecretConfirmManageJenkinsServer',
+	ConnectJenkinsServerName = 'connectJenkinsServer',
+	ManageConnectionConfiguredStateName = 'manageConnectionConfiguredState', // DONE,
+	ManageConnectionHelpLinkName = 'manageConnectionHelpLink',
 	NavigateBackManageJenkinsConnectionName = 'navigateBackManageJenkinsConnections',
-	PendingDeploymentConfiguredStateName = 'pendingDeploymentConfiguredStateName',
-	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState',
-	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
-	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState'
+	PendingDeploymentConfiguredStateName = 'pendingDeploymentConfiguredStateName', // DONE,
+	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState', // DONE,
+	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState', // DONE,
+	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState' // DONE,
 }
 
 export enum AnalyticsTrackEventsEnum {
-	CreatedJenkinsServerSuccessName = 'createdJenkinsServerSuccess',
-	CreatedJenkinsServerErrorName = 'createdJenkinsServerError',
-	ConnectedJenkinsServerSuccessName = 'connectedJenkinsServerSuccess',
-	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError',
-	UpdatedServerSuccessName = 'updatedServerSuccessName',
-	UpdatedServerErrorName = 'updatedServerErrorName',
-	GetServerSuccessManageConnectionName = 'getServerManageSuccessConnection',
-	GetServerErrorManageConnectionName = 'getServerErrorManageConnection',
-	DisconnectServerSuccessServerManageConnectionName = 'disconnectedServerSuccessManageConnection',
-	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection'
+	CreatedJenkinsServerSuccessName = 'createdJenkinsServerSuccess', // DONE
+	CreatedJenkinsServerErrorName = 'createdJenkinsServerError', // DONE
+	ConnectedJenkinsServerSuccessName = 'connectedJenkinsServerSuccess', // DONE,
+	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError', // DONE,
+	UpdatedServerSuccessName = 'updatedServerSuccessName', // DONE,
+	UpdatedServerErrorName = 'updatedServerErrorName', // DONE,
+	GetServerSuccessManageConnectionName = 'getServerSuccessManageConnection', // DONE,
+	GetServerErrorManageConnectionName = 'getServerErrorManageConnection', // DONE,
+	GetServerSuccessJenkinsConfigurationName = 'getServerSuccessJenkinsConfiguration',
+	GetServerErrorJenkinsConfigurationName = 'getServerErrorJenkinsConfiguration',
+	DisconnectServerSuccessServerManageConnectionName = 'disconnectedServerSuccessManageConnection', // DONE,
+	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection', // DONE,
+	TotalNumberJenkinsServersName = 'totalNumberJenkinsServers',
+	TotalNumberOfServersWithPipelines = 'totalNumberOfServersWithPipelines',
+	TotalNumberOfServersWithoutPipelines = 'totalNumberOfServersWithoutPipelines'
 }
 
 export enum AnalyticsOperationalEventsEnum {}

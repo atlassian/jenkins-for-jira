@@ -12,7 +12,7 @@ import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
-	AnalyticsTrackEventsEnum
+	AnalyticsTrackEventsEnum, AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
@@ -57,6 +57,16 @@ const ConnectJenkins = () => {
 			// Pass in empty pipelines. The update function will retrieve the latest pipelines
 			// This prevents out of date pipelines overwriting the latest version
 			try {
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.UiEvent,
+					AnalyticsUiEventsEnum.ConnectJenkinsServerName,
+					{
+						source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+						action: 'clicked Connect',
+						actionSubject: 'button'
+					}
+				);
+
 				await updateJenkinsServer({
 					name: serverName,
 					uuid,
@@ -94,12 +104,14 @@ const ConnectJenkins = () => {
 		}
 	};
 
+	const pageTitle = 'Connect Jenkins to your Jira site';
+
 	return (
 		<StyledInstallationContainer>
 			<ConfigurationSteps currentStage={'connect'} />
 			<ConnectLogos />
 
-			<StyledH1>Connect Jenkins to your Jira site</StyledH1>
+			<StyledH1></StyledH1>
 
 			{webhookUrl && secret
 				? <>
@@ -118,6 +130,7 @@ const ConnectJenkins = () => {
 							errorMessage={errorMessage}
 							setHasError={setHasError}
 							isLoading={isLoading}
+							pageTitle={pageTitle}
 						/>
 					</StyledInstallationContent>
 				</>
