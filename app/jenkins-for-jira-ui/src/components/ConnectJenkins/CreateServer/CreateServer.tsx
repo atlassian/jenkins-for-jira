@@ -19,7 +19,8 @@ import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
-	AnalyticsTrackEventsEnum, AnalyticsUiEventsEnum
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 
 const analyticsClient = new AnalyticsClient();

@@ -12,7 +12,8 @@ import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
-	AnalyticsTrackEventsEnum, AnalyticsUiEventsEnum
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
@@ -111,7 +112,7 @@ const ConnectJenkins = () => {
 			<ConfigurationSteps currentStage={'connect'} />
 			<ConnectLogos />
 
-			<StyledH1></StyledH1>
+			<StyledH1>{pageTitle}</StyledH1>
 
 			{webhookUrl && secret
 				? <>
