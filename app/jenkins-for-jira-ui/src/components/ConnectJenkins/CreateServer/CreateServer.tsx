@@ -19,7 +19,8 @@ import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
-	AnalyticsTrackEventsEnum
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 
 const analyticsClient = new AnalyticsClient();
@@ -39,6 +40,16 @@ const CreateServer = () => {
 	}, []);
 
 	const onSubmitCreateServer = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.CreateJenkinsServerName,
+			{
+				source: AnalyticsScreenEventsEnum.CreateJenkinsServerScreenName,
+				action: 'clicked Create',
+				actionSubject: 'button'
+			}
+		);
+
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();

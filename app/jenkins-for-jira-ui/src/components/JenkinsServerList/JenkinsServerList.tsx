@@ -22,7 +22,7 @@ const JenkinsServerList = (): JSX.Element => {
 	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const fetchAllJenkinsServers = async () => {
-		const servers = await getAllJenkinsServers();
+		const servers = await getAllJenkinsServers() || [];
 		setJenkinsServers(servers);
 	};
 

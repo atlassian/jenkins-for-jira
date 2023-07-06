@@ -23,6 +23,7 @@ describe('JenkinsConfigurationForm Suite', () => {
 					hasError={false}
 					setHasError={setHasError}
 					isLoading={false}
+					pageTitle="My Jenkins screen"
 				/>
 			);
 
@@ -44,6 +45,7 @@ describe('JenkinsConfigurationForm Suite', () => {
 					hasError={false}
 					setHasError={setHasError}
 					isLoading={true}
+					pageTitle="My Jenkins screen"
 				/>
 			);
 

@@ -47,6 +47,7 @@ type JenkinsConfigurationFormProps = {
 	errorMessage?: string;
 	setHasError: (error: boolean) => boolean | void;
 	isLoading: boolean;
+	pageTitle: string;
 };
 
 const JenkinsConfigurationForm = ({
@@ -60,22 +61,31 @@ const JenkinsConfigurationForm = ({
 	hasError,
 	errorMessage,
 	setHasError,
-	isLoading
+	isLoading,
+	pageTitle
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
+	const isOnManageConnectPage = pageTitle.includes('Manage');
+	const analyticsSourcePage = isOnManageConnectPage
+		? AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
+		: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName;
 
 	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		setSecret(generateNewSecret());
 		setShowConfirmRefreshSecret(false);
 
+		const analyticsUiEvent = isOnManageConnectPage
+			? AnalyticsUiEventsEnum.RefreshSecretConfirmManageJenkinsServerName
+			: AnalyticsUiEventsEnum.RefreshSecretConfirmConnectJenkinsServerName;
+
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.RefreshSecretConfirmConnectJenkinsServerName,
+			analyticsUiEvent,
 			{
-				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				source: analyticsSourcePage,
 				action: 'clicked refresh confirm',
 				actionSubject: 'button'
 			}
@@ -85,11 +95,15 @@ const JenkinsConfigurationForm = ({
 	const closeConfirmRefreshSecret = () => {
 		setShowConfirmRefreshSecret(false);
 
+		const analyticsUiEvent = isOnManageConnectPage
+			? AnalyticsUiEventsEnum.RefreshSecretCancelManageJenkinsServerName
+			: AnalyticsUiEventsEnum.RefreshSecretCancelConnectJenkinsServerName;
+
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.RefreshSecretCancelConnectJenkinsServerName,
+			analyticsUiEvent,
 			{
-				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				source: analyticsSourcePage,
 				action: 'clicked refresh cancel',
 				actionSubject: 'button'
 			}

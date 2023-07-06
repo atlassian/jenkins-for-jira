@@ -13,18 +13,36 @@ import {
 } from './PendingDeploymentState.styles';
 import { JenkinsIcon } from '../../icons/JenkinsIcon';
 import { getJenkinsServerWithSecret } from '../../../api/getJenkinsServerWithSecret';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 interface ParamTypes {
 	id: string;
 	name: string;
 }
 
+const analyticsClient = new AnalyticsClient();
+
 const PendingDeploymentState = () => {
 	const history = useHistory();
 	const [serverName, setServerName] = useState('');
 	const { id: jenkinsServerUuid } = useParams<ParamTypes>();
 
-	const onClickManage = () => {
+	const onClickManage = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ManageConnectionPendingStateName,
+			{
+				source: AnalyticsScreenEventsEnum.PendingDeploymentStateScreenName,
+				action: 'clicked Manage connection',
+				actionSubject: 'button'
+			}
+		);
+
 		history.push(`/manage/${jenkinsServerUuid}`);
 	};
 
@@ -35,6 +53,11 @@ const PendingDeploymentState = () => {
 
 	useEffect(() => {
 		getServer();
+
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.PendingDeploymentStateScreenName
+		);
 	}, [getServer, jenkinsServerUuid]);
 
 	return (
