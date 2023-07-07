@@ -17,7 +17,7 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        working-directory: ./subdirectory
+        working-directory: /app
 #      - run:
 #      - name: Run tests
 #        run: yarn test
