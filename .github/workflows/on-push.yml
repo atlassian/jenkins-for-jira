@@ -16,7 +16,9 @@ jobs:
       - uses: volta-cli/action@v4
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          pwd
+          yarn install --frozen-lockfile
         working-directory: /app
 #      - run:
 #      - name: Run tests
