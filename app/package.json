@@ -8,6 +8,7 @@
     "test": "jest",
     "test:coverage": "yarn test --coverage --watchAll=false && open coverage/index.html",
     "lint": "eslint src/**",
+    "lint:all": "eslint src/** && cd jenkins-for-jira-ui && yarn lint",
     "ci": "run-p lint test",
     "prepare": "cd ../ && husky install"
   },
