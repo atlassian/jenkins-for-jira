@@ -19,7 +19,7 @@ jobs:
         run: |
           pwd
           yarn install --frozen-lockfile
-        working-directory: ('**/app')
+        working-directory: ../../app
 #      - run:
 #      - name: Run tests
 #        run: yarn test
