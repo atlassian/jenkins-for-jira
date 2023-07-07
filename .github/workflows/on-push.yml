@@ -12,7 +12,11 @@ jobs:
   unit-test-backend:
     runs-on: ubuntu-22.04
     steps:
-      - run: cd **/app
+      - name: Change to app/ directory
+        run: |
+          pwd
+          cd app
+          pwd
       - uses: actions/checkout@v1
       - uses: volta-cli/action@v4
       - uses: actions/cache@v2
