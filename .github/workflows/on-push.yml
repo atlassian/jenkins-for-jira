@@ -25,7 +25,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v1
-      - uses: volta-cli/action@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
