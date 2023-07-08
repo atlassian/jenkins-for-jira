@@ -31,7 +31,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --frozen-lockfile
-      - working-directory: app/jenkins-for-jira-ui
+        working-directory: app/jenkins-for-jira-ui
 
       - name: Run tests
         run: yarn test
