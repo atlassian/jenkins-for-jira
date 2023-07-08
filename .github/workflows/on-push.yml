@@ -20,6 +20,7 @@ jobs:
         working-directory: app
       - name: Run tests
         run: yarn test
+        working-directory: app
 
   unit-test-frontend:
     runs-on: ubuntu-22.04
@@ -32,4 +33,5 @@ jobs:
         working-directory: app/jenkins-for-jira-ui
       - name: Run tests
         run: yarn test
+        working-directory: app/jenkins-for-jira-ui
 
