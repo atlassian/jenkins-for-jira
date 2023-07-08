@@ -16,24 +16,20 @@ jobs:
       - uses: volta-cli/action@v4
 
       - name: Install dependencies
-        run: |
-          pwd
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
         working-directory: app
-#      - run:
-#      - name: Run tests
-#        run: yarn test
+      - name: Run tests
+        run: yarn test
 
   unit-test-frontend:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v1
       - uses: volta-cli/action@v4
-      - uses: actions/cache@v2
-        with:
-          path: '**/app/jenkins-for-jira-ui/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install --frozen-lockfile
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: app/jenkins-for-jira-ui
       - name: Run tests
         run: yarn test
 
