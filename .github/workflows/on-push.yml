@@ -32,9 +32,8 @@ jobs:
       - uses: volta-cli/action@v4
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --ignore-optional
         working-directory: app/jenkins-for-jira-ui
       - name: Run tests
         run: yarn test
         working-directory: app/jenkins-for-jira-ui
-
