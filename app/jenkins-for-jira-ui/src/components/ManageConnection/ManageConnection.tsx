@@ -99,7 +99,7 @@ const ManageConnection = () => {
 
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.TrackEvent,
-				AnalyticsTrackEventsEnum.GetServerSuccessManageConnectionName,
+				AnalyticsTrackEventsEnum.GetServerErrorManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
 					error: e
