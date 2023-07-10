@@ -102,7 +102,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/button@^16.5.0", "@atlaskit/button@^16.7.0":
+"@atlaskit/button@^16.5.0":
   version "16.8.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/button/-/button-16.8.0.tgz#85afd61b219f4a6b25524e61f9ca3da769a438b7"
   integrity sha512-QYN3wfhM63Ih26szIpN11VCWmu8RWXzT9Ezz9b+7yZ8MdU5vaqvgLmc23FLK04BUdJ8/UuAO3pp5D7X//0jUuA==
@@ -181,18 +181,19 @@
     "@babel/runtime" "^7.0.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/dynamic-table@14.5.5":
-  version "14.5.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/dynamic-table/-/dynamic-table-14.5.5.tgz#045938ac2b09062ef8172b68a63cc8233e186899"
-  integrity sha512-zfzPsG81Tc3KA4AqxOFtQiS/wiJsp/Nj8+5lrVh3MTf1xaA+dFYO1/+bWiFafmIp5zjEuf18/NX+HPEHGqPJQg==
+"@atlaskit/dynamic-table@14.11.1":
+  version "14.11.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.11.1.tgz#311dee3bdb1377899903537ea6581837a6c3fa06"
+  integrity sha512-/tDdpvTPWwNGsbAguBQ1VVEGvdwTBCDYQnMLoHxa/JmuEAhVza4WUN18DA0/DZIO9IWI+DbMgdWtmjf2VzL0QA==
   dependencies:
-    "@atlaskit/analytics-next" "^8.0.0"
-    "@atlaskit/pagination" "^14.0.0"
-    "@atlaskit/spinner" "^15.0.0"
-    "@atlaskit/theme" "^12.1.0"
-    "@atlaskit/tokens" "^0.10.0"
+    "@atlaskit/analytics-next" "^9.1.0"
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/pagination" "^14.4.0"
+    "@atlaskit/spinner" "^15.5.0"
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.11.0"
     "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
+    "@emotion/react" "^11.7.1"
     react-beautiful-dnd "^12.1.1"
 
 "@atlaskit/empty-state@7.4.8":
@@ -336,18 +337,18 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/pagination@^14.0.0":
-  version "14.4.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/pagination/-/pagination-14.4.3.tgz#241405bdcd6a214793599c1a66d5e448b7df77f4"
-  integrity sha512-SxXmcaup4Z6KkTgoRi4jrov8P0m11d9pf3mbdBeY714bfyA1TmOmchIn4d8PZly8uh89Jgl8p3aGNswgF9iDEQ==
+"@atlaskit/pagination@^14.4.0":
+  version "14.4.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/pagination/-/pagination-14.4.9.tgz#092521ee940c0bc805ee04e9d2e1ec45f520a071"
+  integrity sha512-r8HjrLev5muE+gsKAmyJ/zW4q5fDDghiSmq/OQES4hZU0WsyfBptZLmBb4trvQaUMSaAvzQyWL+uL+JIgwmu7A==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
-    "@atlaskit/button" "^16.7.0"
+    "@atlaskit/button" "^16.8.0"
     "@atlaskit/codemod-utils" "^4.2.0"
     "@atlaskit/ds-explorations" "^2.2.0"
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/icon" "^21.12.0"
-    "@atlaskit/primitives" "^0.12.0"
+    "@atlaskit/primitives" "^1.0.0"
     "@babel/runtime" "^7.0.0"
     memoize-one "^6.0.0"
 
@@ -400,18 +401,6 @@
     "@atlaskit/theme" "^12.5.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/primitives@^0.12.0":
-  version "0.12.6"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/primitives/-/primitives-0.12.6.tgz#4e0ce877d8ff91e632e174c82f9f7893b31fb0eb"
-  integrity sha512-ZTqDLc3lP5Z8s/bXHDEEr028cC+w/VTnF+PazP9w5a8yM7+p4XKKSWiwh0EnSlLeeHX3fb+s2GKs/5YlgQf/Iw==
-  dependencies:
-    "@atlaskit/ds-lib" "^2.2.0"
-    "@atlaskit/tokens" "^1.8.0"
-    "@babel/runtime" "^7.0.0"
-    "@emotion/react" "^11.7.1"
-    "@emotion/serialize" "^1.1.0"
-    bind-event-listener "^2.1.1"
-
 "@atlaskit/primitives@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/primitives/-/primitives-1.0.0.tgz#68e98aaf68e7bfbfca7dd0abc1e8bd7b4fb5db65"
@@ -444,7 +433,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/spinner@^15.0.0", "@atlaskit/spinner@^15.3.0", "@atlaskit/spinner@^15.5.0":
+"@atlaskit/spinner@^15.3.0", "@atlaskit/spinner@^15.5.0":
   version "15.5.2"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/spinner/-/spinner-15.5.2.tgz#b251a324ebd792c25ff286834f71df6f966ea1c5"
   integrity sha512-7NVBCut1gd5ddyQwwBuWI44zGMNA9hj4by3jVqRKez57VOh4NCvZcxI7BcBehPomRQp4YnBE0Ueib2k//BvEmA==
