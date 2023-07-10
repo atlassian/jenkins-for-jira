@@ -266,14 +266,16 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/logo@13.5.5":
-  version "13.5.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/logo/-/logo-13.5.5.tgz#f07e1469b0c5af1e8f2d44261456f40789dd60b2"
-  integrity sha512-KCvwWrkLEPaTYcji+8s/mG+yRyaBo1eeMRXlzVUTSATuelT1xyClUSM14QR3B1Oos5LzS5VRyfHvYtv+Jg19ow==
+"@atlaskit/logo@13.14.7":
+  version "13.14.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-13.14.7.tgz#a1500f87b4e8739ecf94ad835dad9e5359ec6d63"
+  integrity sha512-cp+b8XKz52MTovzDYx64EYRCuH+SZRKIq9h/lEGupOevwKibZexrkHRmr8tAolWZuaTNus00PAOg9xZsxaUoPw==
   dependencies:
-    "@atlaskit/ds-lib" "^1.4.0"
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.5.0"
     "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
+    "@emotion/react" "^11.7.1"
     react-uid "^2.2.0"
 
 "@atlaskit/menu@^1.9.0":
