@@ -18,7 +18,7 @@
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.2",
     "@types/jest-when": "3.5.2",
     "@types/jsonwebtoken": "8.5.9",
     "@typescript-eslint/eslint-plugin": "5.27.1",
