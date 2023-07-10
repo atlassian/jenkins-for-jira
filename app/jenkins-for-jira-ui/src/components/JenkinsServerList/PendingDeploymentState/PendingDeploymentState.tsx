@@ -38,7 +38,7 @@ const PendingDeploymentState = () => {
 			AnalyticsUiEventsEnum.ManageConnectionPendingStateName,
 			{
 				source: AnalyticsScreenEventsEnum.PendingDeploymentStateScreenName,
-				action: 'clicked Manage connection',
+				action: 'clicked Manage connection pending deployment',
 				actionSubject: 'button'
 			}
 		);

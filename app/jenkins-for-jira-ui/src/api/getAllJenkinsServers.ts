@@ -19,9 +19,9 @@ const sendJenkinsServersAnalytics = async (jenkinsServers: JenkinsServer[]): Pro
 	);
 
 	const totalNumberOfServers = jenkinsServers.length;
-	const totalNumberOfServersWithPipelines = jenkinsServers.filter((server: JenkinsServer) =>
-		server.pipelines.length === 0).length;
 	const totalNumberOfServersWithoutPipelines = jenkinsServers.filter((server: JenkinsServer) =>
+		server.pipelines.length === 0).length;
+	const totalNumberOfServersWithPipelines = jenkinsServers.filter((server: JenkinsServer) =>
 		server.pipelines.length > 0).length;
 
 	await analyticsClient.sendAnalytics(
@@ -56,7 +56,16 @@ const getAllJenkinsServers = async (): Promise<JenkinsServer[]> => {
 	try {
 		const jenkinsServers = await invoke('getAllJenkinsServers') as JenkinsServer[];
 
-		sendJenkinsServersAnalytics(jenkinsServers);
+		if (jenkinsServers.length) {
+			sendJenkinsServersAnalytics(jenkinsServers);
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.GetServerSuccessManageConnectionName,
+				{
+					source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName
+				}
+			);
+		}
 
 		return jenkinsServers;
 	} catch (e) {
