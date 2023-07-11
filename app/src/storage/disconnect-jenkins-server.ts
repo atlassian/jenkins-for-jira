@@ -3,7 +3,7 @@ import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
 import { log } from '../analytics-logger';
-import { metricSuccess } from '../common/metric-names';
+import { metricError, metricSuccess } from '../common/metric-names';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {
 	try {
@@ -15,6 +15,7 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 		return true;
 	} catch (error) {
 		console.error('Failed to delete jenkins server configuration', error);
+		internalMetrics.counter(metricError.disconnectJenkinsServerError).incr();
 		throw new JenkinsServerStorageError('Failed to delete jenkins server configuration');
 	}
 };
