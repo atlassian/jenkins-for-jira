@@ -6,13 +6,16 @@ export const pendingDeploymentContainer = css`
 	align-items: center;
 	text-align: center;
 	padding-top: 100px;
-	width: 660px;
 	height: 448px;
 	margin: 0 auto;
 
 	button {
 		max-width: 157px;
 	}
+`;
+
+export const pendingDeploymentInnerContainer = css`
+	width: 660px;
 `;
 
 export const subheadingText = css`
