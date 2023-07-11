@@ -56,8 +56,7 @@ export class AnalyticsClient {
 		eventName: string,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-		const isAnalyticsPackageInstalled =
-			isProductionEnv() && await AnalyticsClient.checkIfAnalyticsPackageInstalled();
+		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
 		if (!isAnalyticsPackageInstalled || isNotProductionEnv()) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
@@ -99,7 +98,7 @@ export class AnalyticsClient {
 
 	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {
 		try {
-			const analyticsWebClient = await import('@atlassiansox/analytics-web-client');
+			const analyticsWebClient = isProductionEnv() && await import('@atlassiansox/analytics-web-client');
 			return analyticsWebClient;
 		} catch (error) {
 			return false;
