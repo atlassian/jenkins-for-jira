@@ -6,6 +6,7 @@ import {
 	AnalyticsTrackEventsEnum
 } from '../common/analytics/analytics-events';
 import { AnalyticsClient } from '../common/analytics/analytics-client';
+import { log } from '../common/logger/client-logger';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -67,9 +68,11 @@ const getAllJenkinsServers = async (): Promise<JenkinsServer[]> => {
 			);
 		}
 
+		log({ eventType: 'getAllJenkinsServersSucess' });
 		return jenkinsServers;
 	} catch (e) {
 		console.error('Failed to get Jenkins servers', e);
+		log({ eventType: 'getAllJenkinsServersError', data: { error: e } });
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.TrackEvent,
