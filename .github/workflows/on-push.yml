@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: yarn install
+      - run: yarn install --ignore-optional
         working-directory: app/jenkins-for-jira-ui
 
       - name: Run tests
