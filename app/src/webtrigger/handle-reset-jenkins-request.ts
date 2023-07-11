@@ -30,7 +30,7 @@ async function handleResetJenkinsRequest(
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
 			const cloudId = extractCloudId(context.installContext);
 			await resetJenkinsServer(cloudId, jenkinsRequest.data?.excludeUuid);
-			internalMetrics.counter(metricSuccess.resetJenkins).incr();
+			internalMetrics.counter(metricSuccess.resetJenkinsRequest).incr();
 			return createWebtriggerResponse(200, '{"success": true}');
 		}
 
