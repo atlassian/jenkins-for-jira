@@ -35,6 +35,7 @@ const isNotProductionEnv = (): boolean => {
 
 const isProductionEnv = (): boolean => {
 	const env = (process.env.NODE_ENV || '').toLowerCase();
+	console.log('ENV', env);
 	return ['production', 'prod'].includes(env);
 };
 
@@ -98,7 +99,14 @@ export class AnalyticsClient {
 
 	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {
 		try {
-			const analyticsWebClient = isProductionEnv() && await import('@atlassiansox/analytics-web-client');
+			let analyticsWebClient;
+			console.log('checkIfAnalyticsPackageInstalled');
+
+			if (isProductionEnv()) {
+				console.log('in here');
+				analyticsWebClient = await import('@atlassiansox/analytics-web-client');
+			}
+
 			return analyticsWebClient;
 		} catch (error) {
 			return false;
