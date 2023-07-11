@@ -30,12 +30,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - uses: actions/checkout@v1
-      - run: yarn install --frozen-lockfile
+      - run: yarn install
         working-directory: app/jenkins-for-jira-ui
 
       - name: Run tests

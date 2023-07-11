@@ -53,7 +53,7 @@ export class AnalyticsClient {
 	): Promise<void> {
 		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
-		if (!isAnalyticsPackageInstalled || !isNotProductionEnv()) {
+		if (!isAnalyticsPackageInstalled || isNotProductionEnv()) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
 			return;
 		}

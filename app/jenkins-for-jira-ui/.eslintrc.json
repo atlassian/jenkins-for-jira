@@ -85,7 +85,8 @@
 					":": "before"
 				}
 			}
-		]
+		],
+		"import/no-extraneous-dependencies": "warn" // Changed from error to warning so we can install @atlassiansox/analytics-web-client as an optionalDependency
 	},
 	"settings": {
 		"import/parsers": {
