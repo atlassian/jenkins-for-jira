@@ -15,7 +15,6 @@ function handleWebtriggerError(request: WebtriggerRequest, error: any): Webtrigg
 	// In case of an unexpected error, we want to bubble up the error so that Forge recognizes the invocation as
 	// failed and it shows up in the metrics.
 	// eslint-disable-next-line no-console
-	internalMetrics.counter(metricError.notJiraAdminError).incr();
 	console.error(`unexpected error during webtrigger invocation: ${error.message}`);
 	throw error;
 }
