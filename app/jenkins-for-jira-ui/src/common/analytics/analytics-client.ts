@@ -33,6 +33,11 @@ const isNotProductionEnv = (): boolean => {
 	return !['production', 'prod'].includes(env);
 };
 
+const isProductionEnv = (): boolean => {
+	const env = (process.env.NODE_ENV || '').toLowerCase();
+	return ['production', 'prod'].includes(env);
+};
+
 export class AnalyticsClient {
 	private analyticsWebClient: any;
 
@@ -51,7 +56,8 @@ export class AnalyticsClient {
 		eventName: string,
 		attributes?: AnalyticsAttributes
 	): Promise<void> {
-		const isAnalyticsPackageInstalled = await AnalyticsClient.checkIfAnalyticsPackageInstalled();
+		const isAnalyticsPackageInstalled =
+			isProductionEnv() && await AnalyticsClient.checkIfAnalyticsPackageInstalled();
 
 		if (!isAnalyticsPackageInstalled || isNotProductionEnv()) {
 			console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
