@@ -3,7 +3,7 @@ import { storage } from '@forge/api';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { metricError, metricSuccess } from '../common/metric-names';
+import { metricSuccess } from '../common/metric-names';
 
 export const updatePipelines = (
 	index: number,
@@ -53,7 +53,6 @@ async function updateJenkinsServerState(
 			`Failed to update Jenkins server uuid ${uuid} with pipeline ${JSON.stringify(pipelineToUpdate)}`,
 			error
 		);
-		internalMetrics.counter(metricError.updateJenkinsServerStateError).incr();
 		throw error;
 	}
 }
