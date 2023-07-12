@@ -131,7 +131,6 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
 				action: 'clicked manage connection',
 				actionSubject: 'button',
-				serverName
 			}
 		);
 
