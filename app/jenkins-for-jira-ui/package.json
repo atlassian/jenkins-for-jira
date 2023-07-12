@@ -9,7 +9,7 @@
   "dependencies": {
     "@atlaskit/avatar": "20.5.10",
     "@atlaskit/button": "16.8.1",
-    "@atlaskit/css-reset": "6.3.20",
+    "@atlaskit/css-reset": "6.3.21",
     "@atlaskit/dropdown-menu": "11.10.4",
     "@atlaskit/dynamic-table": "14.11.1",
     "@atlaskit/empty-state": "7.4.8",

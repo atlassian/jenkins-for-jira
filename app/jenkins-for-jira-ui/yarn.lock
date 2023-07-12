@@ -125,13 +125,13 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/css-reset@6.3.20":
-  version "6.3.20"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/css-reset/-/css-reset-6.3.20.tgz#712e376614fb69a6663c753f608d61ae7c157236"
-  integrity sha512-KBhiuRbSbDhtJbv/6QksLSSYpfo9z3a3YhsuXAkTATmco3woLZYNoRpwYI3lF0xDQUc+2JNlAv+lIpqqnkEkZg==
+"@atlaskit/css-reset@6.3.21":
+  version "6.3.21"
+  resolved "https://registry.yarnpkg.com/@atlaskit/css-reset/-/css-reset-6.3.21.tgz#68202bbaa36ab1e9c9dab41fc5fd15c48d25afdb"
+  integrity sha512-8gGqlytjRDCA1ECiTFCZdGqpaODQYmy+sKCdaY6em3I6UWDtFeAPma44c1WZacWL50N0fqD+R/CLjrjd5yCqZg==
   dependencies:
-    "@atlaskit/theme" "^12.2.0"
-    "@atlaskit/tokens" "^1.0.0"
+    "@atlaskit/theme" "^12.3.0"
+    "@atlaskit/tokens" "^1.2.0"
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
 
@@ -458,7 +458,7 @@
     "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.5.0":
+"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.3.0", "@atlaskit/theme@^12.5.0":
   version "12.5.4"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/theme/-/theme-12.5.4.tgz#dfc13a792099335c26fc3a4379f33eb563f0c0bd"
   integrity sha512-ukn8YOZJFXYx2DHvQ/AXSBqeidSa83R4H5NMerSqMqB24wGCRJ1HrK9zuKtT/ZMtRed0c7+Adk4Hn+ab3YL61w==
@@ -494,6 +494,18 @@
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.11.2.tgz#88813e9d98dab2aac59e1ac5cbd457058143c076"
   integrity sha512-XWaasjktJB8bFz0JAaVgTlUsVl9G19D8OTQ2Gf61agC5bTFFqaLb4NA/hDxAAHzEUZOM1Cyn+JiSo3rWiNbWTQ==
+  dependencies:
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@babel/runtime" "^7.0.0"
+    "@babel/traverse" "^7.20.0"
+    "@babel/types" "^7.20.0"
+    bind-event-listener "^2.1.1"
+
+"@atlaskit/tokens@^1.2.0":
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.11.3.tgz#fcc049ddb88f63e97843d52b2a7a19d286fb0898"
+  integrity sha512-BK2qUg1FY+x6YQTtmM8zA5Q49AboOoVbGDGusii7DZLy+KI9s56tCVu17Qce+2F2cfIt8Re4utjcBttZkzzUNQ==
   dependencies:
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/platform-feature-flags" "^0.2.0"
