@@ -1,3 +1,4 @@
+import { internalMetrics } from '@forge/metrics';
 import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
@@ -9,6 +10,7 @@ import {
 	ForgeTriggerContext, JenkinsRequest, RequestType, WebtriggerRequest, WebtriggerResponse
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
+import { metricSuccess } from '../common/metric-names';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
@@ -27,6 +29,7 @@ async function handleResetJenkinsRequest(
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
 			const cloudId = extractCloudId(context.installContext);
 			await resetJenkinsServer(cloudId, jenkinsRequest.data?.excludeUuid);
+			internalMetrics.counter(metricSuccess.resetJenkinsRequest).incr();
 			return createWebtriggerResponse(200, '{"success": true}');
 		}
 		if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
