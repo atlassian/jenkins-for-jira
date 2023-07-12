@@ -189,15 +189,15 @@
     "@emotion/react" "^11.7.1"
     react-beautiful-dnd "^12.1.1"
 
-"@atlaskit/empty-state@7.4.8":
-  version "7.4.8"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/empty-state/-/empty-state-7.4.8.tgz#9aae40c3b1e3a71d12b3ccded2bb880f295537c9"
-  integrity sha512-XRW8fpj1+VAdzAlvh0HgTn8oLmiL+Pour+pUiTrGuKBFlWUPPlnmNqV+Qk4tuvbIxW8OaFO+HrKPX4nv19ykXw==
+"@atlaskit/empty-state@7.4.11":
+  version "7.4.11"
+  resolved "https://registry.yarnpkg.com/@atlaskit/empty-state/-/empty-state-7.4.11.tgz#ecc8bca7828e09cbb62de210e6befb5753e40a39"
+  integrity sha512-zyoa6NgSsUL5ewaV1CHik25QE9lLQ8qTZrUwuRk/tdG3sx5Vtgqexqpnlko0ui8qlt7kiSx+TQ4Eqw3L9CxQEA==
   dependencies:
     "@atlaskit/button" "^16.5.0"
-    "@atlaskit/spinner" "^15.3.0"
-    "@atlaskit/theme" "^12.2.0"
-    "@atlaskit/tokens" "^1.0.0"
+    "@atlaskit/spinner" "^15.4.0"
+    "@atlaskit/theme" "^12.3.0"
+    "@atlaskit/tokens" "^1.2.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
@@ -426,7 +426,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/spinner@^15.3.0", "@atlaskit/spinner@^15.5.0":
+"@atlaskit/spinner@^15.4.0", "@atlaskit/spinner@^15.5.0":
   version "15.5.2"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/spinner/-/spinner-15.5.2.tgz#b251a324ebd792c25ff286834f71df6f966ea1c5"
   integrity sha512-7NVBCut1gd5ddyQwwBuWI44zGMNA9hj4by3jVqRKez57VOh4NCvZcxI7BcBehPomRQp4YnBE0Ueib2k//BvEmA==
