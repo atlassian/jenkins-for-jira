@@ -68,7 +68,7 @@ const getAllJenkinsServers = async (): Promise<JenkinsServer[]> => {
 			);
 		}
 
-		log({ eventType: 'getAllJenkinsServersSucess' });
+		log({ eventType: 'getAllJenkinsServersSuccess' });
 		return jenkinsServers;
 	} catch (e) {
 		console.error('Failed to get Jenkins servers', e);
