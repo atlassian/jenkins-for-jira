@@ -416,15 +416,16 @@
     "@emotion/core" "^10.0.9"
     react-transition-group "^4.4.1"
 
-"@atlaskit/spinner@15.1.17":
-  version "15.1.17"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/spinner/-/spinner-15.1.17.tgz#2a63e9d7be8dce68498cfde270005eadbce220c3"
-  integrity sha512-AiMZsUzyJ7Vd8MyG5QsKBKdejJTsJdhbQ7ViDJNWnQCiKBczuXiJKk5OQXSV0ay2hsWRZB3FGd91yEsOvIDPzg==
+"@atlaskit/spinner@15.5.3":
+  version "15.5.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-15.5.3.tgz#e54e4cb4d10357df6313a9998ef8a08c99901f23"
+  integrity sha512-KnFey43KQhUg/XvusGldXXAVckAecIda1Xwtni8k1DqG0p6qV3IwyLcKgAKlG/Y9GNwZ6/HVPS8Z0gTTsaMlEA==
   dependencies:
-    "@atlaskit/theme" "^12.2.0"
-    "@atlaskit/tokens" "^0.10.0"
+    "@atlaskit/interaction-context" "^2.1.0"
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.11.0"
     "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
+    "@emotion/react" "^11.7.1"
 
 "@atlaskit/spinner@^15.4.0", "@atlaskit/spinner@^15.5.0":
   version "15.5.2"
