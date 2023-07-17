@@ -50,9 +50,11 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 	try {
 		let jenkinsServers = await getAllJenkinsServers();
 		const disconnectJenkinsServerPromises: Array<Promise<any>> = [];
+
 		if (excludeUuid) {
 			jenkinsServers = jenkinsServers.filter((jenkinsServer) => jenkinsServer.uuid !== excludeUuid);
 		}
+
 		jenkinsServers.forEach((jenkinsServer) => {
 			const jenkinsServerUuid = jenkinsServer.uuid;
 			const disconnectJenkinsServerPromise = Promise.all([
@@ -62,6 +64,7 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 			]);
 			disconnectJenkinsServerPromises.push(disconnectJenkinsServerPromise);
 		});
+
 		internalMetrics.counter(metricSuccess.resetJenkinsServerInvocation).incr();
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
@@ -74,7 +77,8 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
 	try {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
-		// internalMetrics.counter(metricSuccess.deleteBuildsAndDeployments).incr();
+
+		internalMetrics.counter(metricSuccess.deleteBuildsAndDeployments).incr();
 	} catch (error) {
 		console.error('unexpected error during deleteBuildsAndDeployments invocation', error);
 		throw error;
