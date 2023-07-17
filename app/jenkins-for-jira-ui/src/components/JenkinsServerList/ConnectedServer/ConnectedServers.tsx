@@ -341,7 +341,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 							</StyledConnectedServerTableHeaderTitleContainer>
 
 							<StyledButtonContainerConnectedServers>
-								<Button onClick={() => onClickManage(server.uuid, server.name)}>
+								<Button onClick={() => onClickManage(server.uuid)}>
 									Manage connection
 								</Button>
 								<DropdownMenu testId="action-drop-down">
