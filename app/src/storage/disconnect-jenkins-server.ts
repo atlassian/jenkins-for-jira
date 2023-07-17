@@ -1,9 +1,9 @@
-import { internalMetrics } from '@forge/metrics';
+// import { internalMetrics } from '@forge/metrics';
 import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
 import { log } from '../analytics-logger';
-import { metricSuccess } from '../common/metric-names';
+// import { metricSuccess } from '../common/metric-names';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {
 	try {
@@ -13,7 +13,7 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 
 		log({ eventType: 'jenkinsServerRemoved', data: { uuid } });
 
-		internalMetrics.counter(metricSuccess.disconnectJenkinsServer).incr();
+		// internalMetrics.counter(metricSuccess.disconnectJenkinsServer).incr();
 
 		return true;
 	} catch (error) {

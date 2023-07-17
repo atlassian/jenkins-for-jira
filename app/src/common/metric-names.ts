@@ -15,7 +15,7 @@ export const metricSuccess = {
 	deleteBuildsAndDeployments: `${server}.error.delete-builds-and-deployments`,
 	connectJenkinsServer: `${server}.success.connect-jenkins-server`,
 	disconnectJenkinsServer: `${server}.success.disconnect-jenkins-server`,
-	getAllJenkinsServer: `${server}.success.get-all-jenkins-server`,
+	// getAllJenkinsServer: `${server}.success.get-all-jenkins-server`,
 	// getJenkinsServerWithSecret: `${server}.success.get-jenkins-server-with-secret`,
 	// updateJenkinsServer: `${server}.error.udpate-jenkins-server`
 };
