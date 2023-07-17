@@ -74,7 +74,7 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
 	try {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
-		internalMetrics.counter(metricSuccess.deleteBuildsAndDeployments).incr();
+		// internalMetrics.counter(metricSuccess.deleteBuildsAndDeployments).incr();
 	} catch (error) {
 		console.error('unexpected error during deleteBuildsAndDeployments invocation', error);
 		throw error;
