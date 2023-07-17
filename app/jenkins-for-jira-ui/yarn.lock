@@ -194,14 +194,14 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/form@8.8.8":
-  version "8.8.8"
-  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.8.8.tgz#d31986e3faf7398c2729c58c5c8765edf1d522fb"
-  integrity sha512-hcA4J2OqRoZAbp/bQveXj0MREQu4N90S2QoQYxvgfz1IwM+wvotnRk8XK/h8fYVUpIw0ScNDqGxDFUijSaIreg==
+"@atlaskit/form@8.11.8":
+  version "8.11.8"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.11.8.tgz#af25723c56b53d0812be7820a5b61fc54d2a0884"
+  integrity sha512-JvmuARl1FVlEbA93DUCdycn/1npn6i7RsVhXviijgeCyxTrSzbRJoD6KRn/ddn866TPFCF8qfodIPD3CwFhqwQ==
   dependencies:
-    "@atlaskit/icon" "^21.11.0"
-    "@atlaskit/theme" "^12.4.0"
-    "@atlaskit/tokens" "^1.2.0"
+    "@atlaskit/icon" "^21.12.0"
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.5.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     final-form "^4.20.1"
@@ -220,7 +220,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.11.0", "@atlaskit/icon@^21.12.0":
+"@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.12.0":
   version "21.12.4"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/icon/-/icon-21.12.4.tgz#06474f717b5122b048b7ad968e483d2faf31bdf7"
   integrity sha512-KnyyW8+q8npatIt3BPLeYCy76KlRs0Kr2of8DqAIrCduJHeLX/ff/8Jo0kn4hNF+mv5sdNx4X/44KsP6ODU7+w==
@@ -442,7 +442,7 @@
     "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.3.0", "@atlaskit/theme@^12.4.0", "@atlaskit/theme@^12.5.0":
+"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.3.0", "@atlaskit/theme@^12.5.0":
   version "12.5.4"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/theme/-/theme-12.5.4.tgz#dfc13a792099335c26fc3a4379f33eb563f0c0bd"
   integrity sha512-ukn8YOZJFXYx2DHvQ/AXSBqeidSa83R4H5NMerSqMqB24wGCRJ1HrK9zuKtT/ZMtRed0c7+Adk4Hn+ab3YL61w==
