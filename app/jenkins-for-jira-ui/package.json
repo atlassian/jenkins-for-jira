@@ -25,7 +25,7 @@
     "@atlaskit/textfield": "5.6.3",
     "@atlaskit/theme": "12.1.10",
     "@atlaskit/tooltip": "17.5.17",
-    "@atlassiansox/analytics-web-client": "^4.14.3",
+		"@atlassiansox/analytics-web-client": "^4.14.3",
     "@emotion/css": "11.7.1",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",

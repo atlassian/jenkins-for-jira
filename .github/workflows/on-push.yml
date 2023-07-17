@@ -1,0 +1,22 @@
+name: Push
+
+on:
+  # Only build on main branch when pushed (when PR is merged)
+  push:
+    branches:
+      - main
+  # Only build in PR on creation/update
+  pull_request:
+
+jobs:
+  unit-test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: app
+      - name: Run tests
+        run: yarn test
+        working-directory: app
