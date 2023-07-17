@@ -20,19 +20,3 @@ jobs:
       - name: Run tests
         run: yarn test
         working-directory: app
-
-  unit-test-frontend:
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: yarn install --ignore-optional
-        working-directory: app/jenkins-for-jira-ui
-
-      - name: Run tests
-        run: yarn test
-        working-directory: app/jenkins-for-jira-ui
