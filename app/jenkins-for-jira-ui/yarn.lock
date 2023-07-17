@@ -86,7 +86,23 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/button@16.8.1", "@atlaskit/button@^16.8.0":
+"@atlaskit/button@16.8.2":
+  version "16.8.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.8.2.tgz#d3cd6b2e149f9c09a10dce3949ddcb75fe09eca6"
+  integrity sha512-8bRk/p7MD58fe07q0YbVTQ0n9u8WYf4fH1iwxK6wJzANQif9Dzx+WItshsZ9hzzQYUpqzJCXJzLJyh+Av4cJBQ==
+  dependencies:
+    "@atlaskit/analytics-next" "^9.1.0"
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/focus-ring" "^1.3.0"
+    "@atlaskit/interaction-context" "^2.1.0"
+    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@atlaskit/spinner" "^15.5.0"
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.11.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+
+"@atlaskit/button@^16.8.0":
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.8.1.tgz#8b77cf3fb8eca9642321513aba6b65bff893087d"
   integrity sha512-/uXIqO7j9xoNXMINqbHpVqopvl94/VjtRwZmpN+gWICShMf7y1IlaR/XJFw8nt3n5k/xnXh3Amv7JeVem8Ke4Q==
@@ -194,14 +210,14 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/form@8.11.8":
-  version "8.11.8"
-  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.11.8.tgz#af25723c56b53d0812be7820a5b61fc54d2a0884"
-  integrity sha512-JvmuARl1FVlEbA93DUCdycn/1npn6i7RsVhXviijgeCyxTrSzbRJoD6KRn/ddn866TPFCF8qfodIPD3CwFhqwQ==
+"@atlaskit/form@8.8.8":
+  version "8.8.8"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.8.8.tgz#d31986e3faf7398c2729c58c5c8765edf1d522fb"
+  integrity sha512-hcA4J2OqRoZAbp/bQveXj0MREQu4N90S2QoQYxvgfz1IwM+wvotnRk8XK/h8fYVUpIw0ScNDqGxDFUijSaIreg==
   dependencies:
-    "@atlaskit/icon" "^21.12.0"
-    "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.5.0"
+    "@atlaskit/icon" "^21.11.0"
+    "@atlaskit/theme" "^12.4.0"
+    "@atlaskit/tokens" "^1.2.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     final-form "^4.20.1"
@@ -227,6 +243,16 @@
   dependencies:
     "@atlaskit/theme" "^12.5.0"
     "@atlaskit/tokens" "^1.5.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+
+"@atlaskit/icon@^21.11.0":
+  version "21.12.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-21.12.6.tgz#ffd8ed18caf9a389bb040fd4d758a2a3fd6c50e7"
+  integrity sha512-Dgl7d1Jl8uOaLu+gEZuobUR+NrQz3R0qnMxIWGlvUURr0p2R0jZFXDHRj9TJH1rRHIGa7tDhOm9qK7E0kSU4HA==
+  dependencies:
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.11.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
@@ -442,7 +468,7 @@
     "@atlaskit/tokens" "^0.10.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.3.0", "@atlaskit/theme@^12.5.0":
+"@atlaskit/theme@^12.0.0", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.2.0", "@atlaskit/theme@^12.4.0", "@atlaskit/theme@^12.5.0":
   version "12.5.4"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/theme/-/theme-12.5.4.tgz#dfc13a792099335c26fc3a4379f33eb563f0c0bd"
   integrity sha512-ukn8YOZJFXYx2DHvQ/AXSBqeidSa83R4H5NMerSqMqB24wGCRJ1HrK9zuKtT/ZMtRed0c7+Adk4Hn+ab3YL61w==
