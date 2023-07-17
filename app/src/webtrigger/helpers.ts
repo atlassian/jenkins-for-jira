@@ -1,4 +1,10 @@
+import { MissingCloudIdError } from '../common/error';
+import { Errors } from '../common/error-messages';
+
 export function extractCloudId(installContext: string): string {
+	if (!installContext || typeof installContext !== 'string') {
+		throw new MissingCloudIdError(Errors.MISSING_CLOUD_ID);
+	}
 	return installContext.replace('ari:cloud:jira::site/', '');
 }
 

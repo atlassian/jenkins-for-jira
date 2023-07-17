@@ -1,5 +1,10 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error';
+import {
+	InvalidPayloadError,
+	JwtDecodingFailedError,
+	JwtVerificationFailedError
+} from '../common/error';
+import { Errors } from '../common/error-messages';
 
 /**
  * Verifies the signature of a JWT.
@@ -12,7 +17,7 @@ export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.log(`JWT verification failed: ${error}`);
-		throw new JwtVerificationFailedError('JWT verification failed. Please make sure you configured the same secret in Jenkins and Jira.');
+		throw new JwtVerificationFailedError(Errors.JWT_VERIFICATION_FAILED);
 	}
 };
 
@@ -35,6 +40,6 @@ export const extractBodyFromJwt = (jwtToken: string): any => {
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.log(`Could not parse payload as JSON: ${bodyAsString} because of: ${error}`);
-		throw new InvalidPayloadError(`Could not parse payload as JSON: ${bodyAsString}`);
+		throw new JwtDecodingFailedError(Errors.JWT_DECODING_ERROR);
 	}
 };
