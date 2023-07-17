@@ -1,16 +1,12 @@
-import { when } from 'jest-when';
 import jwt from 'jsonwebtoken';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
-import { mockSingleJenkinsPipeline } from '../storage/mockData';
+import { mockSingleJenkinsPipeline, testUuid } from '../storage/mockData';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
-import {
-	resetJenkinsServer,
-	deleteBuildsAndDeployments,
-	handleResetJenkinsRequest
-} from './handle-reset-jenkins-request';
+import { handleResetJenkinsRequest } from './handle-reset-jenkins-request';
 import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import * as jwtModule from './jwt';
+import * as getAllJenkinsServersModule from '../storage/get-all-jenkins-servers';
 import {
 	JwtDecodingFailedError,
 	JwtVerificationFailedError, MissingCloudIdError, UnsupportedRequestTypeError
@@ -116,11 +112,15 @@ describe('Reset Jenkins Server request suite', () => {
 			const decode = jest.spyOn(jwt, 'decode');
 			decode.mockImplementation(() => () => ({ requestType: 'resetJenkinsServer' }));
 
-			const mock = jest.spyOn(jwtModule, 'extractBodyFromJwt');
-			mock.mockReturnValue({ requestType: 'resetJenkinsServer', data: { thing: 'stuff' } });
+			const jwtMock = jest.spyOn(jwtModule, 'extractBodyFromJwt');
+			jwtMock.mockReturnValue({ requestType: 'resetJenkinsServer' });
+
+			const mock = jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers');
+			// @ts-ignore
+			mock.mockReturnValue([mockSingleJenkinsPipeline]);
 		});
 
-		it('Should through InvalidPayloadError if requestType is not resetJenkinsServer or deleteBuildsDeployments', async () => {
+		it('Should return 200 response when resetting Jenkins server succeeds', async () => {
 			const mockRequest = { queryParameters: {}, body: 'my-jwt' };
 			const resetServer = await handleResetJenkinsRequest(mockRequest, { installContext: CLOUD_ID });
 			const response = {
@@ -131,32 +131,57 @@ describe('Reset Jenkins Server request suite', () => {
 				statusCode: 200
 			};
 
+			expect(getAllJenkinsServers).toBeCalled();
+			expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
+			expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 			expect(resetServer).toEqual(response);
 		});
 	});
 
-	when(disconnectJenkinsServer).mockImplementation(() => Promise.resolve(true));
-	when(getAllJenkinsServers).mockImplementation(() => Promise.resolve([mockSingleJenkinsPipeline]));
+	describe('Should handle deleting builds and deployments when requestType is deleteBuildsDeployments', () => {
+		beforeEach(() => {
+			const verify = jest.spyOn(jwt, 'verify');
+			verify.mockImplementation(() => () => ({ verified: true }));
 
-	it('Should delete all Jenkins server configuration from Forge Storage', async () => {
-		await resetJenkinsServer(CLOUD_ID);
-		expect(getAllJenkinsServers).toBeCalled();
-		expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
-		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-	});
+			const decode = jest.spyOn(jwt, 'decode');
+			decode.mockImplementation(() => () => ({ requestType: 'deleteBuildsDeployments' }));
+		});
 
-	it('Should not delete excluded server from Forge Storage', async () => {
-		await resetJenkinsServer(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-		expect(getAllJenkinsServers).toBeCalled();
-		expect(disconnectJenkinsServer).toBeCalledTimes(0);
-		expect(deleteBuilds).toBeCalledTimes(0);
-		expect(deleteDeployments).toBeCalledTimes(0);
-	});
+		it('Should return 400 response when no UUID is passed', async () => {
+			const mock = jest.spyOn(jwtModule, 'extractBodyFromJwt');
+			mock.mockReturnValue({ requestType: 'deleteBuildsDeployments' });
+			const mockRequest = { queryParameters: {}, body: 'my-jwt' };
+			const resetServer = await handleResetJenkinsRequest(mockRequest, { installContext: CLOUD_ID });
+			const response = {
+				body: `{"error": ${Errors.MISSING_UUID}`,
+				headers: {
+					'Content-Type': ['application/json']
+				},
+				statusCode: 400
+			};
 
-	it('Should delete builds and deployments', async () => {
-		await deleteBuildsAndDeployments(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-		expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
-		expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(deleteBuilds).not.toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(deleteDeployments).not.toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(resetServer).toEqual(response);
+		});
+
+		it('Should return 200 response when deleting builds and deployments succeeds', async () => {
+			const mock = jest.spyOn(jwtModule, 'extractBodyFromJwt');
+			mock.mockReturnValue({ requestType: 'deleteBuildsDeployments', data: { uuid: testUuid } });
+			const mockRequest = { queryParameters: {}, body: 'my-jwt' };
+			const resetServer = await handleResetJenkinsRequest(mockRequest, { installContext: CLOUD_ID });
+			const response = {
+				body: '{"success": true}',
+				headers: {
+					'Content-Type': ['application/json']
+				},
+				statusCode: 200
+			};
+
+			expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
+			expect(resetServer).toEqual(response);
+		});
 	});
 });

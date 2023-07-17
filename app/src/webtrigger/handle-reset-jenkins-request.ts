@@ -2,7 +2,7 @@ import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
-import { UnsupportedRequestTypeError } from '../common/error';
+import { InvocationError, UnsupportedRequestTypeError } from '../common/error';
 import { extractCloudId } from './helpers';
 import { extractBodyFromJwt, verifyJwt } from './jwt';
 import {
@@ -36,11 +36,10 @@ async function handleResetJenkinsRequest(
 
 		if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
 			if (jenkinsRequest.data?.uuid) {
-				console.log('not being called');
 				await deleteBuildsAndDeployments(cloudId, jenkinsRequest.data.uuid);
 				return createWebtriggerResponse(200, '{"success": true}');
 			}
-			return createWebtriggerResponse(400, '{"error": "No uuid found"}');
+			return createWebtriggerResponse(400, `{"error": ${Errors.MISSING_UUID}`);
 		}
 
 		throw new UnsupportedRequestTypeError(Errors.UNSUPPORTED_REQUEST_TYPE);
@@ -52,7 +51,6 @@ async function handleResetJenkinsRequest(
 async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 	try {
 		let jenkinsServers = await getAllJenkinsServers();
-		console.log('jenkinsServers', jenkinsServers);
 		const disconnectJenkinsServerPromises: Array<Promise<any>> = [];
 
 		if (excludeUuid) {
@@ -72,18 +70,17 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
 		console.error('unexpected error during resetJenkinsServer invocation', error);
-		return error;
+		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
 
 async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
-	console.log('in here');
 	try {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
 	} catch (error) {
 		console.error('unexpected error during deleteBuildsAndDeployments invocation', error);
-		throw error;
+		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
 

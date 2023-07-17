@@ -46,3 +46,9 @@ export class InvalidPayloadError extends JenkinsAppError {
 		super(message);
 	}
 }
+
+export class InvocationError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
