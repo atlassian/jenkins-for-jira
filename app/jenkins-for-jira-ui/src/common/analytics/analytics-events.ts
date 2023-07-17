@@ -37,7 +37,8 @@ export enum AnalyticsUiEventsEnum {
 	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState',
 	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
 	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState',
-	ManageConnectionPendingStateName = 'manageConnectionPendingState'
+	ManageConnectionPendingStateName = 'manageConnectionPendingState',
+	NavigateBackPendingDeploymentStateName = 'navigateBackPendingDeploymentState'
 }
 
 export enum AnalyticsTrackEventsEnum {
