@@ -123,7 +123,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
-	const onClickManage = async (jenkinsServerUuid: string, serverName: string) => {
+	const onClickManage = async (jenkinsServerUuid: string) => {
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
