@@ -270,14 +270,14 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/logo@13.14.7":
-  version "13.14.7"
-  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-13.14.7.tgz#a1500f87b4e8739ecf94ad835dad9e5359ec6d63"
-  integrity sha512-cp+b8XKz52MTovzDYx64EYRCuH+SZRKIq9h/lEGupOevwKibZexrkHRmr8tAolWZuaTNus00PAOg9xZsxaUoPw==
+"@atlaskit/logo@13.14.8":
+  version "13.14.8"
+  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-13.14.8.tgz#df4711db4d41d7abdd40c0221ed95f72013103e0"
+  integrity sha512-GMXn6tbZ0wAdicsofadCk4coVVFNTHjrNN5ys13Anck+0MmhiafcFs3sYD4GdpAKhKt4XGTo86sX0fMWkJQfkQ==
   dependencies:
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.5.0"
+    "@atlaskit/tokens" "^1.11.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     react-uid "^2.2.0"
