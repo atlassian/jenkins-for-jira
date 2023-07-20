@@ -184,10 +184,10 @@
     "@babel/runtime" "^7.0.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/dynamic-table@14.11.1":
-  version "14.11.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.11.1.tgz#311dee3bdb1377899903537ea6581837a6c3fa06"
-  integrity sha512-/tDdpvTPWwNGsbAguBQ1VVEGvdwTBCDYQnMLoHxa/JmuEAhVza4WUN18DA0/DZIO9IWI+DbMgdWtmjf2VzL0QA==
+"@atlaskit/dynamic-table@14.11.2":
+  version "14.11.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.11.2.tgz#6051c63e99586ba19d6618854b2195aaeb5b8259"
+  integrity sha512-IlnbpOorkLGV8VR9oho21q1kCSYpbGpamKOx0SktiqFVx+nmuhH1tS6XN6qK5j3nMTseFWm47LXv9bLtRBcjFw==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/ds-lib" "^2.2.0"
