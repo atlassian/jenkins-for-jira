@@ -17,6 +17,10 @@ jest.mock('@forge/api', () => ({
 	webTrigger: {
 		getUrl: jest.fn(),
 	},
+	asUser: () => ({
+		requestJira: jest.fn(),
+	}),
+	route: jest.fn()
 }));
 
 const mockStorageGetApi = jest.fn((key) => {

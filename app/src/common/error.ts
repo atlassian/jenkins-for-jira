@@ -52,3 +52,9 @@ export class InvocationError extends JenkinsAppError {
 		super(message);
 	}
 }
+
+export class NotAdminError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
