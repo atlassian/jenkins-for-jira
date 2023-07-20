@@ -297,10 +297,10 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/modal-dialog@12.6.2":
-  version "12.6.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-12.6.2.tgz#f435301a0cb1b98647a8096f5c43fe891d5b44f5"
-  integrity sha512-crN1QUb4Dy7F9+yLVY7pLvxA6eiknF5srSl2+KvgrL+CY4IQaieUXRhEgLcaJTzA1umevU70vasWN+fsZwS+Xw==
+"@atlaskit/modal-dialog@12.6.3":
+  version "12.6.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-12.6.3.tgz#e40e7468b3d5347c5fddc8c2699c24c87b0a1201"
+  integrity sha512-V3GSlX9qrtaBAewOPzZ88EOOeg+pPXsZZ+YRIXTA3qQ1xAuJ6lQoJL1vj2MFuixHuF1Gy/7fGphxgLvZyAxffA==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/blanket" "^12.4.0"
@@ -311,7 +311,7 @@
     "@atlaskit/motion" "^1.4.0"
     "@atlaskit/portal" "^4.3.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.5.0"
+    "@atlaskit/tokens" "^1.11.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     bind-event-listener "^2.1.1"
