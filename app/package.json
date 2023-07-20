@@ -13,7 +13,7 @@
     "prepare": "cd ../ && husky install"
   },
   "dependencies": {
-    "@forge/api": "2.6.1",
+    "@forge/api": "2.18.2",
     "@forge/resolver": "1.4.10",
     "jsonwebtoken": "8.5.1"
   },
