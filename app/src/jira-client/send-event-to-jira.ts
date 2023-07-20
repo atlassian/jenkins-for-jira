@@ -18,8 +18,6 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 
 	const responseString = await apiResponse.text();
 
-	console.log('responseString', responseString);
-
 	if (!responseString) {
 		return {
 			status: apiResponse.status,
