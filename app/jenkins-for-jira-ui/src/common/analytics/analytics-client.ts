@@ -1,4 +1,5 @@
 import { view } from '@forge/bridge';
+import { EnvironmentEnum } from '../types';
 
 interface AnalyticsAttributes {
 	[key: string]: any;
@@ -19,13 +20,6 @@ interface TenantType {
 	OPSGENIE_CUSTOMER_ID: string,
 	ORG_ID: string,
 	TRELLO_WORKSPACE_ID: string
-}
-
-enum EnvType {
-	LOCAL = 'local',
-	DEV = 'dev',
-	STAGING = 'staging',
-	PROD = 'prod'
 }
 
 const isNotProductionEnv = (): boolean => {
@@ -68,7 +62,7 @@ export class AnalyticsClient {
 
 			this.analyticsWebClient = new AnalyticsWebClient(
 				{
-					env: EnvType.PROD,
+					env: EnvironmentEnum.PROD,
 					product: 'jenkinsForJira'
 				},
 				{

@@ -20,3 +20,11 @@ export interface JenkinsPipeline {
 	lastEventStatus: BuildEventStatus | DeploymentEventStatus,
 	lastEventType: EventType
 }
+
+export enum EnvironmentEnum {
+	LOCAL = 'local',
+	DEV = 'dev',
+	STAGING = 'staging',
+	PROD = 'prod',
+	TEST = 'test'
+}
