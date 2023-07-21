@@ -51,7 +51,6 @@ export default async function handleJenkinsRequest(
 		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
 
 		const payload = extractBodyFromJwt(jwtToken);
-		console.log('down here 2');
 
 		const jenkinsRequest = payload as JenkinsRequest;
 
