@@ -1,5 +1,6 @@
 import { Errors } from '../common/error-messages';
 import { getGatingStatusFromJira } from './get-gating-status-from-jira';
+import { InvalidPayloadError } from '../common/error';
 
 describe('deleteDeployments suite', () => {
     it('Should throw an error if no cloudId is passed', async () => {
@@ -9,13 +10,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await getGatingStatusFromJira(null, '1234', '1234', '1234');
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error if no deploymentId is passed', async () => {
@@ -25,13 +23,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await getGatingStatusFromJira('1234', null, '1234', '1234');
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error if no pipelineId is passed', async () => {
@@ -41,13 +36,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await getGatingStatusFromJira('1234', '1234', null, '1234');
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error if no environmentId is passed', async () => {
@@ -57,13 +49,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await getGatingStatusFromJira('1234', '1234', '1234', null);
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should return status with empty body if no responseString is returned', async () => {

@@ -1,5 +1,6 @@
 import { Errors } from '../common/error-messages';
 import { deleteDeployments } from './delete-deployments';
+import { InvalidPayloadError } from '../common/error';
 
 describe('deleteDeployments suite', () => {
     it('Should throw an error if no cloudId is passed', async () => {
@@ -9,13 +10,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await deleteDeployments(null);
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_CLOUD_ID}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_CLOUD_ID));
     });
 
     it('Should return status for successful response', async () => {

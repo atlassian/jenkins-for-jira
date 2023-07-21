@@ -1,6 +1,7 @@
 import { Errors } from '../common/error-messages';
 import { sendEventToJira } from './send-event-to-jira';
 import { EventType } from '../common/types';
+import { InvalidPayloadError } from '../common/error';
 
 describe('deleteDeployments suite', () => {
     it('Should throw an error if no eventType is passed', async () => {
@@ -10,13 +11,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await sendEventToJira(null, '1234', { thing: 'value' });
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error if no cloudId is passed', async () => {
@@ -26,13 +24,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await sendEventToJira(EventType.BUILD, null, { thing: 'value' });
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error if no payload is passed', async () => {
@@ -42,13 +37,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await sendEventToJira(EventType.BUILD, '1234', null);
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_REQUIRED_PROPERTIES}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should throw an error when invalid eventType is passes', async () => {
@@ -58,13 +50,10 @@ describe('deleteDeployments suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await sendEventToJira('random event type', '1234', { thing: 'value' });
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.INVALID_EVENT_TYPE}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
     });
 
     it('Should return status with empty body if no responseString is returned', async () => {

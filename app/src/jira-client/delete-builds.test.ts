@@ -1,5 +1,6 @@
 import { deleteBuilds } from './delete-builds';
 import { Errors } from '../common/error-messages';
+import { InvalidPayloadError } from '../common/error';
 
 describe('deleteBuilds suite', () => {
     it('Should throw an error if no cloudId is passed', async () => {
@@ -9,13 +10,10 @@ describe('deleteBuilds suite', () => {
             })
         };
 
-        try {
+        expect(async () => {
             // @ts-ignore
             await deleteBuilds(null);
-        } catch (e) {
-            // @ts-ignore
-            expect(e.toString()).toEqual((`Error: ${Errors.MISSING_CLOUD_ID}`));
-        }
+        }).rejects.toThrow(new InvalidPayloadError(Errors.INVALID_EVENT_TYPE));
     });
 
     it('Should return status for successful response', async () => {
