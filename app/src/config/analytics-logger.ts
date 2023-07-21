@@ -1,3 +1,4 @@
+// TODO - add logging library and build this out once
 interface LogData {
 	eventType: string;
 	data?: Object;
