@@ -13,7 +13,7 @@ describe('deleteBuilds suite', () => {
 		expect(async () => {
 			// @ts-ignore
 			await deleteBuilds(null);
-		}).rejects.toThrow(new InvalidPayloadError(Errors.INVALID_EVENT_TYPE));
+		}).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_CLOUD_ID));
 	});
 
 	it('Should return status for successful response', async () => {

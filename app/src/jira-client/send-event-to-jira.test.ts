@@ -53,7 +53,7 @@ describe('deleteDeployments suite', () => {
 		expect(async () => {
 			// @ts-ignore
 			await sendEventToJira('random event type', '1234', { thing: 'value' });
-		}).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES));
+		}).rejects.toThrow(new InvalidPayloadError(Errors.INVALID_EVENT_TYPE));
 	});
 
 	it('Should return status with empty body if no responseString is returned', async () => {
