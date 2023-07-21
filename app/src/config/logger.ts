@@ -1,31 +1,19 @@
-// TODO - figure out issue with types
-import Logger, {
-    createLogger,
-    LogLevel,
-    Serializers,
-    Stream
-// @ts-ignore
-} from 'bunyan';
-import { merge, omit } from 'lodash';
+import Logger, { createLogger, LogLevel } from 'bunyan';
 
 export const defaultLogLevel: LogLevel = process.env.LOG_LEVEL as LogLevel || 'info';
 
-interface LoggerOptions {
-    fields?: Record<string, unknown>;
-    streams?: Stream[];
-    level?: LogLevel;
-    stream?: NodeJS.WritableStream;
-    serializers?: Serializers;
-    src?: boolean;
-    filterHttpRequests?: boolean;
-}
-
-export const getLogger = (name: string, options: LoggerOptions = {}): Logger => {
+export const getLogger = (name: string): Logger => {
     return createLogger({
         name,
-        level: defaultLogLevel
+        level: defaultLogLevel,
+        streams: [{
+            level: 'trace', // Priority of levels looks like this: Trace -> Debug -> Info -> Warn -> Error -> Fatal
+            stream: process.stdout, // Developers will want to see this piped to their consoles
+        }]
     });
 };
+
+export const testlog = createLogger({ name: 'myapp' });
 
 const consoleLogger = getLogger('console');
 // eslint-disable-next-line no-console

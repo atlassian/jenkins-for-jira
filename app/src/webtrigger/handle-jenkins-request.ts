@@ -17,7 +17,7 @@ import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
-import { log } from '../analytics-logger';
+import { log } from '../config/analytics-logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -28,6 +28,9 @@ export default async function handleJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
+	const logName = 'handleJenkinsRequest';
+	const eventType = 'jenkinsEventProcessed';
+
 	try {
 		const cloudId = extractCloudId(context.installContext);
 
@@ -48,12 +51,14 @@ export default async function handleJenkinsRequest(
 			issuer: 'jenkins-plugin',
 			audience: 'jenkins-forge-app'
 		};
-		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
-		const payload = extractBodyFromJwt(jwtToken);
 
+		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
+
+		const payload = extractBodyFromJwt(jwtToken);
 		const jenkinsRequest = payload as JenkinsRequest;
 
 		let response;
+
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
 				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId);
@@ -70,10 +75,19 @@ export default async function handleJenkinsRequest(
 			default:
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
-		log({ eventType: 'jenkinsEventProcessedSuccessfully', data: { type: jenkinsRequest.requestType } });
+
+		log(logName, 'info', { eventType, data: { type: jenkinsRequest.requestType } });
 		return response;
 	} catch (error) {
-		log({ eventType: 'jenkinsEventProcessedError' });
+		log(
+			logName,
+	'error',
+				{
+					eventType,
+					errorMsg: 'Failed to fetch Jenkins server list',
+					error
+				}
+		);
 		return handleWebtriggerError(request, error);
 	}
 }

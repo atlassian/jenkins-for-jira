@@ -1,5 +1,5 @@
 import { storage } from '@forge/api';
-import { log } from '../analytics-logger';
+import { log } from '../config/analytics-logger';
 import { JenkinsServer } from '../common/types';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';

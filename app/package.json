@@ -15,10 +15,12 @@
   "dependencies": {
     "@forge/api": "2.6.1",
     "@forge/resolver": "1.4.10",
+    "@types/bunyan": "^1.8.8",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
     "jsonwebtoken": "8.5.1",
     "lodash": "^4.17.21",
+    "pino": "^8.14.1",
     "safe-json-stringify": "^1.2.0",
     "typescript": "4.9.5"
   },

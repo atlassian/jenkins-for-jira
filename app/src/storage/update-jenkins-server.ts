@@ -2,7 +2,7 @@ import { storage } from '@forge/api';
 import { JenkinsServer } from '../common/types';
 import { getJenkinsServerWithSecret } from './get-jenkins-server-with-secret';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { log } from '../analytics-logger';
+import { log } from '../config/analytics-logger';
 
 const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 	try {
