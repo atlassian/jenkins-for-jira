@@ -1,13 +1,13 @@
 import {
 	startsWith, storage, ListResult, Result
 } from '@forge/api';
-import { log } from '../config/analytics-logger';
+import { log } from '../config/logger';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const logName = 'getAllJenkinsServers';
-	const eventType = 'jenkinsServerListRetrieved';
+	const eventType = 'getAllJenkinsServersEvent';
 
 	try {
 		log(logName, 'info', { eventType });

@@ -2,8 +2,7 @@
 interface LogData {
 	eventType: string;
 	data?: Object;
-	errorMsg?: string;
-	error?: any;
+	message?: string;
 }
 
 interface LogError {

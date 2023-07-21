@@ -17,7 +17,7 @@ import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
-import { log } from '../config/analytics-logger';
+import { log } from '../config/logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -132,8 +132,15 @@ async function getGatingStatus(cloudId: string, request: GatingStatusRequest): P
 
 function logJiraResponse(jiraResponse: JiraResponse) {
 	if (jiraResponse.status >= 400) {
-		// eslint-disable-next-line no-console,max-len
-		console.error(`Received response with status ${jiraResponse.status} from Jira: ${JSON.stringify(jiraResponse.body)}`);
+		log(
+			'logJiraResponse',
+			'error',
+			{
+				eventType: 'logJiraResponseEvent',
+				errorMsg: `Received error response from Jira - status: ${jiraResponse.status}`,
+				error: JSON.stringify(jiraResponse.body)
+			}
+		);
 	}
 }
 

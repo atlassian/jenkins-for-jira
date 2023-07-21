@@ -5,6 +5,7 @@ import {
 	JwtVerificationFailedError
 } from '../common/error';
 import { Errors } from '../common/error-messages';
+import { log } from '../config/logger';
 
 /**
  * Verifies the signature of a JWT.
@@ -15,8 +16,16 @@ export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	try {
 		jwt.verify(jwtToken, secret, claims);
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.log(`JWT verification failed: ${error}`);
+		log(
+			'extractBodyFromJwt',
+			'error',
+			{
+				eventType: 'extractBodyFromJwtEvent',
+				errorMsg: `JWT verification failed: ${error}`,
+				error
+			}
+		);
+
 		throw new JwtVerificationFailedError(Errors.JWT_VERIFICATION_FAILED);
 	}
 };
@@ -38,8 +47,16 @@ export const extractBodyFromJwt = (jwtToken: string): any => {
 	try {
 		return JSON.parse(bodyAsString);
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.log(`Could not parse payload as JSON: ${bodyAsString} because of: ${error}`);
+		log(
+			'extractBodyFromJwt',
+			'error',
+			{
+				eventType: 'extractBodyFromJwtEvent',
+				errorMsg: `Could not parse payload as JSON: ${bodyAsString} because of: ${error}`,
+				error
+			}
+		);
+
 		throw new JwtDecodingFailedError(Errors.JWT_DECODING_ERROR);
 	}
 };

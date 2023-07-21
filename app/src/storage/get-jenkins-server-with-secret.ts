@@ -3,6 +3,7 @@ import { getJenkinsServerSecret } from './get-jenkins-server-secret';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServer } from '../common/types';
 import { NoJenkinsServerError } from '../common/error';
+import { log } from '../config/logger';
 
 const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<JenkinsServer> => {
 	try {
@@ -19,7 +20,16 @@ const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<Je
 			secret
 		};
 	} catch (error) {
-		console.error(`Failed to fetch Jenkins server for uuid ${jenkinsServerUuid} `, error);
+		log(
+			'getJenkinsServerWithSecret',
+			'error',
+			{
+				eventType: 'getJenkinsServerWithSecretEvent',
+				errorMsg: `Failed to fetch Jenkins server for uuid ${jenkinsServerUuid} `,
+				error
+			}
+		);
+
 		throw error;
 	}
 };

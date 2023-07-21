@@ -10,6 +10,7 @@ import {
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { Errors } from '../common/error-messages';
+import { log } from '../config/logger';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
@@ -69,7 +70,16 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
-		console.error('unexpected error during resetJenkinsServer invocation', error);
+		log(
+			'resetJenkinsServer',
+			'error',
+			{
+				eventType: 'resetJenkinsServerEvent',
+				errorMsg: 'Unexpected error during resetJenkinsServer invocation',
+				error
+			}
+		);
+
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
@@ -79,7 +89,16 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
 	} catch (error) {
-		console.error('unexpected error during deleteBuildsAndDeployments invocation', error);
+		log(
+			'resetJenkinsServer',
+			'error',
+			{
+				eventType: 'resetJenkinsServerEvent',
+				errorMsg: 'Unexpected error during resetJenkinsServer invocation',
+				error
+			}
+		);
+
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }

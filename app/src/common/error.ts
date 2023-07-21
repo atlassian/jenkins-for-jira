@@ -11,6 +11,12 @@ export class JenkinsServerStorageError extends JenkinsAppError {
 	}
 }
 
+export class JenkinsApiError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
+
 export class NoJenkinsServerError extends JenkinsAppError {
 	constructor(message: string) {
 		super(message);

@@ -1,7 +1,8 @@
 import { storage } from '@forge/api';
-import { NoJenkinsServerError } from '../common/error';
+import { JenkinsServerStorageError, NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
+import { log } from '../config/logger';
 
 export const updatePipelines = (
 	index: number,
@@ -25,12 +26,24 @@ async function updateJenkinsServerState(
 	uuid: string,
 	pipelineToUpdate: JenkinsPipeline
 ) {
+	const logName = 'updateJenkinsServerState';
+	const eventType = 'updateJenkinsServerStateEvent';
+
 	try {
 		const jenkinsServer: JenkinsServer = await storage.get(
 			`${SERVER_STORAGE_KEY_PREFIX}${uuid}`
 		);
 
 		if (!jenkinsServer) {
+			log(
+				logName,
+				'error',
+				{
+					eventType,
+					errorMsg: `No Jenkins Server found for UUID ${uuid}`
+				}
+			);
+
 			throw new NoJenkinsServerError(`No Jenkins Server found for UUID ${uuid}`);
 		}
 
@@ -44,12 +57,30 @@ async function updateJenkinsServerState(
 			`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`,
 			jenkinsServer
 		);
-	} catch (error) {
-		console.error(
-			`Failed to update Jenkins server uuid ${uuid} with pipeline ${JSON.stringify(pipelineToUpdate)}`,
-			error
+
+		log(
+			logName,
+			'info',
+			{
+				eventType,
+				data:
+					{
+						message: 'Jenkins server state updated'
+					}
+			}
 		);
-		throw error;
+	} catch (error) {
+		log(
+			logName,
+			'error',
+			{
+				eventType,
+				errorMsg:
+					`Failed to update Jenkins server uuid ${uuid} with pipeline ${JSON.stringify(pipelineToUpdate)}`
+			}
+		);
+
+		throw new JenkinsServerStorageError('Failed to update jenkins server state');
 	}
 }
 

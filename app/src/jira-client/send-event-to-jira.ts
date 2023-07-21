@@ -2,8 +2,25 @@ import { EventType } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
 import { JiraResponse } from './types';
 import { Errors } from '../common/error-messages';
+import { log } from '../config/logger';
 
 async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
+	const logName = 'deleteBuilds';
+	const eventType = 'deleteBuildsEvent';
+
+	if (!url || !payload) {
+		log(
+			logName,
+			'error',
+			{
+				eventType,
+				errorMsg: Errors.MISSING_REQUIRED_PROPERTIES,
+			}
+		);
+
+		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
+	}
+
 	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
 	// eslint-disable-next-line no-underscore-dangle
 	const apiResponse = await global.api
@@ -28,9 +45,20 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
 
-	console.log(
-		`called Jira API ${url}.
-		Response status: ${apiResponse.status}. Response body: ${JSON.stringify(jiraResponse)}`
+	log(
+		logName,
+		'info',
+		{
+			eventType,
+			data:
+				{
+					message: 'Called Jira API',
+					path: url,
+					responseStatus: apiResponse.status,
+					// TODO - hash issue key
+					response: jiraResponse
+				}
+		}
 	);
 
 	return {
