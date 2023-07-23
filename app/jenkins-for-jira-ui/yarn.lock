@@ -2084,12 +2084,12 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
-"@forge/bridge@2.1.3":
-  version "2.1.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/bridge/-/bridge-2.1.3.tgz#951fa9c047f257a638b67822767de76061af064e"
-  integrity sha512-gcoDkEKIVioqKMB2mNsF6d3Z+FJLI2aIwOK+o6S8f2fkaWQE8ArHg3puP2kBxLVXfieIZmLbmNMRLspjoPlpzQ==
+"@forge/bridge@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@forge/bridge/-/bridge-2.6.0.tgz#ba83161c6a2d2139bf91dc9bcd8e491718143dc3"
+  integrity sha512-DNzRCR1UUYU7Mob0WoSGFQrxOt7akeTB+yZppxpBHNkosTnP+CXK39hWIf2huzQBZOsh7baE8oeJFcspzv+H+w==
   dependencies:
-    "@types/history" "^4.7.8"
+    "@types/history" "^4.7.11"
 
 "@forge/ui@0.16.0":
   version "0.16.0"
@@ -2840,7 +2840,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/history@^4.7.11", "@types/history@^4.7.8":
+"@types/history@^4.7.11":
   version "4.7.11"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/history/-/history-4.7.11.tgz#56588b17ae8f50c53983a524fc3cc47437969d64"
   integrity sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==
