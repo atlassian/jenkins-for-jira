@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@forge/api": "2.18.2",
-    "@forge/resolver": "1.4.10",
+    "@forge/resolver": "1.5.12",
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
