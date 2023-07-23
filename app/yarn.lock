@@ -326,17 +326,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
-"@forge/api@2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.11.0.tgz#7cb0bbf4eb661228100e4ba1fdb1ea71a66dadd2"
-  integrity sha512-FcXELcnD4g1Ohjx1NA5ATXt+OM9WE60TsKk94UwGn/aEq2tLuupIFCAjD0Z1D3ekQOKx81WuvCDPlNE4rm7suw==
-  dependencies:
-    "@forge/auth" "^0.0.1"
-    "@forge/egress" "^1.1.2"
-    "@forge/storage" "^1.3.1"
-    "@types/node-fetch" "^2.5.7"
-    node-fetch "2.6.7"
-
 "@forge/api@2.18.2":
   version "2.18.2"
   resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.18.2.tgz#894e20436faa4a0c7369d83018cb2fb5fada3fff"
@@ -356,13 +345,6 @@
   dependencies:
     tslib "^2.6.0"
 
-"@forge/auth@^0.0.1":
-  version "0.0.1"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/auth/-/auth-0.0.1.tgz#3fb4e82e90bd555d4ae9ef45b3aed6782a282d0c"
-  integrity sha512-twZjWbIk+PrW2XzrUfVCzYhh1qe5igS4h9NpapZLHNm2CaCi1gjh8klVcGJijcYJWT1Sj6Qr9gBUtkZjCinJXw==
-  dependencies:
-    tslib "^1.11.0"
-
 "@forge/egress@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@forge/egress/-/egress-1.2.1.tgz#c0e4e71b339f948cd3014b703074415968b80520"
@@ -370,29 +352,17 @@
   dependencies:
     minimatch "^5.1.0"
 
-"@forge/egress@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@forge/egress/-/egress-1.1.2.tgz#8e94c41ef4f5f38c71aad0823eabc08356ae4bfb"
-  integrity sha512-gyDuvsz3VRh6Cb++WLJNRcucD/FBgAu9txHLGB1cYzb49094w5mgrte2BaAYGBNNjy3ZdgbgoRt+UclEX6EqKA==
+"@forge/resolver@1.5.12":
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/@forge/resolver/-/resolver-1.5.12.tgz#2a13901ed40c38b00e908694e0a53d063c306686"
+  integrity sha512-OHx1k66Q8sYYgdbVAM18qNVkUqIf60ovmXRG4koo9ffy+8aavZRt+5skhaXVVnIetZibhjdrJGnT/sEMVzlKsQ==
   dependencies:
-    minimatch "^5.1.0"
-
-"@forge/resolver@1.4.10":
-  version "1.4.10"
-  resolved "https://registry.yarnpkg.com/@forge/resolver/-/resolver-1.4.10.tgz#ad6173c23ca53f881c352d46d57ae615e62d4409"
-  integrity sha512-xMImRsEDh3mdriZuIypVneFTlttNCIG/TmlW/2M82TDUXORn16eG012jUDNVm9iZOietqQ+AINJhnJ6olLa44Q==
-  dependencies:
-    "@forge/api" "2.11.0"
+    "@forge/api" "2.18.2"
 
 "@forge/storage@1.5.5":
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/@forge/storage/-/storage-1.5.5.tgz#8ba6028f13477b95f5cc5fcda05230c2483a5a1f"
   integrity sha512-4APa+O8vqmoRNHb8qSxH3TabI4H8flVQbTEktdDDe+OMrMXQfc8cQXbtyUvNMnR78m9b0ZEz1bh1toIupzRxkw==
-
-"@forge/storage@^1.3.1":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@forge/storage/-/storage-1.3.2.tgz#accd5cf78524b09148182a17eaf64726f075c2e6"
-  integrity sha512-+VgbIpeN+t+bfpIVUSuJoclkywmdh+pQsnKNjgS+hb/9IiKNSPhtgy1NIhB2rwARREXO7atqH5estbIhzd1lkA==
 
 "@forge/util@1.3.0":
   version "1.3.0"
@@ -837,14 +807,6 @@
   integrity sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==
   dependencies:
     "@types/node" "*"
-
-"@types/node-fetch@^2.5.7":
-  version "2.6.1"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/node-fetch/-/node-fetch-2.6.1.tgz#8f127c50481db65886800ef496f20bbf15518975"
-  integrity sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==
-  dependencies:
-    "@types/node" "*"
-    form-data "^3.0.0"
 
 "@types/node-fetch@^2.6.4":
   version "2.6.4"
@@ -3522,13 +3484,6 @@ node-fetch@2.6.12:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@2.6.7:
-  version "2.6.7"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
-  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
-  dependencies:
-    whatwg-url "^5.0.0"
-
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
@@ -4398,7 +4353,7 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^1.11.0, tslib@^1.8.1:
+tslib@^1.8.1:
   version "1.14.1"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
