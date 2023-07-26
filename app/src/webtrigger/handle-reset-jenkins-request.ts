@@ -19,6 +19,7 @@ async function handleResetJenkinsRequest(
 		const jwtToken = request.body;
 		const secret = process.env.RESET_JENKINS_JWT_SECRET!;
 		const claims = {
+			algorithms: ['HS256'],
 			issuer: 'pollinator-test',
 			audience: 'jenkins-forge-app'
 		};

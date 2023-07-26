@@ -13,6 +13,7 @@ import { Errors } from '../common/error-messages';
  */
 export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	try {
+		jwt.sign(jwtToken, secret, { algorithm: 'HS256' });
 		jwt.verify(jwtToken, secret, claims);
 	} catch (error) {
 		// eslint-disable-next-line no-console
