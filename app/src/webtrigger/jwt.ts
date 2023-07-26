@@ -13,8 +13,8 @@ import { Errors } from '../common/error-messages';
  */
 export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	try {
-		jwt.sign(jwtToken, secret, { algorithm: 'HS256' });
-		jwt.verify(jwtToken, secret, claims);
+		console.log('VERIFYING JWT');
+		jwt.verify(jwtToken, { key: secret, passphrase: '' }, claims);
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.log(`JWT verification failed: ${error}`);

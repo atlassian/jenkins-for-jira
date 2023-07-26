@@ -1,6 +1,9 @@
 {
   "name": "jenkins-forge-app",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -15,6 +18,7 @@
   "dependencies": {
     "@forge/api": "2.18.2",
     "@forge/resolver": "1.5.12",
+    "@types/utf8": "^3.0.1",
     "jsonwebtoken": "9.0.1"
   },
   "devDependencies": {
