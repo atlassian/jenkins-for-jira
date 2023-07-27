@@ -4,13 +4,13 @@ import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
 import { InvocationError, UnsupportedRequestTypeError } from '../common/error';
 import { extractCloudId } from './helpers';
-import {extractBodyFromJwt, signJwt, verifyJwt} from './jwt';
+import {extractBodyFromJwt, verifyJwt} from './jwt';
 import {
 	ForgeTriggerContext, JenkinsRequest, RequestType, WebtriggerRequest, WebtriggerResponse
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { Errors } from '../common/error-messages';
-import {log} from "../analytics-logger";
+import { log } from '../analytics-logger';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
