@@ -2,6 +2,7 @@ import { JiraResponse } from './types';
 import { InvalidPayloadError } from '../common/error';
 import { Errors } from '../common/error-messages';
 import { log } from '../config/logger';
+import { getResponseData } from '../utils/get-data-from-response';
 
 async function getGatingStatusFromJira(
 	cloudId: string,
@@ -57,6 +58,7 @@ async function getGatingStatusFromJira(
 
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
+	const responseData = getResponseData(jiraResponse);
 
 	log(
 		logName,
@@ -69,7 +71,7 @@ async function getGatingStatusFromJira(
 					path: getGatingStatusRoute,
 					responseStatus: apiResponse.status,
 					// TODO - hash issue key
-					response: jiraResponse
+					response: responseData
 				}
 		}
 	);

@@ -3,6 +3,7 @@ import { InvalidPayloadError } from '../common/error';
 import { JiraResponse } from './types';
 import { Errors } from '../common/error-messages';
 import { log } from '../config/logger';
+import { getResponseData } from '../utils/get-data-from-response';
 
 async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 	const logName = 'deleteBuilds';
@@ -44,6 +45,7 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
+	const responseData = getResponseData(jiraResponse);
 
 	log(
 		logName,
@@ -55,8 +57,7 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 					message: 'Called Jira API',
 					path: url,
 					responseStatus: apiResponse.status,
-					// TODO - hash issue key
-					response: jiraResponse
+					responseData
 				}
 		}
 	);
