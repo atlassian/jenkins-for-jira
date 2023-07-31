@@ -22,7 +22,7 @@ const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<Je
 	} catch (error) {
 		log(
 			'getJenkinsServerWithSecret',
-			'error',
+			'ERROR',
 			{
 				eventType: 'getJenkinsServerWithSecretEvent',
 				errorMsg: `Failed to fetch Jenkins server for uuid ${jenkinsServerUuid} `,

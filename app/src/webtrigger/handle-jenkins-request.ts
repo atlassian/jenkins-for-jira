@@ -76,12 +76,12 @@ export default async function handleJenkinsRequest(
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
 
-		log(logName, 'info', { eventType, data: { type: jenkinsRequest.requestType } });
+		log(logName, 'INFO', { eventType, data: { type: jenkinsRequest.requestType } });
 		return response;
 	} catch (error) {
 		log(
 			logName,
-	'error',
+	'ERROR',
 				{
 					eventType,
 					errorMsg: 'Failed to fetch Jenkins server list',
@@ -134,7 +134,7 @@ function logJiraResponse(jiraResponse: JiraResponse) {
 	if (jiraResponse.status >= 400) {
 		log(
 			'logJiraResponse',
-			'error',
+			'ERROR',
 			{
 				eventType: 'logJiraResponseEvent',
 				errorMsg: `Received error response from Jira - status: ${jiraResponse.status}`,

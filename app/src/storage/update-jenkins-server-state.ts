@@ -37,7 +37,7 @@ async function updateJenkinsServerState(
 		if (!jenkinsServer) {
 			log(
 				logName,
-				'error',
+				'ERROR',
 				{
 					eventType,
 					errorMsg: `No Jenkins Server found for UUID ${uuid}`
@@ -60,7 +60,7 @@ async function updateJenkinsServerState(
 
 		log(
 			logName,
-			'info',
+			'INFO',
 			{
 				eventType,
 				data:
@@ -72,7 +72,7 @@ async function updateJenkinsServerState(
 	} catch (error) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg:

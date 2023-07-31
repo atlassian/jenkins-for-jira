@@ -14,7 +14,7 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 
 		log(
 			logName,
-			'info',
+			'INFO',
 			{
 				eventType,
 				data:
@@ -29,7 +29,7 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 	} catch (error) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: 'Failed to delete jenkins server configuration',

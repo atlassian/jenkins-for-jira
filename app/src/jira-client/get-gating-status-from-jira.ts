@@ -15,7 +15,7 @@ async function getGatingStatusFromJira(
 	if (!cloudId || !deploymentId || !pipelineId || !environmentId) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: Errors.MISSING_REQUIRED_PROPERTIES,
@@ -60,7 +60,7 @@ async function getGatingStatusFromJira(
 
 	log(
 		logName,
-		'info',
+		'INFO',
 		{
 			eventType,
 			data:

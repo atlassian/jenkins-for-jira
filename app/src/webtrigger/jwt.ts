@@ -18,7 +18,7 @@ export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	} catch (error) {
 		log(
 			'extractBodyFromJwt',
-			'error',
+			'ERROR',
 			{
 				eventType: 'extractBodyFromJwtEvent',
 				errorMsg: `JWT verification failed: ${error}`,
@@ -49,7 +49,7 @@ export const extractBodyFromJwt = (jwtToken: string): any => {
 	} catch (error) {
 		log(
 			'extractBodyFromJwt',
-			'error',
+			'ERROR',
 			{
 				eventType: 'extractBodyFromJwtEvent',
 				errorMsg: `Could not parse payload as JSON: ${bodyAsString} because of: ${error}`,

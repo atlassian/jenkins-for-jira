@@ -11,7 +11,7 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 	if (!url || !payload) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: Errors.MISSING_REQUIRED_PROPERTIES,
@@ -47,7 +47,7 @@ async function invokeApi(url: string, payload: object): Promise<JiraResponse> {
 
 	log(
 		logName,
-		'info',
+		'INFO',
 		{
 			eventType,
 			data:

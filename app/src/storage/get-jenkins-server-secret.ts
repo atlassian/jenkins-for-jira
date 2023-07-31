@@ -13,7 +13,7 @@ export const getJenkinsServerSecret = async (jenkinsServerUuid: string): Promise
 		if (!secret) {
 			log(
 				logName,
-				'error',
+				'ERROR',
 				{
 					eventType,
 					errorMsg: `Couldn't find secret for Jenkins server ${jenkinsServerUuid}`,
@@ -26,7 +26,7 @@ export const getJenkinsServerSecret = async (jenkinsServerUuid: string): Promise
 	} catch (error) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: `Failed to fetch secret for Jenkins server for uuid ${jenkinsServerUuid}`,

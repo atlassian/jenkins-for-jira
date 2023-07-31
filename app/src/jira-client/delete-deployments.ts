@@ -10,7 +10,7 @@ async function deleteDeployments(cloudId: string, jenkinsServerUuid?: string): P
 	if (!cloudId) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: Errors.MISSING_CLOUD_ID,
@@ -35,7 +35,7 @@ async function deleteDeployments(cloudId: string, jenkinsServerUuid?: string): P
 
 	log(
 		logName,
-		'debug',
+		'DEBUG',
 		{
 			eventType,
 			data:

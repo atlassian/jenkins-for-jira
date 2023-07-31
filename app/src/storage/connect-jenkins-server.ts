@@ -17,7 +17,7 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 
 		log(
 			logName,
-			'info',
+			'INFO',
 			{
 				eventType,
 				data:
@@ -32,7 +32,7 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 	} catch (error) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: 'Failed to store Jenkins server configuration',

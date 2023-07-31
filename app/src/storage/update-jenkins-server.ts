@@ -22,7 +22,7 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 
 		log(
 			logName,
-			'info',
+			'INFO',
 			{
 				eventType,
 				data:
@@ -35,7 +35,7 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 	} catch (error) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: 'Failed to update Jenkins server',

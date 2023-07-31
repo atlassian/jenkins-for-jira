@@ -72,7 +72,7 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 	} catch (error) {
 		log(
 			'resetJenkinsServer',
-			'error',
+			'ERROR',
 			{
 				eventType: 'resetJenkinsServerEvent',
 				errorMsg: 'Unexpected error during resetJenkinsServer invocation',
@@ -91,7 +91,7 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
 	} catch (error) {
 		log(
 			'resetJenkinsServer',
-			'error',
+			'ERROR',
 			{
 				eventType: 'resetJenkinsServerEvent',
 				errorMsg: 'Unexpected error during resetJenkinsServer invocation',

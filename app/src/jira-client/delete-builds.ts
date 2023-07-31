@@ -10,7 +10,7 @@ async function deleteBuilds(cloudId: string, jenkinsServerUuid?: string): Promis
 	if (!cloudId) {
 		log(
 			logName,
-			'error',
+			'ERROR',
 			{
 				eventType,
 				errorMsg: Errors.MISSING_CLOUD_ID,
@@ -35,7 +35,7 @@ async function deleteBuilds(cloudId: string, jenkinsServerUuid?: string): Promis
 
 	log(
 		logName,
-		'debug',
+		'DEBUG',
 		{
 			eventType,
 			data:
