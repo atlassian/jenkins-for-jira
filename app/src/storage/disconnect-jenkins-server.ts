@@ -1,21 +1,20 @@
 import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
-import { log, LogLevel } from '../config/logger';
+import { Logger } from '../config/logger';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {
 	const logName = 'disconnectJenkinsServer';
 	const eventType = 'jenkinsServerRemovedEvent';
-	const { INFO, ERROR } = LogLevel;
+	const logger = Logger.getInstance();
 
 	try {
 		const deleteJenkinsServerPromise = await storage.delete(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`);
 		const deleteSecretPromise = await storage.deleteSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`);
 		await Promise.all([deleteJenkinsServerPromise, deleteSecretPromise]);
 
-		log(
+		logger.logInfo(
 			logName,
-			INFO,
 			{
 				eventType,
 				data:
@@ -28,9 +27,8 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 
 		return true;
 	} catch (error) {
-		log(
+		logger.logError(
 			logName,
-			ERROR,
 			{
 				eventType,
 				errorMsg: 'Failed to delete jenkins server configuration',

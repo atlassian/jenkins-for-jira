@@ -2,13 +2,13 @@ import { storage } from '@forge/api';
 import { JenkinsServer } from '../common/types';
 import { getJenkinsServerWithSecret } from './get-jenkins-server-with-secret';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { log, LogLevel } from '../config/logger';
+import { Logger } from '../config/logger';
 import { JenkinsServerStorageError } from '../common/error';
 
 const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 	const logName = 'updateJenkinsServer';
 	const eventType = 'updateJenkinsServerEvent';
-	const { INFO, ERROR } = LogLevel;
+	const logger = Logger.getInstance();
 
 	try {
 		// Retrieve latest Jenkins Server in case new pipeline events have occurred since loading page
@@ -21,9 +21,8 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${updatedJenkinsServer.uuid}`, updatedJenkinsServer);
 		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, updatedJenkinsServer.secret);
 
-		log(
+		logger.logInfo(
 			logName,
-			INFO,
 			{
 				eventType,
 				data:
@@ -34,9 +33,8 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 			}
 		);
 	} catch (error) {
-		log(
+		logger.logError(
 			logName,
-			ERROR,
 			{
 				eventType,
 				errorMsg: 'Failed to update Jenkins server',

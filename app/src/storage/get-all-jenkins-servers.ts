@@ -3,15 +3,15 @@ import {
 } from '@forge/api';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
-import { log, LogLevel } from '../config/logger';
+import { Logger } from '../config/logger';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const logName = 'getAllJenkinsServers';
 	const eventType = 'getAllJenkinsServersEvent';
-	const { INFO, ERROR } = LogLevel;
+	const logger = Logger.getInstance();
 
 	try {
-		log(logName, INFO, { eventType });
+		logger.logInfo(logName, { eventType });
 
 		let results: Result[] = [];
 		let response = await fetchInitialResult();
@@ -27,9 +27,8 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 
 		return jenkinsServers;
 	} catch (error) {
-		log(
+		logger.logError(
 			logName,
-			ERROR,
 			{
 				eventType,
 				errorMsg: 'Failed to fetch Jenkins server list',

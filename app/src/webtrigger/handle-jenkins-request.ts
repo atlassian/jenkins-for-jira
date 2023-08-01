@@ -17,7 +17,7 @@ import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
-import { log, LogLevel } from '../config/logger';
+import { Logger } from '../config/logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -30,7 +30,7 @@ export default async function handleJenkinsRequest(
 ): Promise<WebtriggerResponse> {
 	const logName = 'handleJenkinsRequest';
 	const eventType = 'jenkinsEventProcessed';
-	const { INFO, ERROR } = LogLevel;
+	const logger = Logger.getInstance();
 
 	try {
 		const cloudId = extractCloudId(context.installContext);
@@ -77,12 +77,11 @@ export default async function handleJenkinsRequest(
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
 
-		log(logName, INFO, { eventType, data: { type: jenkinsRequest.requestType } });
+		logger.logInfo(logName, { eventType, data: { type: jenkinsRequest.requestType } });
 		return response;
 	} catch (error) {
-		log(
+		logger.logError(
 			logName,
-			ERROR,
 			{
 				eventType,
 				errorMsg: 'Failed to fetch Jenkins server list',
@@ -132,10 +131,10 @@ async function getGatingStatus(cloudId: string, request: GatingStatusRequest): P
 }
 
 function logJiraResponse(jiraResponse: JiraResponse) {
+	const logger = Logger.getInstance();
 	if (jiraResponse.status >= 400) {
-		log(
+		logger.logError(
 			'logJiraResponse',
-			LogLevel.ERROR,
 			{
 				eventType: 'logJiraResponseEvent',
 				errorMsg: `Received error response from Jira - status: ${jiraResponse.status}`,

@@ -26,43 +26,66 @@ enum LogColors {
     RESET = '\x1b[0m', // Reset color to default
 }
 
-const logMessage = (
-    logLevel: LogLevel,
-    name: string,
-    timestamp: string,
-    formattedLogData: string
-): string => {
-    const logColor = LogColors[logLevel];
-    return `${logColor}${logLevel}${LogColors.RESET}: [${timestamp}] ${name} - ${formattedLogData}`;
-};
+export class Logger {
+    private static instance: Logger;
 
-const log = (
-    name: string,
-    logLevel: LogLevel,
-    logData: LogData | LogError
-): void => {
-    const timestamp = new Date().toISOString();
-    const formattedLogData = JSON.stringify(logData);
-    const message = logMessage(logLevel, name, timestamp, formattedLogData);
+    private readonly timestamp: string;
 
-    switch (logLevel) {
-        case LogLevel.WARN: {
-            console.warn(message);
-            break;
+    private constructor() {
+        this.timestamp = new Date().toISOString();
+        // Empty constructor to enforce the singleton pattern.
+        // Constructor should not be used directly; use getInstance() method instead.
+    }
+
+    public static getInstance(): Logger {
+        if (!Logger.instance) {
+            Logger.instance = new Logger();
         }
-        case LogLevel.ERROR: {
-            console.error(message);
-            break;
-        }
-        case LogLevel.DEBUG: {
-            console.debug(message);
-            break;
-        }
-        default: {
-            console.log(message);
-            break;
+        return Logger.instance;
+    }
+
+    private logMessage(logLevel: LogLevel, name: string, formattedLogData: string): string {
+        const logColor = LogColors[logLevel];
+        return `${logColor}${logLevel}${LogColors.RESET}: [${this.timestamp}] ${name} - ${formattedLogData}`;
+    }
+
+    private log(logLevel: LogLevel, name: string, logData: LogData | LogError): void {
+        const formattedLogData = JSON.stringify(logData);
+        const message = this.logMessage(logLevel, name, formattedLogData);
+
+        switch (logLevel) {
+            case LogLevel.WARN: {
+                console.warn(message);
+                break;
+            }
+            case LogLevel.ERROR: {
+                console.error(message);
+                break;
+            }
+            case LogLevel.DEBUG: {
+                console.debug(message);
+                break;
+            }
+            default: {
+                console.log(message);
+                break;
+            }
         }
     }
-};
 
-export { log, LogLevel };
+    public logInfo(name: string, logData: LogData | LogError): void {
+        this.log(LogLevel.INFO, name, logData);
+    }
+
+    public logWarn(name: string, logData: LogData | LogError): void {
+        this.log(LogLevel.WARN, name, logData);
+    }
+
+    public logError(name: string, logData: LogData | LogError): void {
+        this.log(LogLevel.ERROR, name, logData);
+    }
+
+    public logDebug(name: string, logData: LogData | LogError): void {
+        this.log(LogLevel.DEBUG, name, logData);
+    }
+}

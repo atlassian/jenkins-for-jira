@@ -1,13 +1,13 @@
 import { storage } from '@forge/api';
-import { log, LogLevel } from '../config/logger';
 import { JenkinsServer } from '../common/types';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
+import { Logger } from '../config/logger';
 
 const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boolean> => {
 	const logName = 'connectJenkinsServer';
 	const eventType = 'connectJenkinsServerEvent';
-	const { INFO, ERROR } = LogLevel;
+	const logger = Logger.getInstance();
 
 	try {
 		const { secret } = jenkinsServer;
@@ -16,9 +16,8 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
 		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, secret);
 
-		log(
+		logger.logInfo(
 			logName,
-			INFO,
 			{
 				eventType,
 				data:
@@ -31,9 +30,8 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 
 		return true;
 	} catch (error) {
-		log(
+		logger.logError(
 			logName,
-			ERROR,
 			{
 				eventType,
 				errorMsg: 'Failed to store Jenkins server configuration',
