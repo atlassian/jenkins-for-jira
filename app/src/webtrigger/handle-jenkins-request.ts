@@ -131,13 +131,26 @@ async function getGatingStatus(cloudId: string, request: GatingStatusRequest): P
 }
 
 function logJiraResponse(jiraResponse: JiraResponse) {
+	const loggerName = 'logJiraResponse';
 	const logger = Logger.getInstance();
+
 	if (jiraResponse.status >= 400) {
 		logger.logError(
-			'logJiraResponse',
+			loggerName,
+			{
+				eventType: 'logJiraResponseErrorEvent',
+				status: jiraResponse.status,
+				// TODO - check what is being logged on this error
+				error: JSON.stringify(jiraResponse.body)
+			}
+		);
+	} else {
+		logger.logInfo(
+			loggerName,
 			{
 				eventType: 'logJiraResponseEvent',
-				errorMsg: `Received error response from Jira - status: ${jiraResponse.status}`,
+				status: jiraResponse.status,
+				// TODO - check what is being logged on this error
 				error: JSON.stringify(jiraResponse.body)
 			}
 		);

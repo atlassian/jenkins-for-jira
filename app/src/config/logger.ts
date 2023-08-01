@@ -22,6 +22,7 @@ export interface LogData {
 
 export interface LogError {
     eventType: string;
+    status?: number;
     errorMsg?: string;
     error?: any;
 }
