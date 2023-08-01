@@ -62,7 +62,7 @@ export default async function handleJenkinsRequest(
 
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
-				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId);
+				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId, logger);
 				break;
 			}
 			case RequestType.PING:
@@ -71,7 +71,7 @@ export default async function handleJenkinsRequest(
 				response = createWebtriggerResponse(200, '{"success": true}');
 				break;
 			case RequestType.GATING_STATUS:
-				response = await getGatingStatus(cloudId, jenkinsRequest as GatingStatusRequest);
+				response = await getGatingStatus(cloudId, jenkinsRequest as GatingStatusRequest, logger);
 				break;
 			default:
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
@@ -99,7 +99,8 @@ export default async function handleJenkinsRequest(
 async function handleEvent(
 	event: JenkinsEvent,
 	jenkinsServerUuid: string,
-	cloudId: string
+	cloudId: string,
+	logger: Logger
 ): Promise<WebtriggerResponse> {
 	if (!isBuildOrDeploymentEvent(event.eventType)) {
 		return createWebtriggerResponse(400, `invalid event type: ${event.eventType}`);
@@ -111,7 +112,7 @@ async function handleEvent(
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;
 	const jiraResponse = await sendEventToJira(event.eventType, cloudId, event.payload);
-	logJiraResponse(jiraResponse);
+	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
 }
 
@@ -119,20 +120,23 @@ async function handleEvent(
  * Forwards an incoming request for a gating status to Jira and wraps the Jira response into
  * a WebtriggerResponse.
  */
-async function getGatingStatus(cloudId: string, request: GatingStatusRequest): Promise<WebtriggerResponse> {
+async function getGatingStatus(
+	cloudId: string,
+	request: GatingStatusRequest,
+	logger: Logger
+): Promise<WebtriggerResponse> {
 	const jiraResponse = await getGatingStatusFromJira(
 		cloudId,
 		request.deploymentId,
 		request.pipelineId,
 		request.environmentId
 	);
-	logJiraResponse(jiraResponse);
+	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
 }
 
-function logJiraResponse(jiraResponse: JiraResponse) {
+function logJiraResponse(jiraResponse: JiraResponse, logger: Logger) {
 	const loggerName = 'logJiraResponse';
-	const logger = Logger.getInstance();
 
 	if (jiraResponse.status >= 400) {
 		logger.logError(
