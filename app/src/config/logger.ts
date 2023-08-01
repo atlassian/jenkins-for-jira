@@ -1,20 +1,8 @@
-enum LogLevel {
+export enum LogLevel {
     INFO = 'INFO',
     WARN = 'WARN',
     ERROR = 'ERROR',
     DEBUG = 'DEBUG',
-}
-
-interface LogData {
-    eventType: string;
-    data?: Object;
-    message?: string;
-}
-
-interface LogError {
-    eventType: string;
-    errorMsg?: string;
-    error?: any;
 }
 
 // Define color constants for different log levels
@@ -26,15 +14,36 @@ enum LogColors {
     RESET = '\x1b[0m', // Reset color to default
 }
 
+export interface LogData {
+    eventType: string;
+    data?: Object;
+    message?: string;
+}
+
+export interface LogError {
+    eventType: string;
+    errorMsg?: string;
+    error?: any;
+}
+
+const privateProperties = new WeakMap<Logger, { timestamp: string }>();
+
 export class Logger {
     private static instance: Logger;
 
-    private readonly timestamp: string;
-
     private constructor() {
-        this.timestamp = new Date().toISOString();
+        // Check if the private properties already exist for this instance
+        if (!privateProperties.has(this)) {
+            // Initialize the timestamp using the WeakMap to make it truly private
+            privateProperties.set(this, { timestamp: new Date().toISOString() });
+        }
         // Private constructor to initialize the singleton instance with a timestamp.
         // Constructor should not be used directly; use getInstance() method instead.
+    }
+
+    private getTimestamp(): string {
+        // Retrieve the timestamp using the WeakMap
+        return privateProperties.get(this)?.timestamp || '';
     }
 
     public static getInstance(): Logger {
@@ -46,7 +55,7 @@ export class Logger {
 
     private logMessage(logLevel: LogLevel, name: string, formattedLogData: string): string {
         const logColor = LogColors[logLevel];
-        return `${logColor}${logLevel}${LogColors.RESET}: [${this.timestamp}] ${name} - ${formattedLogData}`;
+        return `${logColor}${logLevel}${LogColors.RESET}: [${this.getTimestamp()}] ${name} - ${formattedLogData}`;
     }
 
     private log(logLevel: LogLevel, name: string, logData: LogData | LogError): void {

@@ -15,6 +15,7 @@
   "dependencies": {
     "@forge/api": "2.18.2",
     "@forge/resolver": "1.5.12",
+    "expect": "^29.6.2",
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
