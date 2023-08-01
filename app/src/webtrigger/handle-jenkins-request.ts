@@ -17,7 +17,7 @@ import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
-import { log } from '../analytics-logger';
+import { log, LogLevel } from '../config/logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -28,6 +28,10 @@ export default async function handleJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
+	const logName = 'handleJenkinsRequest';
+	const eventType = 'jenkinsEventProcessed';
+	const { INFO, ERROR } = LogLevel;
+
 	try {
 		const cloudId = extractCloudId(context.installContext);
 
@@ -48,13 +52,14 @@ export default async function handleJenkinsRequest(
 			issuer: 'jenkins-plugin',
 			audience: 'jenkins-forge-app'
 		};
+
 		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
 
 		const payload = extractBodyFromJwt(jwtToken);
-
 		const jenkinsRequest = payload as JenkinsRequest;
 
 		let response;
+
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
 				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId);
@@ -71,10 +76,19 @@ export default async function handleJenkinsRequest(
 			default:
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
-		log({ eventType: 'jenkinsEventProcessedSuccessfully', data: { type: jenkinsRequest.requestType } });
+
+		log(logName, INFO, { eventType, data: { type: jenkinsRequest.requestType } });
 		return response;
 	} catch (error) {
-		log({ eventType: 'jenkinsEventProcessedError' });
+		log(
+			logName,
+			ERROR,
+			{
+				eventType,
+				errorMsg: 'Failed to fetch Jenkins server list',
+				error
+			}
+		);
 		return handleWebtriggerError(request, error);
 	}
 }
@@ -119,8 +133,15 @@ async function getGatingStatus(cloudId: string, request: GatingStatusRequest): P
 
 function logJiraResponse(jiraResponse: JiraResponse) {
 	if (jiraResponse.status >= 400) {
-		// eslint-disable-next-line no-console,max-len
-		console.error(`Received response with status ${jiraResponse.status} from Jira: ${JSON.stringify(jiraResponse.body)}`);
+		log(
+			'logJiraResponse',
+			LogLevel.ERROR,
+			{
+				eventType: 'logJiraResponseEvent',
+				errorMsg: `Received error response from Jira - status: ${jiraResponse.status}`,
+				error: JSON.stringify(jiraResponse.body)
+			}
+		);
 	}
 }
 

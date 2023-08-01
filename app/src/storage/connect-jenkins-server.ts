@@ -1,21 +1,46 @@
 import { storage } from '@forge/api';
-import { log } from '../analytics-logger';
+import { log, LogLevel } from '../config/logger';
 import { JenkinsServer } from '../common/types';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
 
 const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boolean> => {
+	const logName = 'connectJenkinsServer';
+	const eventType = 'connectJenkinsServerEvent';
+	const { INFO, ERROR } = LogLevel;
+
 	try {
 		const { secret } = jenkinsServer;
-		// eslint-disable-next-line no-param-reassign
 		delete jenkinsServer.secret;
-		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`, jenkinsServer);
-		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`, secret);
-		console.log(`${jenkinsServer.name} jenkins server configuration saved successfully !`);
-		log({ eventType: 'jenkinsServerCreated', data: { uuid: jenkinsServer.uuid } });
+		const { uuid } = jenkinsServer;
+		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
+		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, secret);
+
+		log(
+			logName,
+			INFO,
+			{
+				eventType,
+				data:
+					{
+						uuid,
+						message: 'Jenkins server configuration saved successfully!'
+					}
+			}
+		);
+
 		return true;
 	} catch (error) {
-		console.error('Failed to store Jenkins server configuration', error);
+		log(
+			logName,
+			ERROR,
+			{
+				eventType,
+				errorMsg: 'Failed to store Jenkins server configuration',
+				error
+			}
+		);
+
 		throw new JenkinsServerStorageError('Failed to store jenkins server configuration');
 	}
 };
