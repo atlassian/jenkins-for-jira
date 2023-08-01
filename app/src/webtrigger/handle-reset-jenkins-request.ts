@@ -4,7 +4,7 @@ import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
 import { InvocationError, UnsupportedRequestTypeError } from '../common/error';
 import { extractCloudId } from './helpers';
-import {extractBodyFromJwt, verifyJwt} from './jwt';
+import { extractBodyFromJwt, verifyJwt } from './jwt';
 import {
 	ForgeTriggerContext, JenkinsRequest, RequestType, WebtriggerRequest, WebtriggerResponse
 } from './types';
@@ -20,12 +20,11 @@ async function handleResetJenkinsRequest(
 		const jwtToken = request.body;
 		const secret = process.env.RESET_JENKINS_JWT_SECRET!;
 		const claims = {
-			algorithms: ['none'],
+			algorithms: ['HS256'],
 			issuer: 'pollinator-test',
 			audience: 'jenkins-forge-app'
 		};
 
-		log({ eventType: 'spot 2' });
 		verifyJwt(jwtToken, secret, claims);
 
 		const payload = extractBodyFromJwt(jwtToken);

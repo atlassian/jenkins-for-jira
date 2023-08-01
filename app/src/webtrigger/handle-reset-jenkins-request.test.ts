@@ -33,9 +33,6 @@ describe('Reset Jenkins Server request suite', () => {
 		});
 
 		it('Should throw a JwtDecodingFailedError when JWT cannot be decoded', async () => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 
@@ -48,9 +45,6 @@ describe('Reset Jenkins Server request suite', () => {
 		});
 
 		it('Should throw InvalidPayloadError if requestType is not resetJenkinsServer or deleteBuildsDeployments', async () => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 
@@ -70,9 +64,6 @@ describe('Reset Jenkins Server request suite', () => {
 		});
 
 		it('Should throw MissingCloudIdError if installContext has no CloudID', async () => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 
@@ -93,9 +84,6 @@ describe('Reset Jenkins Server request suite', () => {
 		});
 
 		it('Should throw MissingCloudIdError if installContext is not a string', async () => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 
@@ -118,9 +106,6 @@ describe('Reset Jenkins Server request suite', () => {
 
 	describe('Should handle resetting the Jenkins server when requestType is resetJenkinsServer', () => {
 		beforeEach(() => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 
@@ -156,9 +141,6 @@ describe('Reset Jenkins Server request suite', () => {
 
 	describe('Should handle deleting builds and deployments when requestType is deleteBuildsDeployments', () => {
 		beforeEach(() => {
-			const signedJwt = jest.spyOn(jwt, 'sign');
-			signedJwt.mockImplementation(() => () => ({ token: 'my-signed-token' }));
-
 			const verify = jest.spyOn(jwt, 'verify');
 			verify.mockImplementation(() => () => ({ verified: true }));
 

@@ -13,7 +13,6 @@ import { Errors } from '../common/error-messages';
  */
 export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	try {
-		console.log('VERIFYING JWT');
 		jwt.verify(jwtToken, secret, claims);
 	} catch (error) {
 		// eslint-disable-next-line no-console

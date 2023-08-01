@@ -45,12 +45,11 @@ export default async function handleJenkinsRequest(
 		const jwtToken = request.body;
 		const jenkinsServer = await getJenkinsServerWithSecret(jenkinsServerUuid);
 		const claims = {
-			algorithms: ['none'],
+			algorithms: ['HS256'],
 			issuer: 'jenkins-plugin',
 			audience: 'jenkins-forge-app'
 		};
 
-		log({ eventType: 'spot 1' });
 		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
 
 		const payload = extractBodyFromJwt(jwtToken);
