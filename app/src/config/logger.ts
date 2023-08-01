@@ -5,13 +5,12 @@ export enum LogLevel {
     DEBUG = 'DEBUG',
 }
 
-// Define color constants for different log levels
 enum LogColors {
-    INFO = '\x1b[32m', // Green for INFO
-    WARN = '\x1b[33m', // Yellow for WARN
-    ERROR = '\x1b[31m', // Red for ERROR
-    DEBUG = '\x1b[35m', // Magenta for DEBUG
-    RESET = '\x1b[0m', // Reset color to default
+    INFO = '\x1b[32m',
+    WARN = '\x1b[33m',
+    ERROR = '\x1b[31m',
+    DEBUG = '\x1b[35m',
+    RESET = '\x1b[0m',
 }
 
 export interface LogData {
@@ -27,31 +26,33 @@ export interface LogError {
     error?: any;
 }
 
-const privateProperties = new WeakMap<Logger, { timestamp: string }>();
+const privateProperties = new WeakMap<Logger, { timestamp: string, name: string }>();
 
 export class Logger {
     private static instance: Logger;
 
-    private constructor() {
-        // Check if the private properties already exist for this instance
+    private constructor(name: string) {
         if (!privateProperties.has(this)) {
-            // Initialize the timestamp using the WeakMap to make it truly private
-            privateProperties.set(this, { timestamp: new Date().toISOString() });
+            privateProperties.set(this, {
+                timestamp: new Date().toISOString(),
+                name
+            });
         }
-        // Private constructor to initialize the singleton instance with a timestamp.
-        // Constructor should not be used directly; use getInstance() method instead.
+    }
+
+    public static getInstance(name: string): Logger {
+        if (!Logger.instance) {
+            Logger.instance = new Logger(name);
+        }
+        return Logger.instance;
     }
 
     private getTimestamp(): string {
-        // Retrieve the timestamp using the WeakMap
         return privateProperties.get(this)?.timestamp || '';
     }
 
-    public static getInstance(): Logger {
-        if (!Logger.instance) {
-            Logger.instance = new Logger();
-        }
-        return Logger.instance;
+    private getName(): string {
+        return privateProperties.get(this)?.name || '';
     }
 
     private logMessage(logLevel: LogLevel, name: string, formattedLogData: string): string {
@@ -59,9 +60,9 @@ export class Logger {
         return `${logColor}${logLevel}${LogColors.RESET}: [${this.getTimestamp()}] ${name} - ${formattedLogData}`;
     }
 
-    private log(logLevel: LogLevel, name: string, logData: LogData | LogError): void {
+    private log(logLevel: LogLevel, logData: LogData | LogError): void {
         const formattedLogData = JSON.stringify(logData);
-        const message = this.logMessage(logLevel, name, formattedLogData);
+        const message = this.logMessage(logLevel, this.getName(), formattedLogData);
 
         switch (logLevel) {
             case LogLevel.WARN: {
@@ -83,19 +84,19 @@ export class Logger {
         }
     }
 
-    public logInfo(name: string, logData: LogData | LogError): void {
-        this.log(LogLevel.INFO, name, logData);
+    public logInfo(logData: LogData | LogError): void {
+        this.log(LogLevel.INFO, logData);
     }
 
-    public logWarn(name: string, logData: LogData | LogError): void {
-        this.log(LogLevel.WARN, name, logData);
+    public logWarn(logData: LogData | LogError): void {
+        this.log(LogLevel.WARN, logData);
     }
 
-    public logError(name: string, logData: LogData | LogError): void {
-        this.log(LogLevel.ERROR, name, logData);
+    public logError(logData: LogData | LogError): void {
+        this.log(LogLevel.ERROR, logData);
     }
 
-    public logDebug(name: string, logData: LogData | LogError): void {
-        this.log(LogLevel.DEBUG, name, logData);
+    public logDebug(logData: LogData | LogError): void {
+        this.log(LogLevel.DEBUG, logData);
     }
 }

@@ -6,12 +6,11 @@ import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
-	const logName = 'getAllJenkinsServers';
 	const eventType = 'getAllJenkinsServersEvent';
-	const logger = Logger.getInstance();
+	const logger = Logger.getInstance('getAllJenkinsServers');
 
 	try {
-		logger.logInfo(logName, { eventType });
+		logger.logInfo({ eventType });
 
 		let results: Result[] = [];
 		let response = await fetchInitialResult();
@@ -28,7 +27,6 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 		return jenkinsServers;
 	} catch (error) {
 		logger.logError(
-			logName,
 			{
 				eventType,
 				errorMsg: 'Failed to fetch Jenkins server list',

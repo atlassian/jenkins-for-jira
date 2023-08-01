@@ -6,9 +6,8 @@ import { Logger } from '../config/logger';
 import { JenkinsServerStorageError } from '../common/error';
 
 const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
-	const logName = 'updateJenkinsServer';
 	const eventType = 'updateJenkinsServerEvent';
-	const logger = Logger.getInstance();
+	const logger = Logger.getInstance('updateJenkinsServer');
 
 	try {
 		// Retrieve latest Jenkins Server in case new pipeline events have occurred since loading page
@@ -22,7 +21,6 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, updatedJenkinsServer.secret);
 
 		logger.logInfo(
-			logName,
 			{
 				eventType,
 				data:
@@ -34,7 +32,6 @@ const updateJenkinsServer = async (jenkinsServer: JenkinsServer) => {
 		);
 	} catch (error) {
 		logger.logError(
-			logName,
 			{
 				eventType,
 				errorMsg: 'Failed to update Jenkins server',

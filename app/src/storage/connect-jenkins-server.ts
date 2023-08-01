@@ -5,9 +5,8 @@ import { JenkinsServerStorageError } from '../common/error';
 import { Logger } from '../config/logger';
 
 const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boolean> => {
-	const logName = 'connectJenkinsServer';
 	const eventType = 'connectJenkinsServerEvent';
-	const logger = Logger.getInstance();
+	const logger = Logger.getInstance('connectJenkinsServer');
 
 	try {
 		const { secret } = jenkinsServer;
@@ -17,7 +16,6 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, secret);
 
 		logger.logInfo(
-			logName,
 			{
 				eventType,
 				data:
@@ -31,7 +29,6 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer): Promise<boole
 		return true;
 	} catch (error) {
 		logger.logError(
-			logName,
 			{
 				eventType,
 				errorMsg: 'Failed to store Jenkins server configuration',
