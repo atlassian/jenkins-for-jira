@@ -33,7 +33,7 @@ export class Logger {
 
     private constructor() {
         this.timestamp = new Date().toISOString();
-        // Empty constructor to enforce the singleton pattern.
+        // Private constructor to initialize the singleton instance with a timestamp.
         // Constructor should not be used directly; use getInstance() method instead.
     }
 
