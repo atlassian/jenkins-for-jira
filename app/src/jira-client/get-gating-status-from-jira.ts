@@ -1,6 +1,8 @@
 import { JiraResponse } from './types';
 import { InvalidPayloadError } from '../common/error';
 import { Errors } from '../common/error-messages';
+import { Logger } from '../config/logger';
+import { getResponseData } from '../utils/get-data-from-response';
 
 async function getGatingStatusFromJira(
 	cloudId: string,
@@ -8,7 +10,11 @@ async function getGatingStatusFromJira(
 	pipelineId: string,
 	environmentId: string
 ): Promise<JiraResponse> {
+	const logger = Logger.getInstance('deleteBuilds');
+	const eventType = 'getGatingStatusFromJiraEvent';
+
 	if (!cloudId || !deploymentId || !pipelineId || !environmentId) {
+		logger.logError({ eventType, errorMsg: Errors.MISSING_REQUIRED_PROPERTIES });
 		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
 	}
 
@@ -44,11 +50,18 @@ async function getGatingStatusFromJira(
 
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
+	const responseData = getResponseData(jiraResponse);
 
-	console.log(
-		`called Jira API ${getGatingStatusRoute}.
-		Response status: ${apiResponse.status}. Response body: ${jiraResponse}`
-	);
+	logger.logInfo({
+		eventType,
+		data:
+			{
+				message: 'Called Jira API',
+				path: getGatingStatusRoute,
+				status: apiResponse.status,
+				response: responseData
+			}
+	});
 
 	return {
 		status: apiResponse.status,

@@ -10,11 +10,15 @@ import {
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { Errors } from '../common/error-messages';
+import { Logger } from '../config/logger';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
+	const eventType = 'handleResetJenkinsRequest';
+	const logger = Logger.getInstance('handleResetJenkinsRequestEvent');
+
 	try {
 		const jwtToken = request.body;
 		const secret = process.env.RESET_JENKINS_JWT_SECRET!;
@@ -23,32 +27,33 @@ async function handleResetJenkinsRequest(
 			audience: 'jenkins-forge-app'
 		};
 
-		verifyJwt(jwtToken, secret, claims);
+		verifyJwt(jwtToken, secret, claims, logger);
 
-		const payload = extractBodyFromJwt(jwtToken);
+		const payload = extractBodyFromJwt(jwtToken, logger);
 		const jenkinsRequest = payload as JenkinsRequest;
 		const cloudId = extractCloudId(context.installContext);
 
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
-			await resetJenkinsServer(cloudId, jenkinsRequest.data?.excludeUuid);
+			await resetJenkinsServer(cloudId, logger, jenkinsRequest.data?.excludeUuid);
 			return createWebtriggerResponse(200, '{"success": true}');
 		}
 
 		if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
 			if (jenkinsRequest.data?.uuid) {
-				await deleteBuildsAndDeployments(cloudId, jenkinsRequest.data.uuid);
+				await deleteBuildsAndDeployments(cloudId, jenkinsRequest.data.uuid, logger);
 				return createWebtriggerResponse(200, '{"success": true}');
 			}
 			return createWebtriggerResponse(400, `{"error": ${Errors.MISSING_UUID}`);
 		}
 
+		logger.logError({ eventType, errorMsg: Errors.UNSUPPORTED_REQUEST_TYPE });
 		throw new UnsupportedRequestTypeError(Errors.UNSUPPORTED_REQUEST_TYPE);
 	} catch (error) {
-		return handleWebtriggerError(request, error);
+		return handleWebtriggerError(request, error, logger);
 	}
 }
 
-async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
+async function resetJenkinsServer(cloudId: string, logger: Logger, excludeUuid?: string) {
 	try {
 		let jenkinsServers = await getAllJenkinsServers();
 		const disconnectJenkinsServerPromises: Array<Promise<any>> = [];
@@ -69,17 +74,17 @@ async function resetJenkinsServer(cloudId: string, excludeUuid?: string) {
 
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
-		console.error('unexpected error during resetJenkinsServer invocation', error);
+		logger.logError({ eventType: 'resetJenkinsServerEvent', errorMsg: Errors.INVOCATION_ERROR });
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
 
-async function deleteBuildsAndDeployments(cloudId: string, uuid: string) {
+async function deleteBuildsAndDeployments(cloudId: string, uuid: string, logger: Logger) {
 	try {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
 	} catch (error) {
-		console.error('unexpected error during deleteBuildsAndDeployments invocation', error);
+		logger.logError({ eventType: 'deleteBuildsAndDeploymentsEvent', errorMsg: Errors.INVOCATION_ERROR });
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }

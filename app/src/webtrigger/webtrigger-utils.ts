@@ -1,18 +1,17 @@
 import { JenkinsAppError } from '../common/error';
 import { WebtriggerRequest, WebtriggerResponse } from './types';
-
+import { Logger } from '../config/logger';
 /**
  * Translates certain errors into an appropriate webtrigger response.
  */
-function handleWebtriggerError(request: WebtriggerRequest, error: any): WebtriggerResponse {
+function handleWebtriggerError(request: WebtriggerRequest, error: any, logger: Logger): WebtriggerResponse {
 	if (error instanceof JenkinsAppError) {
 		return createWebtriggerResponse(400, error.message);
 	}
 
 	// In case of an unexpected error, we want to bubble up the error so that Forge recognizes the invocation as
 	// failed and it shows up in the metrics.
-	// eslint-disable-next-line no-console
-	console.error(`unexpected error during webtrigger invocation: ${error.message}`);
+	logger.logError({ eventType: 'handleWebtriggerError', error, errorMsg: error.message });
 	throw error;
 }
 
