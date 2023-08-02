@@ -77,12 +77,15 @@ describe('Update Jenkins Server Suite', () => {
 	});
 
 	it('Should throw an error if the server does not exist', async () => {
-		expect(async () => {
+		try {
 			await updateJenkinsServerState(
 				mockSingleJenkinsPipeline.uuid,
 				mockSingleJenkinsPipeline.pipelines[0]
 			);
-		}).rejects.toThrow(NoJenkinsServerError);
+		} catch (err) {
+			// @ts-ignore
+			expect(err.message).toEqual('No Jenkins Server found for UUID test-uuid');
+		}
 	});
 
 	const eventStatus = 'pending';

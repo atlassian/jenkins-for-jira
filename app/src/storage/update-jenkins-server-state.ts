@@ -54,7 +54,7 @@ async function updateJenkinsServerState(
 		const errorMsg =
 			`Failed to update Jenkins server uuid ${uuid}`;
 		logger?.logError({ eventType, errorMsg });
-		throw new NoJenkinsServerError(errorMsg);
+		throw error;
 	}
 }
 
