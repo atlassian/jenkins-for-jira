@@ -28,8 +28,8 @@ export default async function handleJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
-	const eventType = 'jenkinsEventProcessed';
-	const logger = Logger.getInstance('handleJenkinsRequest');
+	const eventType = 'handleJenkinsRequest';
+	const logger = Logger.getInstance('handleJenkinsRequestEvent');
 
 	try {
 		const cloudId = extractCloudId(context.installContext);
@@ -52,9 +52,9 @@ export default async function handleJenkinsRequest(
 			audience: 'jenkins-forge-app'
 		};
 
-		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
+		verifyJwt(jwtToken, jenkinsServer.secret as string, claims, logger);
 
-		const payload = extractBodyFromJwt(jwtToken);
+		const payload = extractBodyFromJwt(jwtToken, logger);
 		const jenkinsRequest = payload as JenkinsRequest;
 
 		let response;
@@ -86,7 +86,7 @@ export default async function handleJenkinsRequest(
 				error
 			}
 		);
-		return handleWebtriggerError(request, error);
+		return handleWebtriggerError(request, error, logger);
 	}
 }
 
@@ -105,7 +105,7 @@ async function handleEvent(
 	}
 
 	const pipeline: JenkinsPipeline = convertToPipeline(event);
-	await updateJenkinsServerState(jenkinsServerUuid, pipeline);
+	await updateJenkinsServerState(jenkinsServerUuid, pipeline, logger);
 	event.payload.properties = event.payload.properties || {};
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;

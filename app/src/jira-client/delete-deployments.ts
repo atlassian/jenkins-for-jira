@@ -1,9 +1,14 @@
 import { JiraResponse } from './types';
 import { InvalidPayloadError } from '../common/error';
 import { Errors } from '../common/error-messages';
+import { Logger } from '../config/logger';
 
 async function deleteDeployments(cloudId: string, jenkinsServerUuid?: string): Promise<JiraResponse> {
+	const logger = Logger.getInstance('Logger');
+	const eventType = 'deleteDeploymentsEvent';
+
 	if (!cloudId) {
+		logger.logError({ eventType, errorMsg: Errors.MISSING_CLOUD_ID });
 		throw new InvalidPayloadError(Errors.MISSING_CLOUD_ID);
 	}
 
@@ -19,6 +24,8 @@ async function deleteDeployments(cloudId: string, jenkinsServerUuid?: string): P
 		.__requestAtlassian(url, {
 			method: 'DELETE'
 		});
+
+	logger.logDebug({ eventType, data: { message: 'Jenkins deployments deleted' } });
 
 	return {
 		status: apiResponse.status,

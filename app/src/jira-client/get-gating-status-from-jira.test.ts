@@ -67,13 +67,25 @@ describe('deleteDeployments suite', () => {
 	});
 
 	it('Should return status with response body when responseString is returned', async () => {
+		const resPayload =
+		{
+			data: {
+				response: {
+					acceptedBuilds: [],
+					rejectedBuilds: [],
+					acceptedDeployments: [],
+					rejectedDeployments: []
+				}
+			}
+		};
+
 		(global as any).api = {
 			asApp: () => ({
 				__requestAtlassian: () => ({
 					status: 200,
 					text: jest.fn(() => {
 						return Promise.resolve(JSON.stringify({
-							text: 'some message'
+							...resPayload
 						}));
 					})
 				})
@@ -81,6 +93,6 @@ describe('deleteDeployments suite', () => {
 		};
 
 		const response = await getGatingStatusFromJira('1234', '1234', '1234', '1234');
-		expect(response).toEqual({ status: 200, body: { text: 'some message' } });
+		expect(response).toEqual({ status: 200, body: { data: resPayload.data } });
 	});
 });
