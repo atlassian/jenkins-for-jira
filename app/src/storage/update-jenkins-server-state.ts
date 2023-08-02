@@ -25,7 +25,7 @@ export const updatePipelines = (
 async function updateJenkinsServerState(
 	uuid: string,
 	pipelineToUpdate: JenkinsPipeline,
-	logger: Logger
+	logger?: Logger
 ) {
 	const eventType = 'updateJenkinsServerStateEvent';
 
@@ -36,7 +36,7 @@ async function updateJenkinsServerState(
 
 		if (!jenkinsServer) {
 			const errorMsg = `No Jenkins Server found for UUID ${uuid}`;
-			logger.logError({ eventType, errorMsg });
+			logger?.logError({ eventType, errorMsg });
 			throw new NoJenkinsServerError(errorMsg);
 		}
 
@@ -52,8 +52,8 @@ async function updateJenkinsServerState(
 		);
 	} catch (error) {
 		const errorMsg =
-			`Failed to update Jenkins server uuid ${uuid} with pipeline ${JSON.stringify(pipelineToUpdate)}`;
-		logger.logError({ eventType, errorMsg });
+			`Failed to update Jenkins server uuid ${uuid}`;
+		logger?.logError({ eventType, errorMsg });
 		throw new NoJenkinsServerError(errorMsg);
 	}
 }
