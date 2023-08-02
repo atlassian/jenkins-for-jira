@@ -17,6 +17,7 @@ import { sendEventToJira } from '../jira-client/send-event-to-jira';
 import { JiraResponse } from '../jira-client/types';
 import { EventType } from '../common/types';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
+import { Errors } from '../common/error-messages';
 
 jest.mock('../jira-client/send-event-to-jira');
 jest.mock('../jira-client/get-gating-status-from-jira');
@@ -242,7 +243,7 @@ describe('Jenkins webtrigger', () => {
 
 		// then
 		expect(response.statusCode).toBe(400);
-		expect(response.body).toBe('JWT verification failed. Please make sure you configured the same secret in Jenkins and Jira.');
+		expect(response.body).toBe(Errors.JWT_VERIFICATION_FAILED);
 	});
 
 	it('should request gating status from Jira', async () => {

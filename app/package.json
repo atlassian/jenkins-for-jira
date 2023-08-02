@@ -13,9 +13,9 @@
     "prepare": "cd ../ && husky install"
   },
   "dependencies": {
-    "@forge/api": "2.6.1",
+    "@forge/api": "2.18.2",
     "@forge/metrics": "^0.1.13",
-    "@forge/resolver": "1.4.10",
+    "@forge/resolver": "1.5.12",
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "@types/jsonwebtoken": "8.5.9",
     "@typescript-eslint/eslint-plugin": "5.61.0",
     "@typescript-eslint/parser": "5.61.0",
-    "eslint": "8.44.0",
+    "eslint": "8.45.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "2.27.5",

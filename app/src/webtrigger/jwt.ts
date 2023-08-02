@@ -1,18 +1,23 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error';
+import {
+	InvalidPayloadError,
+	JwtDecodingFailedError,
+	JwtVerificationFailedError
+} from '../common/error';
+import { Errors } from '../common/error-messages';
+import { Logger } from '../config/logger';
 
 /**
  * Verifies the signature of a JWT.
  * @param jwtToken string representation of the JWT to verify.
  * @param secret the secret which was used to generate the JWT.
  */
-export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
+export const verifyJwt = (jwtToken: string, secret: string, claims: object, logger?: Logger) => {
 	try {
 		jwt.verify(jwtToken, secret, claims);
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.log(`JWT verification failed: ${error}`);
-		throw new JwtVerificationFailedError('JWT verification failed. Please make sure you configured the same secret in Jenkins and Jira.');
+		logger?.logError({ eventType: 'verifyJwtEvent', errorMsg: Errors.JWT_VERIFICATION_FAILED });
+		throw new JwtVerificationFailedError(Errors.JWT_VERIFICATION_FAILED);
 	}
 };
 
@@ -21,11 +26,13 @@ export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
  * from the JWT. The request body is expected to be a JSON string.
  * @param jwtToken string representation of the JWT to extract the body from.
  */
-export const extractBodyFromJwt = (jwtToken: string): any => {
+export const extractBodyFromJwt = (jwtToken: string, logger?: Logger): any => {
 	const decodedToken = jwt.decode(jwtToken) as JwtPayload;
 
 	if (!decodedToken) {
-		throw new InvalidPayloadError('JWT could not be decoded!');
+		const errorMsg = 'JWT could not be decoded!';
+		logger?.logError({ eventType: 'extractBodyFromJwtEvent', errorMsg });
+		throw new InvalidPayloadError(errorMsg);
 	}
 
 	const bodyAsString = decodedToken.request_body_json;
@@ -33,8 +40,7 @@ export const extractBodyFromJwt = (jwtToken: string): any => {
 	try {
 		return JSON.parse(bodyAsString);
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.log(`Could not parse payload as JSON: ${bodyAsString} because of: ${error}`);
-		throw new InvalidPayloadError(`Could not parse payload as JSON: ${bodyAsString}`);
+		logger?.logError({ eventType: 'extractBodyFromJwtEvent', error, errorMsg: Errors.JWT_DECODING_ERROR });
+		throw new JwtDecodingFailedError(Errors.JWT_DECODING_ERROR);
 	}
 };

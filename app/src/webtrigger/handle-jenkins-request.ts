@@ -17,7 +17,7 @@ import { extractBodyFromJwt, verifyJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
-import { log } from '../analytics-logger';
+import { Logger } from '../config/logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -28,6 +28,9 @@ export default async function handleJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
+	const eventType = 'handleJenkinsRequest';
+	const logger = Logger.getInstance('handleJenkinsRequestEvent');
+
 	try {
 		const cloudId = extractCloudId(context.installContext);
 
@@ -48,15 +51,17 @@ export default async function handleJenkinsRequest(
 			issuer: 'jenkins-plugin',
 			audience: 'jenkins-forge-app'
 		};
-		verifyJwt(jwtToken, jenkinsServer.secret as string, claims);
-		const payload = extractBodyFromJwt(jwtToken);
 
+		verifyJwt(jwtToken, jenkinsServer.secret as string, claims, logger);
+
+		const payload = extractBodyFromJwt(jwtToken, logger);
 		const jenkinsRequest = payload as JenkinsRequest;
 
 		let response;
+
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
-				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId);
+				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId, logger);
 				break;
 			}
 			case RequestType.PING:
@@ -65,16 +70,23 @@ export default async function handleJenkinsRequest(
 				response = createWebtriggerResponse(200, '{"success": true}');
 				break;
 			case RequestType.GATING_STATUS:
-				response = await getGatingStatus(cloudId, jenkinsRequest as GatingStatusRequest);
+				response = await getGatingStatus(cloudId, jenkinsRequest as GatingStatusRequest, logger);
 				break;
 			default:
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
-		log({ eventType: 'jenkinsEventProcessedSuccessfully', data: { type: jenkinsRequest.requestType } });
+
+		logger.logInfo({ eventType, data: { type: jenkinsRequest.requestType } });
 		return response;
 	} catch (error) {
-		log({ eventType: 'jenkinsEventProcessedError' });
-		return handleWebtriggerError(request, error);
+		logger.logError(
+			{
+				eventType,
+				errorMsg: 'Failed to fetch Jenkins server list',
+				error
+			}
+		);
+		return handleWebtriggerError(request, error, logger);
 	}
 }
 
@@ -85,19 +97,20 @@ export default async function handleJenkinsRequest(
 async function handleEvent(
 	event: JenkinsEvent,
 	jenkinsServerUuid: string,
-	cloudId: string
+	cloudId: string,
+	logger: Logger
 ): Promise<WebtriggerResponse> {
 	if (!isBuildOrDeploymentEvent(event.eventType)) {
 		return createWebtriggerResponse(400, `invalid event type: ${event.eventType}`);
 	}
 
 	const pipeline: JenkinsPipeline = convertToPipeline(event);
-	await updateJenkinsServerState(jenkinsServerUuid, pipeline);
+	await updateJenkinsServerState(jenkinsServerUuid, pipeline, logger);
 	event.payload.properties = event.payload.properties || {};
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;
 	const jiraResponse = await sendEventToJira(event.eventType, cloudId, event.payload);
-	logJiraResponse(jiraResponse);
+	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
 }
 
@@ -105,21 +118,40 @@ async function handleEvent(
  * Forwards an incoming request for a gating status to Jira and wraps the Jira response into
  * a WebtriggerResponse.
  */
-async function getGatingStatus(cloudId: string, request: GatingStatusRequest): Promise<WebtriggerResponse> {
+async function getGatingStatus(
+	cloudId: string,
+	request: GatingStatusRequest,
+	logger: Logger
+): Promise<WebtriggerResponse> {
 	const jiraResponse = await getGatingStatusFromJira(
 		cloudId,
 		request.deploymentId,
 		request.pipelineId,
 		request.environmentId
 	);
-	logJiraResponse(jiraResponse);
+	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
 }
 
-function logJiraResponse(jiraResponse: JiraResponse) {
+function logJiraResponse(jiraResponse: JiraResponse, logger: Logger) {
 	if (jiraResponse.status >= 400) {
-		// eslint-disable-next-line no-console,max-len
-		console.error(`Received response with status ${jiraResponse.status} from Jira: ${JSON.stringify(jiraResponse.body)}`);
+		logger.logError(
+			{
+				eventType: 'logJiraResponseErrorEvent',
+				status: jiraResponse.status,
+				// TODO - check what is being logged on this error
+				error: JSON.stringify(jiraResponse.body)
+			}
+		);
+	} else {
+		logger.logInfo(
+			{
+				eventType: 'logJiraResponseEvent',
+				status: jiraResponse.status,
+				// TODO - check what is being logged on this error
+				error: JSON.stringify(jiraResponse.body)
+			}
+		);
 	}
 }
 
