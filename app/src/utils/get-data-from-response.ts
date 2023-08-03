@@ -62,8 +62,6 @@ export const getResponseData = (response: ResponseData): InfoData[] => {
     } =
         response.data.response;
 
-    console.log('response', response);
-
     const acceptedBuildsInfo = getInfo(acceptedBuilds, 'acceptedBuild');
     const acceptedDeploymentsInfo = getInfo(acceptedDeployments, 'acceptedDeployment');
 
