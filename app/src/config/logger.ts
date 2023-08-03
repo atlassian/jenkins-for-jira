@@ -13,15 +13,17 @@ enum LogColors {
     RESET = '\x1b[0m',
 }
 
-export interface LogData {
+interface Log {
     eventType: string;
     data?: Object;
+    status?: number;
+}
+
+export interface LogData extends Log {
     message?: string;
 }
 
-export interface LogError {
-    eventType: string;
-    status?: number;
+export interface LogError extends Log {
     errorMsg?: string;
     error?: any;
 }
