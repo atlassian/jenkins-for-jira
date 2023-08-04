@@ -65,6 +65,8 @@ async function sendEventToJira(
 		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
 	}
 
+	logger.logDebug({ eventType, data: payload });
+
 	switch (eventType) {
 		case EventType.BUILD:
 			return invokeApi(`/jira/builds/0.1/cloud/${cloudId}/bulk`, payload, eventType, logger);
