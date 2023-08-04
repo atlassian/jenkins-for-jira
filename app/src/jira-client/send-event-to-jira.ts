@@ -1,16 +1,18 @@
-import { EventType } from '../common/types';
+import { EventType, PayloadWithBuilds, PayloadWithDeployments } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
 import { JiraResponse } from './types';
 import { Errors } from '../common/error-messages';
 import { Logger } from '../config/logger';
 import { getResponseData } from '../utils/get-data-from-response';
+import { removePortFromJenkinsServerUrl } from '../utils/remove-port-from-jenkins-server-url';
 
 async function invokeApi(
 	url: string,
-	payload: object,
+	payload: PayloadWithBuilds | PayloadWithDeployments,
 	eventType: EventType,
 	logger: Logger
 ): Promise<JiraResponse> {
+	const payloadWithPortRemoved = removePortFromJenkinsServerUrl(payload);
 	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
 	// eslint-disable-next-line no-underscore-dangle
 	const apiResponse = await global.api
@@ -20,7 +22,7 @@ async function invokeApi(
 			headers: {
 				'content-type': 'application/json'
 			},
-			body: JSON.stringify(payload)
+			body: JSON.stringify(payloadWithPortRemoved)
 		});
 
 	const responseString = await apiResponse.text();
@@ -56,7 +58,7 @@ async function invokeApi(
 async function sendEventToJira(
 	eventType: EventType,
 	cloudId: string,
-	payload: object
+	payload: PayloadWithBuilds | PayloadWithDeployments
 ): Promise<JiraResponse> {
 	const logger = Logger.getInstance('sendEventToJira');
 
