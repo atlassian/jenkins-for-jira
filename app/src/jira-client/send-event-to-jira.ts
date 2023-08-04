@@ -65,53 +65,6 @@ async function sendEventToJira(
 		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
 	}
 
-	logger.logDebug({ eventType, data: payload });
-	// {
-	// 	"properties":
-	// 		{
-	// 			"source":"jenkins",
-	// 			"cloudId":"bd32dd17-ba44-4e4c-a63a-e2a79c35585f",
-	// 			"jenkinsServerUuid":"1b625e1e-516e-4687-bb78-dc4b6c03e2f4"
-	// 		},
-	// 	"providerMetadata":
-	// 		{
-	// 			"product":"jenkins"
-	// 		},
-	// 	"deployments":
-	// 		[
-	// 			{
-	// 				"deploymentSequenceNumber":64276,
-	// 				"updateSequenceNumber":1691113565,
-	// 				"associations":
-	// 					[
-	// 						{
-	// 							"values": ["JFAP-1"],
-	// 							"associationType":"issueKeys"
-	// 						}
-	// 						],
-	// 				"displayName":"#64276",
-	// 				"url":"http://10.237.10.102:8080/job/Pollinator%20Check%20Pipeline/job/main/64276/",
-	// 				"description":"#64276",
-	// 				"lastUpdated":"2023-08-04T01:46:05.858Z",
-	// 				"label":"#64276",
-	// 				"state":"successful",
-	// 				"pipeline":
-	// 					{
-	// 						"id":"-1004711128",
-	// 						"displayName":"Pollinator Check Pipeline/main",
-	// 						"url":"http://10.237.10.102:8080/job/Pollinator%20Check%20Pipeline/job/main/"
-	// 					},
-	// 				"environment":
-	// 					{
-	// 						"id":"prod",
-	// 						"displayName":"prod",
-	// 						"type":"production"
-	// 					},
-	// 				"schemaVersion":"1.0"
-	// 			}
-	// 			]
-	// }}
-
 	switch (eventType) {
 		case EventType.BUILD:
 			return invokeApi(`/jira/builds/0.1/cloud/${cloudId}/bulk`, payload, eventType, logger);
