@@ -1,7 +1,18 @@
-type RejectedData = {
-    key: {
-        pipelineId: string;
+type CommonKey = {
+    pipelineId: string;
+};
+
+export type RejectedBuildData = {
+    key: CommonKey & {
         buildNumber?: number;
+    };
+    errors?: {
+        message: string;
+    }[];
+};
+
+export type RejectedDeploymentData = {
+    key: CommonKey & {
         deploymentNumber?: number;
     };
     errors?: {
@@ -9,50 +20,48 @@ type RejectedData = {
     }[];
 };
 
-type AcceptedBuildData = {
+type CommonAcceptedData = {
     pipelineId: string;
+};
+
+export type AcceptedBuilds = CommonAcceptedData & {
     buildNumber?: number;
 };
 
-type AcceptedDeploymentData = {
-    deployments: [
-        {
-            deploymentSequenceNumber: number,
-            environment: {
-                id: string
-            },
-            pipeline: {
-                id: string,
-                url: string
-            }
-        }
-    ];
+export type AcceptedDeployments = CommonAcceptedData & {
+    environmentId: string;
+    deploymentSequenceNumber: string;
 };
 
-interface ResponseData {
-        unknownIssueKeys: string[];
-        unknownAssociations: string[];
+interface CommonResponseData {
+    unknownIssueKeys: string[];
 }
 
-export interface BuildResponse extends ResponseData {
+export interface BuildResponse extends CommonResponseData {
     type: 'BuildResponse'; // Discriminator property
-    acceptedBuilds: AcceptedBuildData[];
-    rejectedBuilds: RejectedData[];
+    acceptedBuilds: AcceptedBuilds[];
+    rejectedBuilds: RejectedBuildData[];
 }
 
-export interface DeploymentResponse extends ResponseData {
+export interface DeploymentResponse extends CommonResponseData {
     type: 'DeploymentResponse'; // Discriminator property
-    acceptedDeployments: AcceptedDeploymentData[];
-    rejectedDeployments: RejectedData[];
+    acceptedDeployments: AcceptedDeployments[];
+    rejectedDeployments: RejectedDeploymentData[];
+    unknownAssociations?: [
+        {
+            values: string[],
+            associationType: string
+        }
+    ];
 }
 
-type InfoData = {
+export type InfoData = {
     pipelineId: string;
     statusType: string;
     errorMessage?: string;
 };
 
-const getRejectedInfo = (rejectedData: RejectedData, statusType: string): InfoData => {
+const getRejectedInfo = (rejectedData: RejectedBuildData | RejectedDeploymentData, statusType: string): InfoData => {
     const { pipelineId } = rejectedData.key;
     const errorMessage = rejectedData.errors?.map((error) => error.message).join('; ');
     return { pipelineId, statusType, errorMessage };
@@ -69,14 +78,14 @@ export const getInfo = <T extends { pipelineId: string }>(
 };
 
 export const getDeploymentInfo = (
-    data: AcceptedDeploymentData[],
+    data: AcceptedDeployments[],
     statusType: string
 ): InfoData[] => {
     return data.flatMap((item) =>
-        item.deployments.map((deployment) => ({
-            pipelineId: deployment.pipeline.id,
+        ({
+            pipelineId: item.pipelineId,
             statusType,
-		})));
+        }));
 };
 
 export const getResponseData = (response: BuildResponse | DeploymentResponse): InfoData[] => {
@@ -104,6 +113,5 @@ export const getResponseData = (response: BuildResponse | DeploymentResponse): I
         ];
     }
 
-    // Handle any other cases or return an empty array if necessary.
     return [];
 };
