@@ -135,10 +135,10 @@
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
 
-"@atlaskit/dropdown-menu@11.10.6":
-  version "11.10.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-11.10.6.tgz#b0f5ebb4c5bc80348e16f7a94326d52e9343127e"
-  integrity sha512-r+74oxHfwIZ+dIPzQs/HB2HygFVioDCntu6mHQWvoJJvesE/koT5CWQYliN8zyf0eeM4T/ApLq6/uhTOAhHhvQ==
+"@atlaskit/dropdown-menu@11.10.7":
+  version "11.10.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-11.10.7.tgz#b9b7931b093c2248f84be8d5b84fd272870abefb"
+  integrity sha512-KfoQ6wDd0zGUjZFubZdttI4Zl8QySkASrL0Nzdvs2L+TkNh9lzx3RsmvOP39x4omdpIT3P6GuW5pAQrxl/JfoA==
   dependencies:
     "@atlaskit/button" "^16.8.0"
     "@atlaskit/codemod-utils" "^4.2.0"
@@ -150,7 +150,7 @@
     "@atlaskit/primitives" "^1.0.0"
     "@atlaskit/spinner" "^15.5.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.12.0"
+    "@atlaskit/tokens" "^1.13.0"
     "@atlaskit/visually-hidden" "^1.2.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
@@ -494,10 +494,10 @@
     "@babel/types" "^7.20.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/tokens@^1.12.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.12.0.tgz#48073b530fd13c154ca0adb93a840d6cfadc9f06"
-  integrity sha512-uiNX/vfJRFNINF51dnVD3HICq0tkcBcDqqUBrxRWv08CIoxhPqEEhc+gWIKEM2EOT8rMKVSBHDXPTFHk+rW3Kw==
+"@atlaskit/tokens@^1.13.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.14.0.tgz#b7b09dd246400c4edc32f6ddf5fa3ddc263977a2"
+  integrity sha512-npbkR0LQv05IVWiAHN/ylGH1ySP4C7TkFreGUy2KYGJTRhoxXFb6AJIJ9ehOS0Kpp2fAU4dwoOG9zfgEss+nLQ==
   dependencies:
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/platform-feature-flags" "^0.2.0"
