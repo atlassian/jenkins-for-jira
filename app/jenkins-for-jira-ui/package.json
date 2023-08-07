@@ -8,7 +8,7 @@
   "homepage": ".",
   "dependencies": {
     "@atlaskit/avatar": "20.5.10",
-    "@atlaskit/button": "16.8.2",
+    "@atlaskit/button": "16.8.5",
     "@atlaskit/css-reset": "6.5.3",
     "@atlaskit/dropdown-menu": "11.10.7",
     "@atlaskit/dynamic-table": "14.11.2",

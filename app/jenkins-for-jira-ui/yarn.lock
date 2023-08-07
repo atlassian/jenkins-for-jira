@@ -86,10 +86,10 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/button@16.8.2":
-  version "16.8.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.8.2.tgz#d3cd6b2e149f9c09a10dce3949ddcb75fe09eca6"
-  integrity sha512-8bRk/p7MD58fe07q0YbVTQ0n9u8WYf4fH1iwxK6wJzANQif9Dzx+WItshsZ9hzzQYUpqzJCXJzLJyh+Av4cJBQ==
+"@atlaskit/button@16.8.5":
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.8.5.tgz#c4523507cd116138c97719ebf027e439506e345e"
+  integrity sha512-Su0F8SH1C9gbRCQDKqpKdk1wqNn3rEcAsp3VgQokFpZRhwd8yGCWSS19j39DT0AQcx9ho8fVomsGRqmW5yi1cQ==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/ds-lib" "^2.2.0"
@@ -98,7 +98,7 @@
     "@atlaskit/platform-feature-flags" "^0.2.0"
     "@atlaskit/spinner" "^15.5.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/tokens" "^1.13.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
