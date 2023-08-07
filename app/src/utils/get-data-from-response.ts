@@ -1,7 +1,18 @@
-type RejectedData = {
-    key: {
-        pipelineId: string;
+type CommonKey = {
+    pipelineId: string;
+};
+
+export type RejectedBuildData = {
+    key: CommonKey & {
         buildNumber?: number;
+    };
+    errors?: {
+        message: string;
+    }[];
+};
+
+export type RejectedDeploymentData = {
+    key: CommonKey & {
         deploymentNumber?: number;
     };
     errors?: {
@@ -9,69 +20,98 @@ type RejectedData = {
     }[];
 };
 
-type AcceptedData = {
+type CommonAcceptedData = {
     pipelineId: string;
+};
+
+export type AcceptedBuilds = CommonAcceptedData & {
     buildNumber?: number;
-    deploymentNumber?: number;
 };
 
-type ResponseData = {
-    eventType: string;
-    data: {
-        message: string;
-        path: string;
-        responseStatus: number;
-        response: {
-            unknownIssueKeys: string[];
-            acceptedBuilds: AcceptedData[];
-            rejectedBuilds: RejectedData[];
-            acceptedDeployments: AcceptedData[];
-            rejectedDeployments: RejectedData[];
-        };
-    };
+export type AcceptedDeployments = CommonAcceptedData & {
+    environmentId: string;
+    deploymentSequenceNumber: string;
 };
 
-type InfoData = {
+interface CommonResponseData {
+    unknownIssueKeys: string[];
+}
+
+export interface BuildResponse extends CommonResponseData {
+    type: 'BuildResponse'; // Discriminator property
+    acceptedBuilds: AcceptedBuilds[];
+    rejectedBuilds: RejectedBuildData[];
+}
+
+export interface DeploymentResponse extends CommonResponseData {
+    type: 'DeploymentResponse'; // Discriminator property
+    acceptedDeployments: AcceptedDeployments[];
+    rejectedDeployments: RejectedDeploymentData[];
+    unknownAssociations?: [
+        {
+            values: string[],
+            associationType: string
+        }
+    ];
+}
+
+export type InfoData = {
     pipelineId: string;
     statusType: string;
     errorMessage?: string;
 };
 
-const getRejectedInfo = (rejectedData: RejectedData, statusType: string): InfoData => {
+const getRejectedInfo = (rejectedData: RejectedBuildData | RejectedDeploymentData, statusType: string): InfoData => {
     const { pipelineId } = rejectedData.key;
     const errorMessage = rejectedData.errors?.map((error) => error.message).join('; ');
     return { pipelineId, statusType, errorMessage };
 };
 
-const getInfo = <T extends { pipelineId: string }>(
+export const getInfo = <T extends { pipelineId: string }>(
     data: T[],
     statusType: string
 ): InfoData[] => {
-    return data?.map((item) => {
+    return data.map((item) => {
         const { pipelineId } = item;
         return { pipelineId, statusType };
-    }) ?? [];
+    });
 };
 
-export const getResponseData = (response: ResponseData): InfoData[] => {
-    const {
-        acceptedBuilds,
-        rejectedBuilds,
-        acceptedDeployments,
-        rejectedDeployments
-    } =
-        response.data.response;
+export const getDeploymentInfo = (
+    data: AcceptedDeployments[],
+    statusType: string
+): InfoData[] => {
+    return data.flatMap((item) =>
+        ({
+            pipelineId: item.pipelineId,
+            statusType,
+        }));
+};
 
-    const acceptedBuildsInfo = getInfo(acceptedBuilds, 'acceptedBuild');
-    const acceptedDeploymentsInfo = getInfo(acceptedDeployments, 'acceptedDeployment');
+export const getResponseData = (response: BuildResponse | DeploymentResponse): InfoData[] => {
+    if (response.type === 'BuildResponse') {
+        const { acceptedBuilds, rejectedBuilds } = response;
 
-    const rejectedBuildsInfo = rejectedBuilds?.map((rejectedData) => getRejectedInfo(rejectedData, 'rejectedBuild')) ?? [];
-    const rejectedDeploymentsInfo = rejectedDeployments?.map((rejectedData) => getRejectedInfo(rejectedData, 'rejectedDeployment')) ?? [];
+        const acceptedBuildsInfo = getInfo(acceptedBuilds, 'acceptedBuild');
+        const rejectedBuildsInfo = rejectedBuilds?.map((rejectedData) => getRejectedInfo(rejectedData, 'rejectedBuild')) ?? [];
 
-    return [
-        ...acceptedBuildsInfo,
-        ...acceptedDeploymentsInfo,
-        ...rejectedBuildsInfo,
-        ...rejectedDeploymentsInfo,
-    ];
+        return [
+            ...acceptedBuildsInfo,
+            ...rejectedBuildsInfo,
+        ];
+    }
+
+    if (response.type === 'DeploymentResponse') {
+        const { acceptedDeployments, rejectedDeployments } = response;
+
+        const acceptedDeploymentsInfo = getDeploymentInfo(acceptedDeployments, 'acceptedDeployment');
+        const rejectedDeploymentsInfo = rejectedDeployments?.map((rejectedData) => getRejectedInfo(rejectedData, 'rejectedDeployment')) ?? [];
+
+        return [
+            ...acceptedDeploymentsInfo,
+            ...rejectedDeploymentsInfo,
+        ];
+    }
+
+    return [];
 };
