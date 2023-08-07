@@ -14,12 +14,6 @@ async function invokeApi(
 ): Promise<JiraResponse> {
 	const payloadWithPortRemoved = removePortFromJenkinsServerUrl(payload);
 
-	logger.logInfo({
-		eventType,
-		data: payloadWithPortRemoved,
-		message: 'Sending data to Jira with modified url???'
-	});
-
 	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
 	// eslint-disable-next-line no-underscore-dangle
 	const apiResponse = await global.api
