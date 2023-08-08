@@ -1,4 +1,4 @@
-import * as ld from '@launchdarkly/node-server-sdk'; // Updated import
+import * as ld from '@launchdarkly/node-server-sdk';
 import { Logger } from './logger';
 import { envVars } from './env';
 import { createHashWithSharedSecret } from '../utils/encryption';
@@ -9,7 +9,9 @@ const ldClient = ld.init(envVars.LAUNCHDARKLY_KEY || '', {
 	offline: !envVars.LAUNCHDARKLY_KEY,
 });
 
-export enum BooleanFlags {}
+export enum BooleanFlags {
+	TEST_FLAG = 'test_flag'
+}
 
 export enum StringFlags {}
 
@@ -47,7 +49,7 @@ const getLaunchDarklyValue = async <T = boolean | string | number>(
 	}
 };
 
-// Include jiraHost for any FF that needs to be rolled out in stages
+// todo - update this later to use cloudID
 export const booleanFlag = async (flag: BooleanFlags, key?: string): Promise<boolean> => {
 	// Always use the default value as false to prevent issues
 	const flagIsOff = await getLaunchDarklyValue(flag, false, key);

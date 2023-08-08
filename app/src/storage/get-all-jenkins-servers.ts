@@ -4,11 +4,18 @@ import {
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
+import { booleanFlag, BooleanFlags } from '../config/feature-flags';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const eventType = 'getAllJenkinsServersEvent';
 	const logger = Logger.getInstance('getAllJenkinsServers');
-
+	const flag = await booleanFlag(BooleanFlags.TEST_FLAG);
+	logger.logInfo({ eventType, data: { flag } });
+	if (await booleanFlag(BooleanFlags.TEST_FLAG, 'https://rachellerathbone.atlassian.net')) {
+		logger.logInfo({ eventType, message: 'FEATURE FLAG WORKS!!!' });
+	} else {
+		logger.logInfo({ eventType, message: 'FEATURE FLAG DOES NOT WORK :(' });
+	}
 	try {
 		logger.logInfo({ eventType });
 
