@@ -1,12 +1,12 @@
-import LaunchDarkly, { LDUser } from 'launchdarkly-node-server-sdk';
+import * as ld from '@launchdarkly/node-server-sdk'; // Updated import
 import { Logger } from './logger';
 import { envVars } from './env';
 import { createHashWithSharedSecret } from '../utils/encryption';
 
 const logger = Logger.getInstance('feature-flags');
 
-const launchdarklyClient = LaunchDarkly.init(envVars.LAUNCHDARKLY_KEY || '', {
-	offline: !envVars.LAUNCHDARKLY_KEY
+const ldClient = ld.init(envVars.LAUNCHDARKLY_KEY || '', {
+	offline: !envVars.LAUNCHDARKLY_KEY,
 });
 
 export enum BooleanFlags {}
@@ -15,15 +15,15 @@ export enum StringFlags {}
 
 export enum NumberFlags {}
 
-const createLaunchdarklyUser = (key?: string): LDUser => {
+const createLaunchdarklyUser = (key?: string): ld.LDUser => {
 	if (!key) {
 		return {
-			key: 'global'
+			key: 'global',
 		};
 	}
 
 	return {
-		key: createHashWithSharedSecret(key)
+		key: createHashWithSharedSecret(key),
 	};
 };
 
@@ -33,15 +33,15 @@ const getLaunchDarklyValue = async <T = boolean | string | number>(
 	key?: string
 ): Promise<T> => {
 	try {
-		await launchdarklyClient.waitForInitialization();
+		await ldClient.waitForInitialization();
 		const user = createLaunchdarklyUser(key);
-		return await launchdarklyClient.variation(flag as unknown as string, user, defaultValue);
+		return await ldClient.variation(flag as unknown as string, user, defaultValue);
 	} catch (error) {
 		logger.logError({
 			eventType: 'featureFlagEvent',
 			data: flag,
 			error,
-			errorMsg: 'Error resolving value for feature flag'
+			errorMsg: 'Error resolving value for feature flag',
 		});
 		return defaultValue;
 	}
@@ -54,12 +54,21 @@ export const booleanFlag = async (flag: BooleanFlags, key?: string): Promise<boo
 	return flagIsOff;
 };
 
-export const stringFlag = async <T = string>(flag: StringFlags, defaultValue: T, key?: string): Promise<T> =>
-	getLaunchDarklyValue<T>(flag, defaultValue, key);
+export const stringFlag = async <T = string>(
+	flag: StringFlags,
+	defaultValue: T,
+	key?: string
+): Promise<T> => getLaunchDarklyValue<T>(flag, defaultValue, key);
 
-export const numberFlag = async (flag: NumberFlags, defaultValue: number, key?: string): Promise<number> =>
-	getLaunchDarklyValue(flag, defaultValue, key);
+export const numberFlag = async (
+	flag: NumberFlags,
+	defaultValue: number,
+	key?: string
+): Promise<number> => getLaunchDarklyValue(flag, defaultValue, key);
 
-export const onFlagChange = (flag: BooleanFlags | StringFlags | NumberFlags, listener: () => void): void => {
-	launchdarklyClient.on(`update:${flag}`, listener);
+export const onFlagChange = (
+	flag: BooleanFlags | StringFlags | NumberFlags,
+	listener: () => void
+): void => {
+	ldClient.on(`update:${flag}`, listener);
 };
