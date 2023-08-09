@@ -16,6 +16,7 @@
     "@forge/api": "2.18.2",
     "@forge/metrics": "^0.1.13",
     "@forge/resolver": "1.5.12",
+    "crypto": "^1.0.1",
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
