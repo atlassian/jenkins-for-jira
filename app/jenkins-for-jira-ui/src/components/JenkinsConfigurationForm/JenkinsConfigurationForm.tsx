@@ -16,24 +16,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
-
-// TODO - delete this after we start generating a new secret on the backend
-const charactersForSecret =
-	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-export const generateNewSecret = () => {
-	const SECRET_LENGTH = 20;
-	let newSecret = '';
-	const numberOfSecretCharacters = charactersForSecret.length;
-
-	for (let i = 0; i < SECRET_LENGTH; i++) {
-		newSecret += charactersForSecret.charAt(
-			Math.floor(Math.random() * numberOfSecretCharacters)
-		);
-	}
-
-	return newSecret;
-};
+import { generateNewSecret } from '../../api/generateNewSecret';
 
 type JenkinsConfigurationFormProps = {
 	onSubmit(): void;
@@ -72,9 +55,9 @@ const JenkinsConfigurationForm = ({
 		? AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
 		: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName;
 
-	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
+	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		setSecret(generateNewSecret());
+		setSecret(await generateNewSecret());
 		setShowConfirmRefreshSecret(false);
 
 		const analyticsUiEvent = isOnManageConnectPage
@@ -134,8 +117,8 @@ const JenkinsConfigurationForm = ({
 
 						<FormFooter>
 							{isLoading
-								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button' />
-								:	<Button type='submit' appearance='primary' testId='submit-button'>
+								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button'/>
+								: <Button type='submit' appearance='primary' testId='submit-button'>
 									{submitButtonText}
 								</Button>
 							}

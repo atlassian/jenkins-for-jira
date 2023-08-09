@@ -11,7 +11,6 @@ import {
 import { createJenkinsServer } from '../../../api/createJenkinsServer';
 import { ConfigurationSteps } from '../ConfigurationSteps/ConfigurationSteps';
 import { StyledH1, StyledInstallationContainer, StyledInstallationContent } from '../ConnectJenkins.styles';
-import { generateNewSecret } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
 import { isFormValid, setName } from '../../../common/util/jenkinsConnectionsUtils';
 import { ServerConfigurationFormName } from '../../JenkinsConfigurationForm/ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
@@ -22,6 +21,7 @@ import {
 	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
+import { generateNewSecret } from '../../../api/generateNewSecret';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -58,7 +58,7 @@ const CreateServer = () => {
 				await createJenkinsServer({
 					name: serverName,
 					uuid,
-					secret: generateNewSecret(),
+					secret: await generateNewSecret(),
 					pipelines: []
 				});
 
