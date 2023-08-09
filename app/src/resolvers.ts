@@ -64,7 +64,7 @@ resolver.define('disconnectJenkinsServer', async (req) => {
 
 resolver.define('generateNewSecret', async (req) => {
 	await adminPermissionCheck(req);
-	// internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
+	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return generateNewSecret();
 });
 
