@@ -109,13 +109,13 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/css-reset@6.5.3":
-  version "6.5.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/css-reset/-/css-reset-6.5.3.tgz#2558e01fb5fc721fb52e108cce911386c4154845"
-  integrity sha512-XrdF/iaDwTfjPbRZB6REqyNewO2+Z6wtsLsAqDlGYWctDZxBOnPO9uh5L+hA4lLdG8QY9E7Asm8ZCiOfRPbmTg==
+"@atlaskit/css-reset@6.5.4":
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/css-reset/-/css-reset-6.5.4.tgz#1778a9057c305bf8937d9853614fbf908b355718"
+  integrity sha512-7pocTfknaZaF4k9AYYoUFGjC1XMqBH3PMG5TaB93nnvib2TXeDJ486t78qBYVu9372CMYmrIkdPpOJG1Wgu3ww==
   dependencies:
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/tokens" "^1.13.0"
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
 
