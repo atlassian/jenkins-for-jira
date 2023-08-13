@@ -158,17 +158,17 @@
     "@babel/runtime" "^7.0.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/dynamic-table@14.11.2":
-  version "14.11.2"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/dynamic-table/-/dynamic-table-14.11.2.tgz#6051c63e99586ba19d6618854b2195aaeb5b8259"
-  integrity sha512-IlnbpOorkLGV8VR9oho21q1kCSYpbGpamKOx0SktiqFVx+nmuhH1tS6XN6qK5j3nMTseFWm47LXv9bLtRBcjFw==
+"@atlaskit/dynamic-table@14.11.3":
+  version "14.11.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-14.11.3.tgz#f43fbf40f4612e80026bfefd66e14eda458511a3"
+  integrity sha512-GG0pVvK9YkARFoN+zBzE1wc5IftQOSaPEyLMEzD8o4r6LEgPpT+cVe6QGOnWinVDV/LOw+myWpVYC4AbpI3UHA==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/pagination" "^14.4.0"
     "@atlaskit/spinner" "^15.5.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/tokens" "^1.14.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     react-beautiful-dnd "^12.1.1"
