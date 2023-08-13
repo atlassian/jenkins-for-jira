@@ -194,14 +194,14 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/form@8.11.8":
-  version "8.11.8"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/form/-/form-8.11.8.tgz#af25723c56b53d0812be7820a5b61fc54d2a0884"
-  integrity sha512-JvmuARl1FVlEbA93DUCdycn/1npn6i7RsVhXviijgeCyxTrSzbRJoD6KRn/ddn866TPFCF8qfodIPD3CwFhqwQ==
+"@atlaskit/form@8.11.11":
+  version "8.11.11"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-8.11.11.tgz#a485d907e784d6f0af4dba2a064a565388815345"
+  integrity sha512-/fdK82QiObv+SJo1CG9VFwkKyTwVuoOlTN5IvmD/Cj9Y4b+2Oyygm3oxe9tr/9zLt3RhqAZCJ+7ERuLUymzq4A==
   dependencies:
     "@atlaskit/icon" "^21.12.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.5.0"
+    "@atlaskit/tokens" "^1.14.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     final-form "^4.20.1"
@@ -428,7 +428,7 @@
     "@babel/traverse" "^7.15.0"
     "@babel/types" "^7.15.0"
 
-"@atlaskit/tokens@^1.11.0", "@atlaskit/tokens@^1.13.0", "@atlaskit/tokens@^1.4.0", "@atlaskit/tokens@^1.5.0":
+"@atlaskit/tokens@^1.11.0", "@atlaskit/tokens@^1.13.0", "@atlaskit/tokens@^1.14.0", "@atlaskit/tokens@^1.4.0", "@atlaskit/tokens@^1.5.0":
   version "1.14.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tokens/-/tokens-1.14.0.tgz#b7b09dd246400c4edc32f6ddf5fa3ddc263977a2"
   integrity sha512-npbkR0LQv05IVWiAHN/ylGH1ySP4C7TkFreGUy2KYGJTRhoxXFb6AJIJ9ehOS0Kpp2fAU4dwoOG9zfgEss+nLQ==
