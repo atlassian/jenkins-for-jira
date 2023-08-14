@@ -5,12 +5,12 @@ import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
 import { InvocationError, UnsupportedRequestTypeError } from '../common/error';
 import { extractCloudId } from './helpers';
 import {
-	ForgeTriggerContext, JenkinsRequest, RequestType, WebtriggerRequest, WebtriggerResponse
+	ForgeTriggerContext, RequestType, WebtriggerRequest, WebtriggerResponse
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { Errors } from '../common/error-messages';
 import { Logger } from '../config/logger';
-import { verifySymmetricJwt } from './jwt';
+import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
@@ -22,9 +22,10 @@ async function handleResetJenkinsRequest(
 	try {
 		const jwtToken = request.body;
 		const secret = process.env.RESET_JENKINS_JWT_SECRET!;
-		const jenkinsRequest = verifySymmetricJwt(jwtToken, secret, logger) as JenkinsRequest;
+		const decodedToken = verifySymmetricJwt(jwtToken, secret, logger);
+		const jenkinsRequest = extractBodyFromSymmetricJwt(decodedToken);
 		const cloudId = extractCloudId(context.installContext);
-		console.log('jenkinsRequest', jenkinsRequest);
+
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
 			await resetJenkinsServer(cloudId, logger, jenkinsRequest.data?.excludeUuid);
 			return createWebtriggerResponse(200, '{"success": true}');

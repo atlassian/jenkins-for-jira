@@ -51,7 +51,6 @@ const CreateServer = () => {
 			}
 		);
 
-		console.log('NEW SECRET GET');
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();

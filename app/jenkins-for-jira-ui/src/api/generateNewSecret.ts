@@ -8,7 +8,6 @@ import { AnalyticsClient } from '../common/analytics/analytics-client';
 
 export const generateNewSecret = async (): Promise<string> => {
 	const analyticsClient = new AnalyticsClient();
-	console.log('Generating new secret on backend...');
 
 	try {
 		const newSecret = await invoke('generateNewSecret') as string;

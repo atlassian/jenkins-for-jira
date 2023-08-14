@@ -22,7 +22,6 @@ const charactersForSecret =
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export const generateNewSecretUNSAFE = () => {
-	console.log('Generating a secret on the client #UNSAFE');
 	const SECRET_LENGTH = 20;
 	let newSecret = '';
 	const numberOfSecretCharacters = charactersForSecret.length;

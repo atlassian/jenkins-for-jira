@@ -128,10 +128,10 @@ export const verifySymmetricJwt = (jwtToken: string, secret: string, logger?: Lo
 
 	try {
 		const algorithm = getAlgorithm(jwtToken);
-		const verifiedClaims = decodeSymmetric(jwtToken, secret, algorithm, false);
-		validateJwtClaims(verifiedClaims);
+		const decodedToken = decodeSymmetric(jwtToken, secret, algorithm, false);
+		validateJwtClaims(decodedToken);
 		logger?.logDebug({ eventType, message: 'JWT verified' });
-		return extractBodyFromSymmetricJwt(verifiedClaims);
+		return decodedToken;
 	} catch (error) {
 		logger?.logError({ eventType: 'verifySymmetricJwt', errorMsg: Errors.JWT_VERIFICATION_FAILED });
 		throw new JwtVerificationFailedError(Errors.JWT_VERIFICATION_FAILED);

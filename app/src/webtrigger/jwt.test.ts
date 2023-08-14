@@ -10,36 +10,28 @@ jest.mock('../config/logger', () => ({
 	}
 }));
 
+const currentTimestamp = Date.now();
+
+// Mock Date.now() implementation
+jest.spyOn(global.Date, 'now').mockReturnValue(currentTimestamp);
+
+const mockVerifiedClaims = {
+	exp: currentTimestamp + 3600,
+	aud: ['jenkins-forge-app'],
+	iat: Math.floor(currentTimestamp / 1000),
+	iss: 'jenkins-plugin',
+	request_body_json: JSON.stringify({ requestType: 'ping' })
+};
+
 jest.mock('atlassian-jwt', () => ({
 	...jest.requireActual('atlassian-jwt'),
 	getAlgorithm: jest.fn(() => 'HS256'),
 	decodeSymmetric: jest.fn(() => {
-		// Calculate the timestamp 2 seconds in the past
-		const now = Date.now() / 1000; // Convert milliseconds to seconds
-		const iat = now - 2; // Subtract 2 seconds
-
-		// Mock verified claims data with the updated iat
-		const verifiedClaims = {
-			exp: now + 3600,
-			aud: ['jenkins-forge-app'],
-			iat,
-			iss: 'jenkins-plugin',
-			request_body_json: JSON.stringify({ requestType: 'ping' }),
-		};
-
-		return verifiedClaims;
+		return mockVerifiedClaims;
 	})
 }));
 
 describe('JWT', () => {
-	const mockVerifiedClaims = {
-		exp: Math.floor(Date.now() / 1000) + 3600,
-		aud: ['jenkins-forge-app'],
-		iat: Math.floor(Date.now() / 1000) - 3600,
-		iss: 'jenkins-plugin',
-		request_body_json: JSON.stringify({ requestType: 'ping' })
-	};
-
 	const mockJwtToken = 'test-token';
 	const mockSecret = 'mock-secret';
 
@@ -77,7 +69,7 @@ describe('JWT', () => {
 		const verifiedBody = jwtModule.verifySymmetricJwt(mockJwtToken, mockSecret, mockLogger);
 
 		// Assertions
-		expect(verifiedBody).toEqual({ requestType: 'ping' });
+		expect(verifiedBody).toEqual(mockVerifiedClaims);
 
 		// Verify logger calls
 		expect(mockLogger.logDebug).toHaveBeenCalledWith({
