@@ -61,17 +61,10 @@ describe('JWT', () => {
 	});
 
 	it('should verify symmetric JWT', () => {
-		// Mock the Logger methods
 		const mockLogger = Logger.getInstance('test');
 		mockLogger.logDebug = jest.fn();
-
-		// Call the function under test
 		const verifiedBody = jwtModule.verifySymmetricJwt(mockJwtToken, mockSecret, mockLogger);
-
-		// Assertions
 		expect(verifiedBody).toEqual(mockVerifiedClaims);
-
-		// Verify logger calls
 		expect(mockLogger.logDebug).toHaveBeenCalledWith({
 			eventType: 'verifySymmetricJwt',
 			message: 'JWT verified',

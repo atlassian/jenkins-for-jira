@@ -8,7 +8,6 @@ import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import * as getAllJenkinsServersModule from '../storage/get-all-jenkins-servers';
 import {
-	// JwtDecodingFailedError,
 	JwtVerificationFailedError,
 	MissingCloudIdError,
 	UnsupportedRequestTypeError
@@ -24,7 +23,7 @@ const CLOUD_ID = '97eaf652-4b6e-46cf-80c2-d99327a63bc1';
 
 jest.mock('atlassian-jwt', () => {
 	return {
-		__esModule: true, //    <----- this __esModule: true is important
+		__esModule: true,
 		...jest.requireActual('atlassian-jwt')
 	};
 });
