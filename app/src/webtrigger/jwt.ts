@@ -71,6 +71,7 @@ const canonicalizeQueryString = (req: JWTRequest, checkBodyForParams?: boolean):
 	if (isEmpty(query)) {
 		return '';
 	}
+
 	// Remove the 'jwt' query string param
 	delete query.jwt;
 
