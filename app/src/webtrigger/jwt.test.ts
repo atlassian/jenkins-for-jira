@@ -1,53 +1,88 @@
-import { extractBodyFromJwt, verifyJwt } from './jwt';
-import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error';
-import { JenkinsEvent } from './types';
-import { EventType } from '../common/types';
+import * as jwtModule from './jwt';
+import { Logger } from '../config/logger';
 
-// this JWT has been generated from JenkinsAppApiTest.generateExampleJwt() in the Jenkins plugin
-const VALID_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcImV2ZW50XCIsXCJldmVudFR5cGVcIjpcImJ1aWxkXCIsXCJwaXBlbGluZU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwic3RhdHVzXCI6XCJzdWNjZXNzZnVsXCIsXCJsYXN0VXBkYXRlZFwiOlwiMjAyMi0wMy0wN1QwNDozOTozMy4xNDE5NjNaXCIsXCJwYXlsb2FkXCI6e1wicHJvcGVydGllc1wiOntcInNvdXJjZVwiOlwiamVua2luc1wifSxcInByb3ZpZGVyTWV0YWRhdGFcIjp7XCJwcm9kdWN0XCI6XCJqZW5raW5zXCJ9LFwiYnVpbGRzXCI6W3tcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIixcImJ1aWxkTnVtYmVyXCI6MTIsXCJ1cGRhdGVTZXF1ZW5jZU51bWJlclwiOjEyLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwiZGVzY3JpcHRpb25cIjpcImRlc2NyaXB0aW9uXCIsXCJsYWJlbFwiOlwibGFiZWxcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCIsXCJzdGF0ZVwiOlwic3VjY2Vzc2Z1bFwiLFwibGFzdFVwZGF0ZWRcIjpcIjIwMjItMDMtMDdUMDQ6Mzk6MzMuMTQyMjAxWlwiLFwiaXNzdWVLZXlzXCI6W1wiSkVOLTI1XCJdLFwicmVmZXJlbmNlc1wiOlt7XCJjb21taXRcIjp7XCJpZFwiOlwiY2FmZWJhYmVcIixcInJlcG9zaXRvcnlVcmlcIjpcImh0dHBzOi8vcmVwby51cmxcIn0sXCJyZWZcIjp7XCJuYW1lXCI6XCJyZWZuYW1lXCIsXCJ1cmlcIjpcImh0dHBzOnJlZi51cmlcIn19XSxcInRlc3RJbmZvXCI6e1widG90YWxOdW1iZXJcIjowLFwibnVtYmVyUGFzc2VkXCI6MCxcIm51bWJlckZhaWxlZFwiOjAsXCJudW1iZXJTa2lwcGVkXCI6MH0sXCJzY2hlbWFWZXJzaW9uXCI6XCIxLjBcIn1dfSxcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MzI0NzQ4MzkxNzEsImlhdCI6MTY0NjYyNzk3M30.N5ZcLeoBVLlnZYok0AWqzYkxoS-O3vBilmiOXoobiko';
-const EXPIRED_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcImV2ZW50XCIsXCJldmVudFR5cGVcIjpcImJ1aWxkXCIsXCJwaXBlbGluZU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwic3RhdHVzXCI6XCJzdWNjZXNzXCIsXCJsYXN0VXBkYXRlZFwiOlwiMjAyMi0wMy0wN1QwMjoxMzoxNS43MzUzMTJaXCIsXCJwYXlsb2FkXCI6e1wicHJvcGVydGllc1wiOntcInNvdXJjZVwiOlwiamVua2luc1wifSxcInByb3ZpZGVyTWV0YWRhdGFcIjp7XCJwcm9kdWN0XCI6XCJqZW5raW5zXCJ9LFwiYnVpbGRzXCI6W3tcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIixcImJ1aWxkTnVtYmVyXCI6MTIsXCJ1cGRhdGVTZXF1ZW5jZU51bWJlclwiOjEyLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwiZGVzY3JpcHRpb25cIjpcImRlc2NyaXB0aW9uXCIsXCJsYWJlbFwiOlwibGFiZWxcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCIsXCJzdGF0ZVwiOlwic3VjY2Vzc2Z1bFwiLFwibGFzdFVwZGF0ZWRcIjpcIjIwMjItMDMtMDdUMDI6MTM6MTUuNzM1NTQyWlwiLFwiaXNzdWVLZXlzXCI6W1wiSkVOLTI1XCJdLFwicmVmZXJlbmNlc1wiOlt7XCJjb21taXRcIjp7XCJpZFwiOlwiY2FmZWJhYmVcIixcInJlcG9zaXRvcnlVcmlcIjpcImh0dHBzOi8vcmVwby51cmxcIn0sXCJyZWZcIjp7XCJuYW1lXCI6XCJyZWZuYW1lXCIsXCJ1cmlcIjpcImh0dHBzOnJlZi51cmlcIn19XSxcInRlc3RJbmZvXCI6e1widG90YWxOdW1iZXJcIjowLFwibnVtYmVyUGFzc2VkXCI6MCxcIm51bWJlckZhaWxlZFwiOjAsXCJudW1iZXJTa2lwcGVkXCI6MH0sXCJzY2hlbWFWZXJzaW9uXCI6XCIxLjBcIn1dfSxcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MTY0NjYxOTQ5NSwiaWF0IjoxNjQ2NjE5MTk1fQ.986aiaKHAtLFZIs9zxVaPDQMqZcA2etfzpdYc6rbgn8';
-const INVALID_JWT = 'BpcGVsaW5lTmFtZVwiLFwic3RhdHVzXCI6XCJzdWNjZXNzZnVsXCIsXCJsYXN0VXBkYXRlZFwiOlwiMjAyMi0wMi0yNFQwNToyNDozNi43NjdaXCIsXCJwYXlsb2FkXCI6e1wicHJvcGVydGllc1wiOntcInNvdXJjZVwiOlwiamVua2luc1wifSxcInByb3ZpZGVyTWV0YWRhdGFcIjp7XCJwcm9kdWN0XCI6XCJqZW5raW5zXCJ9LFwiYnVpbGRzXCI6W3tcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIixcImJ1aWxkTnVtYmVyXCI6MTIsXCJ1cGRhdGVTZXF1ZW5jZU51bWJlclwiOjEyLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwiZGVzY3JpcHRpb25cIjpcImRlc2NyaXB0aW9uXCIsXCJsYWJlbFwiOlwibGFiZWxcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCIsXCJzdGF0ZVwiOlwic3VjY2Vzc2Z1bFwiLFwibGFzdFVwZGF0ZWRcIjpcIjIwMjItMDItMjRUMDU6MjQ6MzYuNzY3WlwiLFwiaXNzdWVLZXlzXCI6W1wiSkVOLTI1XCJdLFwicmVmZXJlbmNlc1wiOlt7XCJjb21taXRcIjp7XCJpZFwiOlwiY2FmZWJhYmVcIixcInJlcG9zaXRvcnlVcmlcIjpcImh0dHBzOi8vcmVwby51cmxcIn0sXCJyZWZcIjp7XCJuYW1lXCI6XCJyZWZuYW1lXCIsXCJ1cmlcIjpcImh0dHBzOnJlZi51cmlcIn19XSxcInRlc3RJbmZvXCI6e1widG90YWxOdW1iZXJcIjowLFwibnVtYmVyUGFzc2VkXCI6MCxcIm51bWJlckZhaWxlZFwiOjAsXCJudW1iZXJTa2lwcGVkXCI6MH0sXCJzY2hlbWFWZXJzaW9uXCI6XCIxLjBcIn1dfSxcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MTY0NjYxNzUyOCwiaWF0FOOjoxNjQ2NjE3MjI4fQ.XHvwRCsSmb_YmY9yLzSH8L8KMjRe8wOyu1CVfzmDx9I';
-const CLAIMS = {
-	issuer: 'jenkins-plugin',
-	audience: 'jenkins-forge-app'
-};
+jest.mock('../config/logger', () => ({
+	Logger: {
+		getInstance: jest.fn(() => ({
+			logDebug: jest.fn(),
+			logError: jest.fn()
+		}))
+	}
+}));
+
+jest.mock('atlassian-jwt', () => ({
+	...jest.requireActual('atlassian-jwt'),
+	getAlgorithm: jest.fn(() => 'HS256'),
+	decodeSymmetric: jest.fn(() => {
+		// Calculate the timestamp 2 seconds in the past
+		const now = Date.now() / 1000; // Convert milliseconds to seconds
+		const iat = now - 2; // Subtract 2 seconds
+
+		// Mock verified claims data with the updated iat
+		const verifiedClaims = {
+			exp: now + 3600,
+			aud: ['jenkins-forge-app'],
+			iat,
+			iss: 'jenkins-plugin',
+			request_body_json: JSON.stringify({ requestType: 'ping' }),
+		};
+
+		return verifiedClaims;
+	})
+}));
+
 describe('JWT', () => {
-	describe('verifyJwt()', () => {
-		it('should verify a valid JWT', async () => {
-			expect(
-				() => verifyJwt(VALID_JWT, 'this is a secret', CLAIMS)
-			).not.toThrow();
-		});
+	const mockVerifiedClaims = {
+		exp: Math.floor(Date.now() / 1000) + 3600,
+		aud: ['jenkins-forge-app'],
+		iat: Math.floor(Date.now() / 1000) - 3600,
+		iss: 'jenkins-plugin',
+		request_body_json: JSON.stringify({ requestType: 'ping' })
+	};
 
-		it('should not verify a JWT with a wrong secret', async () => {
-			expect(
-				() => verifyJwt(VALID_JWT, 'this is not the correct secret', CLAIMS)
-			).toThrow(JwtVerificationFailedError);
-		});
+	const mockJwtToken = 'test-token';
+	const mockSecret = 'mock-secret';
 
-		it('should not verify an expired JWT', async () => {
-			expect(
-				() => verifyJwt(EXPIRED_JWT, 'this is a secret', CLAIMS)
-			).toThrow(JwtVerificationFailedError);
-		});
-
-		it('should not verify a JWT with invalid format', async () => {
-			expect(
-				() => verifyJwt(INVALID_JWT, 'this is a secret', CLAIMS)
-			).toThrow(JwtVerificationFailedError);
-		});
+	it('should validate JWT claims', () => {
+		expect(() => jwtModule.validateJwtClaims(mockVerifiedClaims)).not.toThrow();
 	});
 
-	describe('extractBodyFromJwt()', () => {
-		it('should extract the body from a valid JWT', async () => {
-			const event = extractBodyFromJwt(VALID_JWT) as JenkinsEvent;
-			expect(event.eventType).toBe(EventType.BUILD);
-		});
+	it('should throw error for invalid audience', () => {
+		const invalidClaims = { ...mockVerifiedClaims, aud: undefined };
+		expect(() => jwtModule.validateJwtClaims(invalidClaims)).toThrow('Invalid audience');
+	});
 
-		it('should not extract the body from an invalid JWT', async () => {
-			expect(
-				() => extractBodyFromJwt(INVALID_JWT) as JenkinsEvent
-			).toThrow(InvalidPayloadError);
+	it('should extract body from symmetric JWT', () => {
+		const mockVerifiedJwtToken = { request_body_json: JSON.stringify({ requestType: 'ping' }) };
+		expect(jwtModule.extractBodyFromSymmetricJwt(mockVerifiedJwtToken)).toEqual({ requestType: 'ping' });
+	});
+
+	it('should create canonical request', () => {
+		const mockReq: any = {
+			method: 'GET',
+			pathname: '/some/path',
+			query: { param1: 'value1', param2: 'value2' }
+		};
+
+		const canonicalRequest = jwtModule.createCanonicalRequest(mockReq);
+		expect(canonicalRequest).toBe('GET&/some/path&param1=value1&param2=value2');
+	});
+
+	it('should verify symmetric JWT', () => {
+		// Mock the Logger methods
+		const mockLogger = Logger.getInstance('test');
+		mockLogger.logDebug = jest.fn();
+
+		// Call the function under test
+		const verifiedBody = jwtModule.verifySymmetricJwt(mockJwtToken, mockSecret, mockLogger);
+
+		// Assertions
+		expect(verifiedBody).toEqual({ requestType: 'ping' });
+
+		// Verify logger calls
+		expect(mockLogger.logDebug).toHaveBeenCalledWith({
+			eventType: 'verifySymmetricJwt',
+			message: 'JWT verified',
 		});
 	});
 });

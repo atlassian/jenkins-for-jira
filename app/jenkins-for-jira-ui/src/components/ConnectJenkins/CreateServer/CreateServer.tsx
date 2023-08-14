@@ -22,6 +22,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { generateNewSecret } from '../../../api/generateNewSecret';
+// import { generateNewSecretUNSAFE } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -50,6 +51,7 @@ const CreateServer = () => {
 			}
 		);
 
+		console.log('NEW SECRET GET');
 		if (isFormValid(serverName, setHasError, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();
@@ -58,6 +60,7 @@ const CreateServer = () => {
 				await createJenkinsServer({
 					name: serverName,
 					uuid,
+					// secret: generateNewSecretUNSAFE(),
 					secret: await generateNewSecret(),
 					pipelines: []
 				});

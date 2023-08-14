@@ -18,6 +18,24 @@ import {
 } from '../../common/analytics/analytics-events';
 import { generateNewSecret } from '../../api/generateNewSecret';
 
+const charactersForSecret =
+	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+export const generateNewSecretUNSAFE = () => {
+	console.log('Generating a secret on the client #UNSAFE');
+	const SECRET_LENGTH = 20;
+	let newSecret = '';
+	const numberOfSecretCharacters = charactersForSecret.length;
+
+	for (let i = 0; i < SECRET_LENGTH; i++) {
+		newSecret += charactersForSecret.charAt(
+			Math.floor(Math.random() * numberOfSecretCharacters)
+		);
+	}
+
+	return newSecret;
+};
+
 type JenkinsConfigurationFormProps = {
 	onSubmit(): void;
 	submitButtonText: string;
@@ -57,6 +75,7 @@ const JenkinsConfigurationForm = ({
 
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
+		// setSecret(generateNewSecretUNSAFE());
 		setSecret(await generateNewSecret());
 		setShowConfirmRefreshSecret(false);
 
