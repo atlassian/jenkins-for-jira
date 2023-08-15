@@ -11,6 +11,7 @@ export const generateNewSecret = async (): Promise<string> => {
 
 	try {
 		const newSecret = await invoke('generateNewSecret') as string;
+		console.log('Generating secret on backend.');
 		return newSecret;
 	} catch (error) {
 		console.error('Failed to get new secret', error);

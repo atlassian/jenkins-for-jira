@@ -1,3 +1,4 @@
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import React, { useEffect, useState } from 'react';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Form, {
@@ -22,11 +23,12 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { generateNewSecret } from '../../../api/generateNewSecret';
-// import { generateNewSecretUNSAFE } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
+import { generateNewSecretUNSAFE } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
 
 const analyticsClient = new AnalyticsClient();
 
 const CreateServer = () => {
+	const { test } = useFlags();
 	const history = useHistory();
 	const [serverName, setServerName] = useState('');
 	const [hasError, setHasError] = useState(false);
@@ -59,8 +61,7 @@ const CreateServer = () => {
 				await createJenkinsServer({
 					name: serverName,
 					uuid,
-					// secret: generateNewSecretUNSAFE(),
-					secret: await generateNewSecret(),
+					secret: test ? await generateNewSecret() : generateNewSecretUNSAFE(),
 					pipelines: []
 				});
 

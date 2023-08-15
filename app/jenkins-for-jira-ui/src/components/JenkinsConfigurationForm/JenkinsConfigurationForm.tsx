@@ -1,3 +1,4 @@
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import React, { Fragment, useState } from 'react';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Form, {
@@ -65,6 +66,7 @@ const JenkinsConfigurationForm = ({
 	pageTitle
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
+	const { test } = useFlags();
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
 	const isOnManageConnectPage = pageTitle.includes('Manage');
@@ -74,8 +76,14 @@ const JenkinsConfigurationForm = ({
 
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		// setSecret(generateNewSecretUNSAFE());
-		setSecret(await generateNewSecret());
+		if (test) {
+			console.log('create secret on backend');
+			setSecret(await generateNewSecret());
+		} else {
+			console.log('create secret on client', test, process.env.NODE_ENV);
+			setSecret(generateNewSecretUNSAFE());
+		}
+
 		setShowConfirmRefreshSecret(false);
 
 		const analyticsUiEvent = isOnManageConnectPage
@@ -113,6 +121,17 @@ const JenkinsConfigurationForm = ({
 
 	return (
 		<Fragment>
+			<div>TEST {test}</div>
+
+			<div>
+				{/* Check if the flag is true or false */}
+				{test ? (
+					<p>Generate Server Secret is enabled!</p>
+				) : (
+					<p>Generate Server Secret is disabled.</p>
+				)}
+			</div>
+			);
 			<Form onSubmit={onSubmit}>
 				{({ formProps }: any) => (
 					<form {...formProps} name='jenkins-configuration-form' data-testid="jenkinsConfigurationForm">
@@ -123,6 +142,8 @@ const JenkinsConfigurationForm = ({
 							errorMessage={errorMessage}
 							setHasError={setHasError}
 						/>
+
+						{test && <div> SEERVER SECRETSJHDFBSJDHFBSF</div>}
 
 						<ServerConfigurationFormWebhookUrl
 							webhookUrl={webhookUrl}
