@@ -7,7 +7,7 @@ import {
 } from 'react-router';
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
-import { LDProvider, useFlags } from 'launchdarkly-react-client-sdk';
+import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
 import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -16,23 +16,35 @@ import { spinnerHeight } from './common/styles/spinner.styles';
 import { JenkinsSpinner } from './components/JenkinsSpinner/JenkinsSpinner';
 import { PendingDeploymentState } from './components/JenkinsServerList/PendingDeploymentState/PendingDeploymentState';
 import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
+import envVars from './common/env';
+
+const {
+	LAUNCHDARKLY_TEST_CLIENT_ID,
+	LAUNCHDARKLY_TEST_USER_KEY,
+	LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
+	LAUNCHDARKLY_DEVELOPMENT_USER_KEY,
+	LAUNCHDARKLY_STAGING_CLIENT_ID,
+	LAUNCHDARKLY_STAGING_USER_KEY,
+	LAUNCHDARKLY_PRODUCTION_CLIENT_ID,
+	LAUNCHDARKLY_PRODUCTION_USER_KEY
+} = envVars;
 
 export const environmentSettings = {
 	test: {
-		clientSideID: '64d05a1b5cdc4d14fedc4e56',
-		user: { key: 'sdk-aeaff188-afbb-4fd7-ac3a-7cb4c034b2f8' }
+		clientSideID: LAUNCHDARKLY_TEST_CLIENT_ID,
+		user: { key: LAUNCHDARKLY_TEST_USER_KEY }
 	},
 	development: {
-		clientSideID: '64d05a2c4131f214c0daa1f0',
-		user: { key: 'sdk-523775d8-b59b-498a-bb1c-b0075215f045' }
+		clientSideID: LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
+		user: { key: LAUNCHDARKLY_DEVELOPMENT_USER_KEY }
 	},
 	staging: {
-		clientSideID: '64d05a3506e74014c8213f23',
-		user: { key: 'sdk-dcd7f409-0265-4d05-953b-fac576ecee12' }
+		clientSideID: LAUNCHDARKLY_STAGING_CLIENT_ID,
+		user: { key: LAUNCHDARKLY_STAGING_USER_KEY }
 	},
 	production: {
-		clientSideID: '64d05a1b5cdc4d14fedc4e57',
-		user: { key: 'sdk-f09e34f8-8d85-42cd-a8d0-bee59c50b92b' }
+		clientSideID: LAUNCHDARKLY_PRODUCTION_CLIENT_ID,
+		user: { key: LAUNCHDARKLY_PRODUCTION_USER_KEY }
 	}
 };
 
@@ -82,32 +94,19 @@ const App: React.FC = () => {
 	);
 };
 
-// Define the ProviderConfig type
-type ProviderConfig = {
-	clientSideID: string;
-	user: {
-		key: string;
+type Environment = 'test' | 'development' | 'staging' | 'production';
+
+const getLDProviderConfig = (environment: Environment) => {
+	const config = environmentSettings[environment] || environmentSettings.development;
+	return {
+		clientSideID: config.clientSideID || '',
+		reactOptions: {
+			useCamelCaseFlagKeys: false
+		},
+		options: { disableSyncEventPost: true }
 	};
-	options?: object;
 };
 
-// Wrap the App component with the withLDProvider HOC using the environmentSettings
-const WrappedApp: React.FC = () => {
-	const currentEnvironment = process.env.NODE_ENV;
-	const flagConfig = environmentSettings[currentEnvironment];
-	const flags = useFlags();
-	console.log('FLAGS', flags);
-	const ldProviderConfig: ProviderConfig = {
-		clientSideID: flagConfig.clientSideID,
-		user: flagConfig.user,
-		options: {} // Add any options if needed
-	};
+const AppWithLDProvider = withLDProvider(getLDProviderConfig(process.env.NODE_ENV))(App);
 
-	return (
-		<LDProvider {...ldProviderConfig}>
-			<App />
-		</LDProvider>
-	);
-};
-
-export default WrappedApp;
+export default AppWithLDProvider;
