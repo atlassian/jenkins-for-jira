@@ -77,10 +77,8 @@ const JenkinsConfigurationForm = ({
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		if (serverSecretGenerationFlag) {
-			console.log('create secret on backend');
 			setSecret(await generateNewSecret());
 		} else {
-			console.log('create secret on client', test, process.env.NODE_ENV);
 			setSecret(generateNewSecretUNSAFE());
 		}
 

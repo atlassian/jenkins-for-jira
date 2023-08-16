@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useState, useEffect } from 'react';
 import {
 	Router,
@@ -16,7 +15,7 @@ import { spinnerHeight } from './common/styles/spinner.styles';
 import { JenkinsSpinner } from './components/JenkinsSpinner/JenkinsSpinner';
 import { PendingDeploymentState } from './components/JenkinsServerList/PendingDeploymentState/PendingDeploymentState';
 import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
-import envVars from './common/env';
+import envVars, { Environment } from './common/env';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -93,8 +92,6 @@ const App: React.FC = () => {
 		</AppContainer>
 	);
 };
-
-type Environment = 'test' | 'development' | 'staging' | 'production';
 
 const getLDProviderConfig = (environment: Environment) => {
 	const config = environmentSettings[environment] || environmentSettings.development;

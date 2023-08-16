@@ -20,4 +20,6 @@ const envVars: EnvVars = {
 	LAUNCHDARKLY_PRODUCTION_USER_KEY: process.env.REACT_APP_LAUNCHDARKLY_PRODUCTION_USER_KEY || ''
 };
 
+export type Environment = 'test' | 'development' | 'staging' | 'production';
+
 export default envVars;
