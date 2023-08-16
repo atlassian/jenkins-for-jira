@@ -67,6 +67,7 @@ const JenkinsConfigurationForm = ({
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
 	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
+	console.log('serverSecretGenerationFlag', serverSecretGenerationFlag);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
 	const isOnManageConnectPage = pageTitle.includes('Manage');
