@@ -98,8 +98,6 @@ const getLDProviderConfig = (environment: Environment) => {
 	console.log('environment', environment);
 	console.log('environmentSettings', environmentSettings);
 	const config = environmentSettings[environment] || environmentSettings.development;
-	console.log('config', config);
-	console.log('envVars', envVars);
 	return {
 		clientSideID: config.clientSideID || '',
 		reactOptions: {
