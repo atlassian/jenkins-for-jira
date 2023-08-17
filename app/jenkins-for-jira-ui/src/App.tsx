@@ -95,7 +95,8 @@ const App: React.FC = () => {
 
 const getLDProviderConfig = (environment: Environment) => {
 	const config = environmentSettings[environment] || environmentSettings.development;
-
+	console.log('CONFIG: ', config);
+	console.log('environment: ', environment);
 	return {
 		clientSideID: config.clientSideID || '',
 		user: {
