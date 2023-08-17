@@ -24,4 +24,3 @@ For more information on contributing code to this app and setting up your dev en
 # Environment variables
 In app/jenkins-for-jira-ui you'll find 2 example env files:
 * .env.example: this contains one variable `SKIP_PREFLIGHT_CHECK`. Add this to a .env file and set it to true if you want to disable the message about the dependency tree's package versions.
-* .env.local.example: this contains 4 variables that you will need to copy into a .env.local file to ensure requests to LaunchDarkly succeed. The values for development and testing environments will need to be stored locally. Staging and production are stored in a secure location. NOTE: this variables must be prefixed with REACT_APP_ to be detected.
