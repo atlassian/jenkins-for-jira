@@ -67,7 +67,6 @@ const JenkinsConfigurationForm = ({
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
 	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
-	console.log('serverSecretGenerationFlag', serverSecretGenerationFlag);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
 	const isOnManageConnectPage = pageTitle.includes('Manage');
@@ -78,8 +77,10 @@ const JenkinsConfigurationForm = ({
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		if (serverSecretGenerationFlag) {
+			console.log('generating secret on backend');
 			setSecret(await generateNewSecret());
 		} else {
+			console.log('generating secret on client');
 			setSecret(generateNewSecretUNSAFE());
 		}
 
