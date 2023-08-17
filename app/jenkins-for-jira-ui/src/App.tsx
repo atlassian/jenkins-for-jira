@@ -95,8 +95,12 @@ const App: React.FC = () => {
 
 const getLDProviderConfig = (environment: Environment) => {
 	const config = environmentSettings[environment] || environmentSettings.development;
+
 	return {
 		clientSideID: config.clientSideID || '',
+		user: {
+			key: config.user.key || ''
+		},
 		reactOptions: {
 			useCamelCaseFlagKeys: false
 		},
