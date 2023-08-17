@@ -20,7 +20,7 @@ import envVars, { Environment } from './common/env';
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
 	LAUNCHDARKLY_TEST_USER_KEY,
-	// LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
+	LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
 	LAUNCHDARKLY_DEVELOPMENT_USER_KEY,
 	LAUNCHDARKLY_STAGING_CLIENT_ID,
 	LAUNCHDARKLY_STAGING_USER_KEY,
@@ -34,8 +34,7 @@ export const environmentSettings = {
 		user: { key: LAUNCHDARKLY_TEST_USER_KEY }
 	},
 	development: {
-		clientSideID: '64d05a2c4131f214c0daa1f0',
-		// clientSideID: LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
+		clientSideID: LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
 		user: { key: LAUNCHDARKLY_DEVELOPMENT_USER_KEY }
 	},
 	staging: {
@@ -95,8 +94,6 @@ const App: React.FC = () => {
 };
 
 const getLDProviderConfig = (environment: Environment) => {
-	console.log('environment', environment);
-	console.log('environmentSettings', environmentSettings);
 	const config = environmentSettings[environment] || environmentSettings.development;
 	return {
 		clientSideID: config.clientSideID || '',
