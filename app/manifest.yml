@@ -41,6 +41,8 @@ app:
   # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out
   runtime:
     snapshots: false
+  features:
+    autoUserConsent: true
 permissions:
   external:
     fetch:
