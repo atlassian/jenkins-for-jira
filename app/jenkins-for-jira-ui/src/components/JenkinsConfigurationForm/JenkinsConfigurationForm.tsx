@@ -119,10 +119,10 @@ const JenkinsConfigurationForm = ({
 		);
 	};
 
+	console.log('value of flag is: ', serverSecretGenerationFlag);
+
 	return (
 		<Fragment>
-			{serverSecretGenerationFlag
-				? <div>serverSecretGenerationFlag is ON</div> : <div>serverSecretGenerationFlag is OFF</div>}
 			<Form onSubmit={onSubmit}>
 				{({ formProps }: any) => (
 					<form {...formProps} name='jenkins-configuration-form' data-testid="jenkinsConfigurationForm">
