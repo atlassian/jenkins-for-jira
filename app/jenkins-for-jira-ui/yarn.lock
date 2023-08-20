@@ -210,7 +210,17 @@
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/icon@21.12.6", "@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.12.0":
+"@atlaskit/icon@21.12.7":
+  version "21.12.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-21.12.7.tgz#b634f577da0471594f80969fc8262b777f858865"
+  integrity sha512-aJ/wsmLMVIcYxyF7P9vOZohv1XQ9HSvYELxjuzThToZ/zy/4SdRDOc7Zjm/MLmtCOqcLRne3f68mM9s3/a5dqg==
+  dependencies:
+    "@atlaskit/theme" "^12.5.0"
+    "@atlaskit/tokens" "^1.14.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+
+"@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.12.0":
   version "21.12.6"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/icon/-/icon-21.12.6.tgz#ffd8ed18caf9a389bb040fd4d758a2a3fd6c50e7"
   integrity sha512-Dgl7d1Jl8uOaLu+gEZuobUR+NrQz3R0qnMxIWGlvUURr0p2R0jZFXDHRj9TJH1rRHIGa7tDhOm9qK7E0kSU4HA==
