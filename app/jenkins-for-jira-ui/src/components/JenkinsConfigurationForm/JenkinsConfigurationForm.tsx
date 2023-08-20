@@ -77,10 +77,8 @@ const JenkinsConfigurationForm = ({
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		if (serverSecretGenerationFlag) {
-			console.log('generating secret on backend');
 			setSecret(await generateNewSecret());
 		} else {
-			console.log('generating secret on client');
 			setSecret(generateNewSecretUNSAFE());
 		}
 
@@ -118,8 +116,6 @@ const JenkinsConfigurationForm = ({
 			}
 		);
 	};
-
-	console.log('value of flag is: ', serverSecretGenerationFlag);
 
 	return (
 		<Fragment>
