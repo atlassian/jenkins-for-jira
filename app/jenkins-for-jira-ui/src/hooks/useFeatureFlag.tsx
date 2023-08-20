@@ -11,6 +11,7 @@ export const useFeatureFlag = <TFeatureFlagValue extends FeatureFlagValue>(
 	defaultValue?: TFeatureFlagValue
 ): TFeatureFlagValue => {
 	const flags = useFlags();
+	console.log('flags', flags);
 
 	const defaultValues = {
 		[FeatureFlags.SERVER_SECRET_GENERATION]: defaultValue !== undefined ? defaultValue : false
