@@ -7,6 +7,7 @@ modules:
       title: Jenkins for Jira
       layout: basic
       icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
+      useAsGetStarted: true
   webtrigger:
     - key: jenkins-webtrigger
       function: handle-jenkins-request
