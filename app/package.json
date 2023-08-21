@@ -16,7 +16,9 @@
     "@forge/api": "2.18.3",
     "@forge/metrics": "^0.1.13",
     "@forge/resolver": "1.5.14",
-    "jsonwebtoken": "8.5.1"
+    "atlassian-jwt": "^2.0.2",
+    "crypto": "^1.0.1",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/jest": "27.5.2",

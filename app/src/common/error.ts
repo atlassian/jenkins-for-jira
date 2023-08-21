@@ -23,12 +23,6 @@ export class JwtVerificationFailedError extends JenkinsAppError {
 	}
 }
 
-export class JwtDecodingFailedError extends JenkinsAppError {
-	constructor(message: string) {
-		super(message);
-	}
-}
-
 export class UnsupportedRequestTypeError extends JenkinsAppError {
 	constructor(message: string) {
 		super(message);

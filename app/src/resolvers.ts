@@ -11,6 +11,7 @@ import { deleteBuilds } from './jira-client/delete-builds';
 import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
+import { generateNewSecret } from './storage/generate-new-secret';
 
 const resolver = new Resolver();
 
@@ -59,6 +60,12 @@ resolver.define('disconnectJenkinsServer', async (req) => {
 		deleteBuilds(cloudId, jenkinsServerUuid),
 		deleteDeployments(cloudId, jenkinsServerUuid)
 	]);
+});
+
+resolver.define('generateNewSecret', async (req) => {
+	await adminPermissionCheck(req);
+	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
+	return generateNewSecret();
 });
 
 export default resolver.getDefinitions();
