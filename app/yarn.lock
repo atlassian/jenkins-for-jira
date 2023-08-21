@@ -338,18 +338,6 @@
     "@types/node-fetch" "^2.6.4"
     node-fetch "2.6.11"
 
-"@forge/api@2.18.2":
-  version "2.18.2"
-  resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.18.2.tgz#894e20436faa4a0c7369d83018cb2fb5fada3fff"
-  integrity sha512-kZnFJKQ2n9rkTgYXitJoraC550of4HdHuzg3VEHWCDg8x+XWfAEtja/LyzkObCvgy0X5L6vPNo1tTFQ7VqF60Q==
-  dependencies:
-    "@forge/auth" "0.0.3"
-    "@forge/egress" "1.2.1"
-    "@forge/storage" "1.5.5"
-    "@forge/util" "1.3.0"
-    "@types/node-fetch" "^2.6.4"
-    node-fetch "2.6.12"
-
 "@forge/api@2.18.3":
   version "2.18.3"
   resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.18.3.tgz#9d73b7db8ca096b7f7b4d181d6adfb5a510d5698"
@@ -358,6 +346,18 @@
     "@forge/auth" "0.0.3"
     "@forge/egress" "1.2.2"
     "@forge/storage" "1.5.5"
+    "@forge/util" "1.3.1"
+    "@types/node-fetch" "^2.6.4"
+    node-fetch "2.6.12"
+
+"@forge/api@2.18.4":
+  version "2.18.4"
+  resolved "https://registry.yarnpkg.com/@forge/api/-/api-2.18.4.tgz#e98bdad4bca0222090c803204b5f7ac9bc641f46"
+  integrity sha512-JQ/ppxChsMw3rhO9JwpmLpgUzNxJvEh0qSS0JBAAstGCTW737eNJkuwQPercL9rmIcXPFht2dUMjJZSOGAobvQ==
+  dependencies:
+    "@forge/auth" "0.0.4"
+    "@forge/egress" "1.2.2"
+    "@forge/storage" "1.5.6"
     "@forge/util" "1.3.1"
     "@types/node-fetch" "^2.6.4"
     node-fetch "2.6.12"
@@ -375,6 +375,13 @@
   integrity sha512-C0x3ciLGFDPKoLpNRi/8JHw3xupgGAVenYKBKeeb2gxvD2IbixquqISCImKFFEOypaYOl13wHPV86QbC80ia1A==
   dependencies:
     tslib "^2.6.0"
+
+"@forge/auth@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@forge/auth/-/auth-0.0.4.tgz#04ce757803e66cad7b3803f069ed8924b2afc03b"
+  integrity sha512-OHU44T+6789s654Po8lbwbgHoHlv7vbzFsdpGZ5Ai3Fu1V1YQ3YVcQqa4wlTWATsL36N01IAfLknAtYqeyRYTQ==
+  dependencies:
+    tslib "^2.6.1"
 
 "@forge/egress@1.2.1":
   version "1.2.1"
@@ -398,12 +405,12 @@
     "@forge/api" "2.18.1"
     "@forge/runtime" "4.4.3"
 
-"@forge/resolver@1.5.12":
-  version "1.5.12"
-  resolved "https://registry.yarnpkg.com/@forge/resolver/-/resolver-1.5.12.tgz#2a13901ed40c38b00e908694e0a53d063c306686"
-  integrity sha512-OHx1k66Q8sYYgdbVAM18qNVkUqIf60ovmXRG4koo9ffy+8aavZRt+5skhaXVVnIetZibhjdrJGnT/sEMVzlKsQ==
+"@forge/resolver@1.5.14":
+  version "1.5.14"
+  resolved "https://registry.yarnpkg.com/@forge/resolver/-/resolver-1.5.14.tgz#1b15eed98409a3bb1880210dd375183825f5bc92"
+  integrity sha512-UWooHomy8WAxNMshILdZ0S72Bu6EhKWXllRkE+5iUqfFIM03vriZgsfAcoFGAWcch8WiBmUNbKBPeDXA/mOrsA==
   dependencies:
-    "@forge/api" "2.18.2"
+    "@forge/api" "2.18.4"
 
 "@forge/runtime@4.4.3":
   version "4.4.3"
@@ -430,6 +437,11 @@
   resolved "https://registry.yarnpkg.com/@forge/storage/-/storage-1.5.5.tgz#8ba6028f13477b95f5cc5fcda05230c2483a5a1f"
   integrity sha512-4APa+O8vqmoRNHb8qSxH3TabI4H8flVQbTEktdDDe+OMrMXQfc8cQXbtyUvNMnR78m9b0ZEz1bh1toIupzRxkw==
 
+"@forge/storage@1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@forge/storage/-/storage-1.5.6.tgz#38fb171872354859051f3b12d27b16f1284bf12c"
+  integrity sha512-hGCYxW2EvF7N5/fbClhIU/kJi0X9E92kxjzuilUF75hU0CYRdSSHQG9My0wKm8/48rxJ4o2QhozJQnYnbT0skA==
+
 "@forge/util@1.2.3":
   version "1.2.3"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@forge/util/-/util-1.2.3.tgz#7b825ab0229a21d6d802b19f6d49f29f9e082d03"
@@ -437,15 +449,6 @@
   dependencies:
     webpack "5.78.0"
     webpack-cli "^4.9.1"
-
-"@forge/util@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@forge/util/-/util-1.3.0.tgz#cff636c8f0a60cdd9f5be58bcdc92a2838cfde57"
-  integrity sha512-LFTis1lXSuCeGUfNe4F+ffqwgeImejChWj9LJgcQ7TKz0Xckfcd4vyJn7z0u9dfmwS3msVjyUWp++94dfPKEIg==
-  dependencies:
-    ts-is-present "^1.2.2"
-    webpack "5.88.1"
-    webpack-cli "^4.10.0"
 
 "@forge/util@1.3.1":
   version "1.3.1"
@@ -4597,6 +4600,11 @@ tslib@^2.4.0, tslib@^2.6.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.0.tgz#b295854684dbda164e181d259a22cd779dcd7bc3"
   integrity sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==
 
+tslib@^2.6.1:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
+  integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
+
 tsutils@^3.21.0:
   version "3.21.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
@@ -4808,36 +4816,6 @@ webpack@5.78.0:
     schema-utils "^3.1.0"
     tapable "^2.1.1"
     terser-webpack-plugin "^5.1.3"
-    watchpack "^2.4.0"
-    webpack-sources "^3.2.3"
-
-webpack@5.88.1:
-  version "5.88.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.88.1.tgz#21eba01e81bd5edff1968aea726e2fbfd557d3f8"
-  integrity sha512-FROX3TxQnC/ox4N+3xQoWZzvGXSuscxR32rbzjpXgEzWudJFEJBpdlkkob2ylrv5yzzufD1zph1OoFsLtm6stQ==
-  dependencies:
-    "@types/eslint-scope" "^3.7.3"
-    "@types/estree" "^1.0.0"
-    "@webassemblyjs/ast" "^1.11.5"
-    "@webassemblyjs/wasm-edit" "^1.11.5"
-    "@webassemblyjs/wasm-parser" "^1.11.5"
-    acorn "^8.7.1"
-    acorn-import-assertions "^1.9.0"
-    browserslist "^4.14.5"
-    chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.15.0"
-    es-module-lexer "^1.2.1"
-    eslint-scope "5.1.1"
-    events "^3.2.0"
-    glob-to-regexp "^0.4.1"
-    graceful-fs "^4.2.9"
-    json-parse-even-better-errors "^2.3.1"
-    loader-runner "^4.2.0"
-    mime-types "^2.1.27"
-    neo-async "^2.6.2"
-    schema-utils "^3.2.0"
-    tapable "^2.1.1"
-    terser-webpack-plugin "^5.3.7"
     watchpack "^2.4.0"
     webpack-sources "^3.2.3"
 
