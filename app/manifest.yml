@@ -49,6 +49,9 @@ permissions:
     fetch:
       client:
         - 'https://api-private.atlassian.com'
+        - 'https://app.launchdarkly.com'
+        - 'https://events.launchdarkly.com'
+        - 'https://clientstream.launchdarkly.com'
 
   content:
     styles:
