@@ -185,7 +185,7 @@ describe('Jenkins webtrigger', () => {
 
 		// when
 		const response: WebtriggerResponse =
-			await handleJenkinsRequest(createWebtriggerRequest(DEPLOYMENT_EVENT_JWT), context);
+	await handleJenkinsRequest(createWebtriggerRequest(DEPLOYMENT_EVENT_JWT), context);
 
 		// then
 		expect(response.statusCode).toBe(jiraResponse.status);
@@ -199,7 +199,7 @@ describe('Jenkins webtrigger', () => {
 
 		// when
 		const response: WebtriggerResponse =
-			await handleJenkinsRequest(createWebtriggerRequest(INVALID_REQUEST_TYPE_JWT), context);
+	await handleJenkinsRequest(createWebtriggerRequest(INVALID_REQUEST_TYPE_JWT), context);
 
 		// then
 		expect(response.statusCode).toBe(400);
@@ -213,7 +213,7 @@ describe('Jenkins webtrigger', () => {
 
 		// when
 		const response: WebtriggerResponse =
-			await handleJenkinsRequest(createWebtriggerRequest(INVALID_EVENT_TYPE_JWT), context);
+	await handleJenkinsRequest(createWebtriggerRequest(INVALID_EVENT_TYPE_JWT), context);
 
 		// then
 		expect(response.statusCode).toBe(400);
