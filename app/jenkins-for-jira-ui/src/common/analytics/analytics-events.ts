@@ -13,7 +13,8 @@ export enum AnalyticsScreenEventsEnum {
 	InstallJenkinsScreenName = 'installJenkinsScreen',
 	CreateJenkinsServerScreenName = 'createJenkinsServerScreen',
 	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen',
-	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen'
+	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen',
+	PendingDeploymentStateScreenName = 'pendingDeploymentStateScreen'
 }
 
 export enum AnalyticsUiEventsEnum {
@@ -21,15 +22,23 @@ export enum AnalyticsUiEventsEnum {
 	ConnectJenkinsServerConfiguredStateName = 'connectJenkinsServerConfiguredState',
 	LearnMoreEmptyStateName = 'learnMoreEmptyState',
 	NextInstallJenkinsName = 'nextInstallJenkins',
+	CreateJenkinsServerName = 'createJenkinsServer',
 	RefreshSecretConnectJenkinsServerName = 'refreshSecretConnectJenkinsServer',
 	RefreshSecretCancelConnectJenkinsServerName = 'refreshSecretCancelConnectJenkinsServer',
 	RefreshSecretConfirmConnectJenkinsServerName = 'refreshSecretConfirmConnectJenkinsServer',
+	RefreshSecretManageJenkinsServerName = 'refreshSecretManageJenkinsServer',
+	RefreshSecretCancelManageJenkinsServerName = 'refreshSecretCancelManageJenkinsServer',
+	RefreshSecretConfirmManageJenkinsServerName = 'refreshSecretConfirmManageJenkinsServer',
+	ConnectJenkinsServerName = 'connectJenkinsServer',
 	ManageConnectionConfiguredStateName = 'manageConnectionConfiguredState',
+	ManageConnectionHelpLinkName = 'manageConnectionHelpLink',
 	NavigateBackManageJenkinsConnectionName = 'navigateBackManageJenkinsConnections',
 	PendingDeploymentConfiguredStateName = 'pendingDeploymentConfiguredStateName',
 	DisconnectServerConfiguredStateName = 'disconnectServerConfiguredState',
 	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
-	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState'
+	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState',
+	ManageConnectionPendingStateName = 'manageConnectionPendingState',
+	NavigateBackPendingDeploymentStateName = 'navigateBackPendingDeploymentState'
 }
 
 export enum AnalyticsTrackEventsEnum {
@@ -39,10 +48,15 @@ export enum AnalyticsTrackEventsEnum {
 	ConnectedJenkinsServerErrorName = 'connectedJenkinsServerError',
 	UpdatedServerSuccessName = 'updatedServerSuccessName',
 	UpdatedServerErrorName = 'updatedServerErrorName',
-	GetServerSuccessManageConnectionName = 'getServerManageSuccessConnection',
+	GetServerSuccessManageConnectionName = 'getServerSuccessManageConnection',
 	GetServerErrorManageConnectionName = 'getServerErrorManageConnection',
+	GetServerSuccessJenkinsConfigurationName = 'getServerSuccessJenkinsConfiguration',
+	GetServerErrorJenkinsConfigurationName = 'getServerErrorJenkinsConfiguration',
 	DisconnectServerSuccessServerManageConnectionName = 'disconnectedServerSuccessManageConnection',
-	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection'
+	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection',
+	TotalNumberJenkinsServersName = 'totalNumberJenkinsServers',
+	TotalNumberOfServersWithPipelines = 'totalNumberOfServersWithPipelines',
+	TotalNumberOfServersWithoutPipelines = 'totalNumberOfServersWithoutPipelines'
 }
 
 export enum AnalyticsOperationalEventsEnum {}

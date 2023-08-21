@@ -123,15 +123,14 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 		setJenkinsServers(jenkinsServerList);
 	}, [jenkinsServerList]);
 
-	const onClickManage = async (jenkinsServerUuid: string, serverName: string) => {
+	const onClickManage = async (jenkinsServerUuid: string) => {
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ManageConnectionConfiguredStateName,
 			{
 				source: AnalyticsScreenEventsEnum.ConfigurationConfiguredStateScreenName,
 				action: 'clicked manage connection',
-				actionSubject: 'button',
-				serverName
+				actionSubject: 'button'
 			}
 		);
 
@@ -342,7 +341,7 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 							</StyledConnectedServerTableHeaderTitleContainer>
 
 							<StyledButtonContainerConnectedServers>
-								<Button onClick={() => onClickManage(server.uuid, server.name)}>
+								<Button onClick={() => onClickManage(server.uuid)}>
 									Manage connection
 								</Button>
 								<DropdownMenu testId="action-drop-down">

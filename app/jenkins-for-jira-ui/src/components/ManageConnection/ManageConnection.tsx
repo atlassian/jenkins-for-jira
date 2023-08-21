@@ -68,6 +68,19 @@ const ManageConnection = () => {
 		}
 	};
 
+	const handleClickHelp = async (event: React.MouseEvent): Promise<void> => {
+		event.preventDefault();
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ManageConnectionHelpLinkName,
+			{
+				source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
+				action: 'clicked help link',
+				actionSubject: 'button'
+			}
+		);
+	};
+
 	const getServer = useCallback(async () => {
 		try {
 			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
@@ -86,7 +99,7 @@ const ManageConnection = () => {
 
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.TrackEvent,
-				AnalyticsTrackEventsEnum.GetServerSuccessManageConnectionName,
+				AnalyticsTrackEventsEnum.GetServerErrorManageConnectionName,
 				{
 					source: AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName,
 					error: e
@@ -149,6 +162,8 @@ const ManageConnection = () => {
 		}
 	};
 
+	const pageTitle = 'Manage Jenkins Connection';
+
 	return (
 		<StyledInstallationContainer>
 			<header className={headerContainer}>
@@ -164,12 +179,13 @@ const ManageConnection = () => {
 					className={helpLinkContainer}
 					href="https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-jenkins"
 					aria-label="Read our support docs for help"
+					onClick={handleClickHelp}
 				>
 					<QuestionIcon label="help"/>
 					<p className={helpLink}>Help</p>
 				</a>
 			</header>
-			<h1>Manage Jenkins Connection</h1>
+			<h1>{pageTitle}</h1>
 
 			{webhookUrl && secret
 				? <>
@@ -188,6 +204,7 @@ const ManageConnection = () => {
 							errorMessage={errorMessage}
 							setHasError={setHasError}
 							isLoading={isLoading}
+							pageTitle={pageTitle}
 						/>
 					</StyledInstallationContent>
 				</>

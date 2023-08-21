@@ -1,4 +1,8 @@
 import { JiraResponse } from './types';
+import { InvalidPayloadError } from '../common/error';
+import { Errors } from '../common/error-messages';
+import { Logger } from '../config/logger';
+import { getResponseData } from '../utils/get-data-from-response';
 
 async function getGatingStatusFromJira(
 	cloudId: string,
@@ -6,6 +10,14 @@ async function getGatingStatusFromJira(
 	pipelineId: string,
 	environmentId: string
 ): Promise<JiraResponse> {
+	const logger = Logger.getInstance('deleteBuilds');
+	const eventType = 'getGatingStatusFromJiraEvent';
+
+	if (!cloudId || !deploymentId || !pipelineId || !environmentId) {
+		logger.logError({ eventType, errorMsg: Errors.MISSING_REQUIRED_PROPERTIES });
+		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
+	}
+
 	// I would have liked to use Forge's `route` template to create the URL
 	// (https://developer.atlassian.com/platform/forge/runtime-reference/product-fetch-api/#route),
 	// but it fails with the error described here:
@@ -29,18 +41,27 @@ async function getGatingStatusFromJira(
 
 	const responseString = await apiResponse.text();
 
-	// eslint-disable-next-line no-console,max-len
-	console.log(`called Jira API ${getGatingStatusRoute}. Response status: ${apiResponse.status}. Response body: ${responseString}`);
-
 	if (!responseString) {
 		return {
 			status: apiResponse.status,
-			body: { }
+			body: {}
 		};
 	}
 
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
+	const responseData = getResponseData(jiraResponse);
+
+	logger.logInfo({
+		eventType,
+		data:
+			{
+				message: 'Called Jira API',
+				path: getGatingStatusRoute,
+				status: apiResponse.status,
+				response: responseData
+			}
+	});
 
 	return {
 		status: apiResponse.status,
