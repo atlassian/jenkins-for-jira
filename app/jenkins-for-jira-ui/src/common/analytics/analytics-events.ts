@@ -56,7 +56,8 @@ export enum AnalyticsTrackEventsEnum {
 	DisconnectServerErrorManageConnectionName = 'disconnectServerErrorManageConnection',
 	TotalNumberJenkinsServersName = 'totalNumberJenkinsServers',
 	TotalNumberOfServersWithPipelines = 'totalNumberOfServersWithPipelines',
-	TotalNumberOfServersWithoutPipelines = 'totalNumberOfServersWithoutPipelines'
+	TotalNumberOfServersWithoutPipelines = 'totalNumberOfServersWithoutPipelines',
+	GenerateNewSecretErrorConnectJenkinsServerName = 'generateNewSecretErrorConnectJenkinsServer'
 }
 
 export enum AnalyticsOperationalEventsEnum {}

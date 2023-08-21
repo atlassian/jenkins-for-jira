@@ -52,19 +52,19 @@ type JenkinsConfigurationFormProps = {
 };
 
 const JenkinsConfigurationForm = ({
-																		onSubmit,
-																		submitButtonText,
-																		webhookUrl,
-																		serverName,
-																		secret,
-																		setSecret,
-																		setServerName,
-																		hasError,
-																		errorMessage,
-																		setHasError,
-																		isLoading,
-																		pageTitle
-																	}: JenkinsConfigurationFormProps) => {
+	onSubmit,
+	submitButtonText,
+	webhookUrl,
+	serverName,
+	secret,
+	setSecret,
+	setServerName,
+	hasError,
+	errorMessage,
+	setHasError,
+	isLoading,
+	pageTitle
+}: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
 	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
