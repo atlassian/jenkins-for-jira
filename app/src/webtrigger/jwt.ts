@@ -5,6 +5,7 @@ import { InvalidPayloadError, JwtVerificationFailedError } from '../common/error
  * Verifies the signature of a JWT.
  * @param jwtToken string representation of the JWT to verify.
  * @param secret the secret which was used to generate the JWT.
+ * @param claims
  */
 export const verifyJwt = (jwtToken: string, secret: string, claims: object) => {
 	try {
