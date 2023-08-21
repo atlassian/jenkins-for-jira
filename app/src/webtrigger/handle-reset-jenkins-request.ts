@@ -4,13 +4,13 @@ import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
 import { getAllJenkinsServers } from '../storage/get-all-jenkins-servers';
 import { InvocationError, UnsupportedRequestTypeError } from '../common/error';
 import { extractCloudId } from './helpers';
+import { extractBodyFromJwt, verifyJwt } from './jwt';
 import {
-	ForgeTriggerContext, RequestType, WebtriggerRequest, WebtriggerResponse
+	ForgeTriggerContext, JenkinsRequest, RequestType, WebtriggerRequest, WebtriggerResponse
 } from './types';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { Errors } from '../common/error-messages';
 import { Logger } from '../config/logger';
-import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
@@ -22,8 +22,15 @@ async function handleResetJenkinsRequest(
 	try {
 		const jwtToken = request.body;
 		const secret = process.env.RESET_JENKINS_JWT_SECRET!;
-		const decodedToken = verifySymmetricJwt(jwtToken, secret, logger);
-		const jenkinsRequest = extractBodyFromSymmetricJwt(decodedToken);
+		const claims = {
+			issuer: 'pollinator-test',
+			audience: 'jenkins-forge-app'
+		};
+
+		verifyJwt(jwtToken, secret, claims, logger);
+
+		const payload = extractBodyFromJwt(jwtToken, logger);
+		const jenkinsRequest = payload as JenkinsRequest;
 		const cloudId = extractCloudId(context.installContext);
 
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
