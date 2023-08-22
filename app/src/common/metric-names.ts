@@ -6,5 +6,6 @@ export const metricResolverEmitter = {
 	updateJenkinsServer: `${server}.updateServer.emitted`,
 	getAllJenkinsServers: `${server}.getAllServers.emitted`,
 	getJenkinsServerWithSecret: `${server}.getWithSecretServer.emitted`,
-	disconnectJenkinsServer: `${server}.disconnectServer.emitted`
+	disconnectJenkinsServer: `${server}.disconnectServer.emitted`,
+    	generateNewSecretForServer: `${server}.generateNewSecret.emitted`
 };

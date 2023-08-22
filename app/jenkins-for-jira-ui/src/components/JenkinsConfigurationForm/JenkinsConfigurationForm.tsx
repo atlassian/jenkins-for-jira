@@ -16,12 +16,13 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
+import { generateNewSecret } from '../../api/generateNewSecret';
+import { FeatureFlags, useFeatureFlag } from '../../hooks/useFeatureFlag';
 
-// TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-export const generateNewSecret = () => {
+export const generateNewSecretUNSAFE = () => {
 	const SECRET_LENGTH = 20;
 	let newSecret = '';
 	const numberOfSecretCharacters = charactersForSecret.length;
@@ -65,6 +66,7 @@ const JenkinsConfigurationForm = ({
 	pageTitle
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
+	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
 	const isOnManageConnectPage = pageTitle.includes('Manage');
@@ -72,9 +74,14 @@ const JenkinsConfigurationForm = ({
 		? AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
 		: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName;
 
-	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
+	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		setSecret(generateNewSecret());
+		if (serverSecretGenerationFlag) {
+			setSecret(await generateNewSecret());
+		} else {
+			setSecret(generateNewSecretUNSAFE());
+		}
+
 		setShowConfirmRefreshSecret(false);
 
 		const analyticsUiEvent = isOnManageConnectPage
@@ -134,8 +141,8 @@ const JenkinsConfigurationForm = ({
 
 						<FormFooter>
 							{isLoading
-								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button' />
-								:	<Button type='submit' appearance='primary' testId='submit-button'>
+								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button'/>
+								: <Button type='submit' appearance='primary' testId='submit-button'>
 									{submitButtonText}
 								</Button>
 							}
