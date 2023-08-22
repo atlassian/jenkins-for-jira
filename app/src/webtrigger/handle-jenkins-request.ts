@@ -2,7 +2,6 @@ import {
 	ForgeTriggerContext,
 	GatingStatusRequest,
 	JenkinsEvent,
-	JenkinsRequest,
 	RequestType,
 	WebtriggerRequest,
 	WebtriggerResponse
@@ -13,7 +12,7 @@ import { extractCloudId, getQueryParameterValue } from './helpers';
 import { updateJenkinsServerState } from '../storage/update-jenkins-server-state';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { InvalidPayloadError, NoJenkinsServerError } from '../common/error';
-import { extractBodyFromJwt, verifyJwt } from './jwt';
+import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
 import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
@@ -47,15 +46,8 @@ export default async function handleJenkinsRequest(
 
 		const jwtToken = request.body;
 		const jenkinsServer = await getJenkinsServerWithSecret(jenkinsServerUuid);
-		const claims = {
-			issuer: 'jenkins-plugin',
-			audience: 'jenkins-forge-app'
-		};
-
-		verifyJwt(jwtToken, jenkinsServer.secret as string, claims, logger);
-
-		const payload = extractBodyFromJwt(jwtToken, logger);
-		const jenkinsRequest = payload as JenkinsRequest;
+		const decodedToken = verifySymmetricJwt(jwtToken, jenkinsServer.secret as string, logger);
+		const jenkinsRequest = extractBodyFromSymmetricJwt(decodedToken);
 
 		let response;
 

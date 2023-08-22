@@ -11,7 +11,6 @@ import {
 import { createJenkinsServer } from '../../../api/createJenkinsServer';
 import { ConfigurationSteps } from '../ConfigurationSteps/ConfigurationSteps';
 import { StyledH1, StyledInstallationContainer, StyledInstallationContent } from '../ConnectJenkins.styles';
-import { generateNewSecret } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
 import { isFormValid, setName } from '../../../common/util/jenkinsConnectionsUtils';
 import { ServerConfigurationFormName } from '../../JenkinsConfigurationForm/ServerConfigurationFormElements/ServerConfigurationFormName/ServerConfigurationFormName';
 import { ConnectLogos } from '../ConnectLogos/ConnectLogos';
@@ -22,10 +21,14 @@ import {
 	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
+import { generateNewSecret } from '../../../api/generateNewSecret';
+import { generateNewSecretUNSAFE } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
+import { FeatureFlags, useFeatureFlag } from '../../../hooks/useFeatureFlag';
 
 const analyticsClient = new AnalyticsClient();
 
 const CreateServer = () => {
+	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const history = useHistory();
 	const [serverName, setServerName] = useState('');
 	const [hasError, setHasError] = useState(false);
@@ -58,7 +61,7 @@ const CreateServer = () => {
 				await createJenkinsServer({
 					name: serverName,
 					uuid,
-					secret: generateNewSecret(),
+					secret: serverSecretGenerationFlag ? await generateNewSecret() : generateNewSecretUNSAFE(),
 					pipelines: []
 				});
 
@@ -116,7 +119,7 @@ const CreateServer = () => {
 							<FormFooter>
 								{isLoading
 									? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button' />
-									:	<Button type='submit' appearance='primary' testId='submit-button'>
+									: <Button type='submit' appearance='primary' testId='submit-button'>
 										Create
 									</Button>
 								}
