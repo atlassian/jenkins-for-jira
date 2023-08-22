@@ -38,7 +38,7 @@ describe('Reset Jenkins Server request suite', () => {
 		aud: ['jenkins-forge-app'],
 		iat,
 		iss: 'jenkins-plugin',
-		request_body_json: JSON.stringify({ requestType: 'ping' }),
+		request_body_json: JSON.stringify({ requestType: 'ping' })
 	};
 
 	describe('Should handle errors', () => {
