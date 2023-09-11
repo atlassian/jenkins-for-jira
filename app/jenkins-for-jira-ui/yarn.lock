@@ -86,7 +86,25 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/button@16.8.5", "@atlaskit/button@^16.8.0":
+"@atlaskit/button@16.10.1":
+  version "16.10.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.10.1.tgz#33edf2ce9584e20ee17e452c99e1a5428887d9ce"
+  integrity sha512-tJh7K4WVC191jQKDJ+gDfD0yrzfFaxCK5o8gQuAhqBX+YPHiAOt6ZQM2gN5yG54nSYLcEm7tiwLt5HteVoYtGw==
+  dependencies:
+    "@atlaskit/analytics-next" "^9.1.0"
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/focus-ring" "^1.3.0"
+    "@atlaskit/interaction-context" "^2.1.0"
+    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@atlaskit/primitives" "^1.4.0"
+    "@atlaskit/spinner" "^15.5.0"
+    "@atlaskit/theme" "^12.6.0"
+    "@atlaskit/tokens" "^1.21.0"
+    "@atlaskit/visually-hidden" "^1.2.4"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+
+"@atlaskit/button@^16.8.0":
   version "16.8.5"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/button/-/button-16.8.5.tgz#c4523507cd116138c97719ebf027e439506e345e"
   integrity sha512-Su0F8SH1C9gbRCQDKqpKdk1wqNn3rEcAsp3VgQokFpZRhwd8yGCWSS19j39DT0AQcx9ho8fVomsGRqmW5yi1cQ==
@@ -383,6 +401,17 @@
     "@emotion/serialize" "^1.1.0"
     bind-event-listener "^2.1.1"
 
+"@atlaskit/primitives@^1.4.0":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/primitives/-/primitives-1.4.3.tgz#c68e575a26c4b43344a98806e1bfebc4ffb1e844"
+  integrity sha512-3SqPjWBNoTB0rNZhv4eopxHZFeNLrOysI1dIwr0Jzjs0z76nMDB0Ef8FHvCfuiN6Xaf4w8+MG1FXx/RpgWltIg==
+  dependencies:
+    "@atlaskit/tokens" "^1.21.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+    "@emotion/serialize" "^1.1.0"
+    bind-event-listener "^2.1.1"
+
 "@atlaskit/progress-tracker@8.5.2":
   version "8.5.2"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/progress-tracker/-/progress-tracker-8.5.2.tgz#b1c89c4b6766fd5da6b70f114f0538ba2eaaed72"
@@ -428,6 +457,16 @@
     "@atlaskit/tokens" "^1.13.0"
     "@babel/runtime" "^7.0.0"
 
+"@atlaskit/theme@^12.6.0":
+  version "12.6.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-12.6.0.tgz#faa3a5efb243e70be053cd154bfe20db86b2997b"
+  integrity sha512-r7ZnD6vTRvRE/IWv2i174C60hn7hQy0/nI74ciT/fBFUODieOcdD3q86CqY65kF507fC8Pr0ZxH1AZHUZc4Rrg==
+  dependencies:
+    "@atlaskit/codemod-utils" "^4.2.0"
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/tokens" "^1.18.0"
+    "@babel/runtime" "^7.0.0"
+
 "@atlaskit/tokens@^0.10.0":
   version "0.10.35"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tokens/-/tokens-0.10.35.tgz#e46cb9e8b7c82acc0f5317be1ec7a94ac6285ace"
@@ -442,6 +481,18 @@
   version "1.14.0"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tokens/-/tokens-1.14.0.tgz#b7b09dd246400c4edc32f6ddf5fa3ddc263977a2"
   integrity sha512-npbkR0LQv05IVWiAHN/ylGH1ySP4C7TkFreGUy2KYGJTRhoxXFb6AJIJ9ehOS0Kpp2fAU4dwoOG9zfgEss+nLQ==
+  dependencies:
+    "@atlaskit/ds-lib" "^2.2.0"
+    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@babel/runtime" "^7.0.0"
+    "@babel/traverse" "^7.20.0"
+    "@babel/types" "^7.20.0"
+    bind-event-listener "^2.1.1"
+
+"@atlaskit/tokens@^1.18.0", "@atlaskit/tokens@^1.21.0":
+  version "1.21.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tokens/-/tokens-1.21.1.tgz#697904a6ce974199355c8e7245ceebe889d45457"
+  integrity sha512-YDhHPaqhuq2hWRNBGA0NPlyflw+72L+z6+wqNxftZdz6ASlbHT5j+W/YpU1tjbsf4fqXdleEd7L52R5QN027iA==
   dependencies:
     "@atlaskit/ds-lib" "^2.2.0"
     "@atlaskit/platform-feature-flags" "^0.2.0"
@@ -467,9 +518,9 @@
     bind-event-listener "^2.1.1"
     react-uid "^2.2.0"
 
-"@atlaskit/visually-hidden@^1.2.0":
+"@atlaskit/visually-hidden@^1.2.0", "@atlaskit/visually-hidden@^1.2.4":
   version "1.2.4"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/visually-hidden/-/visually-hidden-1.2.4.tgz#e6d0b89eecb377dbaf3f05a624ac56b8d0a3c93d"
+  resolved "https://registry.yarnpkg.com/@atlaskit/visually-hidden/-/visually-hidden-1.2.4.tgz#e6d0b89eecb377dbaf3f05a624ac56b8d0a3c93d"
   integrity sha512-rTk7sF2YrLJguv2deIezJ6kWAPBDt4rkBx1wQ5o+Eyffygb4p3iJKpD0hZC/q6FHt6p3wkklu7KqYyiSduJxSg==
   dependencies:
     "@babel/runtime" "^7.0.0"
