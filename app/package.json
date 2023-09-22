@@ -8,23 +8,30 @@
     "test": "jest",
     "test:coverage": "yarn test --coverage --watchAll=false && open coverage/index.html",
     "lint": "eslint src/**",
-    "ci": "run-p lint test"
+    "lint:all": "eslint src/** && cd jenkins-for-jira-ui && yarn lint",
+    "ci": "run-p lint test",
+    "prepare": "cd ../ && husky install"
   },
   "dependencies": {
-    "@forge/api": "2.6.1",
-    "@forge/resolver": "1.4.10",
-    "jsonwebtoken": "8.5.1"
+    "@forge/api": "2.18.3",
+    "@forge/metrics": "^0.1.13",
+    "@forge/resolver": "1.5.14",
+    "atlassian-jwt": "^2.0.2",
+    "crypto": "^1.0.1",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.2",
     "@types/jest-when": "3.5.2",
+    "@types/lodash": "^4.14.197",
     "@types/jsonwebtoken": "8.5.9",
-    "@typescript-eslint/eslint-plugin": "5.27.1",
-    "@typescript-eslint/parser": "5.27.1",
-    "eslint": "8.10.0",
+    "@typescript-eslint/eslint-plugin": "5.61.0",
+    "@typescript-eslint/parser": "5.61.0",
+    "eslint": "8.45.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "2.27.5",
+    "husky": "^8.0.3",
     "jest": "27.5.1",
     "jest-when": "3.5.2",
     "npm-run-all": "4.1.5",

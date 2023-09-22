@@ -1,4 +1,5 @@
 import Resolver from '@forge/resolver';
+import { internalMetrics } from '@forge/metrics';
 import { webTrigger } from '@forge/api';
 import { connectJenkinsServer } from './storage/connect-jenkins-server';
 import { JenkinsServer } from './common/types';
@@ -9,11 +10,14 @@ import { updateJenkinsServer } from './storage/update-jenkins-server';
 import { deleteBuilds } from './jira-client/delete-builds';
 import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
+import { metricResolverEmitter } from './common/metric-names';
+import { generateNewSecret } from './storage/generate-new-secret';
 
 const resolver = new Resolver();
 
 resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
 	await adminPermissionCheck(req);
+	internalMetrics.counter(metricResolverEmitter.fetchJenkinsEventHandlerUrl).incr();
 	return {
 		url: await webTrigger.getUrl('jenkins-webtrigger')
 	};
@@ -22,23 +26,27 @@ resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
 resolver.define('connectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
+	internalMetrics.counter(metricResolverEmitter.connectJenkinsServer).incr();
 	return connectJenkinsServer(payload);
 });
 
 resolver.define('updateJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const payload = req.payload as JenkinsServer;
+	internalMetrics.counter(metricResolverEmitter.updateJenkinsServer).incr();
 	return updateJenkinsServer(payload);
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
 	await adminPermissionCheck(req);
+	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
 	await adminPermissionCheck(req);
 	const jenkinsServerUuid = req.payload.uuid as string;
+	internalMetrics.counter(metricResolverEmitter.getJenkinsServerWithSecret).incr();
 	return getJenkinsServerWithSecret(jenkinsServerUuid);
 });
 
@@ -46,11 +54,18 @@ resolver.define('disconnectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const { cloudId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
+	internalMetrics.counter(metricResolverEmitter.disconnectJenkinsServer).incr();
 	return Promise.all([
 		disconnectJenkinsServer(jenkinsServerUuid),
 		deleteBuilds(cloudId, jenkinsServerUuid),
 		deleteDeployments(cloudId, jenkinsServerUuid)
 	]);
+});
+
+resolver.define('generateNewSecret', async (req) => {
+	await adminPermissionCheck(req);
+	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
+	return generateNewSecret();
 });
 
 export default resolver.getDefinitions();

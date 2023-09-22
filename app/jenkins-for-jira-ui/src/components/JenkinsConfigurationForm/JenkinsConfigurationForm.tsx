@@ -16,12 +16,13 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
+import { generateNewSecret } from '../../api/generateNewSecret';
+import { FeatureFlags, useFeatureFlag } from '../../hooks/useFeatureFlag';
 
-// TODO - delete this after we start generating a new secret on the backend
 const charactersForSecret =
 	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-export const generateNewSecret = () => {
+export const generateNewSecretUNSAFE = () => {
 	const SECRET_LENGTH = 20;
 	let newSecret = '';
 	const numberOfSecretCharacters = charactersForSecret.length;
@@ -47,6 +48,7 @@ type JenkinsConfigurationFormProps = {
 	errorMessage?: string;
 	setHasError: (error: boolean) => boolean | void;
 	isLoading: boolean;
+	pageTitle: string;
 };
 
 const JenkinsConfigurationForm = ({
@@ -60,22 +62,37 @@ const JenkinsConfigurationForm = ({
 	hasError,
 	errorMessage,
 	setHasError,
-	isLoading
+	isLoading,
+	pageTitle
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
+	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
+	const isOnManageConnectPage = pageTitle.includes('Manage');
+	const analyticsSourcePage = isOnManageConnectPage
+		? AnalyticsScreenEventsEnum.ManageJenkinsConnectionScreenName
+		: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName;
 
-	const refreshSecret = (event: React.MouseEvent<HTMLElement>) => {
+	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		setSecret(generateNewSecret());
+		if (serverSecretGenerationFlag) {
+			setSecret(await generateNewSecret());
+		} else {
+			setSecret(generateNewSecretUNSAFE());
+		}
+
 		setShowConfirmRefreshSecret(false);
+
+		const analyticsUiEvent = isOnManageConnectPage
+			? AnalyticsUiEventsEnum.RefreshSecretConfirmManageJenkinsServerName
+			: AnalyticsUiEventsEnum.RefreshSecretConfirmConnectJenkinsServerName;
 
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.RefreshSecretConfirmConnectJenkinsServerName,
+			analyticsUiEvent,
 			{
-				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				source: analyticsSourcePage,
 				action: 'clicked refresh confirm',
 				actionSubject: 'button'
 			}
@@ -85,11 +102,15 @@ const JenkinsConfigurationForm = ({
 	const closeConfirmRefreshSecret = () => {
 		setShowConfirmRefreshSecret(false);
 
+		const analyticsUiEvent = isOnManageConnectPage
+			? AnalyticsUiEventsEnum.RefreshSecretCancelManageJenkinsServerName
+			: AnalyticsUiEventsEnum.RefreshSecretCancelConnectJenkinsServerName;
+
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.RefreshSecretCancelConnectJenkinsServerName,
+			analyticsUiEvent,
 			{
-				source: AnalyticsScreenEventsEnum.ConnectJenkinsServerScreenName,
+				source: analyticsSourcePage,
 				action: 'clicked refresh cancel',
 				actionSubject: 'button'
 			}
@@ -120,8 +141,8 @@ const JenkinsConfigurationForm = ({
 
 						<FormFooter>
 							{isLoading
-								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button' />
-								:	<Button type='submit' appearance='primary' testId='submit-button'>
+								? <LoadingButton appearance='primary' isLoading className={loadingIcon} testId='loading-button'/>
+								: <Button type='submit' appearance='primary' testId='submit-button'>
 									{submitButtonText}
 								</Button>
 							}

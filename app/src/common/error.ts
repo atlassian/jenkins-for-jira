@@ -23,7 +23,25 @@ export class JwtVerificationFailedError extends JenkinsAppError {
 	}
 }
 
+export class UnsupportedRequestTypeError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
+
+export class MissingCloudIdError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
+
 export class InvalidPayloadError extends JenkinsAppError {
+	constructor(message: string) {
+		super(message);
+	}
+}
+
+export class InvocationError extends JenkinsAppError {
 	constructor(message: string) {
 		super(message);
 	}

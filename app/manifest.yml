@@ -41,11 +41,16 @@ app:
   # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out
   runtime:
     snapshots: false
+  features:
+    autoUserConsent: true
 permissions:
   external:
     fetch:
       client:
         - 'https://api-private.atlassian.com'
+        - 'https://app.launchdarkly.com'
+        - 'https://events.launchdarkly.com'
+        - 'https://clientstream.launchdarkly.com'
 
   content:
     styles:
