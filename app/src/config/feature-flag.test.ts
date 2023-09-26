@@ -30,7 +30,7 @@ describe('fetchFeatureFlag', () => {
             json: async () => mockFeatureFlagData,
         });
 
-        const result = await fetchFeatureFlag('test-flag');
+        const result = await fetchFeatureFlag('test-flag', 'test');
         expect(fetch).toHaveBeenCalledWith(expect.stringContaining('test-flag'), expect.anything());
         expect(result).toEqual(true);
     });
@@ -52,14 +52,14 @@ describe('fetchFeatureFlag', () => {
             json: async () => mockFeatureFlagData,
         });
 
-        const result = await fetchFeatureFlag('test-flag');
+        const result = await fetchFeatureFlag('test-flag', 'test');
         expect(fetch).toHaveBeenCalledWith(expect.stringContaining('test-flag'), expect.anything());
         expect(result).toEqual(false);
     });
 
     it('handles fetch errors', async () => {
         fetch.mockRejectedValueOnce(new Error('Fetch error'));
-        await expect(fetchFeatureFlag('test-flag')).rejects.toThrow('Fetch error');
+        await expect(fetchFeatureFlag('test-flag', 'test')).rejects.toThrow('Fetch error');
     });
 });
 

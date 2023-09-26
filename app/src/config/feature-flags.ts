@@ -123,12 +123,13 @@ export const launchDarklyService = {
         `${LAUNCH_DARKLY_URL}/${envVars.LAUNCHDARKLY_APP_NAME}/${environment}/features/${featureFlagKey}`
 };
 
-export const fetchFeatureFlag = async (featureFlagKey: string): Promise<boolean | null> => {
+export const fetchFeatureFlag =
+    async (featureFlagKey: string, env: Environment): Promise<boolean | null> => {
     try {
-        const environment: Environment = process.env.NODE_ENV as Environment;
+        const environment: Environment = env?.toLowerCase() as Environment;
         const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
         const envData = featureFlag.environments[environment];
-        console.debug('envData', envData);
+        console.log('envData', envData);
         return envData?.on || false;
     } catch (error) {
         logger.logError({

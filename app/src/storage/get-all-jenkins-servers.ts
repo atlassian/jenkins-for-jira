@@ -5,13 +5,28 @@ import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { fetchFeatureFlag } from '../config/feature-flags';
+import { Environment } from '../config/env';
 
-async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
+export interface ResolverContext {
+	localId: string,
+	cloudId: string,
+	environmentId: string,
+	environmentType: string,
+	moduleKey: string,
+	siteUrl: string,
+	extension: { type: string },
+	installContext: string,
+		accountId: string,
+		license: string,
+		jobId: string
+}
+
+async function getAllJenkinsServers(context?: ResolverContext): Promise<JenkinsServer[]> {
 	const eventType = 'getAllJenkinsServersEvent';
 	const logger = Logger.getInstance('getAllJenkinsServers');
 
 	const yourFeatureFlagKey = 'backend-test';
-	const flagValue = await fetchFeatureFlag(yourFeatureFlagKey);
+	const flagValue = await fetchFeatureFlag(yourFeatureFlagKey, context?.environmentType as Environment);
 	logger.logInfo({ eventType, data: { flagValue } });
 
 	try {

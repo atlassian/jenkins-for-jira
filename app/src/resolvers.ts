@@ -3,7 +3,7 @@ import { internalMetrics } from '@forge/metrics';
 import { webTrigger } from '@forge/api';
 import { connectJenkinsServer } from './storage/connect-jenkins-server';
 import { JenkinsServer } from './common/types';
-import { getAllJenkinsServers } from './storage/get-all-jenkins-servers';
+import { getAllJenkinsServers, ResolverContext } from './storage/get-all-jenkins-servers';
 import { disconnectJenkinsServer } from './storage/disconnect-jenkins-server';
 import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-secret';
 import { updateJenkinsServer } from './storage/update-jenkins-server';
@@ -38,9 +38,10 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
+	const { context } = req;
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
-	return getAllJenkinsServers();
+	return getAllJenkinsServers(context as ResolverContext);
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
