@@ -137,6 +137,7 @@ export const fetchFeatureFlag =
             errorMsg: 'Error fetching feature flag:',
             error
         });
-        throw error;
+
+        throw new Error(`Failed to retrieve feature flag: ${error}`);
     }
 };
