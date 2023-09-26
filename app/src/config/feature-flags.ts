@@ -90,11 +90,11 @@ const BASE_URL = `${LAUNCH_DARKLY_URL}/api/v2/flags/${envVars.LAUNCHDARKLY_APP_N
 
 const baseHeaders = {
     headers: {
-        Authorization: 'api-c63c330c-dfac-424d-b42d-3d342b9aea27'
+        Authorization: envVars.LAUNCHDARKLY_API_KEY
     }
 };
 
-const logger = Logger.getInstance('getAllJenkinsServers');
+const logger = Logger.getInstance('featureFlags');
 
 async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
     const eventType = 'retrievingFeatureFlag';
