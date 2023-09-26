@@ -6,20 +6,7 @@ import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { fetchFeatureFlag } from '../config/feature-flags';
 import { Environment } from '../config/env';
-
-export interface ResolverContext {
-	localId: string,
-	cloudId: string,
-	environmentId: string,
-	environmentType: string,
-	moduleKey: string,
-	siteUrl: string,
-	extension: { type: string },
-	installContext: string,
-		accountId: string,
-		license: string,
-		jobId: string
-}
+import { ResolverContext } from '../types';
 
 async function getAllJenkinsServers(context?: ResolverContext): Promise<JenkinsServer[]> {
 	const eventType = 'getAllJenkinsServersEvent';

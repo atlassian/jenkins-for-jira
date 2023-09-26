@@ -3,7 +3,7 @@ import { internalMetrics } from '@forge/metrics';
 import { webTrigger } from '@forge/api';
 import { connectJenkinsServer } from './storage/connect-jenkins-server';
 import { JenkinsServer } from './common/types';
-import { getAllJenkinsServers, ResolverContext } from './storage/get-all-jenkins-servers';
+import { getAllJenkinsServers } from './storage/get-all-jenkins-servers';
 import { disconnectJenkinsServer } from './storage/disconnect-jenkins-server';
 import { getJenkinsServerWithSecret } from './storage/get-jenkins-server-with-secret';
 import { updateJenkinsServer } from './storage/update-jenkins-server';
@@ -12,6 +12,7 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
+import { ResolverContext } from './types';
 
 const resolver = new Resolver();
 
