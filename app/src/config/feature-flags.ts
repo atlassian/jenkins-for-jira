@@ -104,6 +104,7 @@ async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
         const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders });
 
         if (response.status === 200) {
+            logger.logWarn({ eventType, data: { message: `Successfully retrieved ${featureFlagKey}` } });
             return await response.json();
         }
 
