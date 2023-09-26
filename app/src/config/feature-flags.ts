@@ -104,7 +104,7 @@ async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
         const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders });
 
         if (response.status === 200) {
-            logger.logWarn({ eventType, data: { message: `Successfully retrieved ${featureFlagKey}` } });
+            logger.logInfo({ eventType, data: { message: `Successfully retrieved ${featureFlagKey}` } });
             return await response.json();
         }
 
@@ -132,6 +132,7 @@ export const fetchFeatureFlag =
         const envData = featureFlag.environments[environment];
         console.log('envData', envData);
         console.log('envVars', envVars);
+        logger.logInfo({ eventType: 'success', data: { envVars, envData } });
         return envData?.on || false;
     } catch (error) {
         logger.logError({
