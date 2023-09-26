@@ -130,9 +130,6 @@ export const fetchFeatureFlag =
         const environment: Environment = env?.toLowerCase() as Environment;
         const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
         const envData = featureFlag.environments[environment];
-        console.log('envData', envData);
-        console.log('envVars', envVars);
-        logger.logInfo({ eventType: 'success', data: { envVars, envData } });
         return envData?.on || false;
     } catch (error) {
         logger.logError({

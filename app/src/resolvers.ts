@@ -12,7 +12,6 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
-import { ResolverContext } from './types';
 
 const resolver = new Resolver();
 
@@ -39,10 +38,9 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	const { context } = req;
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
-	return getAllJenkinsServers(context as ResolverContext);
+	return getAllJenkinsServers();
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
