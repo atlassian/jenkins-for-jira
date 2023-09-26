@@ -1,5 +1,5 @@
 import {
-	ListResult, QueryBuilder, Result
+	ListResult, QueryBuilder, Result, fetch as forgeFetch
 } from '@forge/api';
 import { JenkinsServer } from '../common/types';
 import { getAllJenkinsServers } from './get-all-jenkins-servers';
@@ -17,7 +17,8 @@ jest.mock('@forge/api', () => ({
 	webTrigger: {
 		getUrl: jest.fn()
 	},
-	startsWith: jest.fn()
+	startsWith: jest.fn(),
+	fetch: jest.fn(),
 }));
 
 class MockQueryBuilder implements QueryBuilder {
@@ -66,8 +67,26 @@ const mockListResult: ListResult = {
 	]
 };
 
+const fetch = forgeFetch as jest.Mock;
+
 describe('Get All Jenkins Servers Suite', () => {
 	it('Should return all Jenkins servers sorted by last event timestamp', async () => {
+		const mockFeatureFlagData = {
+			name: 'test-flag',
+			kind: 'boolean',
+			environments: {
+				test: {
+					on: true,
+					archived: false,
+				}
+			},
+		};
+
+		fetch.mockResolvedValueOnce({
+			status: 200,
+			json: async () => mockFeatureFlagData,
+		});
+
 		const allJenkinsServers: JenkinsServer[] = await getAllJenkinsServers();
 
 		expect(allJenkinsServers.length).toBe(mockListResult.results.length);

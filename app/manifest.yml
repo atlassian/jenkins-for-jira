@@ -51,6 +51,8 @@ permissions:
         - 'https://app.launchdarkly.com'
         - 'https://events.launchdarkly.com'
         - 'https://clientstream.launchdarkly.com'
+      backend:
+        - 'https://app.launchdarkly.com/api/v2/flags/Jenkins'
 
   content:
     styles:

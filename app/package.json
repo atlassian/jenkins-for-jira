@@ -23,8 +23,8 @@
   "devDependencies": {
     "@types/jest": "27.5.2",
     "@types/jest-when": "3.5.2",
-    "@types/lodash": "^4.14.197",
     "@types/jsonwebtoken": "8.5.9",
+    "@types/lodash": "^4.14.197",
     "@typescript-eslint/eslint-plugin": "5.61.0",
     "@typescript-eslint/parser": "5.61.0",
     "eslint": "8.50.0",

@@ -4,10 +4,15 @@ import {
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
+import { fetchFeatureFlag } from '../config/feature-flags';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const eventType = 'getAllJenkinsServersEvent';
 	const logger = Logger.getInstance('getAllJenkinsServers');
+
+	const yourFeatureFlagKey = 'backend-test';
+	const flagValue = await fetchFeatureFlag(yourFeatureFlagKey);
+	logger.logInfo({ eventType, data: { flagValue } });
 
 	try {
 		logger.logInfo({ eventType });
