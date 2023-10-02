@@ -27,7 +27,7 @@ interface EnvironmentData {
     _summary: any;
 }
 
-export interface FeatureFlag {
+interface FeatureFlag {
     name: string;
     kind: string;
     description: string;
@@ -82,8 +82,6 @@ export interface FeatureFlag {
         test: EnvironmentData;
     };
 }
-
-export default FeatureFlag;
 
 export const LAUNCH_DARKLY_URL = `https://app.launchdarkly.com`;
 const BASE_URL = `${LAUNCH_DARKLY_URL}/api/v2/flags/${envVars.LAUNCHDARKLY_APP_NAME}`;
