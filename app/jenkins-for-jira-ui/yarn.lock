@@ -86,7 +86,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/button@16.10.1", "@atlaskit/button@^16.10.0":
+"@atlaskit/button@16.10.1", "@atlaskit/button@^16.10.0", "@atlaskit/button@^16.9.0":
   version "16.10.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-16.10.1.tgz#33edf2ce9584e20ee17e452c99e1a5428887d9ce"
   integrity sha512-tJh7K4WVC191jQKDJ+gDfD0yrzfFaxCK5o8gQuAhqBX+YPHiAOt6ZQM2gN5yG54nSYLcEm7tiwLt5HteVoYtGw==
@@ -191,15 +191,15 @@
     "@emotion/react" "^11.7.1"
     react-beautiful-dnd "^12.1.1"
 
-"@atlaskit/empty-state@7.6.1":
-  version "7.6.1"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/empty-state/-/empty-state-7.6.1.tgz#180dcb6b3c19114e8a8099458ce528ccfbd4bac0"
-  integrity sha512-xXjE5cCblNRAAh0N/JB7p+v9sFSjv+zWoxJ5no2SvapiO2KHTjmc8QS1WNZFf3X4yHa1oEDEsKeOTtQsn1sk3g==
+"@atlaskit/empty-state@7.6.3":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/empty-state/-/empty-state-7.6.3.tgz#70643e6a1fb4f0322e1b4fcd173948ff1ff9ae53"
+  integrity sha512-DP6g/pGbS797nZKH4RLfs1aN9vtT/fDhRBYNfe2JLjs3sogKS91IcVgBovhgZgLdNEqpcBzA4bIJwzF6s9mkIw==
   dependencies:
-    "@atlaskit/button" "^16.8.0"
+    "@atlaskit/button" "^16.9.0"
     "@atlaskit/spinner" "^15.5.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/tokens" "^1.14.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
