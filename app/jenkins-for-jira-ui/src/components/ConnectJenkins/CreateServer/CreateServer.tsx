@@ -22,13 +22,10 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { generateNewSecret } from '../../../api/generateNewSecret';
-import { generateNewSecretUNSAFE } from '../../JenkinsConfigurationForm/JenkinsConfigurationForm';
-import { FeatureFlags, useFeatureFlag } from '../../../hooks/useFeatureFlag';
 
 const analyticsClient = new AnalyticsClient();
 
 const CreateServer = () => {
-	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const history = useHistory();
 	const [serverName, setServerName] = useState('');
 	const [hasError, setHasError] = useState(false);
@@ -61,7 +58,7 @@ const CreateServer = () => {
 				await createJenkinsServer({
 					name: serverName,
 					uuid,
-					secret: serverSecretGenerationFlag ? await generateNewSecret() : generateNewSecretUNSAFE(),
+					secret: await generateNewSecret(),
 					pipelines: []
 				});
 
