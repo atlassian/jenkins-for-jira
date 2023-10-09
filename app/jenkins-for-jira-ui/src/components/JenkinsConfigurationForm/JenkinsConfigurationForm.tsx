@@ -17,24 +17,6 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { generateNewSecret } from '../../api/generateNewSecret';
-import { FeatureFlags, useFeatureFlag } from '../../hooks/useFeatureFlag';
-
-const charactersForSecret =
-	'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-export const generateNewSecretUNSAFE = () => {
-	const SECRET_LENGTH = 20;
-	let newSecret = '';
-	const numberOfSecretCharacters = charactersForSecret.length;
-
-	for (let i = 0; i < SECRET_LENGTH; i++) {
-		newSecret += charactersForSecret.charAt(
-			Math.floor(Math.random() * numberOfSecretCharacters)
-		);
-	}
-
-	return newSecret;
-};
 
 type JenkinsConfigurationFormProps = {
 	onSubmit(): void;
@@ -66,7 +48,6 @@ const JenkinsConfigurationForm = ({
 	pageTitle
 }: JenkinsConfigurationFormProps) => {
 	const analyticsClient = new AnalyticsClient();
-	const serverSecretGenerationFlag = useFeatureFlag<boolean>(FeatureFlags.SERVER_SECRET_GENERATION);
 	const [showConfirmRefreshSecret, setShowConfirmRefreshSecret] =
 		useState(false);
 	const isOnManageConnectPage = pageTitle.includes('Manage');
@@ -76,11 +57,7 @@ const JenkinsConfigurationForm = ({
 
 	const refreshSecret = async (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		if (serverSecretGenerationFlag) {
-			setSecret(await generateNewSecret());
-		} else {
-			setSecret(generateNewSecretUNSAFE());
-		}
+		setSecret(await generateNewSecret());
 
 		setShowConfirmRefreshSecret(false);
 
