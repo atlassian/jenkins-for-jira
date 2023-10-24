@@ -298,10 +298,10 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/modal-dialog@12.6.5":
-  version "12.6.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/modal-dialog/-/modal-dialog-12.6.5.tgz#224faf194c78709594f2d0d8e7cd0c525a1d1acd"
-  integrity sha512-iVTjRPCfX8KjyJaFf/2bhpx/2DtlOlYxl7l0xiseQG1WejgJSQPmfYG9UFhygPCplw90km6yrZkExccmqYsQGA==
+"@atlaskit/modal-dialog@12.6.10":
+  version "12.6.10"
+  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-12.6.10.tgz#13e8e8673eb5440ebe4ae28acb0ed7f06cb8b98d"
+  integrity sha512-hUk06U6jqNDPNq/aLNtlKDvLBmUxUTWIrCB7aUX0VzyoMp3T/YH5xwQfjSvlhK6+E9OkFyv0pF0MaUwin/k/Nw==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/blanket" "^12.4.0"
@@ -311,9 +311,9 @@
     "@atlaskit/icon" "^21.12.0"
     "@atlaskit/motion" "^1.4.0"
     "@atlaskit/portal" "^4.3.0"
-    "@atlaskit/primitives" "^1.0.2"
-    "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.13.0"
+    "@atlaskit/primitives" "^1.4.0"
+    "@atlaskit/theme" "^12.6.0"
+    "@atlaskit/tokens" "^1.21.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     bind-event-listener "^2.1.1"
@@ -399,7 +399,7 @@
     "@atlaskit/theme" "^12.5.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/primitives@^1.0.2", "@atlaskit/primitives@^1.0.6":
+"@atlaskit/primitives@^1.0.6":
   version "1.0.9"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/primitives/-/primitives-1.0.9.tgz#c313aa9cde76273618eb5df6150bcd3b8c32c5bf"
   integrity sha512-+KU1MTgHW+DPyf+DLtjTfbSDiL6Dhj5GmRlNHVUZGCSvjGjokrh/I52pwlsiVXc84Xtmu0Aju2a9kGvcEyKTPw==
