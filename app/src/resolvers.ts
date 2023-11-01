@@ -68,4 +68,9 @@ resolver.define('generateNewSecret', async (req) => {
 	return generateNewSecret();
 });
 
+resolver.define('fetchCloudId', async (req): Promise<string> => {
+	await adminPermissionCheck(req);
+	return req.context.cloudId;
+});
+
 export default resolver.getDefinitions();
