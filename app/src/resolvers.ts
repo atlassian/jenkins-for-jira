@@ -12,7 +12,6 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
-import { Logger } from './config/logger';
 
 const resolver = new Resolver();
 
@@ -67,12 +66,6 @@ resolver.define('generateNewSecret', async (req) => {
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return generateNewSecret();
-});
-
-resolver.define('fetchCloudId', async (req) => {
-	const logger = Logger.getInstance('fetchCloudIdEvent');
-	await adminPermissionCheck(req);
-	logger.logInfo({ eventType: 'TEST', data: { req } });
 });
 
 export default resolver.getDefinitions();

@@ -57,6 +57,78 @@ describe('fetchFeatureFlag', () => {
         expect(result).toEqual(false);
     });
 
+    it('should return true when flag is on for the specified cloudId', async () => {
+        const mockFeatureFlagData = {
+            name: 'test-flag',
+            kind: 'boolean',
+            environments: {
+                test: {
+                    on: true,
+                    archived: false,
+                    targets: [
+                        { values: ['test-cloudId'] }, // CloudId is in the targets
+                    ],
+                },
+            },
+        };
+
+        fetch.mockResolvedValueOnce({
+            status: 200,
+            json: async () => mockFeatureFlagData,
+        });
+
+        const result = await fetchFeatureFlag('test-flag', 'test-cloudId');
+        expect(fetch).toHaveBeenCalledWith(expect.stringContaining('test-flag'), expect.anything());
+        expect(result).toEqual(true);
+    });
+
+    it('should return false when flag is off', async () => {
+        const mockFeatureFlagData = {
+            name: 'test-flag',
+            kind: 'boolean',
+            environments: {
+                test: {
+                    on: false,
+                    archived: false,
+                },
+            },
+        };
+
+        fetch.mockResolvedValueOnce({
+            status: 200,
+            json: async () => mockFeatureFlagData,
+        });
+
+        const result = await fetchFeatureFlag('test-flag', 'test-cloudId');
+        expect(fetch).toHaveBeenCalledWith(expect.stringContaining('test-flag'), expect.anything());
+        expect(result).toEqual(false);
+    });
+
+    it('should return false when flag is off for the specified cloudId', async () => {
+        const mockFeatureFlagData = {
+            name: 'test-flag',
+            kind: 'boolean',
+            environments: {
+                test: {
+                    on: false,
+                    archived: false,
+                    targets: [
+                        { values: ['other-cloudId'] }, // CloudId is not in the targets
+                    ],
+                },
+            },
+        };
+
+        fetch.mockResolvedValueOnce({
+            status: 200,
+            json: async () => mockFeatureFlagData,
+        });
+
+        const result = await fetchFeatureFlag('test-flag', 'test-cloudId');
+        expect(fetch).toHaveBeenCalledWith(expect.stringContaining('test-flag'), expect.anything());
+        expect(result).toEqual(false);
+    });
+
     it('handles fetch errors', async () => {
         fetch.mockRejectedValueOnce(new Error('Fetch error'));
         await expect(fetchFeatureFlag('test-flag', 'test')).rejects.toThrow('Fetch error');
