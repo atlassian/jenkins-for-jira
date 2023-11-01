@@ -4,8 +4,8 @@ import { Logger } from '../config/logger';
 jest.mock('../config/logger', () => ({
 	Logger: {
 		getInstance: jest.fn(() => ({
-			logDebug: jest.fn(),
-			logError: jest.fn()
+			debug: jest.fn(),
+			error: jest.fn()
 		}))
 	}
 }));
@@ -62,12 +62,12 @@ describe('JWT', () => {
 
 	it('should verify symmetric JWT', () => {
 		const mockLogger = Logger.getInstance('test');
-		mockLogger.logDebug = jest.fn();
+		mockLogger.debug = jest.fn();
 		const verifiedBody = jwtModule.verifySymmetricJwt(mockJwtToken, mockSecret, mockLogger);
 		expect(verifiedBody).toEqual(mockVerifiedClaims);
-		expect(mockLogger.logDebug).toHaveBeenCalledWith({
+		expect(mockLogger.debug).toHaveBeenCalledWith({
 			eventType: 'verifySymmetricJwt',
-			message: 'JWT verified',
+			message: 'JWT verified'
 		});
 	});
 });

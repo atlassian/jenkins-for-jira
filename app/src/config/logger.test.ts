@@ -29,18 +29,16 @@ describe('Logger', () => {
 		const consoleErrorSpy = jest.spyOn(console, 'error');
 		const consoleDebugSpy = jest.spyOn(console, 'debug');
 
-		const logData = { eventType: 'TestEvent', data: { foo: 'bar' }, message: 'Testing log message' };
-
-		logger.logInfo(logData);
+		logger.info('Testing log info message', { foo: 'bar' });
 		expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining(LogLevel.INFO));
 
-		logger.logWarn(logData);
+		logger.warn('Testing log warn message', { foo: 'bar' });
 		expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining(LogLevel.WARN));
 
-		logger.logError(logData);
+		logger.error('Testing log error message', { foo: 'bar' });
 		expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining(LogLevel.ERROR));
 
-		logger.logDebug(logData);
+		logger.debug('Testing log debug message', { foo: 'bar' });
 		expect(consoleDebugSpy).toHaveBeenCalledWith(expect.stringContaining(LogLevel.DEBUG));
 
 		const resetColorEscapeSequence = '\x1b[0m';

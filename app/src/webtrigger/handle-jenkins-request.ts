@@ -27,7 +27,6 @@ export default async function handleJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
-	const eventType = 'handleJenkinsRequest';
 	const logger = Logger.getInstance('handleJenkinsRequestEvent');
 
 	try {
@@ -68,16 +67,10 @@ export default async function handleJenkinsRequest(
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
 
-		logger.logInfo({ eventType, data: { type: jenkinsRequest.requestType } });
+		logger.info('Jenkins request success', { type: jenkinsRequest.requestType });
 		return response;
 	} catch (error) {
-		logger.logError(
-			{
-				eventType,
-				errorMsg: 'Failed to fetch Jenkins server list',
-				error
-			}
-		);
+		logger.error('Failed to fetch Jenkins server list', { error });
 		return handleWebtriggerError(request, error, logger);
 	}
 }
@@ -127,21 +120,13 @@ async function getGatingStatus(
 
 function logJiraResponse(jiraResponse: JiraResponse, logger: Logger) {
 	if (jiraResponse.status >= 400) {
-		logger.logError(
-			{
-				eventType: 'logJiraResponseErrorEvent',
-				status: jiraResponse.status,
-				// TODO - check what is being logged on this error
-				error: JSON.stringify(jiraResponse.body)
-			}
-		);
+		logger.error('Jira response error', { status: jiraResponse.status, error: JSON.stringify(jiraResponse.body) });
 	} else {
-		logger.logInfo(
+		logger.info(
+			'Jira response successful',
 			{
-				eventType: 'logJiraResponseEvent',
 				status: jiraResponse.status,
-				// TODO - check what is being logged on this error
-				error: JSON.stringify(jiraResponse.body)
+				response: JSON.stringify(jiraResponse.body)
 			}
 		);
 	}

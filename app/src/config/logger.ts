@@ -14,16 +14,7 @@ enum LogColors {
 }
 
 export interface LogData {
-	eventType: string;
-	data?: Object;
-	message?: string;
-}
-
-export interface LogError {
-	eventType: string;
-	status?: number;
-	errorMsg?: string;
-	error?: any;
+	[key: string]: any;
 }
 
 const privateProperties = new WeakMap<Logger, { timestamp: string, name: string }>();
@@ -60,7 +51,7 @@ export class Logger {
 		return `${logColor}${logLevel}${LogColors.RESET}: [${this.getTimestamp()}] ${name} - ${formattedLogData}`;
 	}
 
-	private log(logLevel: LogLevel, logData: LogData | LogError): void {
+	private log(logLevel: LogLevel, logData: LogData): void {
 		const formattedLogData = JSON.stringify(logData);
 		const message = this.logMessage(logLevel, this.getName(), formattedLogData);
 
@@ -84,19 +75,27 @@ export class Logger {
 		}
 	}
 
-	public logInfo(logData: LogData | LogError): void {
-		this.log(LogLevel.INFO, logData);
+	public info(message: string, logData?: LogData): void {
+		this.logWithLevel(LogLevel.INFO, message, logData);
 	}
 
-	public logWarn(logData: LogData | LogError): void {
-		this.log(LogLevel.WARN, logData);
+	public warn(message: string, logData?: LogData): void {
+		this.logWithLevel(LogLevel.WARN, message, logData);
 	}
 
-	public logError(logData: LogData | LogError): void {
-		this.log(LogLevel.ERROR, logData);
+	public error(message: string, logData?: LogData): void {
+		this.logWithLevel(LogLevel.ERROR, message, logData);
 	}
 
-	public logDebug(logData: LogData | LogError): void {
-		this.log(LogLevel.DEBUG, logData);
+	public debug(message: string, logData?: LogData): void {
+		this.logWithLevel(LogLevel.DEBUG, message, logData);
+	}
+
+	private logWithLevel(level: LogLevel, message: string, logData?: LogData): void {
+		if (logData) {
+			this.log(level, { ...logData, message });
+		} else {
+			this.log(level, { message });
+		}
 	}
 }

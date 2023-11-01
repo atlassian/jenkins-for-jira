@@ -16,7 +16,6 @@ async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
 	context: ForgeTriggerContext
 ): Promise<WebtriggerResponse> {
-	const eventType = 'handleResetJenkinsRequest';
 	const logger = Logger.getInstance('handleResetJenkinsRequestEvent');
 
 	try {
@@ -39,7 +38,7 @@ async function handleResetJenkinsRequest(
 			return createWebtriggerResponse(400, `{"error": ${Errors.MISSING_UUID}`);
 		}
 
-		logger.logError({ eventType, errorMsg: Errors.UNSUPPORTED_REQUEST_TYPE });
+		logger.error('handleResetJenkinsRequest error', { error: Errors.UNSUPPORTED_REQUEST_TYPE });
 		throw new UnsupportedRequestTypeError(Errors.UNSUPPORTED_REQUEST_TYPE);
 	} catch (error) {
 		return handleWebtriggerError(request, error, logger);
@@ -67,7 +66,7 @@ async function resetJenkinsServer(cloudId: string, logger: Logger, excludeUuid?:
 
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
-		logger.logError({ eventType: 'resetJenkinsServerEvent', errorMsg: Errors.INVOCATION_ERROR });
+		logger.error('resetJenkinsServer error', { error: Errors.INVOCATION_ERROR });
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
@@ -77,7 +76,7 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string, logger:
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
 	} catch (error) {
-		logger.logError({ eventType: 'deleteBuildsAndDeploymentsEvent', errorMsg: Errors.INVOCATION_ERROR });
+		logger.error('deleteBuildsAndDeployments error', { error: Errors.INVOCATION_ERROR });
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }

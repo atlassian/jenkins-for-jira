@@ -95,21 +95,17 @@ const baseHeaders = {
 const logger = Logger.getInstance('featureFlags');
 
 async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
-    const eventType = 'retrievingFeatureFlag';
-    const errorMsg = 'fetching feature flag unexpected status';
-
     try {
         const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders });
 
         if (response.status === 200) {
-            logger.logInfo({ eventType, data: { message: `Successfully retrieved ${featureFlagKey}` } });
+            logger.info(`Successfully retrieved ${featureFlagKey}`);
             return await response.json();
         }
 
-        logger.logWarn({ eventType: `${eventType}Error`, errorMsg });
-        throw new Error(errorMsg);
+        throw new Error('fetching feature flag unexpected status');
     } catch (error) {
-        logger.logWarn({ eventType: `${eventType}Error`, errorMsg, error });
+        logger.error('Failed to fetch feature flag', { error });
         throw error;
     }
 }
@@ -130,12 +126,7 @@ export const fetchFeatureFlag =
         const envData = featureFlag.environments[environment];
         return envData?.on || false;
     } catch (error) {
-        logger.logError({
-            eventType: 'fetchFeatureFlagError',
-            errorMsg: 'Error fetching feature flag:',
-            error
-        });
-
+        logger.error('Fetch feature flag error', { error });
         throw new Error(`Failed to retrieve feature flag: ${error}`);
     }
 };
