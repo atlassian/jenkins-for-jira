@@ -59,14 +59,11 @@ const JenkinsServerList = (): JSX.Element => {
 	return jenkinsServers?.length ? (
 		<>
 			<div className={headerContainer}>
-				<PageHeader actions={pageHeaderActions}>Jenkins configuration</PageHeader>
+				<PageHeader actions={pageHeaderActions}>Jenkins configuratiosdsfsfdn</PageHeader>
 			</div>
 
 			<StyledDescription>
-				After you connect your Jenkins server to Jira and send a deployment
-				event from your CI/CD tool, you will be able to view development
-				information within your linked Jira issue and view deployment pipelines
-				over a timeline with insights.
+
 			</StyledDescription>
 
 			<ConnectedServers jenkinsServerList={jenkinsServers} refreshServers={fetchAllJenkinsServers} />

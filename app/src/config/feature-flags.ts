@@ -94,7 +94,7 @@ const baseHeaders = {
 
 const logger = Logger.getInstance('featureFlags');
 
-async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
+export async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
     const eventType = 'retrievingFeatureFlag';
     const errorMsg = 'fetching feature flag unexpected status';
 

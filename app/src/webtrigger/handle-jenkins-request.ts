@@ -17,6 +17,7 @@ import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-j
 import { JiraResponse } from '../jira-client/types';
 import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
 import { Logger } from '../config/logger';
+import { getFeatureFlag } from '../config/feature-flags';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
@@ -32,6 +33,8 @@ export default async function handleJenkinsRequest(
 
 	try {
 		const cloudId = extractCloudId(context.installContext);
+		const testFeatureFlag = await getFeatureFlag('backend-test');
+		logger.logInfo({ eventType: 'test', data: { testFeatureFlag } });
 
 		const jenkinsServerUuid = getQueryParameterValue(
 			WEBTRIGGER_UUID_PARAM_NAME,
