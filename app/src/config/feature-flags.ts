@@ -120,7 +120,8 @@ export const launchDarklyService = {
 
 export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
     try {
-        const environment: Environment = envVars.JENKINS_ENV as Environment;
+        const environment: Environment = envVars.JENKINS_ENV as Environment || process.env.NODE_ENV;
+        logger.info('envVars.JENKINS_ENV', { env: envVars.JENKINS_ENV });
         const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
         const envData = featureFlag.environments[environment];
 
