@@ -118,13 +118,22 @@ export const launchDarklyService = {
         `${LAUNCH_DARKLY_URL}/${envVars.LAUNCHDARKLY_APP_NAME}/${environment}/features/${featureFlagKey}`
 };
 
-export const fetchFeatureFlag =
-    async (featureFlagKey: string, env: Environment): Promise<boolean | null> => {
+export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
     try {
-        const environment: Environment = env?.toLowerCase() as Environment;
+        const environment: Environment = envVars.NODE_ENV as Environment;
         const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
         const envData = featureFlag.environments[environment];
-        return envData?.on || false;
+
+        if (cloudId && envData.targets) {
+            const values = envData.targets.flatMap((target) => target.values);
+            if (values.includes(cloudId)) {
+                // If the cloudId is in any of the values within the targets, set the value to true
+                return true;
+            }
+        }
+
+        // If the cloudId is not in the targets or no cloudId is provided, use the "on" value
+        return envData.on || false;
     } catch (error) {
         logger.error('Fetch feature flag error', { error });
         throw new Error(`Failed to retrieve feature flag: ${error}`);
