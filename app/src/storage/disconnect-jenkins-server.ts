@@ -4,7 +4,6 @@ import { JenkinsServerStorageError } from '../common/error';
 import { Logger } from '../config/logger';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {
-	const eventType = 'jenkinsServerRemovedEvent';
 	const logger = Logger.getInstance('disconnectJenkinsServer');
 
 	try {
@@ -12,27 +11,11 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 		const deleteSecretPromise = await storage.deleteSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`);
 		await Promise.all([deleteJenkinsServerPromise, deleteSecretPromise]);
 
-		logger.logInfo(
-			{
-				eventType,
-				data:
-					{
-						uuid,
-						message: 'Jenkins server successfully disconnected!'
-					}
-			}
-		);
+		logger.info('Jenkins server successfully disconnected!', { uuid });
 
 		return true;
 	} catch (error) {
-		logger.logError(
-			{
-				eventType,
-				errorMsg: 'Failed to delete jenkins server configuration',
-				error
-			}
-		);
-
+		logger.error('Failed to delete jenkins server configuration', { error });
 		throw new JenkinsServerStorageError('Failed to delete jenkins server configuration');
 	}
 };

@@ -125,16 +125,14 @@ export const validateJwtClaims = (
 };
 
 export const verifySymmetricJwt = (jwtToken: string, secret: string, logger?: Logger) => {
-	const eventType = 'verifySymmetricJwt';
-
 	try {
 		const algorithm = getAlgorithm(jwtToken);
 		const decodedToken = decodeSymmetric(jwtToken, secret, algorithm, false);
 		validateJwtClaims(decodedToken);
-		logger?.logDebug({ eventType, message: 'JWT verified' });
+		logger?.debug('JWT verified');
 		return decodedToken;
 	} catch (error) {
-		logger?.logError({ eventType: 'verifySymmetricJwt', errorMsg: Errors.JWT_VERIFICATION_FAILED });
+		logger?.error(Errors.JWT_VERIFICATION_FAILED);
 		throw new JwtVerificationFailedError(Errors.JWT_VERIFICATION_FAILED);
 	}
 };

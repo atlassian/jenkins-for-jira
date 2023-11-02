@@ -27,8 +27,6 @@ async function updateJenkinsServerState(
 	pipelineToUpdate: JenkinsPipeline,
 	logger?: Logger
 ) {
-	const eventType = 'updateJenkinsServerStateEvent';
-
 	try {
 		const jenkinsServer: JenkinsServer = await storage.get(
 			`${SERVER_STORAGE_KEY_PREFIX}${uuid}`
@@ -36,7 +34,7 @@ async function updateJenkinsServerState(
 
 		if (!jenkinsServer) {
 			const errorMsg = `No Jenkins Server found for UUID ${uuid}`;
-			logger?.logError({ eventType, errorMsg });
+			logger?.error(errorMsg);
 			throw new NoJenkinsServerError(errorMsg);
 		}
 
@@ -53,7 +51,7 @@ async function updateJenkinsServerState(
 	} catch (error) {
 		const errorMsg =
 			`Failed to update Jenkins server uuid ${uuid}`;
-		logger?.logError({ eventType, errorMsg });
+		logger?.error(errorMsg);
 		throw error;
 	}
 }
