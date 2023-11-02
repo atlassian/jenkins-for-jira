@@ -11,7 +11,7 @@ function handleWebtriggerError(request: WebtriggerRequest, error: any, logger: L
 
 	// In case of an unexpected error, we want to bubble up the error so that Forge recognizes the invocation as
 	// failed and it shows up in the metrics.
-	logger.logError({ eventType: 'handleWebtriggerError', error, errorMsg: error.message });
+	logger.error('handleWebtriggerError error', { error, errorMsg: error.message });
 	throw error;
 }
 

@@ -36,16 +36,7 @@ async function invokeApi(
 	const jiraResponse = JSON.parse(responseString);
 	const responseData = getResponseData(jiraResponse);
 
-	logger.logInfo({
-		eventType,
-		data:
-			{
-				message: 'Called Jira API',
-				path: url,
-				status: apiResponse.status,
-				response: responseData
-			}
-	});
+	logger.info('Called Jira API', { path: url, status: apiResponse.status, response: responseData });
 
 	return {
 		status: apiResponse.status,
@@ -61,7 +52,7 @@ async function sendEventToJira(
 	const logger = Logger.getInstance('sendEventToJira');
 
 	if (!eventType || !cloudId || !payload) {
-		logger.logError({ eventType, errorMsg: Errors.MISSING_REQUIRED_PROPERTIES });
+		logger.error(Errors.MISSING_REQUIRED_PROPERTIES);
 		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
 	}
 
@@ -71,7 +62,7 @@ async function sendEventToJira(
 		case EventType.DEPLOYMENT:
 			return invokeApi(`/jira/deployments/0.1/cloud/${cloudId}/bulk`, payload, eventType, logger);
 		default:
-			logger.logError({ eventType, errorMsg: Errors.INVALID_EVENT_TYPE });
+			logger.error(Errors.INVALID_EVENT_TYPE);
 			throw new InvalidPayloadError(Errors.INVALID_EVENT_TYPE);
 	}
 }

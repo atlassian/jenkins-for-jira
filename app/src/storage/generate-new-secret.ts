@@ -4,11 +4,10 @@ import { Logger } from '../config/logger';
 export const SECRET_LENGTH = 20;
 
 async function generateNewSecret(): Promise<string> {
-    const eventType = 'generateNewSecretEvent';
     const logger = Logger.getInstance('generateNewSecret');
 
     try {
-        logger.logInfo({ eventType });
+        logger.debug('Generating secret');
 
         const randomBytes = crypto.randomBytes(SECRET_LENGTH);
 
@@ -21,13 +20,7 @@ async function generateNewSecret(): Promise<string> {
             .replace(/[+/=]/g, '')
             .substring(0, SECRET_LENGTH);
     } catch (error) {
-        logger.logError(
-            {
-                eventType,
-                errorMsg: 'Failed to generate new secret',
-                error
-            }
-        );
+        logger.error('Failed to generate secret', { error });
         throw error;
     }
 }

@@ -11,10 +11,9 @@ async function getGatingStatusFromJira(
 	environmentId: string
 ): Promise<JiraResponse> {
 	const logger = Logger.getInstance('deleteBuilds');
-	const eventType = 'getGatingStatusFromJiraEvent';
 
 	if (!cloudId || !deploymentId || !pipelineId || !environmentId) {
-		logger.logError({ eventType, errorMsg: Errors.MISSING_REQUIRED_PROPERTIES });
+		logger.error(Errors.MISSING_REQUIRED_PROPERTIES);
 		throw new InvalidPayloadError(Errors.MISSING_REQUIRED_PROPERTIES);
 	}
 
@@ -52,16 +51,14 @@ async function getGatingStatusFromJira(
 	const jiraResponse = JSON.parse(responseString);
 	const responseData = getResponseData(jiraResponse);
 
-	logger.logInfo({
-		eventType,
-		data:
-			{
-				message: 'Called Jira API',
-				path: getGatingStatusRoute,
-				status: apiResponse.status,
-				response: responseData
-			}
-	});
+	logger.info(
+		'Called Jira API',
+		{
+			path: getGatingStatusRoute,
+			status: apiResponse.status,
+			response: responseData
+		}
+	);
 
 	return {
 		status: apiResponse.status,

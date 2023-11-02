@@ -7,14 +7,13 @@ import { Logger } from '../config/logger';
 
 const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<JenkinsServer> => {
 	const logger = Logger.getInstance('getJenkinsServerWithSecret');
-	const eventType = 'getJenkinsServerSecretEvent';
 
 	try {
 		const jenkinsServer: JenkinsServer = await storage.get(`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServerUuid}`);
 
 		if (!jenkinsServer) {
 			const errorMsg = `Couldn't find Jenkins server ${jenkinsServerUuid}`;
-			logger.logError({ eventType, errorMsg });
+			logger.error(errorMsg);
 			throw new NoJenkinsServerError(errorMsg);
 		}
 
@@ -26,7 +25,7 @@ const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<Je
 		};
 	} catch (error) {
 		const errorMsg = `Failed to fetch Jenkins server for uuid ${jenkinsServerUuid}`;
-		logger.logError({ eventType, errorMsg });
+		logger.error(errorMsg);
 		throw new NoJenkinsServerError(errorMsg);
 	}
 };
