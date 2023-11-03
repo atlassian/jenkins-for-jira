@@ -120,8 +120,9 @@ export const launchDarklyService = {
 
 export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
     try {
+        // custom env var as Forge overrides NODE_ENV in every environment with production
+        // left NODE_ENV as a fallback as it's needed for tests and pipelines
         const environment: Environment = envVars.JENKINS_ENV as Environment || process.env.NODE_ENV;
-        logger.info('envVars.JENKINS_ENV', { env: envVars.JENKINS_ENV });
         const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
         const envData = featureFlag.environments[environment];
 
