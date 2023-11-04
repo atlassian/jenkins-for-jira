@@ -12,6 +12,7 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
+import { RunAsGetStarted, runGetStartedPage } from './storage/run-as-get-started';
 
 const resolver = new Resolver();
 
@@ -71,6 +72,11 @@ resolver.define('generateNewSecret', async (req) => {
 resolver.define('fetchCloudId', async (req): Promise<string> => {
 	await adminPermissionCheck(req);
 	return req.context.cloudId;
+});
+
+resolver.define('runGetStartedPage', async (req): Promise<RunAsGetStarted> => {
+	await adminPermissionCheck(req);
+	return runGetStartedPage(req);
 });
 
 export default resolver.getDefinitions();
