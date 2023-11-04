@@ -7,35 +7,52 @@ modules:
       title: Jenkins for Jira
       layout: basic
       icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
+
+    - key: get-started-page
+      resource: main
+      resolver:
+        function: runGetStartedPage
+      title: Jenkins for Jira
+      layout: basic
+      icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
+      useAsGetStarted: true
+
   webtrigger:
     - key: jenkins-webtrigger
       function: handle-jenkins-request
     - key: reset-jenkins-webtrigger
       function: reset-jenkins-request
+
   devops:deploymentInfoProvider:
     - key: deployment-info-provider
       homeUrl: https://github.com/jenkinsci/atlassian-jira-software-cloud-plugin
       logoUrl: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
       name:
         value: Jenkins for Jira
+
   devops:buildInfoProvider:
     - key: build-info-provider
       homeUrl: https://github.com/jenkinsci/atlassian-jira-software-cloud-plugin
       logoUrl: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
       name:
         value: Jenkins for Jira
+
   function:
     - key: resolver
       handler: index.resolver
+    - key: runGetStartedPage
+      handler: index.runGetStartedPage
     - key: handle-jenkins-request
       handler: index.handleJenkinsRequest
     - key: reset-jenkins-request
       handler: index.handleResetJenkinsRequest
+
 resources:
   - key: main
     path: jenkins-for-jira-ui/build
     tunnel:
       port: 3000
+
 app:
   id: ari:cloud:ecosystem::app/df76f661-4cbe-4768-a119-13992dc4ce2d
   # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out

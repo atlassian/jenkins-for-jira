@@ -8,6 +8,7 @@ import { ConnectedServers } from './ConnectedServer/ConnectedServers';
 import { StyledDescription, headerContainer } from './JenkinsServerList.styles';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
+import { runGetStartedPage } from '../../api/runGetStartedPage';
 import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
@@ -23,6 +24,7 @@ const JenkinsServerList = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
+		await runGetStartedPage();
 		setJenkinsServers(servers);
 	};
 
