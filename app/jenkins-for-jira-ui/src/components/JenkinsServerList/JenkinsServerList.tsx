@@ -76,7 +76,7 @@ const JenkinsServerList = (): JSX.Element => {
 	) : (
 		<>
 			<div className={headerContainer}>
-				<PageHeader>Jenkins configuration</PageHeader>
+				<PageHeader>Jenkins configuration TEST</PageHeader>
 			</div>
 			<EmptyState />
 		</>

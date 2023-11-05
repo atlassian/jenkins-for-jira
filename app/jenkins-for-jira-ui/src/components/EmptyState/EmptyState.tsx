@@ -53,10 +53,10 @@ const EmptyStateJenkins = () => {
 	return (
 		<EmptyState
 			header="Connect Jenkins to Jira Software"
-			description="Connect your Jenkins to Jira and start including issue keys in branches, commit messages or pull requests to see deployment insights in Jira."
+			description="WHAT"
 			primaryAction={
 				<Button appearance="primary" onClick={() => onClickConnect()}>
-					Connect a Jenkins server
+					Connect a Jenkins server TEST
 				</Button>
 			}
 			secondaryAction={

@@ -1,4 +1,4 @@
-import {Logger} from "../config/logger";
+import { Logger } from '../config/logger';
 
 export type RunAsGetStarted = {
     siteUrl: string,
@@ -10,7 +10,7 @@ const runGetStartedPage = (request: any): RunAsGetStarted => {
     const logger = Logger.getInstance('runGetStartedPage');
     const { siteUrl, environmentId } = request.context;
     const appId = 'df76f661-4cbe-4768-a119-13992dc4ce2d';
-    logger.info('returning values for runGetStartedPage');
+    logger.info('returning values for runGetStartedPage... testing deployment change');
     return { siteUrl, appId, environmentId };
 };
 
