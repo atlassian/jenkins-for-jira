@@ -7,5 +7,6 @@ export const metricResolverEmitter = {
 	getAllJenkinsServers: `${server}.getAllServers.emitted`,
 	getJenkinsServerWithSecret: `${server}.getWithSecretServer.emitted`,
 	disconnectJenkinsServer: `${server}.disconnectServer.emitted`,
-	generateNewSecretForServer: `${server}.generateNewSecret.emitted`
+	generateNewSecretForServer: `${server}.generateNewSecret.emitted`,
+	redirectFromGetStartedPage: `${server}.getStartedRedirect.emitted`
 };

@@ -12,6 +12,7 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
+import { RedirectFromGetStarted, redirectFromGetStarted } from './utils/redirect-from-get-started';
 
 const resolver = new Resolver();
 
@@ -71,6 +72,12 @@ resolver.define('generateNewSecret', async (req) => {
 resolver.define('fetchCloudId', async (req): Promise<string> => {
 	await adminPermissionCheck(req);
 	return req.context.cloudId;
+});
+
+resolver.define('redirectFromGetStarted', async (req): Promise<RedirectFromGetStarted> => {
+	await adminPermissionCheck(req);
+	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
+	return redirectFromGetStarted(req);
 });
 
 export default resolver.getDefinitions();
