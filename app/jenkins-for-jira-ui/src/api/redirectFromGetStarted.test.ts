@@ -1,6 +1,10 @@
 import { invoke, router } from '@forge/bridge';
 import { redirectFromGetStarted } from './redirectFromGetStarted';
 
+beforeEach(() => {
+	jest.clearAllMocks();
+});
+
 describe('redirectFromGetStarted', () => {
 	it('should call invoke and router.navigate with the correct parameters from get started page', async () => {
 		const contextData = {
