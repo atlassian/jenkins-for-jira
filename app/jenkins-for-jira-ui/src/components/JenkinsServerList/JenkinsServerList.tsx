@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { ButtonGroup } from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
 import PageHeader from '@atlaskit/page-header';
 import { EmptyState } from '../EmptyState/EmptyState';
@@ -22,19 +23,21 @@ const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
 	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
+	const [moduleKey, setModuleKey] = useState<string>();
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
 		setJenkinsServers(servers);
 	};
 
-	const redirectToAdminPage = async () => {
-		await redirectFromGetStarted();
-	};
+	const redirectToAdminPage = useCallback(async () => {
+		const currentModuleKey = await redirectFromGetStarted();
+		setModuleKey(currentModuleKey);
+	}, []);
 
 	useEffect(() => {
 		fetchAllJenkinsServers();
 		redirectToAdminPage();
-	}, []);
+	}, [redirectToAdminPage]);
 
 	if (!jenkinsServers) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
@@ -62,29 +65,44 @@ const JenkinsServerList = (): JSX.Element => {
 		</ButtonGroup>
 	);
 
-	return jenkinsServers?.length ? (
-		<>
-			<div className={headerContainer}>
-				<PageHeader actions={pageHeaderActions}>Jenkins configuration</PageHeader>
-			</div>
+	let contentToRender;
 
-			<StyledDescription>
-				After you connect your Jenkins server to Jira and send a deployment
-				event from your CI/CD tool, you will be able to view development
-				information within your linked Jira issue and view deployment pipelines
-				over a timeline with insights.
-			</StyledDescription>
+	if (jenkinsServers?.length && moduleKey === 'jenkins-for-jira-ui-admin-page') {
+		contentToRender = (
+			<>
+				<div className={headerContainer}>
+					<PageHeader actions={pageHeaderActions}>Jenkins configuration</PageHeader>
+				</div>
+				<StyledDescription>
+					After you connect your Jenkins server to Jira and send a deployment
+					event from your CI/CD tool, you will be able to view development
+					information within your linked Jira issue and view deployment pipelines
+					over a timeline with insights.
+				</StyledDescription>
+				<ConnectedServers jenkinsServerList={jenkinsServers} refreshServers={fetchAllJenkinsServers} />
+			</>
+		);
+	} else if (moduleKey === 'get-started-page') {
+		contentToRender = (
+			<>
+				<div className={headerContainer}>
+					<PageHeader>Jenkins configuration</PageHeader>
+				</div>
+				<Spinner size='large' />
+			</>
+		);
+	} else {
+		contentToRender = (
+			<>
+				<div className={headerContainer}>
+					<PageHeader>Jenkins configuration</PageHeader>
+				</div>
+				<EmptyState />
+			</>
+		);
+	}
 
-			<ConnectedServers jenkinsServerList={jenkinsServers} refreshServers={fetchAllJenkinsServers} />
-		</>
-	) : (
-		<>
-			<div className={headerContainer}>
-				<PageHeader>Jenkins configuration</PageHeader>
-			</div>
-			<EmptyState />
-		</>
-	);
+	return contentToRender;
 };
 
 export {
