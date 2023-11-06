@@ -583,10 +583,10 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlassiansox/analytics-web-client@^4.14.3":
-  version "4.15.0"
-  resolved "https://packages.atlassian.com/api/npm/atlassian-npm/@atlassiansox/analytics-web-client/-/@atlassiansox/analytics-web-client-4.15.0.tgz#033c5d1d48f99c27f18cb793c4f8def41999af19"
-  integrity sha512-5q6+QhOj3KSLUHyjxRCVLGQ0C6G8dcujrpNt11P87wCya67OblQX9RlsZMBIKlRxy3xoAwenaZlfKhYB2QJWpQ==
+"@atlassiansox/analytics-web-client@^4.18.1":
+  version "4.18.1"
+  resolved "https://packages.atlassian.com/api/npm/atlassian-npm/@atlassiansox/analytics-web-client/-/@atlassiansox/analytics-web-client-4.18.1.tgz#1acee471c95425373726f245221fd4f12e67897e"
+  integrity sha512-OJvGQz9sCGMDi6pE/3KLJKE0bFR0qAQHCU/0Jt6FQxQdnlQ/k76HptKPpPQaO+QDZE7lfYZKb2zsizI/+7erUw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@segment/isodate-traverse" "^1.1.1"
