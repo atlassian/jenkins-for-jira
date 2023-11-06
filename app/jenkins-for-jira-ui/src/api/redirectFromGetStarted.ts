@@ -7,7 +7,7 @@ interface Context {
 }
 
 const redirectFromGetStarted = async () => {
-	const context: Context = await invoke('runGetStartedPage');
+	const context: Context = await invoke('redirectFromGetStarted');
 	const { siteUrl, appId, environmentId } = context;
 	router.navigate(`${siteUrl}/jira/settings/apps/${appId}/${environmentId}/`);
 };

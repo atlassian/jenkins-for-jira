@@ -74,7 +74,7 @@ resolver.define('fetchCloudId', async (req): Promise<string> => {
 	return req.context.cloudId;
 });
 
-resolver.define('runGetStartedPage', async (req): Promise<RedirectFromGetStarted> => {
+resolver.define('redirectFromGetStarted', async (req): Promise<RedirectFromGetStarted> => {
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return redirectFromGetStarted(req);
