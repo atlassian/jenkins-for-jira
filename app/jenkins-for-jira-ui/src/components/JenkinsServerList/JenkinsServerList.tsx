@@ -8,7 +8,6 @@ import { ConnectedServers } from './ConnectedServer/ConnectedServers';
 import { StyledDescription, headerContainer } from './JenkinsServerList.styles';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
-import { runGetStartedPage } from '../../api/runGetStartedPage';
 import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
@@ -17,6 +16,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
+import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
@@ -24,12 +24,16 @@ const JenkinsServerList = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
-		await runGetStartedPage();
 		setJenkinsServers(servers);
+	};
+
+	const redirectToAdminPage = async () => {
+		await redirectFromGetStarted();
 	};
 
 	useEffect(() => {
 		fetchAllJenkinsServers();
+		redirectToAdminPage();
 	}, []);
 
 	if (!jenkinsServers) {
@@ -76,7 +80,7 @@ const JenkinsServerList = (): JSX.Element => {
 	) : (
 		<>
 			<div className={headerContainer}>
-				<PageHeader>Jenkins configuration TEST</PageHeader>
+				<PageHeader>Jenkins configuration</PageHeader>
 			</div>
 			<EmptyState />
 		</>
