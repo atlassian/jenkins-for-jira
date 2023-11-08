@@ -38,7 +38,7 @@ const JenkinsServerList = (): JSX.Element => {
 		redirectToAdminPage();
 	}, [redirectToAdminPage]);
 
-	if (!jenkinsServers || !moduleKey) {
+	if (!jenkinsServers || !moduleKey || (moduleKey === 'jenkins-for-jira-ui-admin-page' && !jenkinsServers?.length)) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
