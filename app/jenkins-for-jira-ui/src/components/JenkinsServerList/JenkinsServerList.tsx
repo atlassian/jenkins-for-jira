@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { ButtonGroup } from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
 import PageHeader from '@atlaskit/page-header';
 import { EmptyState } from '../EmptyState/EmptyState';
@@ -39,7 +38,7 @@ const JenkinsServerList = (): JSX.Element => {
 		redirectToAdminPage();
 	}, [redirectToAdminPage]);
 
-	if (!jenkinsServers) {
+	if (!jenkinsServers || !moduleKey) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -88,7 +87,7 @@ const JenkinsServerList = (): JSX.Element => {
 				<div className={headerContainer}>
 					<PageHeader>Jenkins configuration</PageHeader>
 				</div>
-				<Spinner size='large' />
+				<JenkinsSpinner />
 			</>
 		);
 	} else {
