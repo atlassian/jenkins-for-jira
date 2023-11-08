@@ -1,3 +1,5 @@
+import { extractAppIdFromLocalId } from './extract-app-id-from-local-id';
+
 export type RedirectFromGetStarted = {
     siteUrl: string,
     appId: string,
@@ -6,8 +8,14 @@ export type RedirectFromGetStarted = {
 };
 
 const redirectFromGetStarted = (request: any): RedirectFromGetStarted => {
-    const { siteUrl, environmentId, moduleKey } = request.context;
-    const appId = 'df76f661-4cbe-4768-a119-13992dc4ce2d';
+    const {
+        localId,
+        siteUrl,
+        environmentId,
+        moduleKey
+    } = request.context;
+    const appId = extractAppIdFromLocalId(localId);
+
     return {
         siteUrl,
         appId,
