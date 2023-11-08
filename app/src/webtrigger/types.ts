@@ -4,6 +4,7 @@ export enum RequestType {
 	EVENT = 'event',
 	GATING_STATUS = 'gatingStatus',
 	PING = 'ping',
+	PLUGIN_CONFIG = 'pluginConfig',
 	RESET_JENKINS_SERVER = 'resetJenkinsServer',
 	DELETE_BUILDS_DEPLOYMENTS = 'deleteBuildsDeployments'
 }

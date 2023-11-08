@@ -1,8 +1,10 @@
 import { storage } from '@forge/api';
+import { pick } from 'lodash';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
+import { JenkinsEvent } from '../webtrigger/types';
 
 export const updatePipelines = (
 	index: number,
@@ -49,11 +51,28 @@ async function updateJenkinsServerState(
 			jenkinsServer
 		);
 	} catch (error) {
-		const errorMsg =
-			`Failed to update Jenkins server uuid ${uuid}`;
-		logger?.error(errorMsg);
+		logger?.error(`Failed to update Jenkins server uuid ${uuid}`);
 		throw error;
 	}
 }
 
-export { updateJenkinsServerState };
+async function updateJenkinsPluginConfigState(
+	uuid: string,
+	jenkinsEvent: JenkinsEvent,
+	logger: Logger
+): Promise<void> {
+	try {
+		const jenkinsServer = await storage.get(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`);
+		const configProperties = ['ipAddress', 'autoBuildEnabled', 'autoBuildRegex', 'autoDeploymentsEnabled', 'autoDeploymentsRegex'];
+		jenkinsServer.pluginConfig = {
+			...pick(jenkinsEvent, configProperties),
+			lastUpdatedOn: new Date()
+		};
+		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
+	} catch (error) {
+		logger.error(`Failed to update Jenkins plugin config for server uuid ${uuid}`, { error });
+		throw error;
+	}
+}
+
+export { updateJenkinsServerState, updateJenkinsPluginConfigState };

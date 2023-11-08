@@ -97,6 +97,9 @@ const GATING_STATUS_PAYLOAD = {
 
 // You can paste the JWT into https://jwt.io to see its contents
 /* eslint-disable-next-line max-len */
+const PLUGIN_CONFIG_REQUEST_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcInBsdWdpbkNvbmZpZ1wiLFwicGlwZWxpbmVJZFwiOlwicGlwZWxpbmVJZFwifSIsImlzcyI6ImplbmtpbnMtcGx1Z2luIiwiZXhwIjozMjQ3NDg0NTg0NywiaWF0IjoxNjQ2NjM0NjQ4fQ.BqYYvKfDZc_lLtHJr17ld3nMJ0vJSOpOLIqSvmx4EXQ';
+// You can paste the JWT into https://jwt.io to see its contents
+/* eslint-disable-next-line max-len */
 const PING_REQUEST_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcInBpbmdcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MzI0NzQ4MTc2NzAsImlhdCI6MTY0Njc3OTI3MX0.YjNeVU2meBbOiyniGx_ILLmO9tpbwqIq4zpg93xOuXQ';
 /* eslint-disable-next-line max-len */
 const INVALID_REQUEST_TYPE_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcImZvb1wiLFwiZXZlbnRUeXBlXCI6XCJkZXBsb3ltZW50XCIsXCJwaXBlbGluZU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwic3RhdHVzXCI6XCJzdWNjZXNzZnVsXCIsXCJsYXN0VXBkYXRlZFwiOlwiMjAyMi0wMy0wN1QwNzoxNDowNi44MzUzMjFaXCIsXCJwYXlsb2FkXCI6e1wicHJvcGVydGllc1wiOntcInNvdXJjZVwiOlwiamVua2luc1wifSxcInByb3ZpZGVyTWV0YWRhdGFcIjp7XCJwcm9kdWN0XCI6XCJqZW5raW5zXCJ9LFwiZGVwbG95bWVudHNcIjpbe1wiZGVwbG95bWVudFNlcXVlbmNlTnVtYmVyXCI6NDIsXCJ1cGRhdGVTZXF1ZW5jZU51bWJlclwiOjQ1LFwiYXNzb2NpYXRpb25zXCI6W3tcInZhbHVlc1wiOltcIkpFTi0yNVwiXSxcImFzc29jaWF0aW9uVHlwZVwiOlwiaXNzdWVLZXlzXCJ9XSxcImRpc3BsYXlOYW1lXCI6XCJwaXBlbGluZU5hbWVcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCIsXCJkZXNjcmlwdGlvblwiOlwiZGVzY3JpcHRpb25cIixcImxhc3RVcGRhdGVkXCI6XCIyMDIyLTAzLTA3VDA3OjE0OjA2LjgzNTgzN1pcIixcImxhYmVsXCI6XCJsYWJlbFwiLFwic3RhdGVcIjpcInN1Y2Nlc3NmdWxcIixcInBpcGVsaW5lXCI6e1wiaWRcIjpcInBpcGVsaW5lSWRcIixcImRpc3BsYXlOYW1lXCI6XCJwaXBlbGluZU5hbWVcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCJ9LFwiZW52aXJvbm1lbnRcIjp7XCJpZFwiOlwic3RnLWVhc3RcIixcImRpc3BsYXlOYW1lXCI6XCJTdGFnaW5nIGVhc3RcIixcInR5cGVcIjpcInN0YWdpbmdcIn0sXCJzY2hlbWFWZXJzaW9uXCI6XCIxLjBcIn1dfSxcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MzI0NzQ4NDg0NDUsImlhdCI6MTY0NjYzNzI0Nn0.Ru6hmpDe7zkqqfaCZIxglsuoZqD1jCjf6UdcITPNaJ8';
@@ -309,5 +312,33 @@ describe('Jenkins webtrigger', () => {
 				}
 			})
 		);
+	});
+
+	it('should return a 200 on valid pluginConfig request', async () => {
+		// given
+		givenStorageReturnsJenkinsServerSecret();
+		givenStorageReturnsJenkinsServer();
+
+		// when
+		const response: WebtriggerResponse =
+			await handleJenkinsRequest(createWebtriggerRequest(PLUGIN_CONFIG_REQUEST_JWT), context);
+
+		// then
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toBe('{"success": true}');
+	});
+
+	it('should return a 400 on invalid pluginConfig request', async () => {
+		// given
+		givenStorageReturnsJenkinsServerSecret('invalid secret');
+		givenStorageReturnsJenkinsServer();
+
+		// when
+		const response: WebtriggerResponse =
+			await handleJenkinsRequest(createWebtriggerRequest(PLUGIN_CONFIG_REQUEST_JWT), context);
+
+		// then
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toBe(Errors.JWT_VERIFICATION_FAILED);
 	});
 });
