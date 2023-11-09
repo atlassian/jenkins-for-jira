@@ -11,7 +11,8 @@ export interface JenkinsServer {
 	uuid: string,
 	name: string,
 	secret?: string,
-	pipelines: JenkinsPipeline[];
+	pipelines: JenkinsPipeline[],
+	pluginConfig?: JenkinsPluginConfig;
 }
 
 export interface JenkinsPipeline {
@@ -19,4 +20,13 @@ export interface JenkinsPipeline {
 	lastEventDate: Date,
 	lastEventStatus: BuildEventStatus | DeploymentEventStatus,
 	lastEventType: EventType
+}
+
+export interface JenkinsPluginConfig {
+	lastUpdatedOn: Date,
+	ipAddress: string,
+	autoBuildEnabled?: string,
+	autoBuildRegex?: string,
+	autoDeploymentsEnabled?: string,
+	autoDeploymentsRegex?: string,
 }

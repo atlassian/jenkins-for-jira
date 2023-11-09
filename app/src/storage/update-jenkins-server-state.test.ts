@@ -1,7 +1,7 @@
 import { storage } from '@forge/api';
 import { NoJenkinsServerError } from '../common/error';
 import { EventType, BuildEventStatus } from '../common/types';
-import { updateJenkinsServerState } from './update-jenkins-server-state';
+import { updateJenkinsPluginConfigState, updateJenkinsServerState } from './update-jenkins-server-state';
 import {
 	testUuid,
 	currentTime,
@@ -11,6 +11,8 @@ import {
 	mockMaxNumberJenkinsPipelines
 } from './mockData';
 import { getAllJenkinsServers } from './get-all-jenkins-servers';
+import { JenkinsPluginConfigEvent } from '../webtrigger/types';
+import { Logger } from '../config/logger';
 
 const givenStorageGetReturnsServerSinglePipeline = jest
 	.fn()
@@ -52,6 +54,57 @@ const givenStorageQueryReturnsServeMaxPipelines = jest.fn().mockImplementation((
 			};
 		}
 	};
+});
+
+describe('Update Jenkins Plugin Config State Suite', () => {
+	const mockLogger = {
+		error: jest.fn(),
+	} as unknown as Logger;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('Should update Jenkins plugin config state to Forge Storage', async () => {
+		const jenkinsEvent = {
+			ipAddress: '192.168.0.1',
+			autoBuildEnabled: true,
+			autoBuildRegex: '^feature/.*$',
+			autoDeploymentsEnabled: false,
+			autoDeploymentsRegex: ''
+		} as unknown as JenkinsPluginConfigEvent;
+
+		await updateJenkinsPluginConfigState('unique-uid', jenkinsEvent, mockLogger);
+
+		expect(storage.set).toBeCalledWith(
+			`jenkinsServer-unique-uid`,
+			expect.objectContaining({
+				pluginConfig: {
+					ipAddress: '192.168.0.1',
+					autoBuildEnabled: true,
+					autoBuildRegex: '^feature/.*$',
+					autoDeploymentsEnabled: false,
+					autoDeploymentsRegex: '',
+					lastUpdatedOn: expect.any(Date)
+				}
+			})
+		);
+	});
+
+	it('Should throw an error if updating Jenkins plugin config fails', async () => {
+		const jenkinsEvent = {
+			ipAddress: '192.168.0.1'
+		} as unknown as JenkinsPluginConfigEvent;
+
+		await expect(
+			updateJenkinsPluginConfigState('error-uuid', jenkinsEvent, mockLogger)
+		).rejects.toThrowError();
+
+		expect(mockLogger.error).toBeCalledWith(
+			'Failed to update Jenkins plugin config for server uuid error-uuid',
+			{ error: expect.any(Error) }
+		);
+	});
 });
 
 describe('Update Jenkins Server Suite', () => {

@@ -2,6 +2,7 @@ import {
 	ForgeTriggerContext,
 	GatingStatusRequest,
 	JenkinsEvent,
+	JenkinsPluginConfigEvent,
 	RequestType,
 	WebtriggerRequest,
 	WebtriggerResponse
@@ -9,7 +10,7 @@ import {
 import { sendEventToJira } from '../jira-client/send-event-to-jira';
 import { EventType, JenkinsPipeline } from '../common/types';
 import { extractCloudId, getQueryParameterValue } from './helpers';
-import { updateJenkinsServerState } from '../storage/update-jenkins-server-state';
+import { updateJenkinsPluginConfigState, updateJenkinsServerState } from '../storage/update-jenkins-server-state';
 import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
 import { InvalidPayloadError, NoJenkinsServerError } from '../common/error';
 import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
@@ -55,6 +56,12 @@ export default async function handleJenkinsRequest(
 				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId, logger);
 				break;
 			}
+			case RequestType.PLUGIN_CONFIG: {
+				response = await handlePluginConfigEvent(
+					jenkinsRequest as JenkinsPluginConfigEvent, jenkinsServerUuid, logger
+				);
+				break;
+			}
 			case RequestType.PING:
 				// A "ping" is just a test if the connection between Jenkins and this app is configured correctly.
 				// If we get here, the JWT is already valid, so we just need to return a successful response.
@@ -97,6 +104,18 @@ async function handleEvent(
 	const jiraResponse = await sendEventToJira(event.eventType, cloudId, event.payload);
 	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
+}
+
+/**
+ * Handles an incoming pluginConfig event. Updates the JenkinsServer in storage.
+ */
+async function handlePluginConfigEvent(
+	event: JenkinsPluginConfigEvent,
+	jenkinsServerUuid: string,
+	logger: Logger
+): Promise<WebtriggerResponse> {
+	await updateJenkinsPluginConfigState(jenkinsServerUuid, event, logger);
+	return createWebtriggerResponse(200, '{"success": true}');
 }
 
 /**
