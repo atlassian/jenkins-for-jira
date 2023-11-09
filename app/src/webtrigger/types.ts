@@ -1,4 +1,6 @@
-import { BuildEventStatus, DeploymentEventStatus, EventType } from '../common/types';
+import {
+ BuildEventStatus, DeploymentEventStatus, EventType, JenkinsPluginConfig
+} from '../common/types';
 
 export enum RequestType {
 	EVENT = 'event',
@@ -35,6 +37,15 @@ export interface JenkinsEvent extends JenkinsRequest {
 	status?: BuildEventStatus | DeploymentEventStatus,
 	lastUpdated?: Date,
 	payload: any
+}
+
+export interface JenkinsPluginConfigEvent extends JenkinsEvent, JenkinsPluginConfig {
+	lastUpdatedOn: Date,
+	ipAddress: string,
+	autoBuildEnabled?: string,
+	autoBuildRegex?: string,
+	autoDeploymentsEnabled?: string,
+	autoDeploymentsRegex?: string,
 }
 
 export interface GatingStatusRequest extends JenkinsRequest {

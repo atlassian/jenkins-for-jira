@@ -1,7 +1,7 @@
 import {
 	ForgeTriggerContext,
 	GatingStatusRequest,
-	JenkinsEvent,
+	JenkinsEvent, JenkinsPluginConfigEvent,
 	RequestType,
 	WebtriggerRequest,
 	WebtriggerResponse
@@ -56,7 +56,9 @@ export default async function handleJenkinsRequest(
 				break;
 			}
 			case RequestType.PLUGIN_CONFIG: {
-				response = await handlePluginConfigEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, logger);
+				response = await handlePluginConfigEvent(
+					jenkinsRequest as JenkinsPluginConfigEvent, jenkinsServerUuid, logger
+				);
 				break;
 			}
 			case RequestType.PING:
@@ -107,7 +109,7 @@ async function handleEvent(
  * Handles an incoming pluginConfig event. Updates the JenkinsServer in storage.
  */
 async function handlePluginConfigEvent(
-	event: JenkinsEvent,
+	event: JenkinsPluginConfigEvent,
 	jenkinsServerUuid: string,
 	logger: Logger
 ): Promise<WebtriggerResponse> {

@@ -25,8 +25,8 @@ export interface JenkinsPipeline {
 export interface JenkinsPluginConfig {
 	lastUpdatedOn: Date,
 	ipAddress: string,
-	autoBuildEnabled: string,
-	autoBuildRegex: string,
-	autoDeploymentEnabled: string,
-	autoDeploymentRegex: string,
+	autoBuildEnabled?: string,
+	autoBuildRegex?: string,
+	autoDeploymentsEnabled?: string,
+	autoDeploymentsRegex?: string,
 }

@@ -11,7 +11,7 @@ import {
 	mockMaxNumberJenkinsPipelines
 } from './mockData';
 import { getAllJenkinsServers } from './get-all-jenkins-servers';
-import { JenkinsEvent } from '../webtrigger/types';
+import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 import { Logger } from '../config/logger';
 
 const givenStorageGetReturnsServerSinglePipeline = jest
@@ -71,8 +71,8 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 			autoBuildEnabled: true,
 			autoBuildRegex: '^feature/.*$',
 			autoDeploymentsEnabled: false,
-			autoDeploymentsRegex: '',
-		} as unknown as JenkinsEvent;
+			autoDeploymentsRegex: ''
+		} as unknown as JenkinsPluginConfigEvent;
 
 		await updateJenkinsPluginConfigState('unique-uid', jenkinsEvent, mockLogger);
 
@@ -85,7 +85,7 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 					autoBuildRegex: '^feature/.*$',
 					autoDeploymentsEnabled: false,
 					autoDeploymentsRegex: '',
-					lastUpdatedOn: expect.any(Date),
+					lastUpdatedOn: expect.any(Date)
 				}
 			})
 		);
@@ -94,14 +94,14 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 	it('Should throw an error if updating Jenkins plugin config fails', async () => {
 		const jenkinsEvent = {
 			ipAddress: '192.168.0.1'
-		} as unknown as JenkinsEvent;
+		} as unknown as JenkinsPluginConfigEvent;
 
 		await expect(
-			updateJenkinsPluginConfigState('bad-uuid', jenkinsEvent, mockLogger)
+			updateJenkinsPluginConfigState('error-uuid', jenkinsEvent, mockLogger)
 		).rejects.toThrowError();
 
 		expect(mockLogger.error).toBeCalledWith(
-			'Failed to update Jenkins plugin config for server uuid bad-uuid',
+			'Failed to update Jenkins plugin config for server uuid error-uuid',
 			{ error: expect.any(Error) }
 		);
 	});
