@@ -1,7 +1,8 @@
 import {
 	ForgeTriggerContext,
 	GatingStatusRequest,
-	JenkinsEvent, JenkinsPluginConfigEvent,
+	JenkinsEvent,
+	JenkinsPluginConfigEvent,
 	RequestType,
 	WebtriggerRequest,
 	WebtriggerResponse
