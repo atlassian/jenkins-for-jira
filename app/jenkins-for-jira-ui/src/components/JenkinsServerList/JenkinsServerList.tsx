@@ -17,15 +17,25 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
+import { FeatureFlags } from '../../hooks/useFeatureFlag';
+import { fetchCloudId } from '../../api/fetchCloudId';
+import { fetchFeatureFlagFromBackend } from '../../api/fetchFeatureFlagFromBackend';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
 	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const [moduleKey, setModuleKey] = useState<string>();
+	const [cloudId, setCloudId] = useState<string>();
+
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
 		setJenkinsServers(servers);
+	};
+
+	const getCloudId = async () => {
+		const id = await fetchCloudId();
+		setCloudId(id);
 	};
 
 	const redirectToAdminPage = useCallback(async () => {
@@ -33,11 +43,23 @@ const JenkinsServerList = (): JSX.Element => {
 		setModuleKey(currentModuleKey);
 	}, []);
 
+	const fetchFeatureFlag = useCallback(async () => {
+		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
+			FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
+		);
+		console.log('renovatedJenkinsFeatureFlag:', renovatedJenkinsFeatureFlag);
+	}, []);
+
 	useEffect(() => {
 		fetchAllJenkinsServers();
 		redirectToAdminPage();
-	}, [redirectToAdminPage]);
+		getCloudId();
+		fetchFeatureFlag();
+	}, [redirectToAdminPage, cloudId, fetchFeatureFlag]);
 
+	console.log('CLOUD ID: ', cloudId);
+
+	// Use the useFeatureFlag hook to get the value of RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 	if (!jenkinsServers || !moduleKey || (moduleKey === 'jenkins-for-jira-ui-admin-page' && !jenkinsServers?.length)) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
