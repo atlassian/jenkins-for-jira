@@ -13,6 +13,7 @@ import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
 import { RedirectFromGetStarted, redirectFromGetStarted } from './utils/redirect-from-get-started';
+import { fetchFeatureFlag } from './config/feature-flags';
 
 const resolver = new Resolver();
 
@@ -67,6 +68,13 @@ resolver.define('generateNewSecret', async (req) => {
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return generateNewSecret();
+});
+
+resolver.define('fetchFeatureFlagFromBackend', async (req) => {
+	const { cloudId } = req.context;
+	const { featureFlag } = req.payload;
+	const featureFlagState = await fetchFeatureFlag(featureFlag, cloudId);
+	return featureFlagState;
 });
 
 resolver.define('fetchCloudId', async (req): Promise<string> => {
