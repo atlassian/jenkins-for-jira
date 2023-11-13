@@ -20,6 +20,7 @@ import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
 import { FeatureFlags } from '../../hooks/useFeatureFlag';
 import { fetchCloudId } from '../../api/fetchCloudId';
 import { fetchFeatureFlagFromBackend } from '../../api/fetchFeatureFlagFromBackend';
+import { TopPanel } from './TopPanel/TopPanel';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
@@ -27,6 +28,7 @@ const JenkinsServerList = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const [moduleKey, setModuleKey] = useState<string>();
 	const [cloudId, setCloudId] = useState<string>();
+	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -47,7 +49,7 @@ const JenkinsServerList = (): JSX.Element => {
 		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
 			FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 		);
-		console.log('renovatedJenkinsFeatureFlag:', renovatedJenkinsFeatureFlag);
+		setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
 	}, []);
 
 	useEffect(() => {
@@ -56,8 +58,6 @@ const JenkinsServerList = (): JSX.Element => {
 		getCloudId();
 		fetchFeatureFlag();
 	}, [redirectToAdminPage, cloudId, fetchFeatureFlag]);
-
-	console.log('CLOUD ID: ', cloudId);
 
 	// Use the useFeatureFlag hook to get the value of RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 	if (!jenkinsServers || !moduleKey || (moduleKey === 'jenkins-for-jira-ui-admin-page' && !jenkinsServers?.length)) {
@@ -81,10 +81,14 @@ const JenkinsServerList = (): JSX.Element => {
 	const pageHeaderActions = (
 		<ButtonGroup>
 			<Button appearance="primary" onClick={() => onClickConnect()}>
-				Connect a Jenkins server
+				{renovateConfigFlag ? 'Connect a new Jenkins server' : 'Connect a Jenkins server'}
 			</Button>
+			{/* TODO - add onClick event */}
+			{renovateConfigFlag && <Button>Share page</Button>}
 		</ButtonGroup>
 	);
+
+	const headerText = renovateConfigFlag ? 'Jenkins for Jira' : 'Jenkins configuration';
 
 	let contentToRender;
 
@@ -92,14 +96,17 @@ const JenkinsServerList = (): JSX.Element => {
 		contentToRender = (
 			<>
 				<div className={headerContainer}>
-					<PageHeader actions={pageHeaderActions}>Jenkins configuration</PageHeader>
+					<PageHeader actions={pageHeaderActions}>{headerText}</PageHeader>
 				</div>
-				<StyledDescription>
+
+				{!renovateConfigFlag && <StyledDescription>
 					After you connect your Jenkins server to Jira and send a deployment
 					event from your CI/CD tool, you will be able to view development
 					information within your linked Jira issue and view deployment pipelines
 					over a timeline with insights.
-				</StyledDescription>
+				</StyledDescription>}
+
+				{renovateConfigFlag && <TopPanel />}
 				<ConnectedServers jenkinsServerList={jenkinsServers} refreshServers={fetchAllJenkinsServers} />
 			</>
 		);
