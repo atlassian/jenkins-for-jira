@@ -59,11 +59,7 @@ const JenkinsServerList = (): JSX.Element => {
 		fetchFeatureFlag();
 	}, [redirectToAdminPage, cloudId, fetchFeatureFlag]);
 
-	console.log('renovateConfigFlag: ', renovateConfigFlag);
-	console.log('jenkinsServers: ', jenkinsServers);
-	console.log('moduleKey: ', moduleKey);
-
-	if (!jenkinsServers || !moduleKey) {
+	if (!jenkinsServers || !moduleKey || moduleKey === 'get-started-page') {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -96,7 +92,6 @@ const JenkinsServerList = (): JSX.Element => {
 	let contentToRender;
 
 	if (jenkinsServers?.length && moduleKey === 'jenkins-for-jira-ui-admin-page') {
-		console.log('in configured');
 		contentToRender = (
 			<>
 				<div className={headerContainer}>
@@ -115,7 +110,6 @@ const JenkinsServerList = (): JSX.Element => {
 			</>
 		);
 	} else if (moduleKey === 'get-started-page') {
-		console.log('in get started');
 		contentToRender = (
 			<>
 				<div className={headerContainer}>
@@ -125,7 +119,6 @@ const JenkinsServerList = (): JSX.Element => {
 			</>
 		);
 	} else {
-		console.log('in empty');
 		contentToRender = (
 			<>
 				<div className={headerContainer}>

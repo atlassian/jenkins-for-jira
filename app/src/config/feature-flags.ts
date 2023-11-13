@@ -119,7 +119,6 @@ export const launchDarklyService = {
 };
 
 export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
-    console.log('backend');
     try {
         // custom env var as Forge overrides NODE_ENV in every environment with production
         // left NODE_ENV as a fallback as it's needed for tests and pipelines
@@ -128,17 +127,12 @@ export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string)
         const envData = featureFlag.environments[environment];
 
         if (cloudId && envData.targets) {
-            console.log('cloudId: ', cloudId);
             const values = envData.targets.flatMap((target) => target.values);
-            console.log('cloudId: ', cloudId);
             if (values.includes(cloudId)) {
-                console.log('FEATURE FLAG IS ON!!!');
                 // If the cloudId is in any of the values within the targets, set the value to true
                 return true;
             }
         }
-
-        console.log('nah it is off: ', envData.on);
 
         // If the cloudId is not in the targets or no cloudId is provided, use the "on" value
         return envData.on || false;
