@@ -59,7 +59,6 @@ const JenkinsServerList = (): JSX.Element => {
 		fetchFeatureFlag();
 	}, [redirectToAdminPage, cloudId, fetchFeatureFlag]);
 
-	// Use the useFeatureFlag hook to get the value of RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 	if (!jenkinsServers || !moduleKey || (moduleKey === 'jenkins-for-jira-ui-admin-page' && !jenkinsServers?.length)) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
