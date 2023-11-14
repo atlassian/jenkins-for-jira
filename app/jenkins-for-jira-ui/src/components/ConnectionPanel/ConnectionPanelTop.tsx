@@ -3,20 +3,33 @@ import { cx } from '@emotion/css';
 import {
 	connectionPanelHeaderContainer,
 	connectionPanelTopContainer,
-	ipAddress,
+	ipAddressStyle,
 	serverName
 } from './ConnectionPanel.styles';
-import { StatusLabel } from '../StatusLabel/StatusLabel';
+import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
 
-const ConnectionPanelTop = (): JSX.Element => {
+type ConnectionPanelTopProps = {
+	connectedState: ConnectedState,
+	ipAddress: string
+};
+
+const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
+	[ConnectedState.CONNECTED]: { textColor: '#206e4e', backgroundColor: '#dcfff1' },
+	[ConnectedState.DUPLICATE]: { textColor: '#ae2e24', backgroundColor: '#ffecea' },
+	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
+};
+
+const ConnectionPanelTop = ({ connectedState, ipAddress }: ConnectionPanelTopProps): JSX.Element => {
+	const { textColor, backgroundColor } = connectedStateColors[connectedState];
+
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
 			<div className={cx(connectionPanelHeaderContainer)}>
 				<h2 className={cx(serverName)}>Insert name</h2>
-				<StatusLabel text="PENDING" color="#A54800" backgroundColor="#fff7d6" />
+				<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
 			</div>
 			<div>
-				<p className={cx(ipAddress)}>IP address: 10.0.0.1</p>
+				<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
 			</div>
 		</div>
 	);
