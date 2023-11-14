@@ -5,7 +5,7 @@ import Button from '@atlaskit/button/standard-button';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 import { TopPanel } from '../JenkinsServerList/TopPanel/TopPanel';
 
-const MainPage = () => {
+const MainPage = (): JSX.Element => {
 	const pageHeaderActions = (
 		<ButtonGroup>
 			{/* TODO - add onClick event */}

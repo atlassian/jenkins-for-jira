@@ -9,7 +9,7 @@ import {
 } from './TopPanel.styles';
 import PlugInImage from '../../assets/PlugIn.svg';
 
-const TopPanel = () => {
+const TopPanel = (): JSX.Element => {
 	return (
 		<div className={cx(TopPanelContainer)}>
 			<div>
