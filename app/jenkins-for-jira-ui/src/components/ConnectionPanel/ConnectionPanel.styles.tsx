@@ -28,7 +28,7 @@ export const serverName = css`
 	margin-right: 0.5em;
 `;
 
-export const ipAddress = css`
+export const ipAddressStyle = css`
 	color: #626F86;
 	font-size: 14px;
 `;
