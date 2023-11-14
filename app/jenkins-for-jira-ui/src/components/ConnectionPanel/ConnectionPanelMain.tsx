@@ -4,7 +4,9 @@ import { connectionPanelMainContainer } from './ConnectionPanel.styles';
 
 const ConnectionPanelMain = (): JSX.Element => {
 	return (
-		<div className={cx(connectionPanelMainContainer)}>Connection panel main coming soon...</div>
+		<div className={cx(connectionPanelMainContainer)}>
+
+		</div>
 	);
 };
 
