@@ -17,22 +17,15 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
-import { fetchCloudId } from '../../api/fetchCloudId';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
 	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const [moduleKey, setModuleKey] = useState<string>();
-	const [cloudId, setCloudId] = useState<string>('');
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
 		setJenkinsServers(servers);
-	};
-
-	const getCloudId = async () => {
-		const id = await fetchCloudId();
-		setCloudId(id);
 	};
 
 	const redirectToAdminPage = useCallback(async () => {
@@ -43,8 +36,7 @@ const JenkinsServerList = (): JSX.Element => {
 	useEffect(() => {
 		fetchAllJenkinsServers();
 		redirectToAdminPage();
-		getCloudId();
-	}, [redirectToAdminPage, cloudId]);
+	}, [redirectToAdminPage]);
 
 	if (!jenkinsServers || !moduleKey || moduleKey === 'get-started-page') {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
