@@ -5,7 +5,6 @@ export const connectionPanelContainer = css`
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	flex-direction: column;
-	max-height: 164px;
 	padding: 1.5em;
 	margin: 2em auto 2em 0.1em;
 	width: 936px;
@@ -35,4 +34,32 @@ export const ipAddressStyle = css`
 
 export const connectionPanelMainContainer = css`
 	margin-top: 1em;
+`;
+
+export const connectionPanelMainTabs = css`
+	align-items: center;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-top: 16px;
+	margin-bottom: 8px;
+	padding: 32px;
+	width: 100%;
+`;
+
+export const notConnectedStateContainer = css`
+	max-width: 420px;
+	text-align: center;
+`;
+
+export const notConnectedStateHeader = css`
+	font-size: 20px;
+	font-weight: 500;
+	margin: 1em auto;
+`;
+
+export const notConnectedStateParagraph = css`
+	font-size: 14px;
+	line-height: 20px;
 `;

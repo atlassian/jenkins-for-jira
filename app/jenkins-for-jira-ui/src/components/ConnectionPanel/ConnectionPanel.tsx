@@ -11,13 +11,13 @@ const ConnectionPanel = (): JSX.Element => {
 
 	useEffect(() => {
 		// TODO - update this based on data
-		setConnectState(ConnectedState.DUPLICATE);
+		setConnectState(ConnectedState.PENDING);
 	}, []);
 
 	return (
 		<div className={cx(connectionPanelContainer)}>
 			<ConnectionPanelTop connectedState={connectedState} ipAddress="10.10.0.10"/>
-			<ConnectionPanelMain />
+			<ConnectionPanelMain connectedState={connectedState} />
 		</div>
 	);
 };
