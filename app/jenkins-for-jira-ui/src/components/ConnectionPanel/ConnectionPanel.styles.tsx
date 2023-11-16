@@ -40,7 +40,25 @@ export const ipAddressStyle = css`
 `;
 
 export const connectionPanelMainContainer = css`
-	margin-top: ${token('space.200', '16px')};
+	margin-top: ${token('space.200')};
+
+	[role=tab] {
+		&:first-of-type {
+			padding-left: ${token('space.0')};
+
+			::after {
+				margin-left: -50px !important;
+			}
+		}
+	}
+
+	[role=tablist] {
+		&:first-of-type {
+			::before {
+				margin-left: -10px !important;
+			}
+		}
+	}
 `;
 
 export const connectionPanelMainTabs = css`

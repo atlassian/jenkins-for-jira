@@ -30,6 +30,7 @@ const ConnectionPanelMain = ({ connectedState }: ConnectionPanelMainProps): JSX.
 					id="default"
 				>
 					<TabList>
+						{/* TODO - update (0) for connected state */}
 						<Tab>Recent events (0)</Tab>
 						<Tab>Set up guide</Tab>
 					</TabList>
