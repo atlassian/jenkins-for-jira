@@ -85,7 +85,8 @@
 					":": "before"
 				}
 			}
-		]
+		],
+		"import/no-extraneous-dependencies": "warn"
 	},
 	"settings": {
 		"import/parsers": {
