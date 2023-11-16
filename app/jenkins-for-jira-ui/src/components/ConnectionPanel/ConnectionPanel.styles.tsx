@@ -7,7 +7,7 @@ export const connectionPanelContainer = css`
 	display: flex;
 	flex-direction: column;
 	max-height: 164px;
-	padding: ${token('space.300', '24px')};
+	padding: ${token('space.300')};
 	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;
 
