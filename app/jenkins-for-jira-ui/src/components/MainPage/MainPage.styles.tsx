@@ -2,7 +2,7 @@ import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
 
 export const mainPageContainer = css`
-	margin: 0 auto;
+	margin: 0 auto ${token('space.800')};
 	max-width: 936px;
 `;
 

@@ -20,6 +20,7 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 	const notConnectedP2 =
         connectedState === ConnectedState.PENDING ? 'Open connection settings if your Jenkins admin needs to revisit the items they need.' : 'Use SERVER NAME to manage this server.';
 
+	console.log('connectedState: ', connectedState);
 	return (
 		<div className={cx(notConnectedStateContainer)}>
 			<div className={cx(notConnectedTempImgPlaceholder)}></div>
@@ -27,7 +28,7 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedP1}</p>
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedP2}</p>
 			{/* TODO - add onClick handler */}
-			{ConnectedState.PENDING
+			{connectedState === ConnectedState.PENDING
 				? <Button>Connection settings</Button>
 				: <Button appearance="danger">Delete</Button>
 			}

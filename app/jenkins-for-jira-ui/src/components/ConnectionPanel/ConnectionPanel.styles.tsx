@@ -49,19 +49,20 @@ export const connectionPanelMainTabs = css`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	margin-top: 16px;
-	margin-bottom: 8px;
-	padding: 32px;
+	margin: ${token('space.200')} auto ${token('space.100')};
+	padding: ${token('space.400')};
 	width: 100%;
 `;
 
 export const notConnectedStateContainer = css`
+	margin: 0 auto;
 	max-width: 420px;
 	text-align: center;
 `;
 
 // TODO - delete this temp class
 export const notConnectedTempImgPlaceholder = css`
+	background-color: lightgrey;
 	border: 1px solid lightgrey;
 	border-radius: 3px;
 	height: 160px;
@@ -72,11 +73,11 @@ export const notConnectedTempImgPlaceholder = css`
 export const notConnectedStateHeader = css`
 	font-size: 20px;
 	font-weight: 500;
-	margin: 1em auto;
+	margin: ${token('space.200')} auto;
 `;
 
 export const notConnectedStateParagraph = css`
 	font-size: 14px;
 	line-height: 20px;
-	margin-bottom: 2em;
+	margin-bottom: ${token('space.400')};
 `;
