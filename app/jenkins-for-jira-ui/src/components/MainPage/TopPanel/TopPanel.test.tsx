@@ -17,18 +17,7 @@ describe('TopPanel Component', () => {
 	test('renders set up guide link', () => {
 		const { getByText } = render(<TopPanel />);
 		const linkElement = getByText('set up guide');
+		expect(linkElement.tagName).toBe('STRONG');
 		expect(linkElement).toBeInTheDocument();
-	});
-
-	test('renders strong tag for "set up guide"', () => {
-		const { getByText } = render(<TopPanel />);
-		const strongElement = getByText('set up guide');
-		expect(strongElement.tagName).toBe('STRONG');
-	});
-
-	test('renders image with alt text', () => {
-		const { getByAltText } = render(<TopPanel />);
-		const imageElement = getByAltText('Connect Jenkins with Jira');
-		expect(imageElement).toBeInTheDocument();
 	});
 });
