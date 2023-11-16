@@ -14,7 +14,7 @@ export const connectionPanelTopContainer = css`
 	border-bottom: 1px solid #f4f3f6;
 	display: flex;
 	justify-content: space-between;
-	padding-bottom: ${token('space.300')};
+	padding-bottom: ${token('space.200')};
 `;
 
 export const connectionPanelHeaderContainer = css`
