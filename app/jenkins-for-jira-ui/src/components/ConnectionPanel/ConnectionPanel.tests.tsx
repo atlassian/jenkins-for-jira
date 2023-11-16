@@ -3,15 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 
-// Mock the StatusLabel component
-jest.mock('../StatusLabel/StatusLabel', () => ({
-	StatusLabel: ({ text, color, backgroundColor }: { text: string; color: string; backgroundColor: string }) => (
-		<div data-testid="status-label" style={{ color, backgroundColor }}>
-			{text}
-		</div>
-	)
-}));
-
 describe('ConnectionPanelTop', () => {
 	test('renders with the correct content and styles for CONNECTED state', () => {
 		const ipAddress = '10.0.0.1';
