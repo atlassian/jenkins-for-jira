@@ -1,4 +1,5 @@
 import { css } from '@emotion/css';
+import { token } from '@atlaskit/tokens';
 
 export const mainPageContainer = css`
 	margin: 0 auto;
@@ -12,8 +13,8 @@ export const topPanelContainer = css`
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	max-height: 164px;
-	padding: 1.5em;
-	margin: 2em auto 2em 0.1em;
+	padding: ${token('space.300')};
+	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;
 
 export const topPanelContentHeaderContainer = css`
@@ -28,7 +29,7 @@ export const topPanelContentHeader = css`
 export const topPanelContent = css`
 	font-size: 14px;
 	line-height: 20px;
-	margin: 1em auto 1em 0;
+	margin: ${token('space.200')} auto ${token('space.200')} 0;
 `;
 
 export const topPanelImgContainer = css`
