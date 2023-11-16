@@ -6,7 +6,6 @@ export const connectionPanelContainer = css`
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	flex-direction: column;
-	max-height: 164px;
 	padding: ${token('space.300', '24px')};
 	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;

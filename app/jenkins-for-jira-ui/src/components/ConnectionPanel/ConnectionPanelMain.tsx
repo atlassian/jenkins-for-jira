@@ -27,7 +27,6 @@ const ConnectionPanelMain = ({ connectedState }: ConnectionPanelMainProps): JSX.
 			{connectedState === ConnectedState.DUPLICATE
 				? <NotConnectedState connectedState={connectedState} />
 				: <Tabs
-					onChange={(index) => console.log('Selected Tab', index + 1)}
 					id="default"
 				>
 					<TabList>
