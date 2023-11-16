@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
 	Router,
 	Switch,
@@ -16,6 +16,9 @@ import { JenkinsSpinner } from './components/JenkinsSpinner/JenkinsSpinner';
 import { PendingDeploymentState } from './components/JenkinsServerList/PendingDeploymentState/PendingDeploymentState';
 import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
 import envVars, { Environment } from './common/env';
+import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
+import { FeatureFlags } from './hooks/useFeatureFlag';
+import { MainPage } from './components/MainPage/MainPage';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -49,17 +52,26 @@ export const environmentSettings = {
 
 const AppContainer = styled.div`
 	color: #172B4D;
-	margin: 24px 24px 24px 0;
+	margin: 24px 36px 24px 0;
 `;
 
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
+	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
+
+	const fetchFeatureFlag = useCallback(async () => {
+		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
+			FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
+		);
+		setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
+	}, []);
 
 	useEffect(() => {
 		view.createHistory().then((historyUpdates) => {
 			setHistory(historyUpdates);
 		});
-	}, []);
+		fetchFeatureFlag();
+	}, [fetchFeatureFlag]);
 
 	if (!history) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
@@ -70,7 +82,10 @@ const App: React.FC = () => {
 			<Router history={history}>
 				<Switch>
 					<Route exact path="/">
-						<JenkinsServerList />
+						{renovateConfigFlag
+							? <MainPage />
+							: <JenkinsServerList />
+						}
 					</Route>
 					<Route path="/install">
 						<InstallJenkins />
