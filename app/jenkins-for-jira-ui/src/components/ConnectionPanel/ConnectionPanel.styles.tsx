@@ -8,16 +8,23 @@ export const connectionPanelContainer = css`
 	max-height: 164px;
 	padding: 1.5em;
 	margin: 2em auto 2em 0.1em;
-	width: 936px;
 `;
 
 export const connectionPanelTopContainer = css`
 	border-bottom: 1px solid #f4f3f6;
+	display: flex;
+	justify-content: space-between;
 	margin: 0 -1.5em;
-	padding: 0 0 1.5em 1.5em;
+	padding: 0 1.5em 1.5em 1.5em;
 `;
 
 export const connectionPanelHeaderContainer = css`
+	align-items: center;
+	flex-direction: column;
+	margin-bottom: 0.4em;
+`;
+
+export const connectionPanelHeaderContentContainer = css`
 	align-items: center;
 	display: flex;
 	margin-bottom: 0.4em;

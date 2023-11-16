@@ -3,8 +3,9 @@ import PageHeader from '@atlaskit/page-header';
 import { ButtonGroup } from '@atlaskit/button';
 import Button from '@atlaskit/button/standard-button';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
-import { TopPanel } from '../JenkinsServerList/TopPanel/TopPanel';
+import { mainPageContainer } from './MainPage.styles';
 import { ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
+import { TopPanel } from './TopPanel/TopPanel';
 
 const MainPage = (): JSX.Element => {
 	const pageHeaderActions = (
@@ -19,7 +20,7 @@ const MainPage = (): JSX.Element => {
 	);
 
 	return (
-		<>
+		<div className={mainPageContainer}>
 			<div className={headerContainer}>
 				<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
 			</div>
@@ -27,7 +28,7 @@ const MainPage = (): JSX.Element => {
 			<TopPanel />
 
 			<ConnectionPanel />
-		</>
+		</div>
 	);
 };
 

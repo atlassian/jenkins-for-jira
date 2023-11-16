@@ -1,7 +1,11 @@
 import React from 'react';
 import { cx } from '@emotion/css';
+import Button from '@atlaskit/button/standard-button';
+import MoreIcon from '@atlaskit/icon/glyph/more';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import {
 	connectionPanelHeaderContainer,
+	connectionPanelHeaderContentContainer,
 	connectionPanelTopContainer,
 	ipAddressStyle,
 	serverName
@@ -25,12 +29,30 @@ const ConnectionPanelTop = ({ connectedState, ipAddress }: ConnectionPanelTopPro
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
 			<div className={cx(connectionPanelHeaderContainer)}>
-				<h2 className={cx(serverName)}>Insert name</h2>
-				<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
+				<div className={cx(connectionPanelHeaderContentContainer)}>
+					<h2 className={cx(serverName)}>Insert name</h2>
+					<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
+				</div>
+				<div>
+					<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
+				</div>
 			</div>
-			<div>
-				<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
-			</div>
+			<DropdownMenu
+				trigger={({ triggerRef, ...props }) => (
+					<Button
+						{...props}
+						iconBefore={<MoreIcon label="more" />}
+						ref={triggerRef}
+					/>
+				)}
+			>
+				<DropdownItemGroup>
+					{/* TODO: add onClick for all dropdown items */}
+					<DropdownItem>Rename</DropdownItem>
+					<DropdownItem>Connection settings</DropdownItem>
+					<DropdownItem>Disconnect</DropdownItem>
+				</DropdownItemGroup>
+			</DropdownMenu>
 		</div>
 	);
 };
