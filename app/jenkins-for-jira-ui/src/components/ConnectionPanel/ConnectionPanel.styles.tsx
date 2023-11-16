@@ -1,30 +1,38 @@
 import { css } from '@emotion/css';
+import { token } from '@atlaskit/tokens';
 
 export const connectionPanelContainer = css`
 	border-radius: 8px;
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	flex-direction: column;
-	padding: 1.5em;
-	margin: 2em auto 2em 0.1em;
-	width: 936px;
+	max-height: 164px;
+	padding: ${token('space.300', '24px')};
+	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;
 
 export const connectionPanelTopContainer = css`
 	border-bottom: 1px solid #f4f3f6;
-	margin: 0 -1.5em;
-	padding: 0 0 1.5em 1.5em;
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: ${token('space.300')};
 `;
 
 export const connectionPanelHeaderContainer = css`
 	align-items: center;
+	flex-direction: column;
+	margin-bottom: ${token('space.075')};
+`;
+
+export const connectionPanelHeaderContentContainer = css`
+	align-items: center;
 	display: flex;
-	margin-bottom: 0.4em;
+	margin-bottom: ${token('space.075')};
 `;
 
 export const serverName = css`
 	font-size: 20px;
-	margin-right: 0.5em;
+	margin-right: ${token('space.075')};
 `;
 
 export const ipAddressStyle = css`
@@ -33,7 +41,7 @@ export const ipAddressStyle = css`
 `;
 
 export const connectionPanelMainContainer = css`
-	margin-top: 1em;
+	margin-top: ${token('space.200', '16px')};
 `;
 
 export const connectionPanelMainTabs = css`

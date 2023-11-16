@@ -52,7 +52,7 @@ export const environmentSettings = {
 
 const AppContainer = styled.div`
 	color: #172B4D;
-	margin: 24px 24px 24px 0;
+	margin: 24px 36px 24px 0;
 `;
 
 const App: React.FC = () => {
