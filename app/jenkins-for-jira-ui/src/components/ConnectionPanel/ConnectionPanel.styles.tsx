@@ -6,7 +6,7 @@ export const connectionPanelContainer = css`
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	flex-direction: column;
-	padding: ${token('space.300', '24px')};
+	padding: ${token('space.300')};
 	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;
 
@@ -60,6 +60,15 @@ export const notConnectedStateContainer = css`
 	text-align: center;
 `;
 
+// TODO - delete this temp class
+export const notConnectedTempImgPlaceholder = css`
+	border: 1px solid lightgrey;
+	border-radius: 3px;
+	height: 160px;
+	margin: auto;
+	width: 160px;
+`;
+
 export const notConnectedStateHeader = css`
 	font-size: 20px;
 	font-weight: 500;
@@ -69,4 +78,5 @@ export const notConnectedStateHeader = css`
 export const notConnectedStateParagraph = css`
 	font-size: 14px;
 	line-height: 20px;
+	margin-bottom: 2em;
 `;

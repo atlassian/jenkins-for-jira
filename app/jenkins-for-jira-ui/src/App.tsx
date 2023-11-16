@@ -7,6 +7,7 @@ import {
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
+import { setGlobalTheme } from '@atlaskit/tokens';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
 import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -76,6 +77,14 @@ const App: React.FC = () => {
 	if (!history) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
+
+	setGlobalTheme({
+		light: 'light',
+		dark: 'dark',
+		colorMode: 'auto',
+		spacing: 'spacing',
+		typography: 'typography'
+	});
 
 	return (
 		<AppContainer>

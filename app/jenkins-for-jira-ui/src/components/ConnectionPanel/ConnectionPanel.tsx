@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
-import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
+import { connectionPanelContainer } from './ConnectionPanel.styles';
 
 const ConnectionPanel = (): JSX.Element => {
 	// TODO - remove temp state and define pending/duplicate/connected state from data

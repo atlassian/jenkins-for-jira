@@ -1,10 +1,11 @@
 import React from 'react';
 import { cx } from '@emotion/css';
+import Button from '@atlaskit/button';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import {
 	notConnectedStateContainer,
 	notConnectedStateHeader,
-	notConnectedStateParagraph
+	notConnectedStateParagraph, notConnectedTempImgPlaceholder
 } from './ConnectionPanel.styles';
 
 type NotConnectedStateProps = {
@@ -21,9 +22,15 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 
 	return (
 		<div className={cx(notConnectedStateContainer)}>
+			<div className={cx(notConnectedTempImgPlaceholder)}></div>
 			<h3 className={cx(notConnectedStateHeader)}>{notConnectedHeader}</h3>
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedP1}</p>
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedP2}</p>
+			{/* TODO - add onClick handler */}
+			{ConnectedState.PENDING
+				? <Button>Connection settings</Button>
+				: <Button appearance="danger">Delete</Button>
+			}
 		</div>
 	);
 };
