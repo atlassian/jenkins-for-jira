@@ -42,20 +42,18 @@ export const ipAddressStyle = css`
 export const connectionPanelMainContainer = css`
 	margin-top: ${token('space.200')};
 
-	[role=tab] {
-		&:first-of-type {
-			padding-left: ${token('space.0')};
+	#connection-panel-tabs-0 {
+		padding-left: ${token('space.0')};
 
-			::after {
-				margin-left: -50px !important;
-			}
+		::after {
+			margin-left: ${token('space.negative.400')};
 		}
 	}
 
 	[role=tablist] {
 		&:first-of-type {
 			::before {
-				margin-left: -10px !important;
+				margin-left:  ${token('space.negative.100')};
 			}
 		}
 	}
@@ -98,4 +96,8 @@ export const notConnectedStateParagraph = css`
 	font-size: 14px;
 	line-height: 20px;
 	margin-bottom: ${token('space.400')};
+
+	div {
+		margin-bottom: ${token('space.300')}
+	}
 `;

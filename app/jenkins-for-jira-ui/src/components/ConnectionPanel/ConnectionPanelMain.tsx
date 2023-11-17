@@ -24,26 +24,26 @@ type ConnectionPanelMainProps = {
 const ConnectionPanelMain = ({ connectedState }: ConnectionPanelMainProps): JSX.Element => {
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
-			{connectedState === ConnectedState.DUPLICATE
-				? <NotConnectedState connectedState={connectedState} />
-				: <Tabs
-					id="default"
-				>
-					<TabList>
-						{/* TODO - update (0) for connected state */}
-						<Tab>Recent events (0)</Tab>
-						<Tab>Set up guide</Tab>
-					</TabList>
-					<TabPanel>
-						{connectedState === ConnectedState.CONNECTED
-							? <Panel>List of servers goes here</Panel>
-							: <Panel><NotConnectedState connectedState={connectedState} /></Panel>
-						}
-					</TabPanel>
-					<TabPanel>
-						<Panel>Set up guide info to go here</Panel>
-					</TabPanel>
-				</Tabs>
+			{
+				connectedState === ConnectedState.DUPLICATE
+					? <NotConnectedState connectedState={connectedState} />
+					: <Tabs id="connection-panel-tabs">
+						<TabList>
+							{/* TODO - update (0) for connected state */}
+							<Tab>Recent events (0)</Tab>
+							<Tab>Set up guide</Tab>
+						</TabList>
+						<TabPanel>
+							{
+								connectedState === ConnectedState.CONNECTED
+									? <Panel>List of servers goes here</Panel>
+									: <Panel><NotConnectedState connectedState={connectedState} /></Panel>
+							}
+						</TabPanel>
+						<TabPanel>
+							<Panel>Set up guide info to go here</Panel>
+						</TabPanel>
+					</Tabs>
 			}
 		</div>
 	);
