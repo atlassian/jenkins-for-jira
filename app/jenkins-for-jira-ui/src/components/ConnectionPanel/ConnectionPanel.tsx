@@ -17,7 +17,7 @@ const ConnectionPanel = (): JSX.Element => {
 	return (
 		<div className={cx(connectionPanelContainer)}>
 			<ConnectionPanelTop connectedState={connectedState} ipAddress="10.10.0.10"/>
-			<ConnectionPanelMain />
+			<ConnectionPanelMain connectedState={connectedState} />
 		</div>
 	);
 };
