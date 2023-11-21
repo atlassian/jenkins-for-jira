@@ -33,7 +33,11 @@ const ConnectionPanel = (): JSX.Element => {
 			{jenkinsServers.map(
 				(server: JenkinsServer, index: number): JSX.Element => (
 					<div className={cx(connectionPanelContainer)} key={index}>
-						<ConnectionPanelTop connectedState={server.connectedState || ConnectedState.PENDING} ipAddress="10.10.0.10"/>
+						<ConnectionPanelTop
+							name={server.name}
+							connectedState={server.connectedState || ConnectedState.PENDING}
+							ipAddress="10.10.0.10"
+						/>
 						<ConnectionPanelMain
 							connectedState={server.connectedState || ConnectedState.PENDING}
 							jenkinsServer={server}

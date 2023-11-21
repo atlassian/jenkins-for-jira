@@ -14,7 +14,8 @@ import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
 
 type ConnectionPanelTopProps = {
 	connectedState: ConnectedState,
-	ipAddress: string
+	ipAddress: string,
+	name: string
 };
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
@@ -23,14 +24,14 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
 };
 
-const ConnectionPanelTop = ({ connectedState, ipAddress }: ConnectionPanelTopProps): JSX.Element => {
+const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanelTopProps): JSX.Element => {
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
 			<div className={cx(connectionPanelHeaderContainer)}>
 				<div className={cx(connectionPanelHeaderContentContainer)}>
-					<h2 className={cx(serverName)}>Insert name</h2>
+					<h2 className={cx(serverName)}>{name}</h2>
 					<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
 				</div>
 				<div>

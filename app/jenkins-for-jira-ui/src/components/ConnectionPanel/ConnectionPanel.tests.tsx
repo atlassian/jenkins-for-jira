@@ -6,7 +6,13 @@ import { ConnectedState } from '../StatusLabel/StatusLabel';
 describe('ConnectionPanelTop', () => {
 	test('renders with the correct content and styles for CONNECTED state', () => {
 		const ipAddress = '10.0.0.1';
-		render(<ConnectionPanelTop connectedState={ConnectedState.CONNECTED} ipAddress={ipAddress} />);
+		render(
+			<ConnectionPanelTop
+				connectedState={ConnectedState.CONNECTED}
+				ipAddress={ipAddress}
+				name="my server"
+			/>
+		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
 		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
@@ -20,7 +26,13 @@ describe('ConnectionPanelTop', () => {
 
 	test('renders with the correct content and styles for DUPLICATE state', () => {
 		const ipAddress = '10.0.0.1';
-		render(<ConnectionPanelTop connectedState={ConnectedState.DUPLICATE} ipAddress={ipAddress} />);
+		render(
+			<ConnectionPanelTop
+				connectedState={ConnectedState.DUPLICATE}
+				ipAddress={ipAddress}
+				name="my server"
+			/>
+		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
 		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
@@ -34,7 +46,13 @@ describe('ConnectionPanelTop', () => {
 
 	test('renders with the correct content and styles for PENDING state', () => {
 		const ipAddress = '10.0.0.1';
-		render(<ConnectionPanelTop connectedState={ConnectedState.PENDING} ipAddress={ipAddress} />);
+		render(
+			<ConnectionPanelTop
+				connectedState={ConnectedState.PENDING}
+				ipAddress={ipAddress}
+				name="my server"
+			/>
+		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
 		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
