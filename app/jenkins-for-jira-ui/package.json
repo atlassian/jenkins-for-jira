@@ -10,6 +10,7 @@
     "@atlaskit/avatar": "20.5.10",
     "@atlaskit/button": "16.10.1",
     "@atlaskit/css-reset": "6.5.4",
+    "@atlaskit/drawer": "^7.6.5",
     "@atlaskit/dropdown-menu": "11.14.2",
     "@atlaskit/dynamic-table": "14.11.6",
     "@atlaskit/empty-state": "7.6.3",

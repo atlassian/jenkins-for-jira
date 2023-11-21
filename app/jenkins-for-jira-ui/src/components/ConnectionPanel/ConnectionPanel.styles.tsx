@@ -50,7 +50,7 @@ export const connectionPanelMainContainer = css`
 		}
 	}
 
-	[role=tabpanel] {
+	#connection-panel-tabs-1-tab {
 		padding-left: ${token('space.0')};
 	}
 
@@ -110,7 +110,6 @@ export const notConnectedStateParagraph = css`
 export const setUpGuideContainer = css`
 	line-height: 20px;
 	margin: ${token('space.200')} 0 ${token('space.300')};
-	width: 552px;
 
 	#setup-step-one-instruction {
 		margin: ${token('space.050')} 0 ${token('space.300')} ${token('space.200')};
@@ -175,9 +174,11 @@ export const setUpGuideOrderListItemHeader = css`
 	margin-bottom: ${token('space.200')};
 `;
 
-export const setUpGuideCode = css`
-	background-color: #F0F1F4;
-	padding: ${token('space.025')} ${token('space.075')};
+export const setUpGuideLink = css`
+	background-color: inherit;
+	border: none;
+	color: ${token('color.link')};
+	padding: ${token('space.0')}
 `;
 
 export const setUpGuideInfoPanel = css`
