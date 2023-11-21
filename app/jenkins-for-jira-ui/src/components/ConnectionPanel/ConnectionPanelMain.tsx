@@ -9,8 +9,6 @@ import {
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
 import { JenkinsServer } from '../../../../src/common/types';
-import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
-import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide } from './SetUpGuide';
 
@@ -49,10 +47,6 @@ type ConnectionPanelMainProps = {
 };
 
 const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelMainProps): JSX.Element => {
-	if (!jenkinsServer) {
-		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
-	}
-
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
