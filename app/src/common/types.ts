@@ -7,12 +7,19 @@ export enum EventType {
 	DEPLOYMENT = 'deployment'
 }
 
+export enum ConnectedState {
+	CONNECTED = 'CONNECTED',
+	DUPLICATE = 'DUPLICATE',
+	PENDING = 'PENDING'
+}
+
 export interface JenkinsServer {
 	uuid: string,
 	name: string,
 	secret?: string,
 	pipelines: JenkinsPipeline[],
 	pluginConfig?: JenkinsPluginConfig;
+	connectedState?: ConnectedState
 }
 
 export interface JenkinsPipeline {

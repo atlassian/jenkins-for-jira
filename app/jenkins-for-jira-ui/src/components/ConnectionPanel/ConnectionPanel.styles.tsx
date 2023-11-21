@@ -70,6 +70,7 @@ export const connectionPanelMainTabs = css`
 	width: 100%;
 `;
 
+// Not connected state
 export const notConnectedStateContainer = css`
 	margin: 0 auto;
 	max-width: 420px;
@@ -100,4 +101,11 @@ export const notConnectedStateParagraph = css`
 	div {
 		margin-bottom: ${token('space.300')}
 	}
+`;
+
+// Connected state
+export const connectedStateContainer = css`
+	margin: 0 auto;
+	max-width: 420px;
+	text-align: center;
 `;
