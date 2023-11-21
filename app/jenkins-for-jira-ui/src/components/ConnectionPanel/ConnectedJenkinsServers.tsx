@@ -13,6 +13,20 @@ import {
 	connectedStateContainer
 } from './ConnectionPanel.styles';
 
+export const timeFromNow = (date: moment.MomentInput): string => {
+	const seconds = moment().diff(moment(date), 'seconds');
+	const minutes = moment().diff(moment(date), 'minutes');
+	const hours = moment().diff(moment(date), 'hours');
+
+	if (hours > 0) {
+		return `About ${hours} hour${hours > 1 ? 's' : ''} ago`;
+	}
+	if (minutes > 0) {
+		return `About ${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+	}
+	return `About ${seconds} second${seconds > 1 ? 's' : ''} ago`;
+};
+
 type ConnectedStateProps = {
 	connectedJenkinsServer: JenkinsServer
 };
@@ -73,7 +87,7 @@ const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps
 								<div className={cx(connectedStateCell)}>
 									{
 										moment().diff(moment(new Date(pipeline.lastEventDate)), 'hours') < 24
-											? moment(new Date(pipeline.lastEventDate)).fromNow()
+											? timeFromNow(new Date(pipeline.lastEventDate))
 											: moment(new Date(pipeline.lastEventDate)).format('Do MMMM YYYY [at] hh:mma')
 									}
 								</div>

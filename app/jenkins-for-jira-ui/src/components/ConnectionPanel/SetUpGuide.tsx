@@ -161,7 +161,7 @@ const SetUpGuide = (): JSX.Element => {
 				<PeopleGroup label="people-group" />
 				<p>
 					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
-					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />&nbsp;
+					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />
 				</p>
 			</div>
 		</div>

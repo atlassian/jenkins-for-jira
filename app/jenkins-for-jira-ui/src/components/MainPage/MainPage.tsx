@@ -19,6 +19,7 @@ const MainPage = (): JSX.Element => {
 		</ButtonGroup>
 	);
 
+	// TODO - if there are no servers, render connection wizard instead of toppanl + connection panel
 	return (
 		<div className={mainPageContainer}>
 			<div className={headerContainer}>
