@@ -36,7 +36,7 @@ const ConnectionPanel = (): JSX.Element => {
 						<ConnectionPanelTop connectedState={server.connectedState || ConnectedState.PENDING} ipAddress="10.10.0.10"/>
 						<ConnectionPanelMain
 							connectedState={server.connectedState || ConnectedState.PENDING}
-							jenkinsServers={jenkinsServers}
+							jenkinsServer={server}
 						/>
 					</div>
 				)
