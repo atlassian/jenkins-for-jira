@@ -110,6 +110,7 @@ export const notConnectedStateParagraph = css`
 export const setUpGuideContainer = css`
 	line-height: 20px;
 	margin: ${token('space.200')} 0 ${token('space.300')};
+	width: 552px;
 
 	#setup-step-one-instruction {
 		margin: ${token('space.050')} 0 ${token('space.300')} ${token('space.200')};
@@ -138,14 +139,14 @@ export const setUpGuideOrderedListItem = css`
 	margin-bottom: ${token('space.075')};
 
 	::before {
-		background: #f7f8f9;
-		border-radius: 80px;
+		background: #F7F8F9;
+		border-radius: 50%;
 		content: counter(item);
 		display: inline-block;
-		height: ${token('space.300')};
-		margin-left: ${token('space.negative.400')};
-		margin-right: ${token('space.200')};
-		padding-top: ${token('space.050')};
+		font-weight: bold;
+		height: ${token('space.400')};
+		line-height: ${token('space.400')};
+		margin: 0 ${token('space.200')} 0 ${token('space.negative.400')};
 		text-align: center;
 		width: ${token('space.400')};
 	}
@@ -157,7 +158,11 @@ export const setUpGuideNestedOrderedList = css`
 	padding-left: ${token('space.400')};
 
 	p:first-of-type {
-		margin-top: ${token('space.200')};;
+		margin-top: ${token('space.100')};;
+	}
+
+	p:not(:first-of-type) {
+		margin-top: ${token('space.075')};;
 	}
 `;
 
@@ -181,7 +186,11 @@ export const setUpGuideInfoPanel = css`
 	margin-left: ${token('space.100')};
 	padding: ${token('space.250')};
 
-	[role=tabpanel] {
-		margin-right: ${token('space.0')};
+	[role=img] {
+		margin-right: ${token('space.100')};
+	}
+
+	p {
+		margin-top: ${token('space.0')};
 	}
 `;
