@@ -71,7 +71,11 @@ const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps
 						content: (
 							<div className={cx(connectedStateCellContainer)}>
 								<div className={cx(connectedStateCell)}>
-									{moment(new Date(pipeline.lastEventDate)).format('Do MMMM YYYY [at] hh:mma')}
+									{
+										moment().diff(moment(new Date(pipeline.lastEventDate)), 'hours') < 24
+											? moment(new Date(pipeline.lastEventDate)).fromNow()
+											: moment(new Date(pipeline.lastEventDate)).format('Do MMMM YYYY [at] hh:mma')
+									}
 								</div>
 							</div>
 						)

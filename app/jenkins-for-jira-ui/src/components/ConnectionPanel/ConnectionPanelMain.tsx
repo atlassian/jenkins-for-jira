@@ -4,7 +4,7 @@ import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
-	connectionPanelMainNotConnectedTabs
+	connectionPanelMainNotConnectedTabs, setUpGuideContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
@@ -12,6 +12,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
+import { SetUpGuide } from './SetUpGuide';
 
 // TODO - remove ? for children and connectedState once set up guide is merged
 type PanelProps = {
@@ -24,18 +25,23 @@ export const Panel = ({
 	children,
 	connectedState,
 	testId
-}: PanelProps) => (
-	<div
-		className={cx(
-			connectedState === ConnectedState.CONNECTED
-				? connectionPanelMainConnectedTabs
-				: connectionPanelMainNotConnectedTabs
-		)}
-		data-testid={testId}
-	>
-		{children}
-	</div>
-);
+}: PanelProps) => {
+	let className;
+
+	if (testId === 'setUpGuidePanel') {
+		className = setUpGuideContainer;
+	} else if (connectedState === ConnectedState.CONNECTED) {
+		className = connectionPanelMainConnectedTabs;
+	} else {
+		className = connectionPanelMainNotConnectedTabs;
+	}
+
+	return (
+		<div className={cx(className)} data-testid={testId}>
+			{children}
+		</div>
+	);
+};
 
 type ConnectionPanelMainProps = {
 	connectedState: ConnectedState,
@@ -54,11 +60,10 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 					? <NotConnectedState connectedState={connectedState} />
 					: <Tabs id="connection-panel-tabs">
 						<TabList>
-							{/* TODO - update (0) for connected state with number of pipeline events */}
 							{
 								connectedState === ConnectedState.PENDING
 									? <Tab>Recent events (0)</Tab>
-									: <Tab>Recent events (12)</Tab>
+									: <Tab>Recent events ({jenkinsServer.pipelines.length})</Tab>
 							}
 							<Tab>Set up guide</Tab>
 						</TabList>
@@ -66,14 +71,16 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 						<TabPanel>
 							{
 								connectedState === ConnectedState.CONNECTED
-									?	<Panel connectedState={connectedState}>
+									?	<Panel connectedState={connectedState} testId="connectedServersPanel">
 										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 									</Panel>
-									: <Panel><NotConnectedState connectedState={connectedState} /></Panel>
+									: <Panel testId="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel>Set up guide info to go here</Panel>
+							<Panel testId="setUpGuidePanel">
+								<SetUpGuide />
+							</Panel>
 						</TabPanel>
 					</Tabs>
 			}
