@@ -6,6 +6,7 @@ import {
 } from 'react-router';
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
+import { token } from '@atlaskit/tokens';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { setGlobalTheme } from '@atlaskit/tokens';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
@@ -54,6 +55,7 @@ export const environmentSettings = {
 const AppContainer = styled.div`
 	color: #172B4D;
 	margin: 24px 36px 24px 0;
+	padding-bottom: ${token('space.300')};
 `;
 
 const App: React.FC = () => {
