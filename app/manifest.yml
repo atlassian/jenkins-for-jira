@@ -11,7 +11,7 @@ modules:
     - key: get-started-page
       resource: main
       resolver:
-        function: redirectFromGetStarted
+        function: resolver
       title: Jenkins for Jira
       layout: basic
       icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
@@ -40,8 +40,6 @@ modules:
   function:
     - key: resolver
       handler: index.resolver
-    - key: redirectFromGetStarted
-      handler: index.redirectFromGetStarted
     - key: handle-jenkins-request
       handler: index.handleJenkinsRequest
     - key: reset-jenkins-request
