@@ -51,6 +51,8 @@ export default async function handleJenkinsRequest(
 
 		let response;
 
+		logger.info('jenkinsRequest: ', jenkinsRequest);
+
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
 				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId, logger);
