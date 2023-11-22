@@ -16,17 +16,17 @@ import { SetUpGuide } from './SetUpGuide';
 type PanelProps = {
 	children?: ReactNode,
 	connectedState?: ConnectedState,
-	testId?: string
+	'data-testid'?: string
 };
 
 export const Panel = ({
 	children,
 	connectedState,
-	testId
+	'data-testid': testid
 }: PanelProps) => {
 	let className;
 
-	if (testId === 'setUpGuidePanel') {
+	if (testid === 'setUpGuidePanel') {
 		className = setUpGuideContainer;
 	} else if (connectedState === ConnectedState.CONNECTED) {
 		className = connectionPanelMainConnectedTabs;
@@ -35,7 +35,7 @@ export const Panel = ({
 	}
 
 	return (
-		<div className={cx(className)} data-testid={testId}>
+		<div className={cx(className)} data-testid={testid}>
 			{children}
 		</div>
 	);
@@ -65,14 +65,14 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 						<TabPanel>
 							{
 								connectedState === ConnectedState.CONNECTED
-									?	<Panel connectedState={connectedState} testId="connectedServersPanel">
+									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 									</Panel>
-									: <Panel testId="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
+									: <Panel data-testid="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel testId="setUpGuidePanel">
+							<Panel data-testid="setUpGuidePanel">
 								<SetUpGuide />
 							</Panel>
 						</TabPanel>
