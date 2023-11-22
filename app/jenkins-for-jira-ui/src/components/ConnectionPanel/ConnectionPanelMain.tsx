@@ -1,18 +1,20 @@
 import React, { ReactNode } from 'react';
 import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
-import { connectionPanelMainContainer, connectionPanelMainTabs } from './ConnectionPanel.styles';
+import { connectionPanelMainContainer, connectionPanelMainTabs, setUpGuideContainer } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
+import { SetUpGuide } from './SetUpGuide';
 
 export const Panel = ({
 	children,
-	testId
+	'data-testid': testid
 }: {
 	children: ReactNode;
-	testId?: string;
+	'data-testid'?: string;
 }) => (
-	<div className={cx(connectionPanelMainTabs)} data-testid={testId}>
+	<div className={cx(testid === 'setUpGuidePanel'
+		? setUpGuideContainer : connectionPanelMainTabs)} data-testid={testid }>
 		{children}
 	</div>
 );
@@ -36,12 +38,14 @@ const ConnectionPanelMain = ({ connectedState }: ConnectionPanelMainProps): JSX.
 						<TabPanel>
 							{
 								connectedState === ConnectedState.CONNECTED
-									? <Panel>List of servers goes here</Panel>
-									: <Panel><NotConnectedState connectedState={connectedState} /></Panel>
+									? <Panel data-testid="connectedServersPanel">List of servers goes here</Panel>
+									: <Panel data-testid="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel>Set up guide info to go here</Panel>
+							<Panel data-testid="setUpGuidePanel">
+								<SetUpGuide />
+							</Panel>
 						</TabPanel>
 					</Tabs>
 			}
