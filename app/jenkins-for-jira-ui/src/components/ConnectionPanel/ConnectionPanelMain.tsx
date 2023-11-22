@@ -65,14 +65,14 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 						<TabPanel>
 							{
 								connectedState === ConnectedState.CONNECTED
-									?	<Panel connectedState={connectedState} testId="connectedServersPanel">
+									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 									</Panel>
-									: <Panel testId="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
+									: <Panel data-testid="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel testId="setUpGuidePanel">
+							<Panel data-testid="setUpGuidePanel">
 								<SetUpGuide />
 							</Panel>
 						</TabPanel>
