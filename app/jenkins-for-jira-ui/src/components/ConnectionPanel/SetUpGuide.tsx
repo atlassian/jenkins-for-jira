@@ -10,7 +10,8 @@ import {
 	setUpGuideOrderedList,
 	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
-	setUpGuideParagraph, setUpGuideContainer
+	setUpGuideParagraph,
+	setUpGuideContainer
 } from './ConnectionPanel.styles';
 
 type SetUpGuideLinkProps = {

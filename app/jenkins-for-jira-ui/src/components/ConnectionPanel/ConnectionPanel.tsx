@@ -11,7 +11,7 @@ const ConnectionPanel = (): JSX.Element => {
 
 	useEffect(() => {
 		// TODO - update this based on data
-		setConnectState(ConnectedState.CONNECTED);
+		setConnectState(ConnectedState.DUPLICATE);
 	}, []);
 
 	return (
