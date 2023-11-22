@@ -8,13 +8,13 @@ import { SetUpGuide } from './SetUpGuide';
 
 export const Panel = ({
 	children,
-	testId
+	'data-testid': testid
 }: {
 	children: ReactNode;
-	testId?: string;
+	'data-testid'?: string;
 }) => (
-	<div className={cx(testId === 'setUpGuidePanel'
-		? setUpGuideContainer : connectionPanelMainTabs)} data-testid={testId}>
+	<div className={cx(testid === 'setUpGuidePanel'
+		? setUpGuideContainer : connectionPanelMainTabs)} data-testid={testid }>
 		{children}
 	</div>
 );
@@ -38,12 +38,12 @@ const ConnectionPanelMain = ({ connectedState }: ConnectionPanelMainProps): JSX.
 						<TabPanel>
 							{
 								connectedState === ConnectedState.CONNECTED
-									? <Panel testId="connectedServersPanel">List of servers goes here</Panel>
-									: <Panel testId="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
+									? <Panel data-testid="connectedServersPanel">List of servers goes here</Panel>
+									: <Panel data-testid="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel testId="setUpGuidePanel">
+							<Panel data-testid="setUpGuidePanel">
 								<SetUpGuide />
 							</Panel>
 						</TabPanel>
