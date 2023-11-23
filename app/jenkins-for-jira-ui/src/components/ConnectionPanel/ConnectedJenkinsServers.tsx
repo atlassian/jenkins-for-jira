@@ -9,7 +9,8 @@ import {
 } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import {
 	connectedStateCell,
-	connectedStateCellContainer, connectedStateCellEvent,
+	connectedStateCellContainer,
+	connectedStateCellEvent,
 	connectedStateContainer
 } from './ConnectionPanel.styles';
 
@@ -31,8 +32,22 @@ type ConnectedStateProps = {
 	connectedJenkinsServer: JenkinsServer
 };
 
+type TableHead = {
+	cells: {
+		key: string;
+		content: string;
+	}[];
+};
+
+interface Row {
+	cells: {
+		key: string;
+		content: React.ReactNode;
+	}[];
+}
+
 const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps): JSX.Element => {
-	const tableHead = () => {
+	const tableHead = ():TableHead => {
 		return {
 			cells: [
 				{
@@ -51,9 +66,9 @@ const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps
 		};
 	};
 
-	const rows = (serverName: string, serverId: string, pipelines: JenkinsPipeline[] = []) => {
+	const rows = (serverName: string, serverId: string, pipelines: JenkinsPipeline[] = []): Row[] => {
 		return (
-			pipelines.map((pipeline) => ({
+			pipelines.map((pipeline: JenkinsPipeline) => ({
 				cells: [
 					{
 						key: 'job',
