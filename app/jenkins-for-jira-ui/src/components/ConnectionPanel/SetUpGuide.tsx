@@ -132,6 +132,10 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 		setIsDrawerOpen(false);
 	};
 
+	if (!pluginConfig) {
+		return <div>Yet to be decided...</div>;
+	}
+
 	return (
 		<div className={cx(setUpGuideContainer)}>
 			<Drawer
