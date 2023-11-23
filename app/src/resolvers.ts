@@ -88,4 +88,8 @@ resolver.define('redirectFromGetStarted', async (req): Promise<RedirectFromGetSt
 	return redirectFromGetStarted(req);
 });
 
+resolver.define('fetchModuleKey', async (req): Promise<string> => {
+	return fetchModuleKey(req);
+});
+
 export default resolver.getDefinitions();
