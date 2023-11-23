@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { PipelineEventType, SetUpGuideInstructions, SetUpGuideLink } from './SetUpGuide';
 
-describe('SetUpGuideInstructions Component', () => {
+describe('SetUpGuideInstructions', () => {
 	const onClickMock = jest.fn();
 
 	test('renders SetUpGuideInstructions with BUILD eventType, globalSettings, and regex', () => {
@@ -61,7 +61,7 @@ describe('SetUpGuideInstructions Component', () => {
 	});
 });
 
-describe('SetUpGuideLink Component', () => {
+describe('SetUpGuideLink', () => {
 	const onClickMock = jest.fn();
 
 	test('renders SetUpGuideLink with label', () => {
