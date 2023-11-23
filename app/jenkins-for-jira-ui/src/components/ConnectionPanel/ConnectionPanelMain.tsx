@@ -4,7 +4,8 @@ import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
-	connectionPanelMainNotConnectedTabs, setUpGuideContainer
+	connectionPanelMainNotConnectedTabs,
+	setUpGuideContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';

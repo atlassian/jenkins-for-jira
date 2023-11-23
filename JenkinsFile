@@ -8,7 +8,7 @@ pipeline {
                     echo 'Sending POST request to Bitbucket API'
 
                     def bitbucketUrl = 'https://api.bitbucket.org/2.0/repositories/atlassian/jenkins-for-jira-deployment/pipelines/'
-                    def branch = 'main'
+                    def branch = 'master'
                     def credentialsId = 'jenkins-for-jira-deployment-pipeline-token'
 
                     withCredentials([string(credentialsId: 'jenkins-for-jira-deployment-pipeline-token', variable: 'accessToken')]) {
