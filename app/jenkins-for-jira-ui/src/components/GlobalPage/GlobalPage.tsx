@@ -9,7 +9,6 @@ type GlobalPageProps = {
 };
 
 export const GlobalPage = (props: GlobalPageProps): JSX.Element => {
-	console.log('DATA: ', props.moduleKey);
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -20,7 +19,7 @@ export const GlobalPage = (props: GlobalPageProps): JSX.Element => {
 		fetchAllJenkinsServers();
 	}, []);
 
-	console.log('JENKINS SERVERS: ', jenkinsServers);
+	console.log('JENKINS SERVERS: ', jenkinsServers, props.moduleKey);
 
 	if (!jenkinsServers) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;

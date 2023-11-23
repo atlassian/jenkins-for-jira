@@ -41,6 +41,7 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
+	console.log('REQ: ', req);
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
