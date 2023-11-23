@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Drawer from '@atlaskit/drawer';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
@@ -20,7 +20,7 @@ type SetUpGuideLinkProps = {
 	label: string,
 };
 
-const SetUpGuideLink = ({ onClick, label }: SetUpGuideLinkProps): JSX.Element => {
+export const SetUpGuideLink = ({ onClick, label }: SetUpGuideLinkProps): JSX.Element => {
 	return (
 		<button className={cx(setUpGuideLink)} onClick={onClick}>
 			{label}
@@ -47,7 +47,7 @@ const SetUpGuidePipelineStepInstruction = ({
 	);
 };
 
-enum PipelineEventType {
+export enum PipelineEventType {
 	BUILD = 'build',
 	DEPLOYMENT = 'deployment'
 }
@@ -55,47 +55,64 @@ enum PipelineEventType {
 type SetUpGuideInstructionsProps = {
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	eventType: PipelineEventType,
-	globalSettings: boolean,
-	buildFilters: boolean
+	globalSettings?: boolean,
+	regex?: string
 };
 
-const SetUpGuideInstructions = ({
+export const SetUpGuideInstructions = ({
 	onClick,
 	eventType,
 	globalSettings,
-	buildFilters
+	regex
 }: SetUpGuideInstructionsProps): JSX.Element => {
-	const pipelineStepLabel = eventType === PipelineEventType.BUILD ? 'jiraSendBuildInfo' : 'jiraSendDeploymentInfo';
+	const pipelineStepLabel =
+		eventType === PipelineEventType.BUILD
+			? 'jiraSendBuildInfo'
+			: 'jiraSendDeploymentInfo';
+
+	let contentToRender;
+
+	if (
+		globalSettings &&
+		((eventType === PipelineEventType.DEPLOYMENT) ||
+			(eventType === PipelineEventType.BUILD && regex?.length))
+	) {
+		contentToRender = (
+			<>
+				<SetUpGuidePipelineStepInstruction
+					eventType={eventType}
+					onClick={onClick}
+					pipelineStepLabel={pipelineStepLabel}
+				/>
+				<p>
+					<strong>OR</strong>
+				</p>
+				<p>
+					Use &nbsp;
+					<SetUpGuideLink
+						onClick={onClick}
+						label={regex || '<regex>'}
+					/>
+					&nbsp; in the names of the {eventType} stages.
+				</p>
+			</>
+		);
+	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
+		contentToRender = <p><SetUpGuideLink onClick={onClick} label="No setup required" /></p>;
+	} else {
+		contentToRender = (
+			<SetUpGuidePipelineStepInstruction
+				eventType={eventType}
+				onClick={onClick}
+				pipelineStepLabel={pipelineStepLabel}
+			/>
+		);
+	}
 
 	return (
 		<li className={cx(setUpGuideNestedOrderedListItem)}>
-			Set up what {eventType} events are sent to Jira:
-			{
-				!globalSettings
-					? <SetUpGuidePipelineStepInstruction
-						eventType={eventType}
-						onClick={onClick}
-						pipelineStepLabel={pipelineStepLabel}
-					/>
-					: <>
-						{
-							!buildFilters && eventType === PipelineEventType.BUILD
-								? <p><SetUpGuideLink onClick={onClick} label="No setup required" /></p>
-								: <>
-									<SetUpGuidePipelineStepInstruction
-										eventType={eventType}
-										onClick={onClick}
-										pipelineStepLabel={pipelineStepLabel}
-									/>
-									<p><strong>OR</strong></p>
-									<p>Use &nbsp;
-										<SetUpGuideLink onClick={onClick} label="&lt;regex&gt;" />&nbsp;
-										in the names of the {eventType} stages.
-									</p>
-								</>
-						}
-					</>
-			}
+			Set up what {eventType} events are sent to Jira: {pipelineStepLabel}
+			{contentToRender}
 		</li>
 	);
 };
@@ -106,16 +123,6 @@ type SetUpGuideProps = {
 
 const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [areGlobalSettingsOn, setAreGlobalSettingsOn] = useState(false);
-	const [hasBuildFilters, setHasBuildFilters] = useState(false);
-
-	useEffect(() => {
-		// TODO - update global settings based on new data received from Jenkins plugin
-		setAreGlobalSettingsOn(false);
-		if (pluginConfig?.autoBuildEnabled && pluginConfig.autoBuildRegex) {
-			setHasBuildFilters(true);
-		}
-	}, [pluginConfig?.autoBuildEnabled, pluginConfig?.autoBuildRegex]);
 
 	const openDrawer = () => {
 		setIsDrawerOpen(true);
@@ -152,14 +159,14 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 						<SetUpGuideInstructions
 							onClick={openDrawer}
 							eventType={PipelineEventType.BUILD}
-							globalSettings={areGlobalSettingsOn}
-							buildFilters={hasBuildFilters}
+							globalSettings={!!pluginConfig?.autoBuildEnabled}
+							regex={pluginConfig?.autoBuildRegex}
 						/>
 						<SetUpGuideInstructions
 							onClick={openDrawer}
 							eventType={PipelineEventType.DEPLOYMENT}
-							globalSettings={areGlobalSettingsOn}
-							buildFilters={hasBuildFilters}
+							globalSettings={!!pluginConfig?.autoDeploymentsEnabled}
+							regex={pluginConfig?.autoDeploymentsRegex}
 						/>
 					</ol>
 				</li>
