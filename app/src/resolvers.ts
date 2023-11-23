@@ -14,6 +14,7 @@ import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
 import { RedirectFromGetStarted, redirectFromGetStarted } from './utils/redirect-from-get-started';
 import { fetchFeatureFlag } from './config/feature-flags';
+import { fetchModuleKey } from './utils/fetch-module-key';
 
 const resolver = new Resolver();
 

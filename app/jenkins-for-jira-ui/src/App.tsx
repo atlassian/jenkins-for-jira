@@ -21,6 +21,8 @@ import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { FeatureFlags } from './hooks/useFeatureFlag';
 import { MainPage } from './components/MainPage/MainPage';
+import { fetchModuleKey } from './api/fetchModuleKey';
+import { GlobalPage } from './components/GlobalPage/GlobalPage';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -61,6 +63,7 @@ const AppContainer = styled.div`
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
+	const [moduleKey, setModuleKey] = useState<string>('');
 
 	const fetchFeatureFlag = useCallback(async () => {
 		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
@@ -69,12 +72,18 @@ const App: React.FC = () => {
 		setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
 	}, []);
 
+	const getModuleKey = useCallback(async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	}, []);
+
 	useEffect(() => {
 		view.createHistory().then((historyUpdates) => {
 			setHistory(historyUpdates);
 		});
 		fetchFeatureFlag();
-	}, [fetchFeatureFlag]);
+		getModuleKey();
+	}, [fetchFeatureFlag, getModuleKey]);
 
 	if (!history) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
@@ -89,33 +98,44 @@ const App: React.FC = () => {
 	});
 
 	return (
-		<AppContainer>
-			<Router history={history}>
-				<Switch>
-					<Route exact path="/">
-						{renovateConfigFlag
-							? <MainPage />
-							: <JenkinsServerList />
-						}
-					</Route>
-					<Route path="/install">
-						<InstallJenkins />
-					</Route>
-					<Route path="/create">
-						<CreateServer />
-					</Route>
-					<Route path="/connect/:id">
-						<ConnectJenkins />
-					</Route>
-					<Route path="/manage/:id">
-						<ManageConnection />
-					</Route>
-					<Route path="/pending/:id">
-						<PendingDeploymentState />
-					</Route>
-				</Switch>
-			</Router>
-		</AppContainer>
+		<>
+			{moduleKey === 'jenkins-for-jira-global-page'
+				? <Router history={history}>
+					<Switch>
+						<Route path="/">
+							<GlobalPage moduleKey={moduleKey} />
+						</Route>
+					</Switch>
+				</Router>
+				: <AppContainer>
+					<Router history={history}>
+						<Switch>
+							<Route exact path="/">
+								{renovateConfigFlag
+									? <MainPage />
+									: <JenkinsServerList />
+								}
+							</Route>
+							<Route path="/install">
+								<InstallJenkins />
+							</Route>
+							<Route path="/create">
+								<CreateServer />
+							</Route>
+							<Route path="/connect/:id">
+								<ConnectJenkins />
+							</Route>
+							<Route path="/manage/:id">
+								<ManageConnection />
+							</Route>
+							<Route path="/pending/:id">
+								<PendingDeploymentState />
+							</Route>
+						</Switch>
+					</Router>
+				</AppContainer>
+			}
+		</>
 	);
 };
 
