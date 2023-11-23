@@ -99,7 +99,7 @@ const App: React.FC = () => {
 
 	return (
 		<>
-			{moduleKey === 'jenkins-for-jira-global-page'
+			{moduleKey === 'jenkins-for-jira-global-page' && renovateConfigFlag
 				? <Router history={history}>
 					<Switch>
 						<Route path="/">
