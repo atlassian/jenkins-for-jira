@@ -15,7 +15,8 @@ import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
 type ConnectionPanelTopProps = {
 	connectedState: ConnectedState,
 	ipAddress?: string,
-	name: string
+	name: string,
+	moduleKey?: string
 };
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
@@ -24,7 +25,12 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
 };
 
-const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanelTopProps): JSX.Element => {
+const ConnectionPanelTop = ({
+	connectedState,
+	ipAddress,
+	name,
+	moduleKey
+}: ConnectionPanelTopProps): JSX.Element => {
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 
 	return (
@@ -41,22 +47,25 @@ const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanel
 					}
 				</div>
 			</div>
-			<DropdownMenu
-				trigger={({ triggerRef, ...props }) => (
-					<Button
-						{...props}
-						iconBefore={<MoreIcon label="more" />}
-						ref={triggerRef}
-					/>
-				)}
-			>
-				<DropdownItemGroup>
-					{/* TODO: add onClick for all dropdown items */}
-					<DropdownItem>Rename</DropdownItem>
-					<DropdownItem>Connection settings</DropdownItem>
-					<DropdownItem>Disconnect</DropdownItem>
-				</DropdownItemGroup>
-			</DropdownMenu>
+			{
+				moduleKey && moduleKey === 'jenkins-for-jira-ui-admin-page' &&
+					<DropdownMenu
+						trigger={({ triggerRef, ...props }) => (
+							<Button
+								{...props}
+								iconBefore={<MoreIcon label="more" />}
+								ref={triggerRef}
+							/>
+						)}
+					>
+						<DropdownItemGroup>
+							{/* TODO: add onClick for all dropdown items */}
+							<DropdownItem>Rename</DropdownItem>
+							<DropdownItem>Connection settings</DropdownItem>
+							<DropdownItem>Disconnect</DropdownItem>
+						</DropdownItemGroup>
+					</DropdownMenu>
+			}
 		</div>
 	);
 };

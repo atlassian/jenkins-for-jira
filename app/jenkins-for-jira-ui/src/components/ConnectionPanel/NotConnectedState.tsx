@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
 import { token } from '@atlaskit/tokens';
@@ -9,12 +9,24 @@ import {
 	notConnectedStateParagraph,
 	notConnectedTempImgPlaceholder
 } from './ConnectionPanel.styles';
+import { fetchModuleKey } from '../../api/fetchModuleKey';
 
 type NotConnectedStateProps = {
-	connectedState: ConnectedState
+	connectedState: ConnectedState,
+	moduleKey?: string
 };
 
 const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Element => {
+	const [moduleKey, setModuleKey] = useState<string>('');
+	const getModuleKey = async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	};
+
+	useEffect(() => {
+		getModuleKey();
+	}, []);
+
 	const notConnectedHeader =
 		connectedState === ConnectedState.PENDING ? 'Connection pending' : 'Duplicate server';
 	const notConnectedContent =
@@ -35,17 +47,24 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 				</>
 			);
 
+	let actionToRender;
+	console.log('WTF: ', moduleKey);
+
+	if (moduleKey === 'jenkins-for-jira-global-page') {
+		actionToRender = null;
+	} else if (connectedState === ConnectedState.PENDING) {
+		actionToRender = <Button>Connection settings</Button>;
+	} else {
+		actionToRender = <Button appearance="danger" style={{ marginBottom: `${token('space.400')}` }}>Delete</Button>;
+	}
+
 	return (
 		<div className={cx(notConnectedStateContainer)}>
 			<div className={cx(notConnectedTempImgPlaceholder)}></div>
 			<h3 className={cx(notConnectedStateHeader)}>{notConnectedHeader}</h3>
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedContent}</p>
 			{/* TODO - add onClick handler */}
-			{
-				connectedState === ConnectedState.PENDING
-					? <Button>Connection settings</Button>
-					: <Button appearance="danger" style={{ marginBottom: `${token('space.400')}` }}>Delete</Button>
-			}
+			{actionToRender}
 		</div>
 	);
 };

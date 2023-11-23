@@ -41,8 +41,10 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	console.log('REQ: ', req);
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== 'jenkins-for-jira-global-page') {
+		await adminPermissionCheck(req);
+	}
+
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
 });

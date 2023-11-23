@@ -42,10 +42,16 @@ export const Panel = ({
 
 type ConnectionPanelMainProps = {
 	connectedState: ConnectedState,
-	jenkinsServer: JenkinsServer
+	jenkinsServer: JenkinsServer,
+	moduleKey?: string
 };
 
-const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelMainProps): JSX.Element => {
+const ConnectionPanelMain = ({
+	connectedState,
+	jenkinsServer,
+	moduleKey
+}: ConnectionPanelMainProps): JSX.Element => {
+	console.log('ffs', moduleKey);
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
@@ -67,7 +73,9 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 									</Panel>
-									: <Panel data-testid="notConnectedPanel"><NotConnectedState connectedState={connectedState} /></Panel>
+									: <Panel data-testid="notConnectedPanel">
+										<NotConnectedState connectedState={connectedState} moduleKey={moduleKey}/>
+									</Panel>
 							}
 						</TabPanel>
 						<TabPanel>

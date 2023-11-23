@@ -6,6 +6,7 @@ import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
+import { fetchModuleKey } from '../../api/fetchModuleKey';
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -33,6 +34,7 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 
 const ConnectionPanel = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
+	const [moduleKey, setModuleKey] = useState<string>('');
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -40,9 +42,17 @@ const ConnectionPanel = (): JSX.Element => {
 		setJenkinsServers(serversWithConnectedState);
 	};
 
+	const getModuleKey = async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	};
+
 	useEffect(() => {
+		getModuleKey();
 		fetchAllJenkinsServers();
 	}, []);
+
+	console.log('moduleKey asdfafs', moduleKey);
 
 	return (
 		<>
@@ -55,10 +65,12 @@ const ConnectionPanel = (): JSX.Element => {
 								name={server.name}
 								connectedState={server.connectedState || ConnectedState.PENDING}
 								ipAddress={ipAddress}
+								moduleKey={moduleKey}
 							/>
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}
 								jenkinsServer={server}
+								moduleKey={moduleKey}
 							/>
 						</div>
 					);

@@ -78,14 +78,17 @@ const App: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		view.createHistory().then((historyUpdates) => {
+		const fetchData = async () => {
+			const historyUpdates = await view.createHistory();
 			setHistory(historyUpdates);
-		});
-		fetchFeatureFlag();
-		getModuleKey();
+			fetchFeatureFlag();
+			getModuleKey();
+		};
+
+		fetchData();
 	}, [fetchFeatureFlag, getModuleKey]);
 
-	if (!history) {
+	if (!history || !moduleKey) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -97,24 +100,26 @@ const App: React.FC = () => {
 		typography: 'typography'
 	});
 
+	console.log('moduleKey', moduleKey);
+
 	return (
 		<>
-			{moduleKey === 'jenkins-for-jira-global-page'
-				? <Router history={history}>
-					<Switch>
-						<Route path="/">
-							<GlobalPage moduleKey={moduleKey} />
-						</Route>
-					</Switch>
-				</Router>
-				: <AppContainer>
+			{moduleKey === 'jenkins-for-jira-global-page' ? (
+				<AppContainer>
+					<Router history={history}>
+						<Switch>
+							<Route path="/">
+								<GlobalPage />
+							</Route>
+						</Switch>
+					</Router>
+				</AppContainer>
+			) : (
+				<AppContainer>
 					<Router history={history}>
 						<Switch>
 							<Route exact path="/">
-								{renovateConfigFlag
-									? <MainPage />
-									: <JenkinsServerList />
-								}
+								{renovateConfigFlag ? <MainPage /> : <JenkinsServerList />}
 							</Route>
 							<Route path="/install">
 								<InstallJenkins />
@@ -134,7 +139,7 @@ const App: React.FC = () => {
 						</Switch>
 					</Router>
 				</AppContainer>
-			}
+			)}
 		</>
 	);
 };
