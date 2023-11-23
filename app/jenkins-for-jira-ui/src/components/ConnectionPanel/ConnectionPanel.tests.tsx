@@ -74,6 +74,24 @@ const servers: JenkinsServer[] = [
 				lastEventDate: new Date()
 			}
 		]
+	},
+	{
+		name: 'server six',
+		uuid: '56046af9-d0eb-4efb-8896-hsdbf723rh2r',
+		pluginConfig: {
+			ipAddress: '10.10.10.10',
+			lastUpdatedOn: new Date()
+		},
+		pipelines: []
+	},
+	{
+		name: 'server seven',
+		uuid: '56046af9-d0eb-4efb-8896-iwer23rjesu',
+		pluginConfig: {
+			ipAddress: '10.10.10.10',
+			lastUpdatedOn: new Date()
+		},
+		pipelines: []
 	}
 ];
 
@@ -107,6 +125,15 @@ describe('addConnectedState', () => {
 		const result = addConnectedState(noPluginConfig);
 
 		expect(result[0].connectedState).toEqual(ConnectedState.PENDING);
+	});
+
+	it('should correctly set state for multiple servers with duplicate IPs and no pipelines', () => {
+		const duplicateServers: JenkinsServer[] = [servers[2], servers[5], servers[6]];
+		const result = addConnectedState(duplicateServers);
+
+		expect(result[0].connectedState).toEqual(ConnectedState.PENDING);
+		expect(result[1].connectedState).toEqual(ConnectedState.DUPLICATE);
+		expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 	});
 });
 

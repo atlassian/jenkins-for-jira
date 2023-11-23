@@ -13,7 +13,6 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 
 		let results: Result[] = [];
 		let response = await fetchInitialResult();
-		logger.info('response: ', response);
 		results = response.results;
 
 		while (response.nextCursor) {
