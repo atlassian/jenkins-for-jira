@@ -61,9 +61,18 @@ export const connectionPanelMainContainer = css`
 			}
 		}
 	}
+
+	#connection-panel-tabs-0-tab {
+		padding: 0;
+	}
 `;
 
-export const connectionPanelMainTabs = css`
+export const connectionPanelMainConnectedTabs = css`
+	margin-top: ${token('space.100')};
+	width: 100%;
+`;
+
+export const connectionPanelMainNotConnectedTabs = css`
 	align-items: center;
 	border-radius: 3px;
 	display: flex;
@@ -74,8 +83,9 @@ export const connectionPanelMainTabs = css`
 	width: 100%;
 `;
 
+// Not connected state
 export const notConnectedStateContainer = css`
-	margin: 0 auto;
+	margin:  ${token('space.0')} auto;
 	max-width: 420px;
 	text-align: center;
 `;
@@ -102,7 +112,39 @@ export const notConnectedStateParagraph = css`
 	margin-bottom: ${token('space.400')};
 
 	div {
-		margin-bottom: ${token('space.300')}
+		margin-bottom: ${token('space.300')};
+	}
+`;
+
+// Connected state
+export const connectedStateContainer = css`
+	margin-top: ${token('space.200')};
+
+	table {
+		border-bottom: none;
+	}
+
+	tr:hover {
+		background-color: #FFF;
+	}
+`;
+
+export const connectedStateCellContainer = css`
+	align-items: center;
+	display: flex;
+`;
+
+export const connectedStateCell = css`
+	font-size: 14px;
+	line-height: 20px;
+	margin: ${token('space.050')} 0;
+`;
+
+export const connectedStateCellEvent = css`
+	margin-left: ${token('space.100')};
+
+	&:first-letter {
+		text-transform: capitalize;
 	}
 `;
 

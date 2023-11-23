@@ -4,21 +4,48 @@ import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
+import { JenkinsServer } from '../../../../src/common/types';
+import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
+
+// TODO - add DUPLICATE state once I'm pulling in new data from backend
+export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
+	return servers.map((server: JenkinsServer) => ({
+		...server,
+		connectedState: server.pipelines.length === 0 ? ConnectedState.PENDING : ConnectedState.CONNECTED
+	}));
+};
 
 const ConnectionPanel = (): JSX.Element => {
-	// TODO - remove temp state and define pending/duplicate/connected state from data
-	const [connectedState, setConnectState] = useState<ConnectedState>(ConnectedState.PENDING);
+	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
+
+	const fetchAllJenkinsServers = async () => {
+		const servers = await getAllJenkinsServers() || [];
+		const serversWithConnectedState = addConnectedState(servers);
+		setJenkinsServers(serversWithConnectedState);
+	};
 
 	useEffect(() => {
-		// TODO - update this based on data
-		setConnectState(ConnectedState.DUPLICATE);
+		fetchAllJenkinsServers();
 	}, []);
 
 	return (
-		<div className={cx(connectionPanelContainer)}>
-			<ConnectionPanelTop connectedState={connectedState} ipAddress="10.10.0.10"/>
-			<ConnectionPanelMain connectedState={connectedState} />
-		</div>
+		<>
+			{jenkinsServers.map(
+				(server: JenkinsServer, index: number): JSX.Element => (
+					<div className={cx(connectionPanelContainer)} key={index}>
+						<ConnectionPanelTop
+							name={server.name}
+							connectedState={server.connectedState || ConnectedState.PENDING}
+							ipAddress="10.10.0.10"
+						/>
+						<ConnectionPanelMain
+							connectedState={server.connectedState || ConnectedState.PENDING}
+							jenkinsServer={server}
+						/>
+					</div>
+				)
+			)}
+		</>
 	);
 };
 
