@@ -7,12 +7,28 @@ import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 
-// TODO - add DUPLICATE state once I'm pulling in new data from backend
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
-	return servers.map((server: JenkinsServer) => ({
-		...server,
-		connectedState: server.pipelines.length === 0 ? ConnectedState.PENDING : ConnectedState.CONNECTED
-	}));
+	const ipAddressSet = new Set<string>();
+
+	return servers
+		.slice() // Create a shallow copy to avoid mutating the original array
+		.sort((a, b) => b.pipelines.length - a.pipelines.length)
+		.map((server: JenkinsServer) => {
+			const ipAddress = server.pluginConfig?.ipAddress;
+			let connectedState = ConnectedState.PENDING;
+
+			if (ipAddress && ipAddressSet.has(ipAddress)) {
+				connectedState = ConnectedState.DUPLICATE;
+			} else if (server.pipelines.length > 0 && ipAddress) {
+				connectedState = ConnectedState.CONNECTED;
+				ipAddressSet.add(ipAddress);
+			}
+
+			return {
+				...server,
+				connectedState
+			};
+		});
 };
 
 const ConnectionPanel = (): JSX.Element => {
@@ -31,19 +47,22 @@ const ConnectionPanel = (): JSX.Element => {
 	return (
 		<>
 			{jenkinsServers.map(
-				(server: JenkinsServer, index: number): JSX.Element => (
-					<div className={cx(connectionPanelContainer)} key={index}>
-						<ConnectionPanelTop
-							name={server.name}
-							connectedState={server.connectedState || ConnectedState.PENDING}
-							ipAddress="10.10.0.10"
-						/>
-						<ConnectionPanelMain
-							connectedState={server.connectedState || ConnectedState.PENDING}
-							jenkinsServer={server}
-						/>
-					</div>
-				)
+				(server: JenkinsServer, index: number): JSX.Element => {
+					const ipAddress = server.pluginConfig?.ipAddress;
+					return (
+						<div className={cx(connectionPanelContainer)} key={index}>
+							<ConnectionPanelTop
+								name={server.name}
+								connectedState={server.connectedState || ConnectedState.PENDING}
+								ipAddress={ipAddress}
+							/>
+							<ConnectionPanelMain
+								connectedState={server.connectedState || ConnectedState.PENDING}
+								jenkinsServer={server}
+							/>
+						</div>
+					);
+				}
 			)}
 		</>
 	);

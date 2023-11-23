@@ -13,6 +13,7 @@ import {
 	setUpGuideParagraph,
 	setUpGuideContainer
 } from './ConnectionPanel.styles';
+import { JenkinsPluginConfig } from '../../../../src/common/types';
 
 type SetUpGuideLinkProps = {
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -99,7 +100,11 @@ const SetUpGuideInstructions = ({
 	);
 };
 
-const SetUpGuide = (): JSX.Element => {
+type SetUpGuideProps = {
+	pluginConfig?: JenkinsPluginConfig
+};
+
+const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [areGlobalSettingsOn, setAreGlobalSettingsOn] = useState(false);
 	const [hasBuildFilters, setHasBuildFilters] = useState(false);
@@ -107,8 +112,10 @@ const SetUpGuide = (): JSX.Element => {
 	useEffect(() => {
 		// TODO - update global settings based on new data received from Jenkins plugin
 		setAreGlobalSettingsOn(false);
-		setHasBuildFilters(false);
-	}, []);
+		if (pluginConfig?.autoBuildEnabled && pluginConfig.autoBuildRegex) {
+			setHasBuildFilters(true);
+		}
+	}, [pluginConfig?.autoBuildEnabled, pluginConfig?.autoBuildRegex]);
 
 	const openDrawer = () => {
 		setIsDrawerOpen(true);
