@@ -53,9 +53,8 @@ const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanel
 				<DropdownItemGroup>
 					{/* TODO: add onClick (will be done when I build the server name screen) */}
 					<DropdownItem>Rename</DropdownItem>
-					{/* TODO: add onClick (need to find out where this links off to) */}
+					{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
 					<DropdownItem>Connection settings</DropdownItem>
-					{/* TODO: add onClick (need to confirm if we're keeping the modal) */}
 					<DropdownItem>Disconnect</DropdownItem>
 				</DropdownItemGroup>
 			</DropdownMenu>

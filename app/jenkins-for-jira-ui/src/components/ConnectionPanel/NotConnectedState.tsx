@@ -40,8 +40,8 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 			<div className={cx(notConnectedTempImgPlaceholder)}></div>
 			<h3 className={cx(notConnectedStateHeader)}>{notConnectedHeader}</h3>
 			<p className={cx(notConnectedStateParagraph)}>{notConnectedContent}</p>
-			{/* TODO - add onClick handler for Connection settings - need to find out where this links to */}
-			{/* TODO - add onClick handler for Delete - Will this open a Modal? Or just remove? */}
+			{/* TODO - add onClick handler for Connection settings
+				- will be done when I build the new set up Jenkins screen */}
 			{
 				connectedState === ConnectedState.PENDING
 					? <Button>Connection settings</Button>
