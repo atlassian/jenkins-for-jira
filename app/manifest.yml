@@ -5,7 +5,7 @@ modules:
       resolver:
         function: resolver
       title: Jenkins for Jira
-      layout: basic
+      layout: blank
       icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
 
   jira:adminPage:
