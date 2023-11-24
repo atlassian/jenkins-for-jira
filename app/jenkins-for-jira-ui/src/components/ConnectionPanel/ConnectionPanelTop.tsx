@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
@@ -11,11 +11,16 @@ import {
 	serverName
 } from './ConnectionPanel.styles';
 import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
+// import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
+import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
+import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
+import { JenkinsServer } from '../../../../src/common/types';
 
 type ConnectionPanelTopProps = {
-	connectedState: ConnectedState,
+	server: JenkinsServer,
 	ipAddress?: string,
-	name: string
+	jenkinsServerList: JenkinsServer[],
+	refreshServers(): void
 };
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
@@ -24,8 +29,56 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
 };
 
-const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanelTopProps): JSX.Element => {
+const ConnectionPanelTop = ({
+	server,
+	ipAddress,
+	jenkinsServerList,
+	refreshServers
+}: ConnectionPanelTopProps): JSX.Element => {
+	const connectedState = server.connectedState || ConnectedState.PENDING;
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
+	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
+	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
+	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		setJenkinsServers(jenkinsServerList);
+	}, [jenkinsServerList]);
+
+	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
+		console.log('cikcing');
+		setServerToDisconnect(serverToDelete);
+		setShowConfirmServerDisconnect(true);
+	};
+
+	const disconnectJenkinsServerHandler = async (
+		serverToDelete: JenkinsServer
+	) => {
+		setIsLoading(true);
+
+		try {
+			// await disconnectJenkinsServer(serverToDelete.uuid);
+		} catch (e) {
+			console.log('Failed to disconnect server', e);
+		}
+
+		const updatedServerList = jenkinsServers.filter(
+			(jenkinsServer: JenkinsServer) => jenkinsServer.uuid !== serverToDelete.uuid
+		);
+		setJenkinsServers(updatedServerList);
+
+		if (updatedServerList.length === 0) {
+			refreshServers();
+		}
+
+		closeConfirmServerDisconnect();
+	};
+
+	const closeConfirmServerDisconnect = async () => {
+		setShowConfirmServerDisconnect(false);
+		setIsLoading(false);
+	};
 
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
@@ -55,9 +108,29 @@ const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanel
 					<DropdownItem>Rename</DropdownItem>
 					{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
 					<DropdownItem>Connection settings</DropdownItem>
-					<DropdownItem>Disconnect</DropdownItem>
+					<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
 				</DropdownItemGroup>
 			</DropdownMenu>
+
+			<JenkinsModal
+				dataTestId={DISCONNECT_MODAL_TEST_ID}
+				server={serverToDisconnect}
+				show={showConfirmServerDisconnect}
+				modalAppearance='warning'
+				title='Disconnect this Jenkins server?'
+				body={[
+					'Are you sure that you want to disconnect your Jenkins server, ',
+					<strong>{serverToDisconnect?.name}</strong>,
+					'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
+				]}
+				onClose={closeConfirmServerDisconnect}
+				primaryButtonAppearance='subtle'
+				primaryButtonLabel='Cancel'
+				secondaryButtonAppearance='warning'
+				secondaryButtonLabel='Disconnect'
+				secondaryButtonOnClick={disconnectJenkinsServerHandler}
+				isLoading={isLoading}
+			/>
 		</div>
 	);
 };

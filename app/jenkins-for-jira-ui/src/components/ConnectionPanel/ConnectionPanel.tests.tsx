@@ -136,20 +136,40 @@ describe('addConnectedState', () => {
 		expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 	});
 });
-
+// server={server}
+// ipAddress={ipAddress}
+// jenkinsServerList={jenkinsServers}
+// refreshServers={fetchAllJenkinsServers}
 describe('ConnectionPanelTop', () => {
 	test('renders with the correct content and styles for CONNECTED state', () => {
-		const ipAddress = '10.0.0.1';
+		const server: JenkinsServer = {
+			name: 'my server',
+			connectedState: ConnectedState.CONNECTED,
+			pluginConfig: {
+				ipAddress: '10.0.0.1',
+				lastUpdatedOn: new Date(),
+				autoBuildRegex: '',
+				autoBuildEnabled: true,
+				autoDeploymentsEnabled: false,
+				autoDeploymentsRegex: ''
+			},
+			uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
+			pipelines: []
+		};
+
+		const refreshServers = jest.fn();
+
 		render(
 			<ConnectionPanelTop
-				connectedState={ConnectedState.CONNECTED}
-				ipAddress={ipAddress}
-				name="my server"
+				server={server}
+				ipAddress={server.pluginConfig?.ipAddress}
+				jenkinsServerList={}
+				refreshServers={refreshServers}
 			/>
 		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
-		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
+		const ipAddressLabel = screen.getByText(`IP address: ${server.pluginConfig?.ipAddress}`);
 		const statusLabel = screen.getByTestId('status-label');
 
 		expect(nameLabel).toBeInTheDocument();

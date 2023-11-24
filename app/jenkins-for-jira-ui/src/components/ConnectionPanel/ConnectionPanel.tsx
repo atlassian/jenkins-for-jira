@@ -52,9 +52,10 @@ const ConnectionPanel = (): JSX.Element => {
 					return (
 						<div className={cx(connectionPanelContainer)} key={index}>
 							<ConnectionPanelTop
-								name={server.name}
-								connectedState={server.connectedState || ConnectedState.PENDING}
+								server={server}
 								ipAddress={ipAddress}
+								jenkinsServerList={jenkinsServers}
+								refreshServers={fetchAllJenkinsServers}
 							/>
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}
