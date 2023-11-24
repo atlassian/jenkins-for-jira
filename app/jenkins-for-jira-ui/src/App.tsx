@@ -60,6 +60,11 @@ const AppContainer = styled.div`
 	padding-bottom: ${token('space.300')};
 `;
 
+const GlobalContainer = styled.div`
+	margin: auto;
+	max-width: 936px;
+`;
+
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
@@ -105,7 +110,7 @@ const App: React.FC = () => {
 	return (
 		<>
 			{moduleKey === 'jenkins-for-jira-global-page' ? (
-				<AppContainer>
+				<GlobalContainer>
 					<Router history={history}>
 						<Switch>
 							<Route path="/">
@@ -113,7 +118,7 @@ const App: React.FC = () => {
 							</Route>
 						</Switch>
 					</Router>
-				</AppContainer>
+				</GlobalContainer>
 			) : (
 				<AppContainer>
 					<Router history={history}>

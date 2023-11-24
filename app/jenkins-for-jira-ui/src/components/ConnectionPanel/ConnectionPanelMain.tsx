@@ -52,7 +52,6 @@ const ConnectionPanelMain = ({
 	jenkinsServer,
 	moduleKey
 }: ConnectionPanelMainProps): JSX.Element => {
-	console.log('ffs', moduleKey);
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{

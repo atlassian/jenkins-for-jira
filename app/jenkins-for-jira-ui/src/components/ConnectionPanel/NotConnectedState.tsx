@@ -48,7 +48,6 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 			);
 
 	let actionToRender;
-	console.log('WTF: ', moduleKey);
 
 	if (moduleKey === 'jenkins-for-jira-global-page') {
 		actionToRender = null;

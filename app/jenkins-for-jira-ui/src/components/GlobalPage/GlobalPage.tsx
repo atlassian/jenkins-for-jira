@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { cx } from '@emotion/css';
+import PageHeader from '@atlaskit/page-header';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { JenkinsServer } from '../../../../src/common/types';
 import { TopPanel } from '../MainPage/TopPanel/TopPanel';
 import { ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
-import { globalPageContainer } from './GlobalPage.styles';
+import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 
 export const GlobalPage = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
@@ -24,7 +24,10 @@ export const GlobalPage = (): JSX.Element => {
 	}
 
 	return (
-		<div className={cx(globalPageContainer)}>
+		<div>
+			<div className={headerContainer}>
+				<PageHeader>Jenkins for Jira</PageHeader>
+			</div>
 			{jenkinsServers?.length
 				? <>
 					<TopPanel />
