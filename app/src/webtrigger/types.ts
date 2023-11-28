@@ -42,9 +42,9 @@ export interface JenkinsEvent extends JenkinsRequest {
 export interface JenkinsPluginConfigEvent extends JenkinsEvent, JenkinsPluginConfig {
 	lastUpdatedOn: Date,
 	ipAddress: string,
-	autoBuildEnabled?: string,
+	autoBuildEnabled?: boolean,
 	autoBuildRegex?: string,
-	autoDeploymentsEnabled?: string,
+	autoDeploymentsEnabled?: boolean,
 	autoDeploymentsRegex?: string,
 }
 
