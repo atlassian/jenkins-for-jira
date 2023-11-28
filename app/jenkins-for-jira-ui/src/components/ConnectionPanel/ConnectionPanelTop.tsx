@@ -14,7 +14,7 @@ import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
 
 type ConnectionPanelTopProps = {
 	connectedState: ConnectedState,
-	ipAddress: string,
+	ipAddress?: string,
 	name: string
 };
 
@@ -35,7 +35,10 @@ const ConnectionPanelTop = ({ connectedState, ipAddress, name }: ConnectionPanel
 					<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
 				</div>
 				<div>
-					<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
+					{
+						ipAddress &&
+							<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
+					}
 				</div>
 			</div>
 			<DropdownMenu

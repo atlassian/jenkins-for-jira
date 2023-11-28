@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
+import { token } from '@atlaskit/tokens';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import {
 	notConnectedStateContainer,
@@ -43,7 +44,7 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 			{
 				connectedState === ConnectedState.PENDING
 					? <Button>Connection settings</Button>
-					: <Button appearance="danger">Delete</Button>
+					: <Button appearance="danger" style={{ marginBottom: `${token('space.400')}` }}>Delete</Button>
 			}
 		</div>
 	);

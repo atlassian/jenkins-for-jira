@@ -13,9 +13,8 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide } from './SetUpGuide';
 
-// TODO - remove ? for children and connectedState once set up guide is merged
 type PanelProps = {
-	children?: ReactNode,
+	children: ReactNode,
 	connectedState?: ConnectedState,
 	'data-testid'?: string
 };
@@ -74,7 +73,7 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 						</TabPanel>
 						<TabPanel>
 							<Panel data-testid="setUpGuidePanel">
-								<SetUpGuide />
+								<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
 							</Panel>
 						</TabPanel>
 					</Tabs>
