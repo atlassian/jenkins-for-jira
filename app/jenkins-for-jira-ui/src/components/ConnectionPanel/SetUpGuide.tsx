@@ -163,13 +163,13 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 						<SetUpGuideInstructions
 							onClick={openDrawer}
 							eventType={PipelineEventType.BUILD}
-							globalSettings={!!pluginConfig?.autoBuildEnabled}
+							globalSettings={pluginConfig?.autoBuildEnabled}
 							regex={pluginConfig?.autoBuildRegex}
 						/>
 						<SetUpGuideInstructions
 							onClick={openDrawer}
 							eventType={PipelineEventType.DEPLOYMENT}
-							globalSettings={!!pluginConfig?.autoDeploymentsEnabled}
+							globalSettings={pluginConfig?.autoDeploymentsEnabled}
 							regex={pluginConfig?.autoDeploymentsRegex}
 						/>
 					</ol>
