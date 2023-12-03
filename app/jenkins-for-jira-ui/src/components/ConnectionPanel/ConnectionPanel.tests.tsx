@@ -136,11 +136,10 @@ describe('addConnectedState', () => {
 		expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 	});
 });
-// server={server}
-// ipAddress={ipAddress}
-// jenkinsServerList={jenkinsServers}
-// refreshServers={fetchAllJenkinsServers}
+
 describe('ConnectionPanelTop', () => {
+	const refreshServers = jest.fn();
+
 	test('renders with the correct content and styles for CONNECTED state', () => {
 		const server: JenkinsServer = {
 			name: 'my server',
@@ -157,13 +156,10 @@ describe('ConnectionPanelTop', () => {
 			pipelines: []
 		};
 
-		const refreshServers = jest.fn();
-
 		render(
 			<ConnectionPanelTop
 				server={server}
-				ipAddress={server.pluginConfig?.ipAddress}
-				jenkinsServerList={}
+				jenkinsServerList={[]}
 				refreshServers={refreshServers}
 			/>
 		);
@@ -179,17 +175,31 @@ describe('ConnectionPanelTop', () => {
 	});
 
 	test('renders with the correct content and styles for DUPLICATE state', () => {
-		const ipAddress = '10.0.0.1';
+		const server: JenkinsServer = {
+			name: 'my server',
+			connectedState: ConnectedState.DUPLICATE,
+			pluginConfig: {
+				ipAddress: '10.0.0.1',
+				lastUpdatedOn: new Date(),
+				autoBuildRegex: '',
+				autoBuildEnabled: true,
+				autoDeploymentsEnabled: false,
+				autoDeploymentsRegex: ''
+			},
+			uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
+			pipelines: []
+		};
+
 		render(
 			<ConnectionPanelTop
-				connectedState={ConnectedState.DUPLICATE}
-				ipAddress={ipAddress}
-				name="my server"
+				server={server}
+				jenkinsServerList={[]}
+				refreshServers={refreshServers}
 			/>
 		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
-		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
+		const ipAddressLabel = screen.getByText(`IP address: ${server.pluginConfig?.ipAddress}`);
 		const statusLabel = screen.getByTestId('status-label');
 
 		expect(nameLabel).toBeInTheDocument();
@@ -199,17 +209,31 @@ describe('ConnectionPanelTop', () => {
 	});
 
 	test('renders with the correct content and styles for PENDING state', () => {
-		const ipAddress = '10.0.0.1';
+		const server: JenkinsServer = {
+			name: 'my server',
+			connectedState: ConnectedState.PENDING,
+			pluginConfig: {
+				ipAddress: '10.0.0.1',
+				lastUpdatedOn: new Date(),
+				autoBuildRegex: '',
+				autoBuildEnabled: true,
+				autoDeploymentsEnabled: false,
+				autoDeploymentsRegex: ''
+			},
+			uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
+			pipelines: []
+		};
+
 		render(
 			<ConnectionPanelTop
-				connectedState={ConnectedState.PENDING}
-				ipAddress={ipAddress}
-				name="my server"
+				server={server}
+				jenkinsServerList={[]}
+				refreshServers={refreshServers}
 			/>
 		);
 
 		const nameLabel = screen.getByText(/Insert name/i);
-		const ipAddressLabel = screen.getByText(`IP address: ${ipAddress}`);
+		const ipAddressLabel = screen.getByText(`IP address: ${server.pluginConfig?.ipAddress}`);
 		const statusLabel = screen.getByTestId('status-label');
 
 		expect(nameLabel).toBeInTheDocument();

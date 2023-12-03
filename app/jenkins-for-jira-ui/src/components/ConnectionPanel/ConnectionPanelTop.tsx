@@ -18,7 +18,6 @@ import { JenkinsServer } from '../../../../src/common/types';
 
 type ConnectionPanelTopProps = {
 	server: JenkinsServer,
-	ipAddress?: string,
 	jenkinsServerList: JenkinsServer[],
 	refreshServers(): void
 };
@@ -31,7 +30,6 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 
 const ConnectionPanelTop = ({
 	server,
-	ipAddress,
 	jenkinsServerList,
 	refreshServers
 }: ConnectionPanelTopProps): JSX.Element => {
@@ -47,7 +45,7 @@ const ConnectionPanelTop = ({
 	}, [jenkinsServerList]);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
-		console.log('cikcing');
+		console.log('cLikcing');
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
 	};
@@ -84,13 +82,13 @@ const ConnectionPanelTop = ({
 		<div className={cx(connectionPanelTopContainer)}>
 			<div className={cx(connectionPanelHeaderContainer)}>
 				<div className={cx(connectionPanelHeaderContentContainer)}>
-					<h2 className={cx(serverName)}>{name}</h2>
+					<h2 className={cx(serverName)}>{server.name}</h2>
 					<StatusLabel text={connectedState} color={textColor} backgroundColor={backgroundColor} />
 				</div>
 				<div>
 					{
-						ipAddress &&
-							<p className={cx(ipAddressStyle)}>IP address: {ipAddress}</p>
+						server.pluginConfig?.ipAddress &&
+							<p className={cx(ipAddressStyle)}>IP address: {server.pluginConfig?.ipAddress}</p>
 					}
 				</div>
 			</div>

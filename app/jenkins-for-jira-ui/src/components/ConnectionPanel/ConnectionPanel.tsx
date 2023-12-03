@@ -48,12 +48,10 @@ const ConnectionPanel = (): JSX.Element => {
 		<>
 			{jenkinsServers.map(
 				(server: JenkinsServer, index: number): JSX.Element => {
-					const ipAddress = server.pluginConfig?.ipAddress;
 					return (
 						<div className={cx(connectionPanelContainer)} key={index}>
 							<ConnectionPanelTop
 								server={server}
-								ipAddress={ipAddress}
 								jenkinsServerList={jenkinsServers}
 								refreshServers={fetchAllJenkinsServers}
 							/>
