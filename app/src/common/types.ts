@@ -33,7 +33,6 @@ export interface JenkinsPluginConfig {
 	lastUpdatedOn: Date,
 	ipAddress: string,
 	autoBuildEnabled?: boolean,
-
 	autoBuildRegex?: string,
 	autoDeploymentsEnabled?: boolean,
 	autoDeploymentsRegex?: string,
