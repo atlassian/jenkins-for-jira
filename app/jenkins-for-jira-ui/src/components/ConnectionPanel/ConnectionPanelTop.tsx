@@ -80,7 +80,6 @@ const ConnectionPanelTop = ({
 
 			{server.connectedState !== ConnectedState.DUPLICATE &&
 				<DropdownMenu
-					testId="BLAH"
 					trigger={({ triggerRef, ...props }) => (
 						<Button
 							{...props}

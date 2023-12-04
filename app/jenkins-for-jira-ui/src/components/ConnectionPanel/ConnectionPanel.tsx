@@ -33,6 +33,7 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 
 const ConnectionPanel = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -49,6 +50,7 @@ const ConnectionPanel = (): JSX.Element => {
 			(server) => server.uuid !== serverToRemove.uuid
 		);
 		setJenkinsServers(updatedServers);
+		setIsLoading(false);
 	};
 
 	return (
@@ -64,6 +66,9 @@ const ConnectionPanel = (): JSX.Element => {
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}
 								jenkinsServer={server}
+								refreshServers={handleServerRefresh}
+								isLoading={isLoading}
+								setIsLoading={setIsLoading}
 							/>
 						</div>
 					);
