@@ -7,7 +7,7 @@ import {
 	topPanelContentHeaderContainer,
 	topPanelImgContainer,
 	topPanelImg
-} from '../MainPage.styles';
+} from '../ServerManagement.styles';
 import { PluginIcon } from '../../icons/PluginIcon';
 
 const TopPanel = (): JSX.Element => {
