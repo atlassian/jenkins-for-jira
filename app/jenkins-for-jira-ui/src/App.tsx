@@ -20,7 +20,7 @@ import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateSer
 import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { FeatureFlags } from './hooks/useFeatureFlag';
-import { MainPage } from './components/MainPage/MainPage';
+import { ServerManagement } from './components/ServerManagement/ServerManagement';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -94,7 +94,7 @@ const App: React.FC = () => {
 				<Switch>
 					<Route exact path="/">
 						{renovateConfigFlag
-							? <MainPage />
+							? <ServerManagement />
 							: <JenkinsServerList />
 						}
 					</Route>
