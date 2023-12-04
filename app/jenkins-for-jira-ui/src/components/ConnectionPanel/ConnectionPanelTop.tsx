@@ -80,14 +80,15 @@ const ConnectionPanelTop = ({
 
 			{server.connectedState !== ConnectedState.DUPLICATE &&
 				<DropdownMenu
+					testId="BLAH"
 					trigger={({ triggerRef, ...props }) => (
 						<Button
 							{...props}
 							iconBefore={<MoreIcon label="more" />}
 							ref={triggerRef}
+							testId={`dropdown-menu-${server.name}`}
 						/>
 					)}
-					data-testid="server-dropdown-menu"
 				>
 					<DropdownItemGroup>
 						{/* TODO: add onClick (will be done when I build the server name screen) */}

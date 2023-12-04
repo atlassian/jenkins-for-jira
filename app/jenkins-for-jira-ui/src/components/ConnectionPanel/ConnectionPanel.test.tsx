@@ -296,13 +296,14 @@ describe('ConnectionPanelTop', () => {
 				expect(screen.getByText('test server 2')).toBeInTheDocument();
 			});
 
-			const dropdownButton = screen.getByRole('button');
+			const dropdownButton = screen.getByTestId(`dropdown-menu-${mockServers[0].name}`);
 			fireEvent.click(dropdownButton);
+			fireEvent.click(screen.getByText('Disconnect'));
 			fireEvent.click(screen.getByText('Disconnect'));
 
 			await waitFor(() => {
-				expect(screen.getByText('test server 1')).toBeInTheDocument();
-				expect(screen.queryByText('test server 2')).toBeNull();
+				expect(screen.queryByText('test server 1')).not.toBeInTheDocument();
+				expect(screen.getByText('test server 2')).toBeInTheDocument();
 			});
 		});
 	});
