@@ -144,8 +144,7 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 				width="wide"
 				label="Basic drawer"
 			>
-				{/* TODO - update this to render content for the 'link' clicked
-					(will be done after I dig into drawer usage */}
+				{/* TODO - update this to render content for the 'link' clicked */}
 				<div>Add content here for each link item</div>
 			</Drawer>
 			<p className={cx(setUpGuideParagraph)}>To receive build and deployment data from this server:</p>
