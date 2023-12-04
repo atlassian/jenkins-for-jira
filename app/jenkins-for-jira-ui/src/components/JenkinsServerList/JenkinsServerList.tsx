@@ -27,8 +27,8 @@ const JenkinsServerList = (): JSX.Element => {
 
 	const fetchAllJenkinsServers = async () => {
 		try {
-			const servers = await getAllJenkinsServers() || [];
 			if (isMountedRef.current) {
+				const servers = await getAllJenkinsServers() || [];
 				setJenkinsServers(servers);
 			}
 		} catch (error) {
@@ -38,8 +38,8 @@ const JenkinsServerList = (): JSX.Element => {
 
 	const redirectToAdminPage = useCallback(async () => {
 		try {
-			const currentModuleKey = await redirectFromGetStarted();
 			if (isMountedRef.current) {
+				const currentModuleKey = await redirectFromGetStarted();
 				setModuleKey(currentModuleKey);
 			}
 		} catch (error) {
