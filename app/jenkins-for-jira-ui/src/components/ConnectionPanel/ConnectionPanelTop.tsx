@@ -87,6 +87,7 @@ const ConnectionPanelTop = ({
 							ref={triggerRef}
 						/>
 					)}
+					data-testid="server-dropdown-menu"
 				>
 					<DropdownItemGroup>
 						{/* TODO: add onClick (will be done when I build the server name screen) */}

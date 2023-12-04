@@ -21,7 +21,7 @@ const StatusLabel = ({ text, backgroundColor, color }: StatusLabelProps): JSX.El
 	};
 
 	return (
-		<p className={cx(statusLabel)} style={dynamicStyles}>
+		<p className={cx(statusLabel)} style={dynamicStyles} data-testid="status-label">
 			{text}
 		</p>
 	);
