@@ -23,14 +23,14 @@ const NotConnectedState = ({ connectedState }: NotConnectedStateProps): JSX.Elem
 				<>
 					This connection is pending completion by a Jenkins admin.
 					Its set up guide will be available when the connection is complete.
-					<div />
+					<span />
 					Open connection settings if your Jenkins admin needs to revisit the items they need.
 				</>
 			)
 			: (
 				<>
 					This connection is a duplicate of SERVER NAME.
-					<div />
+					<span />
 					Use SERVER NAME to manage this server.
 				</>
 			);

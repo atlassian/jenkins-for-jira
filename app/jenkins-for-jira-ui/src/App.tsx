@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Router,
 	Switch,
@@ -62,19 +62,35 @@ const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 
-	const fetchFeatureFlag = useCallback(async () => {
-		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
-			FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
-		);
-		setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
-	}, []);
-
 	useEffect(() => {
+		let isMounted = true;
+
+		const fetchData = async () => {
+			try {
+				const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
+					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
+				);
+
+				if (isMounted) {
+					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+
 		view.createHistory().then((historyUpdates) => {
-			setHistory(historyUpdates);
+			if (isMounted) {
+				setHistory(historyUpdates);
+			}
 		});
-		fetchFeatureFlag();
-	}, [fetchFeatureFlag]);
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 
 	if (!history) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
