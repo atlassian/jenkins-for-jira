@@ -44,6 +44,13 @@ const ConnectionPanel = (): JSX.Element => {
 		fetchAllJenkinsServers();
 	}, []);
 
+	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
+		const updatedServers = jenkinsServers.filter(
+			(server) => server.uuid !== serverToRemove.uuid
+		);
+		setJenkinsServers(updatedServers);
+	};
+
 	return (
 		<>
 			{jenkinsServers.map(
@@ -52,8 +59,7 @@ const ConnectionPanel = (): JSX.Element => {
 						<div className={cx(connectionPanelContainer)} key={index}>
 							<ConnectionPanelTop
 								server={server}
-								jenkinsServerList={jenkinsServers}
-								refreshServers={fetchAllJenkinsServers}
+								refreshServers={handleServerRefresh}
 							/>
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}

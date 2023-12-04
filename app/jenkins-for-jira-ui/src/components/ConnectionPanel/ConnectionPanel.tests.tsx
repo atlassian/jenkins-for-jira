@@ -159,7 +159,6 @@ describe('ConnectionPanelTop', () => {
 		render(
 			<ConnectionPanelTop
 				server={server}
-				jenkinsServerList={[]}
 				refreshServers={refreshServers}
 			/>
 		);
@@ -193,7 +192,6 @@ describe('ConnectionPanelTop', () => {
 		render(
 			<ConnectionPanelTop
 				server={server}
-				jenkinsServerList={[]}
 				refreshServers={refreshServers}
 			/>
 		);
@@ -227,7 +225,6 @@ describe('ConnectionPanelTop', () => {
 		render(
 			<ConnectionPanelTop
 				server={server}
-				jenkinsServerList={[]}
 				refreshServers={refreshServers}
 			/>
 		);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
@@ -11,15 +11,14 @@ import {
 	serverName
 } from './ConnectionPanel.styles';
 import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
-// import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
+import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
 
 type ConnectionPanelTopProps = {
 	server: JenkinsServer,
-	jenkinsServerList: JenkinsServer[],
-	refreshServers(): void
+	refreshServers(serverToRemove: JenkinsServer): void
 };
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
@@ -30,22 +29,15 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 
 const ConnectionPanelTop = ({
 	server,
-	jenkinsServerList,
 	refreshServers
 }: ConnectionPanelTopProps): JSX.Element => {
 	const connectedState = server.connectedState || ConnectedState.PENDING;
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
-	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	useEffect(() => {
-		setJenkinsServers(jenkinsServerList);
-	}, [jenkinsServerList]);
-
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
-		console.log('cLikcing');
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
 	};
@@ -56,19 +48,12 @@ const ConnectionPanelTop = ({
 		setIsLoading(true);
 
 		try {
-			// await disconnectJenkinsServer(serverToDelete.uuid);
+			await disconnectJenkinsServer(serverToDelete.uuid);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
 		}
 
-		const updatedServerList = jenkinsServers.filter(
-			(jenkinsServer: JenkinsServer) => jenkinsServer.uuid !== serverToDelete.uuid
-		);
-		setJenkinsServers(updatedServerList);
-
-		if (updatedServerList.length === 0) {
-			refreshServers();
-		}
+		refreshServers(serverToDelete);
 
 		closeConfirmServerDisconnect();
 	};
@@ -92,23 +77,26 @@ const ConnectionPanelTop = ({
 					}
 				</div>
 			</div>
-			<DropdownMenu
-				trigger={({ triggerRef, ...props }) => (
-					<Button
-						{...props}
-						iconBefore={<MoreIcon label="more" />}
-						ref={triggerRef}
-					/>
-				)}
-			>
-				<DropdownItemGroup>
-					{/* TODO: add onClick (will be done when I build the server name screen) */}
-					<DropdownItem>Rename</DropdownItem>
-					{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
-					<DropdownItem>Connection settings</DropdownItem>
-					<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
-				</DropdownItemGroup>
-			</DropdownMenu>
+
+			{server.connectedState !== ConnectedState.DUPLICATE &&
+				<DropdownMenu
+					trigger={({ triggerRef, ...props }) => (
+						<Button
+							{...props}
+							iconBefore={<MoreIcon label="more" />}
+							ref={triggerRef}
+						/>
+					)}
+				>
+					<DropdownItemGroup>
+						{/* TODO: add onClick (will be done when I build the server name screen) */}
+						<DropdownItem>Rename</DropdownItem>
+						{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
+						<DropdownItem>Connection settings</DropdownItem>
+						<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
+					</DropdownItemGroup>
+				</DropdownMenu>
+			}
 
 			<JenkinsModal
 				dataTestId={DISCONNECT_MODAL_TEST_ID}
@@ -118,7 +106,7 @@ const ConnectionPanelTop = ({
 				title='Disconnect this Jenkins server?'
 				body={[
 					'Are you sure that you want to disconnect your Jenkins server, ',
-					<strong>{serverToDisconnect?.name}</strong>,
+					<strong key={server.name}>{serverToDisconnect?.name}</strong>,
 					'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
 				]}
 				onClose={closeConfirmServerDisconnect}
