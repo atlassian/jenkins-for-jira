@@ -78,6 +78,7 @@ const NotConnectedState = ({
 							appearance="danger"
 							style={{ marginBottom: `${token('space.400')}` }}
 							onClick={() => deleteServer(jenkinsServer)}
+							testId={`delete-button-${jenkinsServer.name}`}
 						>
 							Delete
 						</Button>

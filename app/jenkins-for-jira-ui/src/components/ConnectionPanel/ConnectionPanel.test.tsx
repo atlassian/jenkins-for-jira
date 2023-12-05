@@ -254,56 +254,60 @@ describe('ConnectionPanelTop', () => {
 	});
 
 	describe('Functionality', () => {
-		const mockServers = [
-			{
-				name: 'test server 1',
-				uuid: 'ieufn9283rn2-12u23r92-12eu1e19',
-				pipelines: [],
-				pluginConfig: {
-					ipAddress: '127.0.0.2',
-					lastUpdatedOn: new Date()
-				}
-			},
-			{
-				name: 'test server 2',
-				uuid: '11213123jn0r-12u23r92-12eu1e19',
-				pipelines: [],
-				pluginConfig: {
-					ipAddress: '127.0.0.2',
-					lastUpdatedOn: new Date()
-				}
-			}
-		];
-
 		test('fetches and displays servers on mount', async () => {
-			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(mockServers);
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
 			render(<ConnectionPanel />);
 
 			await waitFor(() => {
-				expect(screen.getByText('test server 1')).toBeInTheDocument();
-				expect(screen.getByText('test server 2')).toBeInTheDocument();
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[2].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[3].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[4].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[5].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[6].name)).toBeInTheDocument();
 			});
 		});
 
 		test('handles server disconnection and refreshing correctly', async () => {
-			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(mockServers);
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
 			render(<ConnectionPanel />);
 
 			await waitFor(() => {
-				expect(screen.getByText('test server 1')).toBeInTheDocument();
-				expect(screen.getByText('test server 2')).toBeInTheDocument();
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
 			});
 
-			const dropdownButton = screen.getByTestId(`dropdown-menu-${mockServers[0].name}`);
+			const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
 			fireEvent.click(dropdownButton);
-			fireEvent.click(screen.getByText('Disconnect'));
-			fireEvent.click(screen.getByText('Disconnect'));
+			fireEvent.click(screen.getByText('Disconnect')); // dropdown item disconnect
+			fireEvent.click(screen.getByText('Disconnect')); // modal button disconnect
 
 			await waitFor(() => {
-				expect(screen.queryByText('test server 1')).not.toBeInTheDocument();
-				expect(screen.getByText('test server 2')).toBeInTheDocument();
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.queryByText(servers[1].name)).not.toBeInTheDocument();
+			});
+		});
+
+		test('handles server deletion correctly', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
+
+			render(<ConnectionPanel />);
+
+			await waitFor(() => {
+				// Both have IP address 10.10.10.10
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[2].name)).toBeInTheDocument();
+			});
+
+			const deleteButton = screen.getByTestId(`delete-button-${servers[2].name}`);
+			fireEvent.click(deleteButton);
+
+			await waitFor(() => {
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.queryByText(servers[2].name)).not.toBeInTheDocument();
 			});
 		});
 	});

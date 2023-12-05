@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {
+	fireEvent,
+	render,
+	screen,
+	waitFor
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { NotConnectedState } from './NotConnectedState';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
@@ -35,5 +40,21 @@ describe('NotConnectedState', () => {
 		/>);
 		expect(screen.getByText('Connection pending')).toBeInTheDocument();
 		expect(screen.getByText('Connection settings')).toBeInTheDocument();
+	});
+
+	test('clicking delete button removes the server', async () => {
+		// Render component
+		render(<NotConnectedState
+			connectedState={ConnectedState.DUPLICATE}
+			jenkinsServer={mockServer}
+			refreshServers={refreshServers}
+		/>);
+
+		fireEvent.click(screen.getByText('Delete'));
+
+		await waitFor(() => {
+			expect(refreshServers).toHaveBeenCalledWith(mockServer);
+			expect(refreshServers).toHaveBeenCalledTimes(1);
+		});
 	});
 });
