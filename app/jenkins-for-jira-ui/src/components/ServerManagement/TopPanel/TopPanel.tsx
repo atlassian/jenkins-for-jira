@@ -18,7 +18,7 @@ const TopPanel = (): JSX.Element => {
 				{/* TODO - add link/drawer (will be done after I investigate 'proper' drawer usage) */}
 				<p className={cx(topPanelContent)}>Jenkins for Jira lets your teams <u>keep track of code
 					they build and deploy</u> on Jenkins servers.</p>
-				{/* TODO - add link/drawer (will be done after I investigate 'proper' drawer usage)  */}
+				{/* TODO - add link/drawer (will be done after I investigate 'proper' drawer usage) */}
 				<p className={cx(topPanelContent)}>Follow the <strong>set up guide</strong> for each server to
 					receive build and deployment data.</p>
 			</div>
