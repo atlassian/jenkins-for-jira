@@ -44,17 +44,13 @@ export const Panel = ({
 type ConnectionPanelMainProps = {
 	connectedState: ConnectedState,
 	jenkinsServer: JenkinsServer,
-	refreshServers(serverToRemove: JenkinsServer): void,
-	isLoading: boolean,
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+	refreshServers(serverToRemove: JenkinsServer): void
 };
 
 const ConnectionPanelMain = ({
 	connectedState,
 	jenkinsServer,
-	refreshServers,
-	isLoading,
-	setIsLoading
+	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
@@ -64,8 +60,6 @@ const ConnectionPanelMain = ({
 						connectedState={connectedState}
 						jenkinsServer={jenkinsServer}
 						refreshServers={refreshServers}
-						isLoading={isLoading}
-						setIsLoading={setIsLoading}
 					/>
 					: <Tabs id="connection-panel-tabs">
 						<TabList>
@@ -88,8 +82,6 @@ const ConnectionPanelMain = ({
 											connectedState={connectedState}
 											jenkinsServer={jenkinsServer}
 											refreshServers={refreshServers}
-											isLoading={isLoading}
-											setIsLoading={setIsLoading}
 										/>
 									</Panel>
 							}
