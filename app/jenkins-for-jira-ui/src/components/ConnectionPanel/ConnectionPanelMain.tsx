@@ -5,7 +5,8 @@ import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
 	connectionPanelMainNotConnectedTabs,
-	setUpGuideContainer, setUpGuideUpdateRequiredContainer
+	setUpGuideContainer,
+	setUpGuideUpdateRequiredContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';

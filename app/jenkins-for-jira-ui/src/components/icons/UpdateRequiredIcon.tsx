@@ -1,11 +1,11 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 
-type PluginIconProps = {
+type UpdateRequiredIconProps = {
 	containerClassName: string
 };
 
-export const UpdateRequiredIcon = ({ containerClassName }: PluginIconProps): JSX.Element => {
+export const UpdateRequiredIcon = ({ containerClassName }: UpdateRequiredIconProps): JSX.Element => {
 	return (
 		<div className={cx(containerClassName)} data-testid="updateRequiredIcon">
 			<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">

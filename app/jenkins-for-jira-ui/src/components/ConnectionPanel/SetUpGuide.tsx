@@ -175,8 +175,8 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 								Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-								(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
-								into their branch names and commit message.
+						(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
+						into their branch names and commit message.
 					</p>
 				</li>
 
@@ -201,7 +201,7 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 			<div className={cx(setUpGuideInfoPanel)}>
 				<PeopleGroup label="people-group" />
 				<p>
-							Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
+					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
 					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />
 				</p>
 			</div>
