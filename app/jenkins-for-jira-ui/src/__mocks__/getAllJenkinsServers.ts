@@ -1,1 +1,1 @@
-export const getAllJenkinsServers = jest.fn(() => Promise.resolve([]));
+export const getAllJenkinsServers = jest.fn(async () => []);
