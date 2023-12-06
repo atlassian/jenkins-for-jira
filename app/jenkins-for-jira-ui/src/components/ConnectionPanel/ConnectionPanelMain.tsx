@@ -26,12 +26,13 @@ export const Panel = ({
 }: PanelProps) => {
 	let className;
 
-	if (connectedState === ConnectedState.CONNECTED) {
+	if (testid === 'setUpGuidePanel') {
+		className = setUpGuideContainer;
+	} else if (connectedState === ConnectedState.CONNECTED) {
 		className = connectionPanelMainConnectedTabs;
 	} else {
 		className = connectionPanelMainNotConnectedTabs;
 	}
-
 	return (
 		<div className={cx(className)} data-testid={testid}>
 			{children}
@@ -85,17 +86,17 @@ const ConnectionPanelMain = ({
 							}
 						</TabPanel>
 						<TabPanel>
-							<Panel data-testid="setUpGuidePanel">
-								{
-									jenkinsServer.pluginConfig
-										? <div className={setUpGuideContainer}>
-											<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
-										</div>
-										: <div className={cx(setUpGuideUpdateRequiredContainer)}>
+							{
+								jenkinsServer.pluginConfig
+									? <Panel data-testid="setUpGuidePanel">
+										<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
+									</Panel>
+									: <Panel data-testid="setUpRequired">
+										<div className={cx(setUpGuideUpdateRequiredContainer)}>
 											<UpdateRequired />
 										</div>
-								}
-							</Panel>
+									</Panel>
+							}
 						</TabPanel>
 					</Tabs>
 			}

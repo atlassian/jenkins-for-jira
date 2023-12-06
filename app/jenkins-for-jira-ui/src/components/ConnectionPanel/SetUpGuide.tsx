@@ -50,6 +50,7 @@ export const UpdateRequired = (): JSX.Element => {
 			<div className={cx(setUpGuideUpdateRequiredButtonContainer)}>
 				{/* TODO - implement link once the IPH mystery has been solved */}
 				<Button appearance="primary">Learn more</Button>
+				{/* TODO - uhh ummm when we figure out exactly how we intend this to work... :badpokerface: */}
 				<Button>Refresh</Button>
 			</div>
 		</>

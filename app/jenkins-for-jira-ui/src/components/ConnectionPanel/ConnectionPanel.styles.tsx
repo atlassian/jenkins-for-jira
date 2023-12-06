@@ -162,6 +162,7 @@ export const connectedStateCellEvent = css`
 // Set up guide
 export const setUpGuideContainer = css`
 	line-height: 20px;
+	margin: ${token('space.300')} 0;
 
 	#setup-step-one-instruction {
 		margin: ${token('space.050')} 0 ${token('space.300')} ${token('space.200')};
