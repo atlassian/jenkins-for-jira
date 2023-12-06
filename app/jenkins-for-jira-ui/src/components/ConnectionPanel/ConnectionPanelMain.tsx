@@ -5,13 +5,13 @@ import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
 	connectionPanelMainNotConnectedTabs,
-	setUpGuideContainer
+	setUpGuideContainer, setUpGuideUpdateRequiredContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
-import { SetUpGuide } from './SetUpGuide';
+import { SetUpGuide, UpdateRequired } from './SetUpGuide';
 
 type PanelProps = {
 	children: ReactNode,
@@ -26,9 +26,7 @@ export const Panel = ({
 }: PanelProps) => {
 	let className;
 
-	if (testid === 'setUpGuidePanel') {
-		className = setUpGuideContainer;
-	} else if (connectedState === ConnectedState.CONNECTED) {
+	if (connectedState === ConnectedState.CONNECTED) {
 		className = connectionPanelMainConnectedTabs;
 	} else {
 		className = connectionPanelMainNotConnectedTabs;
@@ -73,7 +71,15 @@ const ConnectionPanelMain = ({ connectedState, jenkinsServer }: ConnectionPanelM
 						</TabPanel>
 						<TabPanel>
 							<Panel data-testid="setUpGuidePanel">
-								<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
+								{
+									jenkinsServer.pluginConfig
+										? <div className={setUpGuideContainer}>
+											<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
+										</div>
+										: <div className={cx(setUpGuideUpdateRequiredContainer)}>
+											<UpdateRequired />
+										</div>
+								}
 							</Panel>
 						</TabPanel>
 					</Tabs>

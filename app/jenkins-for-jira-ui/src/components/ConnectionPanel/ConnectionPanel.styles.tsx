@@ -151,7 +151,6 @@ export const connectedStateCellEvent = css`
 // Set up guide
 export const setUpGuideContainer = css`
 	line-height: 20px;
-	margin: ${token('space.200')} 0 ${token('space.300')};
 
 	#setup-step-one-instruction {
 		margin: ${token('space.050')} 0 ${token('space.300')} ${token('space.200')};
@@ -236,4 +235,35 @@ export const setUpGuideInfoPanel = css`
 	p {
 		margin-top: ${token('space.0')};
 	}
+`;
+
+export const setUpGuideUpdatedContainer = css`
+	margin: ${token('space.200')} 0 ${token('space.300')};
+`;
+
+export const setUpGuideUpdateRequiredContainer = css`
+	margin: ${token('space.100')} auto ${token('space.300')};
+	line-height: 20px;
+	text-align: center;
+	width: 55%;
+`;
+
+export const setUpGuideUpdateRequiredIconContainer = css`
+	margin: ${token('space.0')} auto;
+	text-align: center;
+`;
+
+export const setUpGuideUpdateRequiredHeader = css`
+	font-size: 20px;
+`;
+
+export const setUpGuideUpdateRequiredContent = css`
+	margin-top: ${token('space.250')};
+`;
+
+export const setUpGuideUpdateRequiredButtonContainer = css`
+	margin-top: ${token('space.200')};
+	display: flex;
+	gap: 10px;
+	justify-content: center;
 `;

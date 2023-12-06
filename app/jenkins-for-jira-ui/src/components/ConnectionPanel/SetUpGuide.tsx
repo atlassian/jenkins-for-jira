@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Drawer from '@atlaskit/drawer';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
+import Button from '@atlaskit/button/standard-button';
 import {
 	setUpGuideLink,
 	setUpGuideInfoPanel,
@@ -11,9 +12,12 @@ import {
 	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
-	setUpGuideContainer
+	setUpGuideUpdateRequiredIconContainer,
+	setUpGuideUpdateRequiredHeader,
+	setUpGuideUpdateRequiredButtonContainer, setUpGuideUpdateRequiredContent
 } from './ConnectionPanel.styles';
 import { JenkinsPluginConfig } from '../../../../src/common/types';
+import { UpdateRequiredIcon } from '../icons/UpdateRequiredIcon';
 
 type SetUpGuideLinkProps = {
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -32,6 +36,24 @@ type SetUpGuidePipelineStepInstructionProps = {
 	eventType: string,
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	pipelineStepLabel: string
+};
+
+export const UpdateRequired = (): JSX.Element => {
+	return (
+		<>
+			<UpdateRequiredIcon containerClassName={setUpGuideUpdateRequiredIconContainer} />
+			<h3 className={cx(setUpGuideUpdateRequiredHeader)}>Update required</h3>
+			<p className={cx(setUpGuideUpdateRequiredContent)}>This server is connected to Jira and sending data,
+				but is using an outdated Atlassian Software Cloud plugin.</p>
+			<p className={cx(setUpGuideUpdateRequiredContent)}>To access features like this set up guide,
+				a Jenkins admin must log into this server and update the plugin.</p>
+			<div className={cx(setUpGuideUpdateRequiredButtonContainer)}>
+				{/* TODO - implement link once the IPH mystery has been solved */}
+				<Button appearance="primary">Learn more</Button>
+				<Button>Refresh</Button>
+			</div>
+		</>
+	);
 };
 
 const SetUpGuidePipelineStepInstruction = ({
@@ -132,12 +154,8 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 		setIsDrawerOpen(false);
 	};
 
-	if (!pluginConfig) {
-		return <div>Yet to be decided...</div>;
-	}
-
 	return (
-		<div className={cx(setUpGuideContainer)}>
+		<>
 			<Drawer
 				onClose={onClose}
 				isOpen={isDrawerOpen}
@@ -152,10 +170,12 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 
 			<ol className={cx(setUpGuideOrderedList)}>
 				<li className={cx(setUpGuideOrderedListItem)}>
-					<strong className={cx(setUpGuideOrderListItemHeader)}>Developers in your project teams</strong>
+					<strong className={cx(setUpGuideOrderListItemHeader)}>
+								Developers in your project teams
+					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
-						into their branch names and commit message.
+								(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
+								into their branch names and commit message.
 					</p>
 				</li>
 
@@ -180,11 +200,11 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 			<div className={cx(setUpGuideInfoPanel)}>
 				<PeopleGroup label="people-group" />
 				<p>
-					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
+							Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
 					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />
 				</p>
 			</div>
-		</div>
+		</>
 	);
 };
 
