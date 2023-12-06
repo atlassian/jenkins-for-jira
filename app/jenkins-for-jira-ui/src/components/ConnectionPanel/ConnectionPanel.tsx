@@ -44,21 +44,27 @@ const ConnectionPanel = (): JSX.Element => {
 		fetchAllJenkinsServers();
 	}, []);
 
+	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
+		const updatedServers = jenkinsServers.filter(
+			(server) => server.uuid !== serverToRemove.uuid
+		);
+		setJenkinsServers(updatedServers);
+	};
+
 	return (
 		<>
 			{jenkinsServers.map(
 				(server: JenkinsServer, index: number): JSX.Element => {
-					const ipAddress = server.pluginConfig?.ipAddress;
 					return (
 						<div className={cx(connectionPanelContainer)} key={index}>
 							<ConnectionPanelTop
-								name={server.name}
-								connectedState={server.connectedState || ConnectedState.PENDING}
-								ipAddress={ipAddress}
+								server={server}
+								refreshServers={handleServerRefresh}
 							/>
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}
 								jenkinsServer={server}
+								refreshServers={handleServerRefresh}
 							/>
 						</div>
 					);
