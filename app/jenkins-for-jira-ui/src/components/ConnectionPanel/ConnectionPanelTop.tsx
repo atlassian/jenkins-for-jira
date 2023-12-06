@@ -49,13 +49,14 @@ const ConnectionPanelTop = ({
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
+			refreshServers(serverToDelete);
+			closeConfirmServerDisconnect();
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
+			// TODO - add error state ARC-2722
+		} finally {
+			setIsLoading(false);
 		}
-
-		refreshServers(serverToDelete);
-
-		closeConfirmServerDisconnect();
 	};
 
 	const closeConfirmServerDisconnect = async () => {

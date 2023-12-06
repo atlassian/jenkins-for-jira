@@ -29,10 +29,12 @@ const NotConnectedState = ({
 
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsLoading(true);
+
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
+			// TODO - add error state ARC-2722
 		} finally {
 			setIsLoading(false);
 		}
