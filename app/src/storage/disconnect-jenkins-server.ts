@@ -5,7 +5,7 @@ import { Logger } from '../config/logger';
 
 export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> => {
 	const logger = Logger.getInstance('disconnectJenkinsServer');
-
+	throw new JenkinsServerStorageError('Failed to delete jenkins server configuration');
 	try {
 		const deleteJenkinsServerPromise = await storage.delete(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`);
 		const deleteSecretPromise = await storage.deleteSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`);
