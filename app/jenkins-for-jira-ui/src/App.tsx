@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Router,
 	Switch,
@@ -6,9 +6,8 @@ import {
 } from 'react-router';
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
-import { token } from '@atlaskit/tokens';
+import { token, setGlobalTheme } from '@atlaskit/tokens';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
-import { setGlobalTheme } from '@atlaskit/tokens';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
 import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -20,9 +19,9 @@ import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateSer
 import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { FeatureFlags } from './hooks/useFeatureFlag';
-import { MainPage } from './components/MainPage/MainPage';
-import { fetchModuleKey } from './api/fetchModuleKey';
+import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { GlobalPage } from './components/GlobalPage/GlobalPage';
+import { fetchModuleKey } from './api/fetchModuleKey';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -70,28 +69,42 @@ const App: React.FC = () => {
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 	const [moduleKey, setModuleKey] = useState<string>('');
 
-	const fetchFeatureFlag = useCallback(async () => {
-		const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
-			FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
-		);
-		setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
-	}, []);
-
-	const getModuleKey = useCallback(async () => {
+	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
 		setModuleKey(currentModuleKey);
-	}, []);
+	};
 
 	useEffect(() => {
+		let isMounted = true;
+
 		const fetchData = async () => {
-			const historyUpdates = await view.createHistory();
-			setHistory(historyUpdates);
-			fetchFeatureFlag();
-			getModuleKey();
+			try {
+				const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
+					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
+				);
+
+				getModuleKey();
+
+				if (isMounted) {
+					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
 		};
 
 		fetchData();
-	}, [fetchFeatureFlag, getModuleKey]);
+
+		view.createHistory().then((historyUpdates) => {
+			if (isMounted) {
+				setHistory(historyUpdates);
+			}
+		});
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 
 	if (!history || !moduleKey) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
@@ -124,7 +137,7 @@ const App: React.FC = () => {
 					<Router history={history}>
 						<Switch>
 							<Route exact path="/">
-								{renovateConfigFlag ? <MainPage /> : <JenkinsServerList />}
+								{renovateConfigFlag ? <ServerManagement /> : <JenkinsServerList />}
 							</Route>
 							<Route path="/install">
 								<InstallJenkins />

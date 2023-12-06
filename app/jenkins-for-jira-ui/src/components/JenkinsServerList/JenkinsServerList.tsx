@@ -23,19 +23,38 @@ const JenkinsServerList = (): JSX.Element => {
 	const analyticsClient = new AnalyticsClient();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const [moduleKey, setModuleKey] = useState<string>();
+	const isMountedRef = React.useRef<boolean>(true);
+
 	const fetchAllJenkinsServers = async () => {
-		const servers = await getAllJenkinsServers() || [];
-		setJenkinsServers(servers);
+		try {
+			if (isMountedRef.current) {
+				const servers = await getAllJenkinsServers() || [];
+				setJenkinsServers(servers);
+			}
+		} catch (error) {
+			console.error('Error fetching Jenkins servers:', error);
+		}
 	};
 
 	const redirectToAdminPage = useCallback(async () => {
-		const currentModuleKey = await redirectFromGetStarted();
-		setModuleKey(currentModuleKey);
+		try {
+			if (isMountedRef.current) {
+				const currentModuleKey = await redirectFromGetStarted();
+				setModuleKey(currentModuleKey);
+			}
+		} catch (error) {
+			console.error('Error redirecting to admin page:', error);
+		}
 	}, []);
 
 	useEffect(() => {
 		fetchAllJenkinsServers();
 		redirectToAdminPage();
+
+		return () => {
+			// Cleanup function to set isMountedRef to false when the component is unmounted
+			isMountedRef.current = false;
+		};
 	}, [redirectToAdminPage]);
 
 	if (!jenkinsServers || !moduleKey || moduleKey === 'get-started-page') {

@@ -4,9 +4,9 @@ import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { JenkinsServer } from '../../../../src/common/types';
-import { TopPanel } from '../MainPage/TopPanel/TopPanel';
 import { ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
+import { TopPanel } from '../ServerManagement/TopPanel/TopPanel';
 
 export const GlobalPage = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();

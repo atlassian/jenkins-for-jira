@@ -7,7 +7,7 @@ import {
 	topPanelContentHeaderContainer,
 	topPanelImgContainer,
 	topPanelImg
-} from '../MainPage.styles';
+} from '../ServerManagement.styles';
 import { PluginIcon } from '../../icons/PluginIcon';
 
 const TopPanel = (): JSX.Element => {
@@ -15,9 +15,10 @@ const TopPanel = (): JSX.Element => {
 		<div className={cx(topPanelContainer)}>
 			<div className={cx(topPanelContentHeaderContainer)}>
 				<h2 className={cx(topPanelContentHeader)}>Server management</h2>
+				{/* TODO - add link/drawer (will be done after I investigate 'proper' drawer usage) */}
 				<p className={cx(topPanelContent)}>Jenkins for Jira lets your teams <u>keep track of code
 					they build and deploy</u> on Jenkins servers.</p>
-				{/* TODO - add link */}
+				{/* TODO - add link/drawer (will be done after I investigate 'proper' drawer usage) */}
 				<p className={cx(topPanelContent)}>Follow the <strong>set up guide</strong> for each server to
 					receive build and deployment data.</p>
 			</div>
