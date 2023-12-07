@@ -44,19 +44,25 @@ export const Panel = ({
 type ConnectionPanelMainProps = {
 	connectedState: ConnectedState,
 	jenkinsServer: JenkinsServer,
+	refreshServers(serverToRemove: JenkinsServer): void,
 	moduleKey?: string
 };
 
 const ConnectionPanelMain = ({
 	connectedState,
 	jenkinsServer,
+	refreshServers,
 	moduleKey
 }: ConnectionPanelMainProps): JSX.Element => {
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
 				connectedState === ConnectedState.DUPLICATE
-					? <NotConnectedState connectedState={connectedState} />
+					? <NotConnectedState
+						connectedState={connectedState}
+						jenkinsServer={jenkinsServer}
+						refreshServers={refreshServers}
+					/>
 					: <Tabs id="connection-panel-tabs">
 						<TabList>
 							{
@@ -74,7 +80,12 @@ const ConnectionPanelMain = ({
 										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 									</Panel>
 									: <Panel data-testid="notConnectedPanel">
-										<NotConnectedState connectedState={connectedState} moduleKey={moduleKey}/>
+										<NotConnectedState
+											connectedState={connectedState}
+											jenkinsServer={jenkinsServer}
+											refreshServers={refreshServers}
+											moduleKey={moduleKey}
+										/>
 									</Panel>
 							}
 						</TabPanel>

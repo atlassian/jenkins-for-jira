@@ -85,9 +85,20 @@ export const connectionPanelMainNotConnectedTabs = css`
 
 // Not connected state
 export const notConnectedStateContainer = css`
-	margin:  ${token('space.0')} auto;
+	margin: ${token('space.0')} auto;
+	max-height: 400px;
+	min-height: 400px;
 	max-width: 420px;
+	position: relative;
 	text-align: center;
+`;
+
+export const notConnectedSpinnerContainer = css`
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	width: 100%;
 `;
 
 // TODO - delete this temp class

@@ -52,25 +52,29 @@ const ConnectionPanel = (): JSX.Element => {
 		fetchAllJenkinsServers();
 	}, []);
 
-	console.log('moduleKey asdfafs', moduleKey);
+	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
+		const updatedServers = jenkinsServers.filter(
+			(server) => server.uuid !== serverToRemove.uuid
+		);
+		setJenkinsServers(updatedServers);
+	};
 
 	return (
 		<>
 			{jenkinsServers.map(
 				(server: JenkinsServer, index: number): JSX.Element => {
-					const ipAddress = server.pluginConfig?.ipAddress;
 					return (
 						<div className={cx(connectionPanelContainer)} key={index}>
 							<ConnectionPanelTop
-								name={server.name}
-								connectedState={server.connectedState || ConnectedState.PENDING}
-								ipAddress={ipAddress}
+								server={server}
+								refreshServers={handleServerRefresh}
 								moduleKey={moduleKey}
 							/>
 							<ConnectionPanelMain
 								connectedState={server.connectedState || ConnectedState.PENDING}
 								jenkinsServer={server}
 								moduleKey={moduleKey}
+								refreshServers={handleServerRefresh}
 							/>
 						</div>
 					);

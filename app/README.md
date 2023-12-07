@@ -44,7 +44,7 @@ To get up and running, follow the steps below.
 
 #### Initial setup
 
-1. Create your `.env` file based on the `.env.example` file in **/app/jenkins-for-jira-ui**.
+1. Create your `.env` file and add `BROWSER=none`. This will prevent a tab opening at http:localhost:3000 when you run `yarn start`.
 2. Switch to the correct `node` version. You can run `nvm use` in the folders: **/app/jenkins-for-jira-ui** and **/app**.
 3. In the folders **/app** and **/app/jenkins-for-jira-ui**, run `yarn install`.
 
