@@ -14,7 +14,7 @@ const ServerManagement = (): JSX.Element => {
 			<Button appearance="primary">
 				Connect a new Jenkins server
 			</Button>
-			{/* TODO - add onClick event (will be done after spike for ARC-2691 */}
+			{/* TODO - add onClick event (will be done in ARC-2723 */}
 			<Button>Share page</Button>
 		</ButtonGroup>
 	);
