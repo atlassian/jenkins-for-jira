@@ -12,12 +12,13 @@ import {
 	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
-	setUpGuideUpdateRequiredIconContainer,
-	setUpGuideUpdateRequiredHeader,
-	setUpGuideUpdateRequiredButtonContainer, setUpGuideUpdateRequiredContent
+	setUpGuideUpdateAvailableHeader,
+	setUpGuideUpdateAvailableButtonContainer,
+	setUpGuideUpdateAvailableContent,
+	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
 import { JenkinsPluginConfig } from '../../../../src/common/types';
-import { UpdateRequiredIcon } from '../icons/UpdateRequiredIcon';
+import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 
 type SetUpGuideLinkProps = {
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -38,16 +39,16 @@ type SetUpGuidePipelineStepInstructionProps = {
 	pipelineStepLabel: string
 };
 
-export const UpdateRequired = (): JSX.Element => {
+export const UpdateAvailable = (): JSX.Element => {
 	return (
 		<>
-			<UpdateRequiredIcon containerClassName={setUpGuideUpdateRequiredIconContainer} />
-			<h3 className={cx(setUpGuideUpdateRequiredHeader)}>Update required</h3>
-			<p className={cx(setUpGuideUpdateRequiredContent)}>This server is connected to Jira and sending data,
+			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
+			<h3 className={cx(setUpGuideUpdateAvailableHeader)}>Update available</h3>
+			<p className={cx(setUpGuideUpdateAvailableContent)}>This server is connected to Jira and sending data,
 				but is using an outdated Atlassian Software Cloud plugin.</p>
-			<p className={cx(setUpGuideUpdateRequiredContent)}>To access features like this set up guide,
+			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
 				a Jenkins admin must log into this server and update the plugin.</p>
-			<div className={cx(setUpGuideUpdateRequiredButtonContainer)}>
+			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
 				{/* TODO - implement link once the IPH mystery has been solved */}
 				<Button appearance="primary">Learn more</Button>
 				{/* TODO - uhh ummm when we figure out exactly how we intend this to work... :badpokerface: */}

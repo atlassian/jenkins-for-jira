@@ -1,13 +1,13 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 
-type UpdateRequiredIconProps = {
+type UpdateAvailableIconProps = {
 	containerClassName: string
 };
 
-export const UpdateRequiredIcon = ({ containerClassName }: UpdateRequiredIconProps): JSX.Element => {
+export const UpdateAvailableIcon = ({ containerClassName }: UpdateAvailableIconProps): JSX.Element => {
 	return (
-		<div className={cx(containerClassName)} data-testid="updateRequiredIcon">
+		<div className={cx(containerClassName)} data-testid="updateAvailableIcon">
 			<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g clip-path="url(#clip0_918_34638)">
 					<rect width="114.796" height="160" transform="translate(23)" fill="white" fill-opacity="0.01"/>

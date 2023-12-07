@@ -72,6 +72,12 @@ export const connectionPanelMainConnectedTabs = css`
 	width: 100%;
 `;
 
+export const connectionPanelMainConnectedPendingSetUp = css`
+	color: #B2B9C4;
+	cursor: not-allowed;
+	margin: ${token('space.075')} 0 ${token('space.100')} ${token('space.100')};
+`;
+
 export const connectionPanelMainNotConnectedTabs = css`
 	align-items: center;
 	border-radius: 3px;
@@ -253,27 +259,27 @@ export const setUpGuideUpdatedContainer = css`
 	margin: ${token('space.200')} 0 ${token('space.300')};
 `;
 
-export const setUpGuideUpdateRequiredContainer = css`
+export const setUpGuideUpdateAvailableContainer = css`
 	margin: ${token('space.100')} auto ${token('space.300')};
 	line-height: 20px;
 	text-align: center;
 	width: 55%;
 `;
 
-export const setUpGuideUpdateRequiredIconContainer = css`
+export const setUpGuideUpdateAvailableIconContainer = css`
 	margin: ${token('space.0')} auto;
 	text-align: center;
 `;
 
-export const setUpGuideUpdateRequiredHeader = css`
+export const setUpGuideUpdateAvailableHeader = css`
 	font-size: 20px;
 `;
 
-export const setUpGuideUpdateRequiredContent = css`
+export const setUpGuideUpdateAvailableContent = css`
 	margin-top: ${token('space.250')};
 `;
 
-export const setUpGuideUpdateRequiredButtonContainer = css`
+export const setUpGuideUpdateAvailableButtonContainer = css`
 	margin-top: ${token('space.200')};
 	display: flex;
 	gap: 10px;

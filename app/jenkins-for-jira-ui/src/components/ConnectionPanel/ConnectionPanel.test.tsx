@@ -347,7 +347,7 @@ describe('Connection Panel Suite', () => {
 		});
 
 		describe('Setup guide tab', () => {
-			test('should render SetUpGuide component when there is pluginConfig data', async () => {
+			test('should render SetUpGuide component when there is pluginConfig data for a CONNECTED server', async () => {
 				const server = {
 					name: 'server with plugin config',
 					uuid: '56046af9-d0eb-4efb-8896-ed182ende',
@@ -355,7 +355,14 @@ describe('Connection Panel Suite', () => {
 						ipAddress: '10.10.10.11',
 						lastUpdatedOn: new Date()
 					},
-					pipelines: []
+					pipelines: [
+						{
+							name: '#74315',
+							lastEventType: EventType.DEPLOYMENT,
+							lastEventStatus: 'in_progress' as const,
+							lastEventDate: new Date()
+						}
+					]
 				};
 
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
@@ -363,7 +370,6 @@ describe('Connection Panel Suite', () => {
 				render(<ConnectionPanel />);
 
 				await waitFor(() => {
-					// Both have IP address 10.10.10.10
 					expect(screen.getByText(server.name)).toBeInTheDocument();
 
 					fireEvent.click(screen.getByText('Set up guide'));
@@ -376,12 +382,19 @@ describe('Connection Panel Suite', () => {
 				});
 			});
 
-			test('should render UpdateRequired component when there is no pluginConfig data', async () => {
+			test('should render UpdateAvailable component when there is no pluginConfig data for a CONNECTED server', async () => {
 				const server = {
-					name: 'server with plugin config',
+					name: 'server with no plugin config',
 					uuid: '56046af9-d0eb-4efb-8896-ed182ende',
 					pluginConfig: undefined,
-					pipelines: []
+					pipelines: [
+						{
+							name: '#74315',
+							lastEventType: EventType.DEPLOYMENT,
+							lastEventStatus: 'successful' as const,
+							lastEventDate: new Date()
+						}
+					]
 				};
 
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
@@ -389,16 +402,15 @@ describe('Connection Panel Suite', () => {
 				render(<ConnectionPanel />);
 
 				await waitFor(() => {
-					// Both have IP address 10.10.10.10
 					expect(screen.getByText(server.name)).toBeInTheDocument();
 
 					fireEvent.click(screen.getByText('Set up guide'));
 				});
 
 				await waitFor(() => {
-					const updateRequiredText =
+					const updateAvailableText =
 						screen.getByText('This server is connected to Jira and sending data, but is using an outdated Atlassian Software Cloud plugin.');
-					expect(updateRequiredText).toBeInTheDocument();
+					expect(updateAvailableText).toBeInTheDocument();
 				});
 			});
 		});
