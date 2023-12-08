@@ -19,7 +19,8 @@ export interface JenkinsServer {
 	secret?: string,
 	pipelines: JenkinsPipeline[],
 	pluginConfig?: JenkinsPluginConfig,
-	connectedState?: ConnectedState
+	connectedState?: ConnectedState,
+	originalConnection?: string
 }
 
 export interface JenkinsPipeline {

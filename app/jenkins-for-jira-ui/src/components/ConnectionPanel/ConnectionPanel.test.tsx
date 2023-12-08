@@ -164,6 +164,7 @@ describe('Connection Panel Suite', () => {
 			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
 			expect(result[1].connectedState).toEqual(ConnectedState.PENDING);
 			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
+			expect(result[2].originalConnection).toEqual(servers[5].name);
 		});
 	});
 
@@ -323,6 +324,52 @@ describe('Connection Panel Suite', () => {
 	});
 
 	describe('Connection Panel Main', () => {
+		test('should render panel content for PENDING server', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[6]]);
+
+			render(<ConnectionPanel />);
+
+			await waitFor(() => {
+				expect(screen.getByText('Connection pending')).toBeInTheDocument();
+			});
+		});
+
+		test('should render panel content for DUPLICATE server', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[5], servers[6]]);
+
+			render(<ConnectionPanel />);
+
+			await waitFor(() => {
+				expect(screen.getByText('Duplicate server')).toBeInTheDocument();
+			});
+		});
+
+		test('should render panel content for CONNECTED server without pipeline data', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0]]);
+
+			render(<ConnectionPanel />);
+
+			await waitFor(() => {
+				expect(screen.getByText('No data received')).toBeInTheDocument();
+				expect(screen.queryByText('Pipeline')).not.toBeInTheDocument();
+				expect(screen.queryByText('Event')).not.toBeInTheDocument();
+				expect(screen.queryByText('Received')).not.toBeInTheDocument();
+			});
+		});
+
+		test('should render panel content for CONNECTED server with pipeline data', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[5]]);
+
+			render(<ConnectionPanel />);
+
+			await waitFor(() => {
+				expect(screen.queryByText('No data received')).not.toBeInTheDocument();
+				expect(screen.getByText('Pipeline')).toBeInTheDocument();
+				expect(screen.getByText('Event')).toBeInTheDocument();
+				expect(screen.getByText('Received')).toBeInTheDocument();
+			});
+		});
+
 		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
@@ -331,7 +378,7 @@ describe('Connection Panel Suite', () => {
 			await waitFor(() => {
 				// Both have IP address 10.10.10.10
 				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
-				expect(screen.getByText(servers[2].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
 			});
 
 			// Confirm server that isn't a duplicate does not have a delete button

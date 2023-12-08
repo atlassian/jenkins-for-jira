@@ -13,20 +13,32 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 	return servers
 		.slice() // Create a shallow copy to avoid mutating the original array
 		.sort((a, b) => b.pipelines.length - a.pipelines.length)
-		.map((server: JenkinsServer) => {
+		.map((server: JenkinsServer, index, array) => {
 			const ipAddress = server.pluginConfig?.ipAddress;
 			let connectedState = ConnectedState.PENDING;
+			let originalConnection: string | undefined;
 
 			if (ipAddress && ipAddressSet.has(ipAddress)) {
 				connectedState = ConnectedState.DUPLICATE;
-			} else if (server.pipelines.length > 0 && ipAddress) {
+
+				// Find the original connection with the same IP address
+				const originalServer = array.find(
+					(s) => s !== server && s.pluginConfig?.ipAddress === ipAddress &&
+						s.connectedState !== ConnectedState.DUPLICATE
+				);
+
+				if (originalServer) {
+					originalConnection = originalServer.name;
+				}
+			} else if (server.pipelines.length && ipAddress) {
 				connectedState = ConnectedState.CONNECTED;
 				ipAddressSet.add(ipAddress);
 			}
 
 			return {
 				...server,
-				connectedState
+				connectedState,
+				originalConnection
 			};
 		});
 };

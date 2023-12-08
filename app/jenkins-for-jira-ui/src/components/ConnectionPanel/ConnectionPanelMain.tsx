@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import {
@@ -13,6 +13,7 @@ import { NotConnectedState } from './NotConnectedState';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
+import { ConnectionPanelContent } from './ConnectionPanelContent';
 
 type PanelProps = {
 	children: ReactNode,
@@ -52,6 +53,20 @@ const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
+	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
+	const handleClickSetupGuide = () => {
+		setSelectedTabIndex(1);
+	};
+
+	const handleTabSelect = (index: number) => {
+		setSelectedTabIndex(index);
+	};
+
+	const handleRefreshPanel = () => {
+		// TODO - ARC-2738 refresh functionality
+	};
+
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
@@ -60,8 +75,9 @@ const ConnectionPanelMain = ({
 						connectedState={connectedState}
 						jenkinsServer={jenkinsServer}
 						refreshServers={refreshServers}
+						handleRefreshPanel={handleRefreshPanel}
 					/>
-					: <Tabs id="connection-panel-tabs">
+					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
 							{
 								connectedState === ConnectedState.PENDING
@@ -79,13 +95,28 @@ const ConnectionPanelMain = ({
 							{
 								connectedState === ConnectedState.CONNECTED
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
-										<ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
+										{
+											jenkinsServer.pipelines.length
+												? <ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
+												: <ConnectionPanelContent
+													connectedState={connectedState}
+													contentHeader="No data received"
+													contentInstructionOne="This server is connected but hasn't sent any data to Jira yet."
+													contentInstructionTwo="Use this server's set up guide to choose what data this server sends to Jira."
+													buttonAppearance="primary"
+													firstButtonLabel="Open set up guide"
+													secondButtonLabel="Refresh"
+													buttonOneOnClick={handleClickSetupGuide}
+													buttonTwoOnClick={handleRefreshPanel}
+												/>
+										}
 									</Panel>
 									: <Panel data-testid="notConnectedPanel">
 										<NotConnectedState
 											connectedState={connectedState}
 											jenkinsServer={jenkinsServer}
 											refreshServers={refreshServers}
+											handleRefreshPanel={handleRefreshPanel}
 										/>
 									</Panel>
 							}
