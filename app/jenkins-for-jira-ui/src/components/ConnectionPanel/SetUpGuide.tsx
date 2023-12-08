@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Drawer from '@atlaskit/drawer';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
+import Button from '@atlaskit/button/standard-button';
 import {
 	setUpGuideLink,
 	setUpGuideInfoPanel,
@@ -11,9 +12,13 @@ import {
 	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
-	setUpGuideContainer
+	setUpGuideUpdateAvailableHeader,
+	setUpGuideUpdateAvailableButtonContainer,
+	setUpGuideUpdateAvailableContent,
+	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
 import { JenkinsPluginConfig } from '../../../../src/common/types';
+import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 
 type SetUpGuideLinkProps = {
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -32,6 +37,25 @@ type SetUpGuidePipelineStepInstructionProps = {
 	eventType: string,
 	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	pipelineStepLabel: string
+};
+
+export const UpdateAvailable = (): JSX.Element => {
+	return (
+		<>
+			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
+			<h3 className={cx(setUpGuideUpdateAvailableHeader)}>Update available</h3>
+			<p className={cx(setUpGuideUpdateAvailableContent)}>This server is connected to Jira and sending data,
+				but is using an outdated Atlassian Software Cloud plugin.</p>
+			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
+				a Jenkins admin must log into this server and update the plugin.</p>
+			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
+				{/* TODO - implement link once the IPH mystery has been solved */}
+				<Button appearance="primary">Learn more</Button>
+				{/* TODO - uhh ummm when we figure out exactly how we intend this to work... :badpokerface: */}
+				<Button>Refresh</Button>
+			</div>
+		</>
+	);
 };
 
 const SetUpGuidePipelineStepInstruction = ({
@@ -132,12 +156,8 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 		setIsDrawerOpen(false);
 	};
 
-	if (!pluginConfig) {
-		return <div>Yet to be decided...</div>;
-	}
-
 	return (
-		<div className={cx(setUpGuideContainer)}>
+		<>
 			<Drawer
 				onClose={onClose}
 				isOpen={isDrawerOpen}
@@ -152,7 +172,9 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 
 			<ol className={cx(setUpGuideOrderedList)}>
 				<li className={cx(setUpGuideOrderedListItem)}>
-					<strong className={cx(setUpGuideOrderListItemHeader)}>Developers in your project teams</strong>
+					<strong className={cx(setUpGuideOrderListItemHeader)}>
+								Developers in your project teams
+					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
 						(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
 						into their branch names and commit message.
@@ -184,7 +206,7 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />
 				</p>
 			</div>
-		</div>
+		</>
 	);
 };
 
