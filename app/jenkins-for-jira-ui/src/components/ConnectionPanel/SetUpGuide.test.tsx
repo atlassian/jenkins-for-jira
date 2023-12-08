@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { PipelineEventType, SetUpGuideInstructions, SetUpGuideLink } from './SetUpGuide';
+import { PipelineEventType, SetUpGuideInstructions } from './SetUpGuide';
 
 describe('SetUpGuideInstructions', () => {
 	const onClickMock = jest.fn();
@@ -58,17 +58,5 @@ describe('SetUpGuideInstructions', () => {
 
 		expect(getByText('jiraSendDeploymentInfo')).toBeInTheDocument();
 		expect(queryByText('OR')).toBeNull();
-	});
-});
-
-describe('SetUpGuideLink', () => {
-	const onClickMock = jest.fn();
-
-	test('renders SetUpGuideLink with label', () => {
-		const { getByText } = render(
-			<SetUpGuideLink onClick={onClickMock} label="build" />
-		);
-
-		expect(getByText('build')).toBeInTheDocument();
 	});
 });

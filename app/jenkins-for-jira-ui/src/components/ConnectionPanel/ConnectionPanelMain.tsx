@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import {
@@ -13,6 +13,7 @@ import { NotConnectedState } from './NotConnectedState';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
+import { InProductHelpDrawer } from '../InProductHelpDrawer/InProductHelpDrawer';
 
 type PanelProps = {
 	children: ReactNode,
@@ -52,8 +53,15 @@ const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+	const openDrawer = () => {
+		setIsDrawerOpen(true);
+	};
+
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
+			<InProductHelpDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
 			{
 				connectedState === ConnectedState.DUPLICATE
 					? <NotConnectedState
@@ -94,11 +102,14 @@ const ConnectionPanelMain = ({
 							{
 								jenkinsServer.pluginConfig
 									? <Panel data-testid="setUpGuidePanel">
-										<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
+										<SetUpGuide
+											pluginConfig={jenkinsServer.pluginConfig}
+											openDrawer={openDrawer}
+										/>
 									</Panel>
 									: <Panel data-testid="updateAvailable">
 										<div className={cx(setUpGuideUpdateAvailableContainer)}>
-											<UpdateAvailable />
+											<UpdateAvailable openDrawer={openDrawer} />
 										</div>
 									</Panel>
 							}
