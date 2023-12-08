@@ -18,8 +18,7 @@ export const InProductHelpDrawer = ({ isDrawerOpen, setIsDrawerOpen }: InProduct
 			width="wide"
 			label="Basic drawer"
 		>
-			{/* TODO - ARC-2737
-					(will be done after I dig into drawer usage */}
+			{/* TODO - ARC-2737 Algolia implementation */}
 			<div>Add content here for each link item</div>
 		</Drawer>
 	);
