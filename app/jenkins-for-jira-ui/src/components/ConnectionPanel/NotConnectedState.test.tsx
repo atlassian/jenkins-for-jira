@@ -22,6 +22,7 @@ describe('NotConnectedState', () => {
 
 	const refreshServers = jest.fn();
 	const handleRefreshPanel = jest.fn();
+	const setIsLoading = jest.fn();
 
 	test('renders with connected state DUPLICATE', () => {
 		render(<NotConnectedState
@@ -29,6 +30,8 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServers={refreshServers}
 			handleRefreshPanel={handleRefreshPanel}
+			isLoading={false}
+			setIsLoading={setIsLoading}
 		/>);
 		expect(screen.getByText('Duplicate server')).toBeInTheDocument();
 		expect(screen.getByText('Delete')).toBeInTheDocument();
@@ -40,6 +43,8 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServers={refreshServers}
 			handleRefreshPanel={handleRefreshPanel}
+			isLoading={false}
+			setIsLoading={setIsLoading}
 		/>);
 		expect(screen.getByText('Connection pending')).toBeInTheDocument();
 		expect(screen.getByText('Connection settings')).toBeInTheDocument();
@@ -52,6 +57,8 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServers={refreshServers}
 			handleRefreshPanel={handleRefreshPanel}
+			isLoading={false}
+			setIsLoading={setIsLoading}
 		/>);
 
 		fireEvent.click(screen.getByText('Delete'));

@@ -14,6 +14,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 type PanelProps = {
 	children: ReactNode,
@@ -54,6 +55,9 @@ const ConnectionPanelMain = ({
 	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
+	// const [serverName, setServerName] = useState('');
+	// const [secret, setSecret] = useState<string | undefined>('');
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(1);
@@ -63,8 +67,18 @@ const ConnectionPanelMain = ({
 		setSelectedTabIndex(index);
 	};
 
-	const handleRefreshPanel = () => {
+	const handleRefreshPanel = async () => {
 		// TODO - ARC-2738 refresh functionality
+		console.log('refreshing... ');
+		setIsLoading(true);
+		try {
+			const test = await getJenkinsServerWithSecret(jenkinsServer.uuid);
+			console.log('tesst: ', test);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
+
+		setIsLoading(false);
 	};
 
 	return (
@@ -76,6 +90,8 @@ const ConnectionPanelMain = ({
 						jenkinsServer={jenkinsServer}
 						refreshServers={refreshServers}
 						handleRefreshPanel={handleRefreshPanel}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
@@ -96,7 +112,7 @@ const ConnectionPanelMain = ({
 								connectedState === ConnectedState.CONNECTED
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										{
-											jenkinsServer.pipelines.length
+											!jenkinsServer.pipelines.length
 												? <ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 												: <ConnectionPanelContent
 													connectedState={connectedState}
@@ -108,6 +124,7 @@ const ConnectionPanelMain = ({
 													secondButtonLabel="Refresh"
 													buttonOneOnClick={handleClickSetupGuide}
 													buttonTwoOnClick={handleRefreshPanel}
+													isLoading={isLoading}
 												/>
 										}
 									</Panel>
@@ -117,6 +134,8 @@ const ConnectionPanelMain = ({
 											jenkinsServer={jenkinsServer}
 											refreshServers={refreshServers}
 											handleRefreshPanel={handleRefreshPanel}
+											isLoading={isLoading}
+											setIsLoading={setIsLoading}
 										/>
 									</Panel>
 							}

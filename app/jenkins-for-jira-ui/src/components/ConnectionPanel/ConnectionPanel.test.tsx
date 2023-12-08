@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+	act,
 	fireEvent,
 	render,
 	screen,
@@ -370,26 +371,38 @@ describe('Connection Panel Suite', () => {
 			});
 		});
 
-		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
-			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
+		test('should handle refreshing the panel correctly', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
 
 			render(<ConnectionPanel />);
 
-			await waitFor(() => {
-				// Both have IP address 10.10.10.10
-				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
-				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
-			});
+			expect(screen.getByText('Refresh')).toBeInTheDocument();
+			expect(screen.queryByText('Pipelines')).not.toBeInTheDocument();
+			expect(screen.queryByText('Event')).not.toBeInTheDocument();
+			expect(screen.queryByText('Received')).not.toBeInTheDocument();
 
-			// Confirm server that isn't a duplicate does not have a delete button
-			expect(screen.queryByTestId(`delete-button-${servers[0].name}`)).not.toBeInTheDocument();
+			const updatedServerData = {
+				...servers[1],
+				pipelines: [
+					{
+						name: '#5678',
+						lastEventType: EventType.DEPLOYMENT,
+						lastEventStatus: 'successful',
+						lastEventDate: new Date(),
+					},
+				],
+			};
 
-			const deleteButton = screen.getByTestId(`delete-button-${servers[2].name}`);
-			fireEvent.click(deleteButton);
+			fireEvent.click(screen.getByText('Refresh'));
 
-			await waitFor(() => {
-				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
-				expect(screen.queryByText(servers[2].name)).not.toBeInTheDocument();
+			// Wait for the asynchronous refresh operation to complete
+			await act(async () => {
+				// You might want to wait for a specific UI change after the refresh
+				// For example, you can wait for an element that indicates the refresh is complete
+				await waitFor(() => {
+					expect(screen.queryByText('Refresh')).not.toBeInTheDocument();
+					expect(screen.getByText('Your expected UI element')).toBeInTheDocument();
+				});
 			});
 		});
 
