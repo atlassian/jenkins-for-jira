@@ -38,6 +38,7 @@
 		"@typescript-eslint/indent": ["error", "tab", {
 			"SwitchCase": 1
 		}],
+		"jest/no-focused-tests": "off",
 		"@typescript-eslint/comma-dangle": ["error", "never"],
 		"jest/no-conditional-expect": "warn",
 		"no-tabs": "off",

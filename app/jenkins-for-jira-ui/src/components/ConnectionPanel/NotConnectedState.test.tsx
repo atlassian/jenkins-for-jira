@@ -47,7 +47,8 @@ describe('NotConnectedState', () => {
 			setIsLoading={setIsLoading}
 		/>);
 		expect(screen.getByText('Connection pending')).toBeInTheDocument();
-		expect(screen.getByText('Connection settings')).toBeInTheDocument();
+		expect(screen.getByText('Refresh')).toBeInTheDocument();
+		expect(screen.getByText('Learn more')).toBeInTheDocument();
 	});
 
 	test('clicking delete button removes the server', async () => {

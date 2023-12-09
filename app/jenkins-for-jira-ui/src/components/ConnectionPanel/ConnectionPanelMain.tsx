@@ -81,6 +81,8 @@ const ConnectionPanelMain = ({
 		setIsLoading(false);
 	};
 
+	console.log('jenkinsServer.pipelines: ', jenkinsServer.pipelines);
+
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
