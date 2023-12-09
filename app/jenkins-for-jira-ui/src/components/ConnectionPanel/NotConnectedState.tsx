@@ -40,6 +40,10 @@ const NotConnectedState = ({
 		refreshServers(serverToDelete);
 	};
 
+	const deleteServerWrapper = async () => {
+		await deleteServer(jenkinsServer);
+	};
+
 	const handleLearnMore = async () => {
 		// TODO - ARC-2736 IPH
 	};
@@ -73,7 +77,7 @@ const NotConnectedState = ({
 						buttonAppearance={isPending ? 'primary' : 'danger'}
 						firstButtonLabel={isPending ? 'Refresh' : 'Delete'}
 						secondButtonLabel={isPending ? 'Learn more' : undefined}
-						buttonOneOnClick={isPending ? handleRefreshPanel : deleteServer}
+						buttonOneOnClick={isPending ? handleRefreshPanel : deleteServerWrapper}
 						buttonTwoOnClick={isPending ? handleLearnMore : undefined}
 						testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 					/>

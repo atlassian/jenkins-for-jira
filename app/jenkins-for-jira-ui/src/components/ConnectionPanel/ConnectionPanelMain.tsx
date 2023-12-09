@@ -67,6 +67,8 @@ const ConnectionPanelMain = ({
 		// TODO - ARC-2738 refresh functionality
 	};
 
+	console.log('jenkinsServer.pipelines: ', jenkinsServer.pipelines);
+
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
