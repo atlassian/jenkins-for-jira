@@ -435,6 +435,40 @@ describe('Connection Panel Suite', () => {
 				});
 			});
 
+			test('should handle refreshing the panel correctly', async () => {
+				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
+
+				render(<ConnectionPanel />);
+
+				expect(screen.getByText('Refresh')).toBeInTheDocument();
+				expect(screen.queryByText('Pipelines')).not.toBeInTheDocument();
+				expect(screen.queryByText('Event')).not.toBeInTheDocument();
+				expect(screen.queryByText('Received')).not.toBeInTheDocument();
+
+				const updatedServerData = {
+					...servers[1],
+					pipelines: [
+						{
+							name: '#5678',
+							lastEventType: EventType.DEPLOYMENT,
+							lastEventStatus: 'successful' as const,
+							lastEventDate: new Date()
+						}
+					]
+				};
+
+				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([updatedServerData]);
+
+				fireEvent.click(screen.getByText('Refresh'));
+
+				await act(async () => {
+					await waitFor(() => {
+						expect(screen.queryByText('Refresh')).not.toBeInTheDocument();
+						expect(screen.getByText('Your expected UI element')).toBeInTheDocument();
+					});
+				});
+			});
+
 			test('should render UpdateAvailable component when there is no pluginConfig data for a CONNECTED server', async () => {
 				const server = {
 					name: 'server with no plugin config',
