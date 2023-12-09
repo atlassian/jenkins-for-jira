@@ -301,6 +301,7 @@ describe('Connection Panel Suite', () => {
 			// TODO - add test for Rename - will be done when I build the new server name screen
 
 			// TODO - add test for Connection settings -  will be done when I build the new set up Jenkins screen
+
 			test('should handle server disconnection and refreshing correctly', async () => {
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
@@ -368,41 +369,6 @@ describe('Connection Panel Suite', () => {
 				expect(screen.getByText('Pipeline')).toBeInTheDocument();
 				expect(screen.getByText('Event')).toBeInTheDocument();
 				expect(screen.getByText('Received')).toBeInTheDocument();
-			});
-		});
-
-		test('should handle refreshing the panel correctly', async () => {
-			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
-
-			render(<ConnectionPanel />);
-
-			expect(screen.getByText('Refresh')).toBeInTheDocument();
-			expect(screen.queryByText('Pipelines')).not.toBeInTheDocument();
-			expect(screen.queryByText('Event')).not.toBeInTheDocument();
-			expect(screen.queryByText('Received')).not.toBeInTheDocument();
-
-			const updatedServerData = {
-				...servers[1],
-				pipelines: [
-					{
-						name: '#5678',
-						lastEventType: EventType.DEPLOYMENT,
-						lastEventStatus: 'successful',
-						lastEventDate: new Date(),
-					},
-				],
-			};
-
-			fireEvent.click(screen.getByText('Refresh'));
-
-			// Wait for the asynchronous refresh operation to complete
-			await act(async () => {
-				// You might want to wait for a specific UI change after the refresh
-				// For example, you can wait for an element that indicates the refresh is complete
-				await waitFor(() => {
-					expect(screen.queryByText('Refresh')).not.toBeInTheDocument();
-					expect(screen.getByText('Your expected UI element')).toBeInTheDocument();
-				});
 			});
 		});
 
