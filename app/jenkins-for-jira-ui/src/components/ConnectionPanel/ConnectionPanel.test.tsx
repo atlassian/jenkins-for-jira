@@ -151,11 +151,14 @@ describe('Connection Panel Suite', () => {
 			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 		});
 
-		it('should handle servers with no pluginConfig', () => {
-			const noPluginConfig: JenkinsServer[] = [servers[4]];
-			const result = addConnectedState(noPluginConfig);
+		it.only('should handle servers with no pluginConfig', () => {
+			const noPluginConfigButHasPipelines: JenkinsServer[] = [servers[4]];
+			const hasPluginConfigAndPipelines: JenkinsServer[] = [servers[0]];
+			const noPluginConfigButHasPipelinesResult = addConnectedState(noPluginConfigButHasPipelines);
+			const hasPluginConfigAndPipelinesResult = addConnectedState(hasPluginConfigAndPipelines);
 
-			expect(result[0].connectedState).toEqual(ConnectedState.PENDING);
+			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(hasPluginConfigAndPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 		});
 
 		it('should correctly set state for multiple servers with duplicate IPs and no pipelines', () => {
@@ -432,8 +435,7 @@ describe('Connection Panel Suite', () => {
 				});
 			});
 
-			// Now that set up guide is no longer clickable in pending state, we no longer need this state
-			test.skip('should render UpdateAvailable component when there is no pluginConfig data for a CONNECTED server', async () => {
+			test('should render UpdateAvailable component when there is no pluginConfig data for a CONNECTED server', async () => {
 				const server = {
 					name: 'server with no plugin config',
 					uuid: '56046af9-d0eb-4efb-8896-ed182ende',
