@@ -68,8 +68,6 @@ const ConnectionPanelMain = ({
 	};
 
 	const handleRefreshPanel = async () => {
-		// TODO - ARC-2738 refresh functionality
-		console.log('refreshing... ');
 		setIsLoading(true);
 		try {
 			const test = await getJenkinsServerWithSecret(jenkinsServer.uuid);

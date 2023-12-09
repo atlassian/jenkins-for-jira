@@ -6,7 +6,8 @@ import { ConnectedState } from '../StatusLabel/StatusLabel';
 import {
 	connectionPanelContainerContainer,
 	connectionPanelContainerHeader,
-	connectionPanelContainerParagraph, notConnectedSpinnerContainer
+	connectionPanelContainerParagraph,
+	notConnectedSpinnerContainer
 } from './ConnectionPanel.styles';
 import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
