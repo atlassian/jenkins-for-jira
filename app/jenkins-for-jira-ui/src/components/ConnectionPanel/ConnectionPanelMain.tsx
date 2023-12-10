@@ -73,7 +73,6 @@ const ConnectionPanelMain = ({
 		setIsLoading(true);
 		try {
 			const server = await getJenkinsServerWithSecret(jenkinsServer.uuid);
-			console.log(' Copy code:', server);
 			setUpdatedServer(server);
 		} catch (e) {
 			console.error('No Jenkins server found.');
