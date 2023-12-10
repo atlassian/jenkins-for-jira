@@ -106,6 +106,12 @@ const servers: JenkinsServer[] = [
 			lastUpdatedOn: new Date()
 		},
 		pipelines: []
+	},
+	{
+		name: 'server eight',
+		uuid: '56046af9-d0eb-4efb-8896-iwer23rjesu',
+		pluginConfig: undefined,
+		pipelines: []
 	}
 ];
 
@@ -134,31 +140,28 @@ describe('Connection Panel Suite', () => {
 			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
 		});
 
-		it('should correctly set state for two servers with different IPs', () => {
-			const twoServers: JenkinsServer[] = [servers[0], servers[1]];
-			const result = addConnectedState(twoServers);
-
-			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[1].connectedState).toEqual(ConnectedState.PENDING);
-		});
-
 		it('should correctly set state for multiple servers with duplicate IPs', () => {
-			const multipleServers: JenkinsServer[] = [servers[0], servers[2], servers[3]];
-			const result = addConnectedState(multipleServers);
+			const multipleServers: JenkinsServer[] = [servers[0], servers[2], servers[3], servers[7]];
+			const results = addConnectedState(multipleServers);
 
-			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[1].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
+			expect(results[0].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(results[1].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(results[2].connectedState).toEqual(ConnectedState.DUPLICATE);
+			expect(results[3].connectedState).toEqual(ConnectedState.PENDING);
 		});
 
-		it.only('should handle servers with no pluginConfig', () => {
+		it('should handle servers with missing data', () => {
+			const noPluginConfigAndNoPipelines: JenkinsServer[] = [servers[7]];
 			const noPluginConfigButHasPipelines: JenkinsServer[] = [servers[4]];
-			const hasPluginConfigAndPipelines: JenkinsServer[] = [servers[0]];
+			const hasPluginConfigButNoPipelines: JenkinsServer[] = [servers[6]];
+
+			const noPluginConfigAndNoPipelinesResult = addConnectedState(noPluginConfigAndNoPipelines);
 			const noPluginConfigButHasPipelinesResult = addConnectedState(noPluginConfigButHasPipelines);
-			const hasPluginConfigAndPipelinesResult = addConnectedState(hasPluginConfigAndPipelines);
+			const hasPluginConfigButNoPipelinesResult = addConnectedState(hasPluginConfigButNoPipelines);
 
 			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(hasPluginConfigAndPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(noPluginConfigAndNoPipelinesResult[0].connectedState).toEqual(ConnectedState.PENDING);
+			expect(hasPluginConfigButNoPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 		});
 
 		it('should correctly set state for multiple servers with duplicate IPs and no pipelines', () => {
@@ -166,7 +169,7 @@ describe('Connection Panel Suite', () => {
 			const result = addConnectedState(duplicateServers);
 
 			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[1].connectedState).toEqual(ConnectedState.PENDING);
+			expect(result[1].connectedState).toEqual(ConnectedState.CONNECTED);
 			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 			expect(result[2].originalConnection).toEqual(servers[5].name);
 		});
@@ -246,14 +249,7 @@ describe('Connection Panel Suite', () => {
 				const server: JenkinsServer = {
 					name: 'my server',
 					connectedState: ConnectedState.PENDING,
-					pluginConfig: {
-						ipAddress: '10.0.0.1',
-						lastUpdatedOn: new Date(),
-						autoBuildRegex: '',
-						autoBuildEnabled: true,
-						autoDeploymentsEnabled: false,
-						autoDeploymentsRegex: ''
-					},
+					pluginConfig: undefined,
 					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
 					pipelines: []
 				};
@@ -266,11 +262,11 @@ describe('Connection Panel Suite', () => {
 				);
 
 				const nameLabel = screen.getByText(server.name);
-				const ipAddressLabel = screen.getByText(`IP address: ${server.pluginConfig?.ipAddress}`);
+				const ipAddressLabel = screen.queryByText(`IP address: ${server.pluginConfig?.ipAddress}`);
 				const statusLabel = screen.getByTestId('status-label');
 
 				expect(nameLabel).toBeInTheDocument();
-				expect(ipAddressLabel).toBeInTheDocument();
+				expect(ipAddressLabel).not.toBeInTheDocument();
 				expect(statusLabel).toHaveStyle({ color: '#a54900', backgroundColor: '#fff7d6' });
 				expect(statusLabel).toHaveTextContent('PENDING');
 			});
@@ -304,6 +300,7 @@ describe('Connection Panel Suite', () => {
 			// TODO - add test for Rename - will be done when I build the new server name screen
 
 			// TODO - add test for Connection settings -  will be done when I build the new set up Jenkins screen
+
 			test('should handle server disconnection and refreshing correctly', async () => {
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
@@ -329,7 +326,7 @@ describe('Connection Panel Suite', () => {
 
 	describe('Connection Panel Main', () => {
 		test('should render panel content for PENDING server', async () => {
-			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[6]]);
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[7]]);
 
 			render(<ConnectionPanel />);
 
@@ -348,8 +345,7 @@ describe('Connection Panel Suite', () => {
 			});
 		});
 
-		// When there's no pipeline data it's PENDING...
-		test.skip('should render panel content for CONNECTED server without pipeline data', async () => {
+		test('should render panel content for CONNECTED server without pipeline data', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
 
 			await act(async () => {
