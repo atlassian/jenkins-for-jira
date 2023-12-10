@@ -1,16 +1,13 @@
 import React from 'react';
 import {
-	act,
-	fireEvent,
-	render,
-	screen,
-	waitFor
+	act, fireEvent, render, screen, waitFor
 } from '@testing-library/react';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { addConnectedState, ConnectionPanel } from './ConnectionPanel';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
+import { ConnectionPanelMain } from './ConnectionPanelMain';
 
 const servers: JenkinsServer[] = [
 	{
@@ -151,7 +148,7 @@ describe('Connection Panel Suite', () => {
 			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 		});
 
-		it.only('should handle servers with no pluginConfig', () => {
+		it('should handle servers with no pluginConfig', () => {
 			const noPluginConfigButHasPipelines: JenkinsServer[] = [servers[4]];
 			const hasPluginConfigAndPipelines: JenkinsServer[] = [servers[0]];
 			const noPluginConfigButHasPipelinesResult = addConnectedState(noPluginConfigButHasPipelines);
@@ -327,10 +324,9 @@ describe('Connection Panel Suite', () => {
 		});
 	});
 
-	describe('Connection Panel Main', () => {
+	describe('ConnectionPanel', () => {
 		test('should render panel content for PENDING server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[6]]);
-
 			render(<ConnectionPanel />);
 
 			await waitFor(() => {
@@ -341,7 +337,7 @@ describe('Connection Panel Suite', () => {
 		test('should render panel content for DUPLICATE server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[5], servers[6]]);
 
-			render(<ConnectionPanel />);
+			render(<ConnectionPanel/>);
 
 			await waitFor(() => {
 				expect(screen.getByText('Duplicate server')).toBeInTheDocument();
@@ -352,8 +348,9 @@ describe('Connection Panel Suite', () => {
 		test.skip('should render panel content for CONNECTED server without pipeline data', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
 
+			render(<ConnectionPanel />);
+
 			await act(async () => {
-				render(<ConnectionPanel />);
 				await waitFor(() => {
 					expect(screen.getByText('No data received')).toBeInTheDocument();
 					expect(screen.queryByText('Pipeline')).not.toBeInTheDocument();
@@ -435,40 +432,6 @@ describe('Connection Panel Suite', () => {
 				});
 			});
 
-			test('should handle refreshing the panel correctly', async () => {
-				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
-
-				render(<ConnectionPanel />);
-
-				expect(screen.getByText('Refresh')).toBeInTheDocument();
-				expect(screen.queryByText('Pipelines')).not.toBeInTheDocument();
-				expect(screen.queryByText('Event')).not.toBeInTheDocument();
-				expect(screen.queryByText('Received')).not.toBeInTheDocument();
-
-				const updatedServerData = {
-					...servers[1],
-					pipelines: [
-						{
-							name: '#5678',
-							lastEventType: EventType.DEPLOYMENT,
-							lastEventStatus: 'successful' as const,
-							lastEventDate: new Date()
-						}
-					]
-				};
-
-				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([updatedServerData]);
-
-				fireEvent.click(screen.getByText('Refresh'));
-
-				await act(async () => {
-					await waitFor(() => {
-						expect(screen.queryByText('Refresh')).not.toBeInTheDocument();
-						expect(screen.getByText('Your expected UI element')).toBeInTheDocument();
-					});
-				});
-			});
-
 			test('should render UpdateAvailable component when there is no pluginConfig data for a CONNECTED server', async () => {
 				const server = {
 					name: 'server with no plugin config',
@@ -497,6 +460,56 @@ describe('Connection Panel Suite', () => {
 					const updateAvailableText =
 						screen.getByText('This server is connected to Jira and sending data, but is using an outdated Atlassian Software Cloud plugin.');
 					expect(updateAvailableText).toBeInTheDocument();
+				});
+			});
+
+			test('should handle refreshing the panel for a server CONNECTED with pipeline data but no plugin config', async () => {
+				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
+
+				const { rerender } = render(<ConnectionPanel />);
+
+				await waitFor(() => {
+					expect(screen.getByText('CONNECTED')).toBeInTheDocument();
+					expect(screen.getByText('Pipeline')).toBeInTheDocument();
+					expect(screen.getByText('Event')).toBeInTheDocument();
+					expect(screen.getByText('Received')).toBeInTheDocument();
+					expect(screen.queryByText('Refresh')).not.toBeInTheDocument();
+					expect(screen.queryByText('To receive build and deployment data from this server:')).not.toBeInTheDocument();
+				});
+
+				await waitFor(() => {
+					fireEvent.click(screen.getByText('Set up guide'));
+				});
+
+				await waitFor(() => {
+					expect(screen.getByText('Refresh')).toBeInTheDocument();
+					expect(screen.queryByText('To receive build and deployment data from this server:')).not.toBeInTheDocument();
+
+					const updatedServerData = {
+						...servers[1],
+						pluginConfig: {
+							ipAddress: '10.10.10.12',
+							lastUpdatedOn: new Date()
+						}
+					};
+
+					jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([updatedServerData]);
+
+					// Rerender the component with the updated data
+					rerender(<ConnectionPanelMain
+						connectedState={ConnectedState.CONNECTED}
+						jenkinsServer={updatedServerData}
+						refreshServers={jest.fn()}
+					/>);
+				});
+
+				await waitFor(() => {
+					fireEvent.click(screen.getByText('Set up guide'));
+				});
+
+				await waitFor(() => {
+					fireEvent.click(screen.getByText('Refresh'));
+					expect(screen.getByText('To receive build and deployment data from this server:')).toBeInTheDocument();
 				});
 			});
 		});

@@ -16,7 +16,7 @@ type NotConnectedStateProps = {
 	refreshServers(serverToRemove: JenkinsServer): void,
 	handleRefreshPanel(serverToRemove: JenkinsServer): void,
 	isLoading: boolean
-	setIsLoading(isLoading: boolean): void,
+	setIsLoading(isLoading: boolean): void
 };
 
 const NotConnectedState = ({

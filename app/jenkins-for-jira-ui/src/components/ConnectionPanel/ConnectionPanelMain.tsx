@@ -1,12 +1,15 @@
 import React, { ReactNode, useState } from 'react';
 import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
+import Spinner from '@atlaskit/spinner';
 import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
 	connectionPanelMainNotConnectedTabs,
 	setUpGuideContainer,
-	setUpGuideUpdateAvailableContainer, connectionPanelMainConnectedPendingSetUp
+	setUpGuideUpdateAvailableContainer,
+	connectionPanelMainConnectedPendingSetUp,
+	setUpGuideUpdateAvailableLoadingContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
@@ -56,8 +59,7 @@ const ConnectionPanelMain = ({
 }: ConnectionPanelMainProps): JSX.Element => {
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	// const [serverName, setServerName] = useState('');
-	// const [secret, setSecret] = useState<string | undefined>('');
+	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(1);
@@ -70,8 +72,9 @@ const ConnectionPanelMain = ({
 	const handleRefreshPanel = async () => {
 		setIsLoading(true);
 		try {
-			const test = await getJenkinsServerWithSecret(jenkinsServer.uuid);
-			console.log('tesst: ', test);
+			const server = await getJenkinsServerWithSecret(jenkinsServer.uuid);
+			console.log(' Copy code:', server);
+			setUpdatedServer(server);
 		} catch (e) {
 			console.error('No Jenkins server found.');
 		}
@@ -79,7 +82,34 @@ const ConnectionPanelMain = ({
 		setIsLoading(false);
 	};
 
-	console.log('jenkinsServer.pipelines: ', jenkinsServer.pipelines);
+	let setUpGuideUpdateAvailableContent;
+
+	if (isLoading) {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="updateAvailable">
+				<div className={cx(setUpGuideUpdateAvailableLoadingContainer)}>
+					<Spinner size='large' />
+				</div>
+			</Panel>
+		);
+	} else if (jenkinsServer.pluginConfig || updatedServer?.pluginConfig) {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="setUpGuidePanel">
+				<SetUpGuide pluginConfig={jenkinsServer.pluginConfig} />
+			</Panel>
+		);
+	} else {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="updateAvailable">
+				<div className={cx(setUpGuideUpdateAvailableContainer)}>
+					<UpdateAvailable
+						handleRefreshPanel={handleRefreshPanel}
+						jenkinsServer={jenkinsServer}
+					/>
+				</div>
+			</Panel>
+		);
+	}
 
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
@@ -112,7 +142,7 @@ const ConnectionPanelMain = ({
 								connectedState === ConnectedState.CONNECTED
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										{
-											!jenkinsServer.pipelines.length
+											jenkinsServer.pipelines.length
 												? <ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 												: <ConnectionPanelContent
 													connectedState={connectedState}
@@ -140,19 +170,7 @@ const ConnectionPanelMain = ({
 									</Panel>
 							}
 						</TabPanel>
-						<TabPanel>
-							{
-								jenkinsServer.pluginConfig
-									? <Panel data-testid="setUpGuidePanel">
-										<SetUpGuide pluginConfig={jenkinsServer.pluginConfig}/>
-									</Panel>
-									: <Panel data-testid="updateAvailable">
-										<div className={cx(setUpGuideUpdateAvailableContainer)}>
-											<UpdateAvailable />
-										</div>
-									</Panel>
-							}
-						</TabPanel>
+						<TabPanel>{setUpGuideUpdateAvailableContent}</TabPanel>
 					</Tabs>
 			}
 		</div>
