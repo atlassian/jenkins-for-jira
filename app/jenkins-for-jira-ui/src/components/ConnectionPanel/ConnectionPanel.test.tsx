@@ -301,7 +301,7 @@ describe('Connection Panel Suite', () => {
 
 			// TODO - add test for Connection settings -  will be done when I build the new set up Jenkins screen
 
-			test('should handle server disconnection and refreshing correctly', async () => {
+			test('should handle server disconnection and refreshing servers correctly', async () => {
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
 				render(<ConnectionPanel />);
