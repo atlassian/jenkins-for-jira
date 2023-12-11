@@ -112,7 +112,7 @@ describe('Connection Panel Suite', () => {
 	test('fetches and displays servers on mount', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
-		render(<ConnectionPanel />);
+		render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={jest.fn()} />);
 
 		await waitFor(() => {
 			expect(screen.getByText(servers[0].name)).toBeInTheDocument();
@@ -302,7 +302,7 @@ describe('Connection Panel Suite', () => {
 			test('should handle server disconnection and refreshing correctly', async () => {
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
-				render(<ConnectionPanel />);
+				render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={jest.fn()}/>);
 
 				await waitFor(() => {
 					expect(screen.getByText(servers[0].name)).toBeInTheDocument();
@@ -323,10 +323,12 @@ describe('Connection Panel Suite', () => {
 	});
 
 	describe('Connection Panel Main', () => {
+		const setJenkinsServers = jest.fn();
+
 		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
-			render(<ConnectionPanel />);
+			render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={setJenkinsServers} />);
 
 			await waitFor(() => {
 				// Both have IP address 10.10.10.10
@@ -367,7 +369,7 @@ describe('Connection Panel Suite', () => {
 
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
 
-				render(<ConnectionPanel />);
+				render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={setJenkinsServers} />);
 
 				await waitFor(() => {
 					expect(screen.getByText(server.name)).toBeInTheDocument();
@@ -399,7 +401,7 @@ describe('Connection Panel Suite', () => {
 
 				jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
 
-				render(<ConnectionPanel />);
+				render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={setJenkinsServers} />);
 
 				await waitFor(() => {
 					expect(screen.getByText(server.name)).toBeInTheDocument();
