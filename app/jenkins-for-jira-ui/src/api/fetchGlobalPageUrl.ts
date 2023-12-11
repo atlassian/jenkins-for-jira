@@ -14,7 +14,7 @@ const fetchGlobalPageUrl = async (): Promise<string> => {
 		environmentId
 	} = context;
 
-	return `${siteUrl}/jira/settings/apps/${appId}/${environmentId}`;
+	return `${siteUrl}/jira/apps/${appId}/${environmentId}`;
 };
 
 export {
