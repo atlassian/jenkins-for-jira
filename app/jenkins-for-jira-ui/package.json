@@ -36,7 +36,6 @@
     "@types/react-dom": "17.0.20",
     "@types/react-router": "5.1.20",
     "@types/uuid": "8.3.4",
-    "algoliasearch": "^4.20.0",
     "eslint-plugin-react-hooks": "4.6.0",
     "launchdarkly-react-client-sdk": "^3.0.8",
     "moment": "2.29.4",
