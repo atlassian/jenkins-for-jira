@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Button, { Appearance } from '@atlaskit/button';
-import { KeyboardOrMouseEvent } from '@atlaskit/modal-dialog';
 import { inProductHelpActionLink } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
 import useAlgolia, { Hit } from '../../hooks/useAlgolia';
@@ -12,7 +11,6 @@ export enum InProductHelpActionType {
 }
 
 type InProductHelpActionProps = {
-	handleOpenDrawer?(e: KeyboardOrMouseEvent): void,
 	label: string,
 	type: InProductHelpActionType,
 	appearance: Appearance,
@@ -27,7 +25,6 @@ export const InProductHelpAction = ({
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [hits, setHits] = useState<Hit[]>([]);
-
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : '';
 
