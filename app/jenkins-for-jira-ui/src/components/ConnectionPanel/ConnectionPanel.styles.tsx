@@ -232,13 +232,6 @@ export const setUpGuideOrderListItemHeader = css`
 	margin-bottom: ${token('space.200')};
 `;
 
-export const setUpGuideLink = css`
-	background-color: inherit;
-	border: none;
-	color: ${token('color.link')};
-	padding: ${token('space.0')}
-`;
-
 export const setUpGuideInfoPanel = css`
 	background-color: #F7F8F9;
 	display: flex;
@@ -263,6 +256,13 @@ export const setUpGuideUpdateAvailableContainer = css`
 	line-height: 20px;
 	text-align: center;
 	width: 55%;
+`;
+
+export const setUpGuideUpdateAvailableLoadingContainer = css`
+	margin-top: ${token('space.1000')};
+	padding: ${token('space.1000')};
+	min-height: 180px;
+	text-align: center;
 `;
 
 export const setUpGuideUpdateAvailableIconContainer = css`
