@@ -23,6 +23,7 @@
     "@atlaskit/progress-tracker": "8.5.2",
     "@atlaskit/spinner": "15.5.3",
     "@atlaskit/tabs": "^13.4.9",
+    "@atlaskit/textarea": "^5.0.0",
     "@atlaskit/textfield": "5.6.4",
     "@atlaskit/theme": "12.5.5",
     "@atlaskit/tokens": "^1.28.1",
