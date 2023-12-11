@@ -3,12 +3,9 @@ import { render } from '@testing-library/react';
 import { PipelineEventType, SetUpGuideInstructions } from './SetUpGuide';
 
 describe('SetUpGuideInstructions', () => {
-	const onClickMock = jest.fn();
-
 	test('renders SetUpGuideInstructions with BUILD eventType, globalSettings, and regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
-				onClick={onClickMock}
 				eventType={PipelineEventType?.BUILD}
 				globalSettings
 				regex="^build$"
@@ -23,7 +20,6 @@ describe('SetUpGuideInstructions', () => {
 	test('renders SetUpGuideInstructions with BUILD eventType, globalSettings, and no regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
-				onClick={onClickMock}
 				eventType={PipelineEventType?.BUILD}
 				globalSettings
 			/>
@@ -35,7 +31,6 @@ describe('SetUpGuideInstructions', () => {
 	test('renders SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings, and regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
-				onClick={onClickMock}
 				eventType={PipelineEventType?.DEPLOYMENT}
 				globalSettings
 				regex="^deploy to (?<envName>.*)$"
@@ -50,7 +45,6 @@ describe('SetUpGuideInstructions', () => {
 	test('renders SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings set to false', () => {
 		const { getByText, queryByText } = render(
 			<SetUpGuideInstructions
-				onClick={onClickMock}
 				eventType={PipelineEventType?.DEPLOYMENT}
 				globalSettings={false}
 			/>

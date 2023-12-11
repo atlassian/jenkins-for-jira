@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { cx } from '@emotion/css';
 import Button, { Appearance } from '@atlaskit/button';
-import { KeyboardOrMouseEvent } from '@atlaskit/modal-dialog';
 import { inProductHelpActionLink } from './InProductHelp.styles';
+import { InProductHelpDrawer } from './InProductHelpDrawer';
 
 export enum InProductHelpActionType {
 	HelpLink = 'link',
@@ -10,28 +10,40 @@ export enum InProductHelpActionType {
 }
 
 type InProductHelpActionProps = {
-	onClick(e: KeyboardOrMouseEvent): void,
 	label: string,
 	type: InProductHelpActionType,
 	appearance: Appearance
 };
 
 export const InProductHelpAction = ({
-	onClick,
 	label,
 	type,
 	appearance
 }: InProductHelpActionProps): JSX.Element => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : '';
 
+	const openDrawer = () => {
+		setIsDrawerOpen(true);
+	};
+
 	return (
-		<Button
-			className={cx(inProductHelpTypeClassName)}
-			onClick={onClick}
-			appearance={appearance}
-		>
-			{label}
-		</Button>
+		<>
+			<Button
+				className={cx(inProductHelpTypeClassName)}
+				onClick={(e) => {
+					e.preventDefault();
+					openDrawer();
+				}}
+				appearance={appearance}
+			>
+				{label}
+			</Button>
+			<InProductHelpDrawer
+				isDrawerOpen={isDrawerOpen}
+				setIsDrawerOpen={setIsDrawerOpen}
+			/>
+		</>
 	);
 };
