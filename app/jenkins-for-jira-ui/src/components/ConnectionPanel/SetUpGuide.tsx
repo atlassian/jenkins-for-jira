@@ -21,14 +21,12 @@ import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDr
 
 type UpdateAvailableProps = {
 	handleRefreshPanel(serverToRemove: JenkinsServer): void,
-	jenkinsServer: JenkinsServer,
-	openDrawer(): void
+	jenkinsServer: JenkinsServer
 };
 
 export const UpdateAvailable = ({
 	handleRefreshPanel,
-	jenkinsServer,
-	openDrawer
+	jenkinsServer
 }: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
@@ -39,7 +37,7 @@ export const UpdateAvailable = ({
 			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
 				a Jenkins admin must log into this server and update the plugin.</p>
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
-				<InProductHelpAction onClick={openDrawer} label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
+				<InProductHelpAction label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
 
 				<Button onClick={() => handleRefreshPanel(jenkinsServer)}>Refresh</Button>
 			</div>
@@ -49,19 +47,16 @@ export const UpdateAvailable = ({
 
 type SetUpGuidePipelineStepInstructionProps = {
 	eventType: string,
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	pipelineStepLabel: string
 };
 
 const SetUpGuidePipelineStepInstruction = ({
 	eventType,
-	onClick,
 	pipelineStepLabel
 }: SetUpGuidePipelineStepInstructionProps): JSX.Element => {
 	return (
 		<p>Add a &nbsp;
 			<InProductHelpAction
-				onClick={onClick}
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
 				appearance="link"
@@ -77,14 +72,12 @@ export enum PipelineEventType {
 }
 
 type SetUpGuideInstructionsProps = {
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	eventType: PipelineEventType,
 	globalSettings?: boolean,
 	regex?: string
 };
 
 export const SetUpGuideInstructions = ({
-	onClick,
 	eventType,
 	globalSettings,
 	regex
@@ -105,7 +98,6 @@ export const SetUpGuideInstructions = ({
 			<>
 				<SetUpGuidePipelineStepInstruction
 					eventType={eventType}
-					onClick={onClick}
 					pipelineStepLabel={pipelineStepLabel}
 				/>
 				<p>
@@ -114,7 +106,6 @@ export const SetUpGuideInstructions = ({
 				<p>
 					Use &nbsp;
 					<InProductHelpAction
-						onClick={onClick}
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
 						appearance="link"
@@ -126,13 +117,12 @@ export const SetUpGuideInstructions = ({
 	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
 		contentToRender =
 			<p>
-				<InProductHelpAction onClick={onClick} label="No setup required" type={InProductHelpActionType.HelpLink} appearance="link" />
+				<InProductHelpAction label="No setup required" type={InProductHelpActionType.HelpLink} appearance="link" />
 			</p>;
 	} else {
 		contentToRender = (
 			<SetUpGuidePipelineStepInstruction
 				eventType={eventType}
-				onClick={onClick}
 				pipelineStepLabel={pipelineStepLabel}
 			/>
 		);
@@ -147,13 +137,11 @@ export const SetUpGuideInstructions = ({
 };
 
 type SetUpGuideProps = {
-	pluginConfig?: JenkinsPluginConfig,
-	openDrawer(): void
+	pluginConfig?: JenkinsPluginConfig
 };
 
 const SetUpGuide = ({
-	pluginConfig,
-	openDrawer
+	pluginConfig
 }: SetUpGuideProps): JSX.Element => {
 	return (
 		<>
@@ -165,7 +153,7 @@ const SetUpGuide = ({
 								Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction onClick={openDrawer} label="JIRA-1234" type={InProductHelpActionType.HelpLink} appearance="link" />)
+						(e.g. <InProductHelpAction label="JIRA-1234" type={InProductHelpActionType.HelpLink} appearance="link" />)
 						into their branch names and commit message.
 					</p>
 				</li>
@@ -173,13 +161,11 @@ const SetUpGuide = ({
 				<li className={cx(setUpGuideOrderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
 					<ol className={cx(setUpGuideNestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
-							onClick={openDrawer}
 							eventType={PipelineEventType.BUILD}
 							globalSettings={pluginConfig?.autoBuildEnabled}
 							regex={pluginConfig?.autoBuildRegex}
 						/>
 						<SetUpGuideInstructions
-							onClick={openDrawer}
 							eventType={PipelineEventType.DEPLOYMENT}
 							globalSettings={pluginConfig?.autoDeploymentsEnabled}
 							regex={pluginConfig?.autoDeploymentsRegex}
@@ -192,7 +178,7 @@ const SetUpGuide = ({
 				<PeopleGroup label="people-group" />
 				<p>
 					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
-					<InProductHelpAction onClick={openDrawer} label="Here’s what you need to know." type={InProductHelpActionType.HelpLink} appearance="link" />
+					<InProductHelpAction label="Here’s what you need to know." type={InProductHelpActionType.HelpLink} appearance="link" />
 				</p>
 			</div>
 		</>
