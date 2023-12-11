@@ -9,8 +9,8 @@ export const UpdateAvailableIcon = ({ containerClassName }: UpdateAvailableIconP
 	return (
 		<div className={cx(containerClassName)} data-testid="updateAvailableIcon">
 			<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<g clip-path="url(#clip0_918_34638)">
-					<rect width="114.796" height="160" transform="translate(23)" fill="white" fill-opacity="0.01"/>
+				<g clipPath="url(#clip0_918_34638)">
+					<rect width="114.796" height="160" transform="translate(23)" fill="white" fillOpacity="0.01"/>
 					<path d="M94.4778 59.082H51.1599V109.541H94.4778V59.082Z" fill="#FFAB00"/>
 					<path d="M51.1599 59.082V109.339C53.181 102.333 55.4041 88.0505 67.9346 78.282C76.2883 71.8147 80.8694 73.8357 88.2799 66.8294C90.6378 64.6062 92.7936 61.9789 94.6125 59.082H51.1599V59.082Z" fill="url(#paint0_linear_918_34638)"/>
 					<path d="M66.3179 109.543H23V160.002H66.3179V109.543Z" fill="#0057D8"/>
@@ -32,25 +32,25 @@ export const UpdateAvailableIcon = ({ containerClassName }: UpdateAvailableIconP
 				</g>
 				<defs>
 					<linearGradient id="paint0_linear_918_34638" x1="72.8769" y1="113.382" x2="72.8768" y2="22.2853" gradientUnits="userSpaceOnUse">
-						<stop offset="0.2502" stop-color="#FFC400" stop-opacity="0"/>
-						<stop offset="0.3519" stop-color="#FFC400" stop-opacity="0.1356"/>
-						<stop offset="1" stop-color="#FFC400"/>
+						<stop offset="0.2502" stopColor="#FFC400" stopOpacity="0"/>
+						<stop offset="0.3519" stopColor="#FFC400" stopOpacity="0.1356"/>
+						<stop offset="1" stopColor="#FFC400"/>
 					</linearGradient>
 					<linearGradient id="paint1_linear_918_34638" x1="88.0062" y1="59.1103" x2="88.0062" y2="8.67894" gradientUnits="userSpaceOnUse">
-						<stop stop-color="#344563"/>
-						<stop offset="1" stop-color="#5E6C84"/>
+						<stop stopColor="#344563"/>
+						<stop offset="1" stopColor="#5E6C84"/>
 					</linearGradient>
 					<linearGradient id="paint2_linear_918_34638" x1="85.9851" y1="59.1326" x2="85.9851" y2="50.4545" gradientUnits="userSpaceOnUse">
-						<stop stop-color="#344563"/>
-						<stop offset="1" stop-color="#5E6C84"/>
+						<stop stopColor="#344563"/>
+						<stop offset="1" stopColor="#5E6C84"/>
 					</linearGradient>
 					<linearGradient id="paint3_linear_918_34638" x1="48.863" y1="159.453" x2="37.7194" y2="94.1036" gradientUnits="userSpaceOnUse">
-						<stop stop-color="#091E42"/>
-						<stop offset="1" stop-color="#091E42" stop-opacity="0.1"/>
+						<stop stopColor="#091E42"/>
+						<stop offset="1" stopColor="#091E42" stopOpacity="0.1"/>
 					</linearGradient>
 					<linearGradient id="paint4_linear_918_34638" x1="40.8263" y1="10.8275" x2="51.9699" y2="76.1773" gradientUnits="userSpaceOnUse">
-						<stop stop-color="#091E42"/>
-						<stop offset="1" stop-color="#091E42" stop-opacity="0.1"/>
+						<stop stopColor="#091E42"/>
+						<stop offset="1" stopColor="#091E42" stopOpacity="0.1"/>
 					</linearGradient>
 					<clipPath id="clip0_918_34638">
 						<rect width="114.796" height="160" fill="white" transform="translate(23)"/>
