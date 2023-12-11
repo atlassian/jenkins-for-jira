@@ -107,23 +107,22 @@ export const notConnectedSpinnerContainer = css`
 	width: 100%;
 `;
 
-// TODO - delete this temp class
-export const notConnectedTempImgPlaceholder = css`
-	background-color: lightgrey;
-	border: 1px solid lightgrey;
-	border-radius: 3px;
-	height: 160px;
-	margin: auto;
-	width: 160px;
+export const connectionPanelContainerContainer = css`
+	margin: ${token('space.600')} auto;
+	max-height: 400px;
+	min-height: 400px;
+	max-width: 420px;
+	position: relative;
+	text-align: center;
 `;
 
-export const notConnectedStateHeader = css`
+export const connectionPanelContainerHeader = css`
 	font-size: 20px;
 	font-weight: 500;
 	margin: ${token('space.200')} auto;
 `;
 
-export const notConnectedStateParagraph = css`
+export const connectionPanelContainerParagraph = css`
 	font-size: 14px;
 	line-height: 20px;
 	margin-bottom: ${token('space.400')};
@@ -231,13 +230,6 @@ export const setUpGuideNestedOrderedListItem = css`
 export const setUpGuideOrderListItemHeader = css`
 	font-weight: bold;
 	margin-bottom: ${token('space.200')};
-`;
-
-export const setUpGuideLink = css`
-	background-color: inherit;
-	border: none;
-	color: ${token('color.link')};
-	padding: ${token('space.0')}
 `;
 
 export const setUpGuideInfoPanel = css`

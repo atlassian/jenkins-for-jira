@@ -51,11 +51,11 @@ const ServerManagement = (): JSX.Element => {
 
 	const pageHeaderActions = (
 		<ButtonGroup>
-			{/* TODO - add onClick event (will be done when I build the new server name form */}
+			{/* TODO handle empty state - ARC-2730 connection wizard */}
 			<Button appearance="primary">
 				Connect a new Jenkins server
 			</Button>
-			{/* TODO - add onClick event (will be done after spike for ARC-2691 */}
+			{/* TODO - ARC-2723 share modal */}
 			<Button>Share page</Button>
 		</ButtonGroup>
 	);

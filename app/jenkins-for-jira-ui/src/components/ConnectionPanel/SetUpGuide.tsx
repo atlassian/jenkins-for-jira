@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cx } from '@emotion/css';
-import Drawer from '@atlaskit/drawer';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import Button from '@atlaskit/button/standard-button';
 import {
-	setUpGuideLink,
 	setUpGuideInfoPanel,
 	setUpGuideNestedOrderedList,
 	setUpGuideNestedOrderedListItem,
@@ -12,34 +10,20 @@ import {
 	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
-	setUpGuideUpdateAvailableHeader,
 	setUpGuideUpdateAvailableButtonContainer,
 	setUpGuideUpdateAvailableContent,
+	setUpGuideUpdateAvailableHeader,
 	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
 import { JenkinsPluginConfig } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
+import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 
-type SetUpGuideLinkProps = {
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-	label: string,
+type UpdateAvailableProps = {
+	openDrawer(): void
 };
 
-export const SetUpGuideLink = ({ onClick, label }: SetUpGuideLinkProps): JSX.Element => {
-	return (
-		<button className={cx(setUpGuideLink)} onClick={onClick}>
-			{label}
-		</button>
-	);
-};
-
-type SetUpGuidePipelineStepInstructionProps = {
-	eventType: string,
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-	pipelineStepLabel: string
-};
-
-export const UpdateAvailable = (): JSX.Element => {
+export const UpdateAvailable = ({ openDrawer }: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
 			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
@@ -49,13 +33,18 @@ export const UpdateAvailable = (): JSX.Element => {
 			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
 				a Jenkins admin must log into this server and update the plugin.</p>
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
-				{/* TODO - implement link once the IPH mystery has been solved */}
-				<Button appearance="primary">Learn more</Button>
-				{/* TODO - uhh ummm when we figure out exactly how we intend this to work... :badpokerface: */}
+				<InProductHelpAction onClick={openDrawer} label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
+				{/* TODO - ARC-2738 */}
 				<Button>Refresh</Button>
 			</div>
 		</>
 	);
+};
+
+type SetUpGuidePipelineStepInstructionProps = {
+	eventType: string,
+	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+	pipelineStepLabel: string
 };
 
 const SetUpGuidePipelineStepInstruction = ({
@@ -65,7 +54,12 @@ const SetUpGuidePipelineStepInstruction = ({
 }: SetUpGuidePipelineStepInstructionProps): JSX.Element => {
 	return (
 		<p>Add a &nbsp;
-			<SetUpGuideLink onClick={onClick} label={pipelineStepLabel} />&nbsp;
+			<InProductHelpAction
+				onClick={onClick}
+				label={pipelineStepLabel}
+				type={InProductHelpActionType.HelpLink}
+				appearance="link"
+			/>&nbsp;
 			step to the end of {eventType} stages.
 		</p>
 	);
@@ -113,16 +107,21 @@ export const SetUpGuideInstructions = ({
 				</p>
 				<p>
 					Use &nbsp;
-					<SetUpGuideLink
+					<InProductHelpAction
 						onClick={onClick}
 						label={regex || '<regex>'}
+						type={InProductHelpActionType.HelpLink}
+						appearance="link"
 					/>
 					&nbsp; in the names of the {eventType} stages.
 				</p>
 			</>
 		);
 	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
-		contentToRender = <p><SetUpGuideLink onClick={onClick} label="No setup required" /></p>;
+		contentToRender =
+			<p>
+				<InProductHelpAction onClick={onClick} label="No setup required" type={InProductHelpActionType.HelpLink} appearance="link" />
+			</p>;
 	} else {
 		contentToRender = (
 			<SetUpGuidePipelineStepInstruction
@@ -142,32 +141,16 @@ export const SetUpGuideInstructions = ({
 };
 
 type SetUpGuideProps = {
-	pluginConfig?: JenkinsPluginConfig
+	pluginConfig?: JenkinsPluginConfig,
+	openDrawer(): void
 };
 
-const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-	const openDrawer = () => {
-		setIsDrawerOpen(true);
-	};
-
-	const onClose = () => {
-		setIsDrawerOpen(false);
-	};
-
+const SetUpGuide = ({
+	pluginConfig,
+	openDrawer
+}: SetUpGuideProps): JSX.Element => {
 	return (
 		<>
-			<Drawer
-				onClose={onClose}
-				isOpen={isDrawerOpen}
-				width="wide"
-				label="Basic drawer"
-			>
-				{/* TODO - update this to render content for the 'link' clicked
-					(will be done after I dig into drawer usage */}
-				<div>Add content here for each link item</div>
-			</Drawer>
 			<p className={cx(setUpGuideParagraph)}>To receive build and deployment data from this server:</p>
 
 			<ol className={cx(setUpGuideOrderedList)}>
@@ -176,7 +159,7 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 								Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <SetUpGuideLink onClick={openDrawer} label="JIRA-1234" />)
+						(e.g. <InProductHelpAction onClick={openDrawer} label="JIRA-1234" type={InProductHelpActionType.HelpLink} appearance="link" />)
 						into their branch names and commit message.
 					</p>
 				</li>
@@ -203,7 +186,7 @@ const SetUpGuide = ({ pluginConfig }: SetUpGuideProps): JSX.Element => {
 				<PeopleGroup label="people-group" />
 				<p>
 					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
-					<SetUpGuideLink onClick={openDrawer} label="Here’s what you need to know." />
+					<InProductHelpAction onClick={openDrawer} label="Here’s what you need to know." type={InProductHelpActionType.HelpLink} appearance="link" />
 				</p>
 			</div>
 		</>

@@ -1,6 +1,5 @@
 import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
-// import { token } from '@atlaskit/tokens';
 
 export const connectionWizardContainer = css`
 	align-items: center;
