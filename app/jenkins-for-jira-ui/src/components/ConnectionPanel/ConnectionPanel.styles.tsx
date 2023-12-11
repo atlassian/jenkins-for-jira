@@ -258,6 +258,13 @@ export const setUpGuideUpdateAvailableContainer = css`
 	width: 55%;
 `;
 
+export const setUpGuideUpdateAvailableLoadingContainer = css`
+	margin-top: ${token('space.1000')};
+	padding: ${token('space.1000')};
+	min-height: 180px;
+	text-align: center;
+`;
+
 export const setUpGuideUpdateAvailableIconContainer = css`
 	margin: ${token('space.0')} auto;
 	text-align: center;

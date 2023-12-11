@@ -15,15 +15,21 @@ import {
 	setUpGuideUpdateAvailableHeader,
 	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
-import { JenkinsPluginConfig } from '../../../../src/common/types';
+import { JenkinsPluginConfig, JenkinsServer } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 
 type UpdateAvailableProps = {
+	handleRefreshPanel(serverToRemove: JenkinsServer): void,
+	jenkinsServer: JenkinsServer,
 	openDrawer(): void
 };
 
-export const UpdateAvailable = ({ openDrawer }: UpdateAvailableProps): JSX.Element => {
+export const UpdateAvailable = ({
+	handleRefreshPanel,
+	jenkinsServer,
+	openDrawer
+}: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
 			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
@@ -34,8 +40,8 @@ export const UpdateAvailable = ({ openDrawer }: UpdateAvailableProps): JSX.Eleme
 				a Jenkins admin must log into this server and update the plugin.</p>
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
 				<InProductHelpAction onClick={openDrawer} label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
-				{/* TODO - ARC-2738 */}
-				<Button>Refresh</Button>
+
+				<Button onClick={() => handleRefreshPanel(jenkinsServer)}>Refresh</Button>
 			</div>
 		</>
 	);
