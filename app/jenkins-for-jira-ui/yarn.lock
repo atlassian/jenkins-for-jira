@@ -553,6 +553,18 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
+"@atlaskit/textarea@^5.0.0":
+  version "5.0.0"
+  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/textarea/-/textarea-5.0.0.tgz#7a6878906e1e5bdfdafa60cac2c6124234301b72"
+  integrity sha512-70vfN5fmXUyPiah7hvmRB6IYAL0NyGNw32fwqq8N9jLOcXmQ/IZRTlL6iU0+mlHiNQfBhuX+DFr00qxZ91ed7Q==
+  dependencies:
+    "@atlaskit/analytics-next" "^9.1.0"
+    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@atlaskit/theme" "^12.6.0"
+    "@atlaskit/tokens" "^1.28.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/react" "^11.7.1"
+
 "@atlaskit/textfield@5.6.4":
   version "5.6.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/textfield/-/textfield-5.6.4.tgz#6d874895f0a1e4a636c0ca78778927f8f0106bd1"
