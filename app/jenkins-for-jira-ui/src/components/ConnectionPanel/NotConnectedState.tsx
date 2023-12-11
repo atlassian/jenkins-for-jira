@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
@@ -11,20 +11,22 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 
 type NotConnectedStateProps = {
-	connectedState: ConnectedState;
-	jenkinsServer: JenkinsServer;
-	refreshServers(serverToRemove: JenkinsServer): void;
-	handleRefreshPanel(serverToRemove: JenkinsServer): void;
+	connectedState: ConnectedState,
+	jenkinsServer: JenkinsServer,
+	refreshServers(serverToRemove: JenkinsServer): void,
+	handleRefreshPanel(serverToRemove: JenkinsServer): void,
+	isLoading: boolean
+	setIsLoading(isLoading: boolean): void
 };
 
 const NotConnectedState = ({
 	connectedState,
 	refreshServers,
 	jenkinsServer,
-	handleRefreshPanel
+	handleRefreshPanel,
+	isLoading,
+	setIsLoading
 }: NotConnectedStateProps): JSX.Element => {
-	const [isLoading, setIsLoading] = useState(false);
-
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsLoading(true);
 
@@ -80,6 +82,7 @@ const NotConnectedState = ({
 						buttonOneOnClick={isPending ? handleRefreshPanel : deleteServerWrapper}
 						buttonTwoOnClick={isPending ? handleLearnMore : undefined}
 						testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
+						isLoading={isLoading}
 					/>
 				</>
 			)}

@@ -15,11 +15,19 @@ import {
 	setUpGuideUpdateAvailableHeader,
 	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
-import { JenkinsPluginConfig } from '../../../../src/common/types';
+import { JenkinsPluginConfig, JenkinsServer } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 
-export const UpdateAvailable = (): JSX.Element => {
+type UpdateAvailableProps = {
+	handleRefreshPanel(serverToRemove: JenkinsServer): void,
+	jenkinsServer: JenkinsServer
+};
+
+export const UpdateAvailable = ({
+	handleRefreshPanel,
+	jenkinsServer
+}: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
 			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
@@ -35,8 +43,7 @@ export const UpdateAvailable = (): JSX.Element => {
 					appearance="primary"
 					indexName="learn-more"
 				/>
-				{/* TODO - ARC-2738 */}
-				<Button>Refresh</Button>
+				<Button onClick={() => handleRefreshPanel(jenkinsServer)}>Refresh</Button>
 			</div>
 		</>
 	);

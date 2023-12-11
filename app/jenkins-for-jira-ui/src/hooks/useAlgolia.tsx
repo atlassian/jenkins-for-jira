@@ -1,4 +1,4 @@
-import algoliasearch from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch';
 import { useState, useEffect } from 'react';
 
 const ALGOLIA_APP_ID = '8K6J5OJIQW';

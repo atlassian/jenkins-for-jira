@@ -1,12 +1,15 @@
 import React, { ReactNode, useState } from 'react';
 import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
+import Spinner from '@atlaskit/spinner';
 import {
 	connectionPanelMainContainer,
 	connectionPanelMainConnectedTabs,
 	connectionPanelMainNotConnectedTabs,
 	setUpGuideContainer,
-	setUpGuideUpdateAvailableContainer, connectionPanelMainConnectedPendingSetUp
+	setUpGuideUpdateAvailableContainer,
+	connectionPanelMainConnectedPendingSetUp,
+	setUpGuideUpdateAvailableLoadingContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
@@ -14,6 +17,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 type PanelProps = {
 	children: ReactNode,
@@ -54,6 +58,8 @@ const ConnectionPanelMain = ({
 	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
+	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(1);
@@ -63,9 +69,46 @@ const ConnectionPanelMain = ({
 		setSelectedTabIndex(index);
 	};
 
-	const handleRefreshPanel = () => {
-		// TODO - ARC-2738 refresh functionality
+	const handleRefreshPanel = async () => {
+		setIsLoading(true);
+		try {
+			const server = await getJenkinsServerWithSecret(jenkinsServer.uuid);
+			setUpdatedServer(server);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
+
+		setIsLoading(false);
 	};
+
+	let setUpGuideUpdateAvailableContent;
+
+	if (isLoading) {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="updateAvailable">
+				<div className={cx(setUpGuideUpdateAvailableLoadingContainer)}>
+					<Spinner size='large' />
+				</div>
+			</Panel>
+		);
+	} else if (jenkinsServer.pluginConfig || updatedServer?.pluginConfig) {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="setUpGuidePanel">
+				<SetUpGuide pluginConfig={jenkinsServer.pluginConfig} />
+			</Panel>
+		);
+	} else {
+		setUpGuideUpdateAvailableContent = (
+			<Panel data-testid="updateAvailable">
+				<div className={cx(setUpGuideUpdateAvailableContainer)}>
+					<UpdateAvailable
+						handleRefreshPanel={handleRefreshPanel}
+						jenkinsServer={jenkinsServer}
+					/>
+				</div>
+			</Panel>
+		);
+	}
 
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
@@ -76,6 +119,8 @@ const ConnectionPanelMain = ({
 						jenkinsServer={jenkinsServer}
 						refreshServers={refreshServers}
 						handleRefreshPanel={handleRefreshPanel}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
@@ -108,6 +153,7 @@ const ConnectionPanelMain = ({
 													secondButtonLabel="Refresh"
 													buttonOneOnClick={handleClickSetupGuide}
 													buttonTwoOnClick={handleRefreshPanel}
+													isLoading={isLoading}
 												/>
 										}
 									</Panel>
@@ -117,6 +163,8 @@ const ConnectionPanelMain = ({
 											jenkinsServer={jenkinsServer}
 											refreshServers={refreshServers}
 											handleRefreshPanel={handleRefreshPanel}
+											isLoading={isLoading}
+											setIsLoading={setIsLoading}
 										/>
 									</Panel>
 							}
@@ -131,11 +179,15 @@ const ConnectionPanelMain = ({
 									</Panel>
 									: <Panel data-testid="updateAvailable">
 										<div className={cx(setUpGuideUpdateAvailableContainer)}>
-											<UpdateAvailable />
+											<UpdateAvailable
+												jenkinsServer={jenkinsServer}
+												handleRefreshPanel={handleRefreshPanel}
+											/>
 										</div>
 									</Panel>
 							}
 						</TabPanel>
+						<TabPanel>{setUpGuideUpdateAvailableContent}</TabPanel>
 					</Tabs>
 			}
 		</div>
