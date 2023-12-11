@@ -7,7 +7,13 @@ describe('InProductHelpAction', () => {
 
 	test('renders InProductHelpAction with label', () => {
 		const { getByText } = render(
-			<InProductHelpAction onClick={onClickMock} label="build" type={InProductHelpActionType.HelpButton} appearance="primary" />
+			<InProductHelpAction
+				handleOpenDrawer={onClickMock}
+				label="build"
+				type={InProductHelpActionType.HelpButton}
+				appearance="primary"
+				indexName="test-iph"
+			/>
 		);
 
 		expect(getByText('build')).toBeInTheDocument();

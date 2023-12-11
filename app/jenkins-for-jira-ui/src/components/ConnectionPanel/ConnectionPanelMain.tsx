@@ -13,7 +13,6 @@ import { NotConnectedState } from './NotConnectedState';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
-import { InProductHelpDrawer } from '../InProductHelpDrawer/InProductHelpDrawer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 
 type PanelProps = {
@@ -54,12 +53,7 @@ const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers
 }: ConnectionPanelMainProps): JSX.Element => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-
-	const openDrawer = () => {
-		setIsDrawerOpen(true);
-	};
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(1);
@@ -75,7 +69,6 @@ const ConnectionPanelMain = ({
 
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
-			<InProductHelpDrawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
 			{
 				connectedState === ConnectedState.DUPLICATE
 					? <NotConnectedState
@@ -134,12 +127,11 @@ const ConnectionPanelMain = ({
 									? <Panel data-testid="setUpGuidePanel">
 										<SetUpGuide
 											pluginConfig={jenkinsServer.pluginConfig}
-											openDrawer={openDrawer}
 										/>
 									</Panel>
 									: <Panel data-testid="updateAvailable">
 										<div className={cx(setUpGuideUpdateAvailableContainer)}>
-											<UpdateAvailable openDrawer={openDrawer} />
+											<UpdateAvailable />
 										</div>
 									</Panel>
 							}
