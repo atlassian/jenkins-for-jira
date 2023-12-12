@@ -17,7 +17,7 @@ import {
 	setUpGuideUpdateAvailableContent,
 	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
-import { JenkinsPluginConfig } from '../../../../src/common/types';
+import { JenkinsPluginConfig, JenkinsServer } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 
 type SetUpGuideLinkProps = {
@@ -39,7 +39,12 @@ type SetUpGuidePipelineStepInstructionProps = {
 	pipelineStepLabel: string
 };
 
-export const UpdateAvailable = (): JSX.Element => {
+type UpdateAvailableProps = {
+	handleRefreshPanel(serverToRemove: JenkinsServer): void,
+	jenkinsServer: JenkinsServer
+};
+
+export const UpdateAvailable = ({ handleRefreshPanel, jenkinsServer }: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
 			<UpdateAvailableIcon containerClassName={setUpGuideUpdateAvailableIconContainer} />
@@ -51,8 +56,8 @@ export const UpdateAvailable = (): JSX.Element => {
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
 				{/* TODO - implement link once the IPH mystery has been solved */}
 				<Button appearance="primary">Learn more</Button>
-				{/* TODO - uhh ummm when we figure out exactly how we intend this to work... :badpokerface: */}
-				<Button>Refresh</Button>
+
+				<Button onClick={() => handleRefreshPanel(jenkinsServer)}>Refresh</Button>
 			</div>
 		</>
 	);
