@@ -12,13 +12,15 @@ export enum InProductHelpActionType {
 type InProductHelpActionProps = {
 	label: string,
 	type: InProductHelpActionType,
-	appearance: Appearance
+	appearance: Appearance,
+	className?: string
 };
 
 export const InProductHelpAction = ({
 	label,
 	type,
-	appearance
+	appearance,
+	className
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const inProductHelpTypeClassName =
@@ -29,7 +31,7 @@ export const InProductHelpAction = ({
 	};
 
 	return (
-		<>
+		<div className={cx(className)}>
 			<Button
 				className={cx(inProductHelpTypeClassName)}
 				onClick={(e) => {
@@ -44,6 +46,6 @@ export const InProductHelpAction = ({
 				isDrawerOpen={isDrawerOpen}
 				setIsDrawerOpen={setIsDrawerOpen}
 			/>
-		</>
+		</div>
 	);
 };

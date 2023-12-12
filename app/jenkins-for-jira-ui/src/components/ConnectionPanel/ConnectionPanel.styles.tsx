@@ -57,7 +57,7 @@ export const connectionPanelMainContainer = css`
 	[role=tablist] {
 		&:first-of-type {
 			::before {
-				margin-left:  ${token('space.negative.100')};
+				margin-left: ${token('space.negative.100')};
 			}
 		}
 	}
