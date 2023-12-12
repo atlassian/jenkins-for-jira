@@ -31,7 +31,7 @@ export const InProductHelpAction = ({
 	};
 
 	return (
-		<div className={cx(className)}>
+		<span className={cx(className)}>
 			<Button
 				className={cx(inProductHelpTypeClassName)}
 				onClick={(e) => {
@@ -46,6 +46,6 @@ export const InProductHelpAction = ({
 				isDrawerOpen={isDrawerOpen}
 				setIsDrawerOpen={setIsDrawerOpen}
 			/>
-		</div>
+		</span>
 	);
 };
