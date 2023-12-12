@@ -3,11 +3,6 @@ import { cx } from '@emotion/css';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import Button from '@atlaskit/button/standard-button';
 import {
-	setUpGuideInfoPanel,
-	setUpGuideNestedOrderedList,
-	setUpGuideNestedOrderedListItem,
-	setUpGuideOrderedList,
-	setUpGuideOrderedListItem,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
 	setUpGuideUpdateAvailableButtonContainer,
@@ -18,6 +13,9 @@ import {
 import { JenkinsPluginConfig, JenkinsServer } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import {
+	infoPanel, nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
+} from '../../GlobalStyles.styles';
 
 type UpdateAvailableProps = {
 	handleRefreshPanel(serverToRemove: JenkinsServer): void,
@@ -129,7 +127,7 @@ export const SetUpGuideInstructions = ({
 	}
 
 	return (
-		<li className={cx(setUpGuideNestedOrderedListItem)}>
+		<li className={cx(nestedOrderedListItem)}>
 			Set up what {eventType} events are sent to Jira: {pipelineStepLabel}
 			{contentToRender}
 		</li>
@@ -147,8 +145,8 @@ const SetUpGuide = ({
 		<>
 			<p className={cx(setUpGuideParagraph)}>To receive build and deployment data from this server:</p>
 
-			<ol className={cx(setUpGuideOrderedList)}>
-				<li className={cx(setUpGuideOrderedListItem)}>
+			<ol className={cx(orderedList)}>
+				<li className={cx(orderedListItem)}>
 					<strong className={cx(setUpGuideOrderListItemHeader)}>
 								Developers in your project teams
 					</strong>
@@ -158,8 +156,8 @@ const SetUpGuide = ({
 					</p>
 				</li>
 
-				<li className={cx(setUpGuideOrderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
-					<ol className={cx(setUpGuideNestedOrderedList)} type="A" id="nested-list">
+				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
+					<ol className={cx(nestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
 							eventType={PipelineEventType.BUILD}
 							globalSettings={pluginConfig?.autoBuildEnabled}
@@ -174,7 +172,7 @@ const SetUpGuide = ({
 				</li>
 			</ol>
 
-			<div className={cx(setUpGuideInfoPanel)}>
+			<div className={cx(infoPanel)}>
 				<PeopleGroup label="people-group" />
 				<p>
 					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;

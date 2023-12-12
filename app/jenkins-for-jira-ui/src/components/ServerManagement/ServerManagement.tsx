@@ -1,9 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+	useCallback, useEffect, useRef, useState
+} from 'react';
 import PageHeader from '@atlaskit/page-header';
 import { ButtonGroup } from '@atlaskit/button';
 import Button from '@atlaskit/button/standard-button';
+import { cx } from '@emotion/css';
+import TextArea from '@atlaskit/textarea';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
-import { mainPageContainer } from './ServerManagement.styles';
+import { serverManagementContainer, shareModalInstruction } from './ServerManagement.styles';
 import { addConnectedState, ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
 import { TopPanel } from './TopPanel/TopPanel';
 import { JenkinsServer } from '../../../../src/common/types';
@@ -12,10 +16,26 @@ import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
 import { ConnectionWizard } from '../ConnectionWizard/ConnectionWizard';
+import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+
+export const getSiteNameFromUrl = (url: string): string => {
+	try {
+		const urlObject = new URL(url);
+		return urlObject.hostname;
+	} catch (error) {
+		console.error('Error extracting site name:', error);
+		return '';
+	}
+};
 
 const ServerManagement = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();
+	const [showSharePage, setshowSharePage] = useState<boolean>(false);
+	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const isMountedRef = React.useRef<boolean>(true);
 
 	const fetchAllJenkinsServers = async () => {
@@ -35,9 +55,41 @@ const ServerManagement = (): JSX.Element => {
 		}
 	}, []);
 
+	const handleShowSharePageModal = async () => {
+		setshowSharePage(true);
+	};
+
+	const handleCloseShowSharePageModal = async () => {
+		setshowSharePage(false);
+	};
+
+	const handleCopyToClipboard = async () => {
+		if (textAreaRef.current) {
+			textAreaRef.current.select();
+			document.execCommand('copy');
+			textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
+
+			setIsCopiedToClipboard(true);
+
+			setTimeout(() => {
+				setIsCopiedToClipboard(false);
+			}, 2000);
+		}
+	};
+
 	useEffect(() => {
-		fetchAllJenkinsServers();
-		redirectToAdminPage();
+		const fetchData = async () => {
+			try {
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+				fetchAllJenkinsServers();
+				redirectToAdminPage();
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
 
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
@@ -52,20 +104,24 @@ const ServerManagement = (): JSX.Element => {
 	const pageHeaderActions = (
 		<ButtonGroup>
 			{/* TODO handle empty state - ARC-2730 connection wizard */}
-			<Button appearance="primary">
-				Connect a new Jenkins server
-			</Button>
-			{/* TODO - ARC-2723 share modal */}
-			<Button>Share page</Button>
+			<Button appearance="primary">Connect a new Jenkins server</Button>
+			<Button onClick={() => handleShowSharePageModal()}>Share page</Button>
 		</ButtonGroup>
 	);
+
+	const sharePageMessage =
+		`Hi there,
+Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
+${globalPageUrl}
+You'll need to follow the set up guide for each server connected.`;
 
 	let contentToRender;
 
 	if (jenkinsServers?.length && moduleKey === 'jenkins-for-jira-ui-admin-page') {
 		contentToRender = (
 			<>
-				<div className={mainPageContainer}>
+				<div className={serverManagementContainer}>
 					<div className={headerContainer}>
 						<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
 					</div>
@@ -73,6 +129,32 @@ const ServerManagement = (): JSX.Element => {
 					<TopPanel />
 
 					<ConnectionPanel jenkinsServers={jenkinsServers} setJenkinsServers={setJenkinsServers} />
+
+					<JenkinsModal
+						dataTestId="share-page-modal"
+						show={showSharePage}
+						title="Share page"
+						body={[
+							<p key="share-message" className={cx(shareModalInstruction)}>
+								Share this link with your project teams to help them set up what
+								data they receive from Jenkins.
+							</p>,
+							<TextArea
+								key="text-area"
+								ref={textAreaRef}
+								value={sharePageMessage}
+								isReadOnly
+								minimumRows={5}
+							/>
+						]}
+						onClose={handleCloseShowSharePageModal}
+						primaryButtonAppearance="subtle"
+						primaryButtonLabel="Close"
+						secondaryButtonAppearance="primary"
+						secondaryButtonLabel="Copy to clipboard"
+						secondaryButtonOnClick={handleCopyToClipboard}
+						isCopiedToClipboard={isCopiedToClipboard}
+					/>
 				</div>
 			</>
 		);
@@ -87,7 +169,7 @@ const ServerManagement = (): JSX.Element => {
 		);
 	} else {
 		contentToRender = (
-			<div className={mainPageContainer}>
+			<div className={serverManagementContainer}>
 				<ConnectionWizard />
 			</div>
 		);

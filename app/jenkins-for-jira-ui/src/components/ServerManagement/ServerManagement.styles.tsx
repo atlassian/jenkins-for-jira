@@ -1,9 +1,41 @@
 import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
 
-export const mainPageContainer = css`
+export const serverManagementContainer = css`
 	margin: 0 auto;
 	max-width: 936px;
+`;
+
+export const headerContainer = css`
+	margin-top: 40px;
+`;
+
+export const shareModalInstruction = css`
+	margin: ${token('space.200')} auto;
+`;
+
+export const secondaryButtonContainer = css`
+ position: relative;
+`;
+
+export const copyToClipboardContainer = css`
+	align-items: center;
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0px 2px 4px 0px #091E4240;
+	display: flex;
+	max-width: 160px;
+	position: absolute;
+	padding: ${token('space.200')};
+	top: -115%;
+	left: 68%;
+	transform: translate(-50%, -50%);
+	width: 194px;
+	z-index: 2;
+`;
+
+export const copyToClipboard = css`
+	margin-left: ${token('space.075')};
 `;
 
 // Top panel

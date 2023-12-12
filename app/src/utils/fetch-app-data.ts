@@ -1,13 +1,13 @@
 import { extractAppIdFromLocalId } from './extract-app-id-from-local-id';
 
-export type RedirectFromGetStarted = {
+export type FetchAppDataProps = {
     siteUrl: string,
     appId: string,
     environmentId: string,
     moduleKey: string
 };
 
-const redirectFromGetStarted = (request: any): RedirectFromGetStarted => {
+const fetchAppData = (request: any): FetchAppDataProps => {
     const {
         localId,
         siteUrl,
@@ -24,4 +24,4 @@ const redirectFromGetStarted = (request: any): RedirectFromGetStarted => {
     };
 };
 
-export { redirectFromGetStarted };
+export { fetchAppData };

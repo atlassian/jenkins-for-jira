@@ -7,20 +7,25 @@ export const connectionWizardContainer = css`
 	flex-direction: column;
 	height: 100vh;
 	justify-content: center;
-	width: 496px;
+	margin: auto;
+	width: 360px;
 `;
 
-export const connectionWizardInfoBox = css`
-	background-color: #F7F8F9;
-	display: flex;
-	margin-left: ${token('space.100')};
-	padding: ${token('space.250')};
+export const connectionWizardHeader = css`
+	font-size: 24px;
+	margin: ${token('space.0')} ${token('space.0')} ${token('space.150')} ${token('space.0')};
+`;
 
-	[role=img] {
-		margin-right: ${token('space.100')};
-	}
+export const connectionWizardOrderedListItem = css`
+	font-weight: 500;
+	margin: ${token('space.200')} ${token('space.0')} ${token('space.0')};
+`;
 
-	p {
-		margin-top: ${token('space.0')};
-	}
+export const connectionWizardNestedOrderedListItem = css`
+	color: #626F86;
+	margin: ${token('space.0')} ${token('space.0')} ${token('space.250')} ${token('space.400')};
+`;
+
+export const connectionWizardInfoPanel = css`
+	width: 360px;
 `;
