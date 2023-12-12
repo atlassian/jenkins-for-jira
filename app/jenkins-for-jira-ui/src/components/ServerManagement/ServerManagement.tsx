@@ -91,6 +91,7 @@ const ServerManagement = (): JSX.Element => {
 
 		fetchData();
 
+		console.log('GLOBALURL: ', globalPageUrl);
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;

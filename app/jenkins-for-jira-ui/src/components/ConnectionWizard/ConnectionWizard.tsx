@@ -23,7 +23,7 @@ const ConnectionWizard = (): JSX.Element => {
 	};
 
 	return (
-		<div className={cx(connectionWizardContainer)}>
+		<div className={cx(connectionWizardContainer)} data-testid="connection-wizard">
 			<JenkinsSyncJiraIcon />
 			<h3 className={cx(connectionWizardHeader)}>Connect Jenkins to Jira</h3>
 			<div className={cx(connectionWizardContentContainer)}>

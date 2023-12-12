@@ -10,7 +10,7 @@ export const JenkinsSpinner = ({
 	secondaryClassName
 } : JenkinsSpinnerProps): JSX.Element => {
 	return (
-		<div className={cx(spinnerContainerBase, secondaryClassName)}>
+		<div className={cx(spinnerContainerBase, secondaryClassName)} data-testid="jenkins-spinner">
 			<Spinner size='large' />
 		</div>
 	);
