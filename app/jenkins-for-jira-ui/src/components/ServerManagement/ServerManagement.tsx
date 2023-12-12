@@ -72,7 +72,9 @@ const ServerManagement = (): JSX.Element => {
 			setIsCopiedToClipboard(true);
 
 			setTimeout(() => {
-				setIsCopiedToClipboard(false);
+				if (isMountedRef.current) {
+					setIsCopiedToClipboard(false);
+				}
 			}, 2000);
 		}
 	};
