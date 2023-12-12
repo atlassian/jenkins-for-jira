@@ -16,7 +16,7 @@ describe('redirectFromGetStarted', () => {
 
 		(invoke as jest.Mock).mockResolvedValue(contextData);
 		await redirectFromGetStarted();
-		expect(invoke).toHaveBeenCalledWith('redirectFromGetStarted');
+		expect(invoke).toHaveBeenCalledWith('fetchAppData');
 		expect(router.navigate).toHaveBeenCalledWith(
 			`${contextData.siteUrl}/jira/settings/apps/${contextData.appId}/${contextData.environmentId}/`
 		);
@@ -33,7 +33,7 @@ describe('redirectFromGetStarted', () => {
 
 			(invoke as jest.Mock).mockResolvedValue(contextData);
 			await redirectFromGetStarted();
-			expect(invoke).toHaveBeenCalledWith('redirectFromGetStarted');
+			expect(invoke).toHaveBeenCalledWith('fetchAppData');
 			expect(router.navigate).not.toHaveBeenCalledWith(
 				`${contextData.siteUrl}/jira/settings/apps/${contextData.appId}/${contextData.environmentId}/`
 			);
