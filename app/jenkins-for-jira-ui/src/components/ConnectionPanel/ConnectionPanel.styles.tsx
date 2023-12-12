@@ -232,13 +232,6 @@ export const setUpGuideOrderListItemHeader = css`
 	margin-bottom: ${token('space.200')};
 `;
 
-export const setUpGuideLink = css`
-	background-color: inherit;
-	border: none;
-	color: ${token('color.link')};
-	padding: ${token('space.0')}
-`;
-
 export const setUpGuideInfoPanel = css`
 	background-color: #F7F8F9;
 	display: flex;
