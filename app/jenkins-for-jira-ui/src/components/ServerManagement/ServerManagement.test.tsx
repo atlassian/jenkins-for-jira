@@ -269,34 +269,11 @@ describe('ServerManagement Component', () => {
 
 			await waitFor(() => {
 				fireEvent.click(screen.getByText('Set up guide'));
+				expect(screen.queryByText('To receive build and deployment data from this server:')).not.toBeInTheDocument();
+				const refreshButton = screen.getByText('Refresh');
+				fireEvent.click(refreshButton);
+				expect(invoke).toHaveBeenCalledWith('getJenkinsServerWithSecret', { uuid: servers[4].uuid });
 			});
-
-			// await waitFor(async () => {
-			// 	expect(screen.getByText('Refresh')).toBeInTheDocument();
-			// 	expect(screen.queryByText('To receive build and deployment data from this server:')).not.toBeInTheDocument();
-			//
-			// 	const updatedServerData = {
-			// 		...servers[1],
-			// 		pluginConfig: {
-			// 			ipAddress: '10.10.10.12',
-			// 			lastUpdatedOn: new Date()
-			// 		}
-			// 	};
-			//
-			// 	jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([updatedServerData]);
-			//
-			// 	// rerender(<ServerManagement />);
-			// 	// await waitFor(() => rerender(<ServerManagement />));
-			// });
-			//
-			// await waitFor(() => {
-			// 	fireEvent.click(screen.getByText('Set up guide'));
-			// });
-			//
-			// await waitFor(() => {
-			// 	fireEvent.click(screen.getByText('Refresh'));
-			// 	expect(screen.getByText('To receive build and deployment data from this server:')).toBeInTheDocument();
-			// });
 		});
 
 		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
