@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-	act, fireEvent, render, screen, waitFor
-} from '@testing-library/react';
-import { invoke } from '@forge/bridge';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { addConnectedState, ConnectionPanel } from './ConnectionPanel';

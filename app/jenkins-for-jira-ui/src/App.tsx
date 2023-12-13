@@ -54,7 +54,7 @@ export const environmentSettings = {
 
 const AppContainer = styled.div`
 	color: #172B4D;
-	margin: ${token('space.200')}${token('space.400')} ${token('space.300')} ${token('space.0')};
+	margin: ${token('space.200')} ${token('space.400')} ${token('space.300')} ${token('space.0')};
 	padding-bottom: ${token('space.300')};
 `;
 
