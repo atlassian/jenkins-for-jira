@@ -12,7 +12,7 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
-import { fetchAppData, FetchAppDataProps } from './utils/fetch-app-data';
+import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 
 const resolver = new Resolver();
