@@ -1,4 +1,5 @@
 import React, {
+	ReactElement,
 	useCallback, useEffect, useRef, useState
 } from 'react';
 import PageHeader from '@atlaskit/page-header';
@@ -29,7 +30,65 @@ export const getSiteNameFromUrl = (url: string): string => {
 	}
 };
 
+export const contentToRenderServerManagementScreen = (
+	moduleKey: string | undefined,
+	servers: JenkinsServer[],
+	pageHeaderActions: ReactElement<any, string>,
+	setJenkinsServers: (updatedServers: JenkinsServer[]) => void,
+	isLoading?: boolean
+) => {
+	let contentToRender;
+
+	if (isLoading) {
+		contentToRender = <JenkinsSpinner secondaryClassName={spinnerHeight} />;
+	} else {
+		switch (moduleKey) {
+			case 'jenkins-for-jira-ui-admin-page':
+				if (servers?.length) {
+					contentToRender = (
+						<>
+							<div className={serverManagementContainer}>
+								<div className={headerContainer}>
+									<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
+								</div>
+
+								<TopPanel />
+
+								<ConnectionPanel jenkinsServers={servers} setJenkinsServers={setJenkinsServers} />
+							</div>
+						</>
+					);
+				} else {
+					contentToRender = (
+						<div className={serverManagementContainer}>
+							<ConnectionWizard />
+						</div>
+					);
+				}
+				break;
+
+			case 'get-started-page':
+				contentToRender = (
+					<>
+						<div className={headerContainer}>
+							<PageHeader>Jenkins configuration</PageHeader>
+						</div>
+						<JenkinsSpinner />
+					</>
+				);
+				break;
+
+			default:
+				contentToRender = <JenkinsSpinner secondaryClassName={spinnerHeight} />;
+				break;
+		}
+	}
+
+	return contentToRender;
+};
+
 const ServerManagement = (): JSX.Element => {
+	// const [isLoading, setLoading] = useState(true);
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();
 	const [showSharePage, setshowSharePage] = useState<boolean>(false);
@@ -84,24 +143,19 @@ const ServerManagement = (): JSX.Element => {
 			try {
 				const url = await fetchGlobalPageUrl();
 				setGlobalPageUrl(url);
-				fetchAllJenkinsServers();
-				redirectToAdminPage();
+				await fetchAllJenkinsServers();
+				await redirectToAdminPage();
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
 		};
 
 		fetchData();
-
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
 		};
 	}, [redirectToAdminPage]);
-
-	if (!jenkinsServers || !moduleKey || moduleKey === 'get-started-page') {
-		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
-	}
 
 	const pageHeaderActions = (
 		<ButtonGroup>
@@ -118,67 +172,44 @@ To set up what build and deployment events Jenkins sends to Jira, follow the set
 ${globalPageUrl}
 You'll need to follow the set up guide for each server connected.`;
 
-	let contentToRender;
-
-	if (jenkinsServers?.length && moduleKey === 'jenkins-for-jira-ui-admin-page') {
-		contentToRender = (
-			<>
-				<div className={serverManagementContainer}>
-					<div className={headerContainer}>
-						<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
-					</div>
-
-					<TopPanel />
-
-					<ConnectionPanel jenkinsServers={jenkinsServers} setJenkinsServers={setJenkinsServers} />
-
-					<JenkinsModal
-						dataTestId="share-page-modal"
-						show={showSharePage}
-						title="Share page"
-						body={[
-							<p key="share-message" className={cx(shareModalInstruction)}>
-								Share this link with your project teams to help them set up what
-								data they receive from Jenkins.
-							</p>,
-							<TextArea
-								key="text-area"
-								ref={textAreaRef}
-								value={sharePageMessage}
-								isReadOnly
-								minimumRows={5}
-							/>
-						]}
-						onClose={handleCloseShowSharePageModal}
-						primaryButtonAppearance="subtle"
-						primaryButtonLabel="Close"
-						secondaryButtonAppearance="primary"
-						secondaryButtonLabel="Copy to clipboard"
-						secondaryButtonOnClick={handleCopyToClipboard}
-						isCopiedToClipboard={isCopiedToClipboard}
-					/>
-				</div>
-			</>
+	const contentToRender =
+		contentToRenderServerManagementScreen(
+			moduleKey,
+			jenkinsServers,
+			pageHeaderActions,
+			setJenkinsServers
 		);
-	} else if (moduleKey === 'get-started-page') {
-		contentToRender = (
-			<>
-				<div className={headerContainer}>
-					<PageHeader>Jenkins configuration</PageHeader>
-				</div>
-				<JenkinsSpinner />
-			</>
-		);
-	} else {
-		contentToRender = (
-			<div className={serverManagementContainer}>
-				<ConnectionWizard />
-			</div>
-		);
-	}
 
 	return (
-		<>{contentToRender}</>
+		<>
+			{contentToRender}
+
+			<JenkinsModal
+				dataTestId="share-page-modal"
+				show={showSharePage}
+				title="Share page"
+				body={[
+					<p key="share-message" className={cx(shareModalInstruction)}>
+						Share this link with your project teams to help them set up what
+						data they receive from Jenkins.
+					</p>,
+					<TextArea
+						key="text-area"
+						ref={textAreaRef}
+						value={sharePageMessage}
+						isReadOnly
+						minimumRows={5}
+					/>
+				]}
+				onClose={handleCloseShowSharePageModal}
+				primaryButtonAppearance="subtle"
+				primaryButtonLabel="Close"
+				secondaryButtonAppearance="primary"
+				secondaryButtonLabel="Copy to clipboard"
+				secondaryButtonOnClick={handleCopyToClipboard}
+				isCopiedToClipboard={isCopiedToClipboard}
+			/>
+		</>
 	);
 };
 

@@ -139,14 +139,14 @@ describe('ServerManagement Component', () => {
 		expect(screen.getByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
-	test('should render the ConnectionWizard when there is an unknown module key', async () => {
+	test('should render the loader when there is an unknown module key', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
 		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('unknown-page');
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
 
-		expect(screen.getByTestId('connection-wizard')).toBeInTheDocument();
+		expect(screen.getByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
 	test('should render the ConnectionWizard when there are no servers', async () => {

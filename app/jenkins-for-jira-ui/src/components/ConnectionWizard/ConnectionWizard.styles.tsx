@@ -7,7 +7,7 @@ export const connectionWizardContainer = css`
 	flex-direction: column;
 	height: 100vh;
 	justify-content: center;
-	margin: auto;
+	margin: ${token('space.negative.400')} auto;
 	width: 360px;
 `;
 
