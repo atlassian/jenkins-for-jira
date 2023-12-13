@@ -10,7 +10,8 @@ export enum EventType {
 export enum ConnectedState {
 	CONNECTED = 'CONNECTED',
 	DUPLICATE = 'DUPLICATE',
-	PENDING = 'PENDING'
+	PENDING = 'PENDING',
+	UPDATE_AVAILABLE = 'UPDATE_AVAILABLE'
 }
 
 export interface JenkinsServer {

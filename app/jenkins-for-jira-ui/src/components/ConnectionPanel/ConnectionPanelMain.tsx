@@ -3,12 +3,12 @@ import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import Spinner from '@atlaskit/spinner';
 import {
-	connectionPanelMainContainer,
+	connectionPanelMainConnectedPendingSetUp,
 	connectionPanelMainConnectedTabs,
+	connectionPanelMainContainer,
 	connectionPanelMainNotConnectedTabs,
 	setUpGuideContainer,
 	setUpGuideUpdateAvailableContainer,
-	connectionPanelMainConnectedPendingSetUp,
 	setUpGuideUpdateAvailableLoadingContainer
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
@@ -138,10 +138,11 @@ const ConnectionPanelMain = ({
 
 						<TabPanel>
 							{
-								connectedState === ConnectedState.CONNECTED
+								connectedState === ConnectedState.CONNECTED ||
+								connectedState === ConnectedState.UPDATE_AVAILABLE
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										{
-											jenkinsServer.pipelines.length
+											jenkinsServer.pipelines.length || updatedServer?.pipelines
 												? <ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
 												: <ConnectionPanelContent
 													connectedState={connectedState}

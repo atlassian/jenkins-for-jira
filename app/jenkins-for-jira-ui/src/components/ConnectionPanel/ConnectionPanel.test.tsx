@@ -153,8 +153,8 @@ describe('Connection Panel Suite', () => {
 			const noPluginConfigButHasPipelinesResult = addConnectedState(noPluginConfigButHasPipelines);
 			const hasPluginConfigButNoPipelinesResult = addConnectedState(hasPluginConfigButNoPipelines);
 
-			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 			expect(noPluginConfigAndNoPipelinesResult[0].connectedState).toEqual(ConnectedState.PENDING);
+			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.UPDATE_AVAILABLE);
 			expect(hasPluginConfigButNoPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 		});
 
@@ -163,7 +163,7 @@ describe('Connection Panel Suite', () => {
 			const result = addConnectedState(duplicateServers);
 
 			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[1].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(result[1].connectedState).toEqual(ConnectedState.UPDATE_AVAILABLE);
 			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
 			expect(result[2].originalConnection).toEqual(servers[5].name);
 		});
@@ -186,7 +186,14 @@ describe('Connection Panel Suite', () => {
 						autoDeploymentsRegex: ''
 					},
 					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
-					pipelines: []
+					pipelines: [
+						{
+							name: '#3456',
+							lastEventType: EventType.BUILD,
+							lastEventStatus: 'successful',
+							lastEventDate: new Date()
+						}
+					]
 				};
 
 				render(
@@ -246,6 +253,39 @@ describe('Connection Panel Suite', () => {
 					pluginConfig: undefined,
 					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
 					pipelines: []
+				};
+
+				render(
+					<ConnectionPanelTop
+						server={server}
+						refreshServers={refreshServers}
+					/>
+				);
+
+				const nameLabel = screen.getByText(server.name);
+				const ipAddressLabel = screen.queryByText(`IP address: ${server.pluginConfig?.ipAddress}`);
+				const statusLabel = screen.getByTestId('status-label');
+
+				expect(nameLabel).toBeInTheDocument();
+				expect(ipAddressLabel).not.toBeInTheDocument();
+				expect(statusLabel).toHaveStyle({ color: '#a54900', backgroundColor: '#fff7d6' });
+				expect(statusLabel).toHaveTextContent('PENDING');
+			});
+
+			test('should render the correct content and styles for UPDATE_AVAILABLE state', () => {
+				const server: JenkinsServer = {
+					name: 'my server',
+					connectedState: ConnectedState.UPDATE_AVAILABLE,
+					pluginConfig: undefined,
+					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
+					pipelines: [
+						{
+							name: '#3456',
+							lastEventType: EventType.BUILD,
+							lastEventStatus: 'successful',
+							lastEventDate: new Date()
+						}
+					]
 				};
 
 				render(

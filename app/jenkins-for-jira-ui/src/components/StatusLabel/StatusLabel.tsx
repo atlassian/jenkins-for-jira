@@ -5,7 +5,8 @@ import { statusLabel } from './StatusLabel.styles';
 export enum ConnectedState {
 	CONNECTED = 'CONNECTED',
 	DUPLICATE = 'DUPLICATE',
-	PENDING = 'PENDING'
+	PENDING = 'PENDING',
+	UPDATE_AVAILABLE = 'UPDATE_AVAILABLE'
 }
 
 type StatusLabelProps = {

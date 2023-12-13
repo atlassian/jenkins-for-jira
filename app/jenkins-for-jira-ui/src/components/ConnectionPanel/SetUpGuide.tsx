@@ -53,13 +53,12 @@ const SetUpGuidePipelineStepInstruction = ({
 	pipelineStepLabel
 }: SetUpGuidePipelineStepInstructionProps): JSX.Element => {
 	return (
-		<p>Add a &nbsp;
+		<p>Add a&nbsp;
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
 				appearance="link"
-			/>&nbsp;
-			step to the end of {eventType} stages.
+			/>&nbsp;step to the end of {eventType} stages.
 		</p>
 	);
 };
@@ -102,13 +101,13 @@ export const SetUpGuideInstructions = ({
 					<strong>OR</strong>
 				</p>
 				<p>
-					Use &nbsp;
+					Name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
+					&nbsp;stages to match this regex:&nbsp;
 					<InProductHelpAction
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
 						appearance="link"
 					/>
-					&nbsp; in the names of the {eventType} stages.
 				</p>
 			</>
 		);

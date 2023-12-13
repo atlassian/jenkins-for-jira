@@ -24,7 +24,8 @@ type ConnectionPanelTopProps = {
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
 	[ConnectedState.CONNECTED]: { textColor: '#206e4e', backgroundColor: '#dcfff1' },
 	[ConnectedState.DUPLICATE]: { textColor: '#ae2e24', backgroundColor: '#ffecea' },
-	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
+	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' },
+	[ConnectedState.UPDATE_AVAILABLE]: { textColor: '#0054cb', backgroundColor: '#e8f2ff' }
 };
 
 const ConnectionPanelTop = ({
