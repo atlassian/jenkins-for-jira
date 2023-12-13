@@ -12,7 +12,7 @@ import { deleteDeployments } from './jira-client/delete-deployments';
 import { adminPermissionCheck } from './check-permissions';
 import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
-import { RedirectFromGetStarted, redirectFromGetStarted } from './utils/redirect-from-get-started';
+import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 
 const resolver = new Resolver();
@@ -82,10 +82,10 @@ resolver.define('fetchCloudId', async (req): Promise<string> => {
 	return req.context.cloudId;
 });
 
-resolver.define('redirectFromGetStarted', async (req): Promise<RedirectFromGetStarted> => {
+resolver.define('fetchAppData', async (req): Promise<FetchAppDataProps> => {
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
-	return redirectFromGetStarted(req);
+	return fetchAppData(req);
 });
 
 export default resolver.getDefinitions();

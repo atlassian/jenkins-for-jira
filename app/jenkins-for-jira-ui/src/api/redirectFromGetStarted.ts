@@ -8,7 +8,7 @@ interface Context {
 }
 
 const redirectFromGetStarted = async (): Promise<string> => {
-	const context: Context = await invoke('redirectFromGetStarted');
+	const context: Context = await invoke('fetchAppData');
 	const {
 		siteUrl,
 		appId,

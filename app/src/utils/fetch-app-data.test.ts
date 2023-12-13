@@ -1,7 +1,7 @@
-import { redirectFromGetStarted, RedirectFromGetStarted } from './redirect-from-get-started';
+import { fetchAppData, FetchAppDataProps } from './fetch-app-data';
 
 describe('redirectFromGetStarted', () => {
-    it('should return the expected RedirectFromGetStarted object', () => {
+    it('should return the expected FetchAppData object', () => {
         const mockRequest = {
             context: {
                 siteUrl: 'https://testjira.com',
@@ -12,14 +12,14 @@ describe('redirectFromGetStarted', () => {
             },
         };
 
-        const result: RedirectFromGetStarted = redirectFromGetStarted(mockRequest);
+        const result: FetchAppDataProps = fetchAppData(mockRequest);
         const {
             siteUrl,
             appId,
             environmentId,
             moduleKey
         } = mockRequest.context;
-        const expected: RedirectFromGetStarted = {
+        const expected: FetchAppDataProps = {
             siteUrl,
             appId,
             environmentId,
