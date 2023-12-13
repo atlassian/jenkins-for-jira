@@ -42,7 +42,7 @@ async function updateJenkinsServerState(
 	logger?: Logger
 ): Promise<void> {
 	try {
-		const jenkinsServer = await getJenkinsServer(uuid, logger);
+		const jenkinsServer = await getJenkinsServer('04cf9667-87b7-46c3-beac-0b0962dc9827', logger);
 
 		const index = jenkinsServer.pipelines.findIndex(
 			(pipeline) => pipeline.name === pipelineToUpdate.name

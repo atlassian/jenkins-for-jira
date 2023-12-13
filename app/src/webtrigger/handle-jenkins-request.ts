@@ -96,6 +96,8 @@ async function handleEvent(
 		return createWebtriggerResponse(400, `invalid event type: ${event.eventType}`);
 	}
 
+	console.log('EVENT: ', event);
+
 	const pipeline: JenkinsPipeline = convertToPipeline(event);
 	await updateJenkinsServerState(jenkinsServerUuid, pipeline, logger);
 	event.payload.properties = event.payload.properties || {};

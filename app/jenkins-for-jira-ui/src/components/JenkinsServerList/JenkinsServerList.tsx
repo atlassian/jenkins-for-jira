@@ -36,6 +36,7 @@ const JenkinsServerList = (): JSX.Element => {
 		}
 	};
 
+	console.log('jenkinsServers:', jenkinsServers);
 	const redirectToAdminPage = useCallback(async () => {
 		try {
 			if (isMountedRef.current) {

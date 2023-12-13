@@ -34,7 +34,7 @@ export const Panel = ({
 
 	if (testid === 'setUpGuidePanel') {
 		className = setUpGuideContainer;
-	} else if (connectedState === ConnectedState.CONNECTED) {
+	} else if (connectedState === ConnectedState.CONNECTED || connectedState === ConnectedState.UPDATE_AVAILABLE) {
 		className = connectionPanelMainConnectedTabs;
 	} else {
 		className = connectionPanelMainNotConnectedTabs;
@@ -130,7 +130,8 @@ const ConnectionPanelMain = ({
 									: <Tab>Recent events ({jenkinsServer.pipelines.length})</Tab>
 							}
 							{
-								connectedState === ConnectedState.CONNECTED
+								connectedState === ConnectedState.CONNECTED ||
+								connectedState === ConnectedState.UPDATE_AVAILABLE
 									? <Tab>Set up guide</Tab>
 									: <p className={cx(connectionPanelMainConnectedPendingSetUp)}>Set up guide</p>
 							}
