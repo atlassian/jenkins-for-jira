@@ -44,7 +44,7 @@ const ConnectionPanelContent = ({
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
-	if (connectedState === ConnectedState.CONNECTED) {
+	if (connectedState === ConnectedState.UPDATE_AVAILABLE) {
 		icon = <NoDataIcon />;
 	} else if (connectedState === ConnectedState.PENDING) {
 		icon = <ConnectionPendingIcon />;
