@@ -88,7 +88,6 @@ export const contentToRenderServerManagementScreen = (
 };
 
 const ServerManagement = (): JSX.Element => {
-	// const [isLoading, setLoading] = useState(true);
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();
 	const [showSharePage, setshowSharePage] = useState<boolean>(false);
@@ -168,8 +167,10 @@ const ServerManagement = (): JSX.Element => {
 	const sharePageMessage =
 		`Hi there,
 Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+
 To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
 ${globalPageUrl}
+
 You'll need to follow the set up guide for each server connected.`;
 
 	const contentToRender =

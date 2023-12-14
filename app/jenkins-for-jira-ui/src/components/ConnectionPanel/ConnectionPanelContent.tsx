@@ -24,7 +24,7 @@ type NotConnectedStateProps = {
 	firstButtonLabel: string,
 	secondButtonLabel?: string,
 	buttonOneOnClick(data?: any): void,
-	buttonTwoOnClick?(): void,
+	buttonTwoOnClick?(data: any): void,
 	testId?: string,
 	isLoading: boolean
 };
@@ -81,13 +81,17 @@ const ConnectionPanelContent = ({
 					</>
 			}
 
-			<div className={cx(connectionPanelContentOptionalIphLink)}>
-				<InProductHelpAction
-					label="Learn more"
-					type={InProductHelpActionType.HelpLink}
-					appearance="link"
-				/>
-			</div>
+			{
+				connectedState === ConnectedState.CONNECTED
+					? <div className={cx(connectionPanelContentOptionalIphLink)}>
+						<InProductHelpAction
+							label="Learn more"
+							type={InProductHelpActionType.HelpLink}
+							appearance="link"
+						/>
+					</div>
+					: <></>
+			}
 		</div>
 	);
 };

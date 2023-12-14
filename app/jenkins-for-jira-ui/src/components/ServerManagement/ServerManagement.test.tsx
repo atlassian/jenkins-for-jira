@@ -201,6 +201,7 @@ describe('ServerManagement Component', () => {
 			await waitFor(() => render(<ServerManagement />));
 
 			await waitFor(() => {
+				expect(screen.getByText('PENDING')).toBeInTheDocument();
 				expect(screen.getByText('Connection pending')).toBeInTheDocument();
 			});
 		});
@@ -213,6 +214,7 @@ describe('ServerManagement Component', () => {
 			await waitFor(() => render(<ServerManagement />));
 
 			await waitFor(() => {
+				expect(screen.getByText('DUPLICATE')).toBeInTheDocument();
 				expect(screen.getByText('Duplicate server')).toBeInTheDocument();
 			});
 		});
@@ -226,6 +228,7 @@ describe('ServerManagement Component', () => {
 
 			await act(async () => {
 				await waitFor(() => {
+					expect(screen.getByText('CONNECTED')).toBeInTheDocument();
 					expect(screen.getByText('No data received')).toBeInTheDocument();
 					expect(screen.queryByText('Pipeline')).not.toBeInTheDocument();
 					expect(screen.queryByText('Event')).not.toBeInTheDocument();
@@ -242,6 +245,7 @@ describe('ServerManagement Component', () => {
 			await waitFor(() => render(<ServerManagement />));
 
 			await waitFor(() => {
+				expect(screen.getByText('CONNECTED')).toBeInTheDocument();
 				expect(screen.queryByText('No data received')).not.toBeInTheDocument();
 				expect(screen.getByText('Pipeline')).toBeInTheDocument();
 				expect(screen.getByText('Event')).toBeInTheDocument();
@@ -249,7 +253,23 @@ describe('ServerManagement Component', () => {
 			});
 		});
 
-		test('should handle refreshing the panel for a server CONNECTED with pipeline data but no plugin config', async () => {
+		test('should render panel content for UPDATE_AVAILABLE server with pipeline data', async () => {
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+
+			await waitFor(() => render(<ServerManagement />));
+
+			await waitFor(() => {
+				expect(screen.getByText('UPDATE AVAILABLE')).toBeInTheDocument();
+				expect(screen.queryByText('No data received')).not.toBeInTheDocument();
+				expect(screen.getByText('Pipeline')).toBeInTheDocument();
+				expect(screen.getByText('Event')).toBeInTheDocument();
+				expect(screen.getByText('Received')).toBeInTheDocument();
+			});
+		});
+
+		test('should handle refreshing the panel for an UPDATE AVAILABLE server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
@@ -258,7 +278,7 @@ describe('ServerManagement Component', () => {
 
 			await act(async () => {
 				await waitFor(() => {
-					expect(screen.getByText('CONNECTED')).toBeInTheDocument();
+					expect(screen.getByText('UPDATE AVAILABLE')).toBeInTheDocument();
 					expect(screen.getByText('Pipeline')).toBeInTheDocument();
 					expect(screen.getByText('Event')).toBeInTheDocument();
 					expect(screen.getByText('Received')).toBeInTheDocument();
@@ -267,6 +287,7 @@ describe('ServerManagement Component', () => {
 				});
 			});
 
+			// Change to set up guide tab
 			await waitFor(() => {
 				fireEvent.click(screen.getByText('Set up guide'));
 				expect(screen.queryByText('To receive build and deployment data from this server:')).not.toBeInTheDocument();

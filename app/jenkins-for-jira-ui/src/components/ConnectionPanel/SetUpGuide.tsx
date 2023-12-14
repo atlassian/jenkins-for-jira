@@ -10,7 +10,7 @@ import {
 	setUpGuideUpdateAvailableHeader,
 	setUpGuideUpdateAvailableIconContainer
 } from './ConnectionPanel.styles';
-import { JenkinsPluginConfig, JenkinsServer } from '../../../../src/common/types';
+import { JenkinsPluginConfig } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import {
@@ -18,13 +18,13 @@ import {
 } from '../../GlobalStyles.styles';
 
 type UpdateAvailableProps = {
-	handleRefreshPanel(serverToRemove: JenkinsServer): void,
-	jenkinsServer: JenkinsServer
+	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
+	serverUuid: string
 };
 
 export const UpdateAvailable = ({
-	handleRefreshPanel,
-	jenkinsServer
+	refreshServerAfterUpdate,
+	serverUuid
 }: UpdateAvailableProps): JSX.Element => {
 	return (
 		<>
@@ -37,7 +37,7 @@ export const UpdateAvailable = ({
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
 				<InProductHelpAction label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
 
-				<Button onClick={() => handleRefreshPanel(jenkinsServer)}>Refresh</Button>
+				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
 		</>
 	);

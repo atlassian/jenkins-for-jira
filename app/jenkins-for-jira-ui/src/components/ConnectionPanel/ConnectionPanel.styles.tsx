@@ -62,6 +62,17 @@ export const connectionPanelMainContainer = css`
 		}
 	}
 
+	[role=tab] {
+		span {
+			align-items: center;
+			display: flex;
+		}
+	}
+
+	[role=img][aria-label='plugin outdated'] {
+		margin-right: ${token('space.100')};
+	}
+
 	#connection-panel-tabs-0-tab {
 		padding: 0;
 	}
@@ -69,6 +80,7 @@ export const connectionPanelMainContainer = css`
 
 export const connectionPanelMainConnectedTabs = css`
 	margin-top: ${token('space.100')};
+	min-height: 450px;
 	width: 100%;
 `;
 
@@ -160,6 +172,10 @@ export const connectedStateCell = css`
 	font-size: 14px;
 	line-height: 20px;
 	margin: ${token('space.050')} 0;
+`;
+
+export const connectedStateCellIcon = css`
+	margin-top: ${token('space.100')};
 `;
 
 export const connectedStateCellEvent = css`

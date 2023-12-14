@@ -15,6 +15,10 @@ type StatusLabelProps = {
 	color: string
 };
 
+const replaceUnderscoresWithSpaces = (text: string): string => {
+	return text.replace(/_/g, ' ');
+};
+
 const StatusLabel = ({ text, backgroundColor, color }: StatusLabelProps): JSX.Element => {
 	const dynamicStyles = {
 		backgroundColor,
@@ -23,7 +27,7 @@ const StatusLabel = ({ text, backgroundColor, color }: StatusLabelProps): JSX.El
 
 	return (
 		<p className={cx(statusLabel)} style={dynamicStyles} data-testid="status-label">
-			{text}
+			{replaceUnderscoresWithSpaces(text)}
 		</p>
 	);
 };
