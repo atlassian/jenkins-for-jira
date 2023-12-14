@@ -4,11 +4,15 @@ import Button from '@atlaskit/button';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import {
-	connectionWizardContainer, connectionWizardHeader, connectionWizardInfoPanel,
+	connectionWizardContainer,
+	connectionWizardHeader,
+	connectionWizardInfoPanel,
 	connectionWizardNestedOrderedListItem,
 	connectionWizardOrderedListItem,
 	connectionWizardContentContainer,
-	connectionWizardInProductHelpLink, connectionWizardButton
+	connectionWizardInProductHelpLink,
+	connectionWizardButton,
+	connectionWizardInfoPaneIphLink
 } from './ConnectionWizard.styles';
 import {
 	infoPanel, orderedList, orderedListItem
@@ -48,10 +52,10 @@ const ConnectionWizard = (): JSX.Element => {
 
 			<div className={cx(infoPanel, connectionWizardInfoPanel)}>
 				<PeopleGroup label="people-group" />
-				<p>
+				<p className={cx(connectionWizardInfoPaneIphLink)}>
 					If this is your first time connecting a Jenkins server, take a few minutes to talk to your team.
 					<InProductHelpAction
-						label="Here’s what to discuss."
+						label="What to discuss with your team before connecting Jenkins"
 						type={InProductHelpActionType.HelpLink}
 						appearance="link"
 						className={connectionWizardInProductHelpLink}

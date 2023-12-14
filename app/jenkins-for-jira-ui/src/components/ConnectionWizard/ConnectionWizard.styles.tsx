@@ -35,12 +35,19 @@ export const connectionWizardInfoPanel = css`
 	width: 360px;
 `;
 
+export const connectionWizardInfoPaneIphLink = css`
+	max-width: 330px;
+`;
+
 export const connectionWizardInfoPanelContent = css`
 	display: flex;
 `;
 
 export const connectionWizardInProductHelpLink = css`
-	margin-top: ${token('space.negative.050')}
+	line-height: 20px;
+	margin-top: ${token('space.negative.050')};
+	text-align: left;
+	max-width: 330px;
 `;
 
 export const connectionWizardButton = css`
