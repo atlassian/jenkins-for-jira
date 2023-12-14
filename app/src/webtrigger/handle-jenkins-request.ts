@@ -7,17 +7,17 @@ import {
 	WebtriggerRequest,
 	WebtriggerResponse
 } from './types';
-import {sendEventToJira} from '../jira-client/send-event-to-jira';
-import {EventType, JenkinsPipeline} from '../common/types';
-import {extractCloudId, getQueryParameterValue} from './helpers';
-import {updateJenkinsPluginConfigState, updateJenkinsServerState} from '../storage/update-jenkins-server-state';
-import {createWebtriggerResponse, handleWebtriggerError} from './webtrigger-utils';
-import {InvalidPayloadError, NoJenkinsServerError} from '../common/error';
-import {extractBodyFromSymmetricJwt, verifySymmetricJwt} from './jwt';
-import {getGatingStatusFromJira} from '../jira-client/get-gating-status-from-jira';
-import {JiraResponse} from '../jira-client/types';
-import {getJenkinsServerWithSecret} from '../storage/get-jenkins-server-with-secret';
-import {Logger} from '../config/logger';
+import { sendEventToJira } from '../jira-client/send-event-to-jira';
+import { EventType, JenkinsPipeline } from '../common/types';
+import { extractCloudId, getQueryParameterValue } from './helpers';
+import { updateJenkinsPluginConfigState, updateJenkinsServerState } from '../storage/update-jenkins-server-state';
+import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-utils';
+import { InvalidPayloadError, NoJenkinsServerError } from '../common/error';
+import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
+import { getGatingStatusFromJira } from '../jira-client/get-gating-status-from-jira';
+import { JiraResponse } from '../jira-client/types';
+import { getJenkinsServerWithSecret } from '../storage/get-jenkins-server-with-secret';
+import { Logger } from '../config/logger';
 
 const WEBTRIGGER_UUID_PARAM_NAME = 'jenkins_server_uuid';
 
