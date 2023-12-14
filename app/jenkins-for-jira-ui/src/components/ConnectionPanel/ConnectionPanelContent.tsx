@@ -7,13 +7,11 @@ import {
 	connectionPanelContainerContainer,
 	connectionPanelContainerHeader,
 	connectionPanelContainerParagraph,
-	connectionPanelContentOptionalIphLink,
 	notConnectedSpinnerContainer
 } from './ConnectionPanel.styles';
 import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
-import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -79,18 +77,6 @@ const ConnectionPanelContent = ({
 							}
 						</ButtonGroup>
 					</>
-			}
-
-			{
-				connectedState === ConnectedState.CONNECTED
-					? <div className={cx(connectionPanelContentOptionalIphLink)}>
-						<InProductHelpAction
-							label="Learn more"
-							type={InProductHelpActionType.HelpLink}
-							appearance="link"
-						/>
-					</div>
-					: <></>
 			}
 		</div>
 	);

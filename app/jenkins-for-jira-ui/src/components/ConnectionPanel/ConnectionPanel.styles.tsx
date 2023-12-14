@@ -128,12 +128,6 @@ export const connectionPanelContainerContainer = css`
 	text-align: center;
 `;
 
-export const connectionPanelContentOptionalIphLink = css`
-	display: flex;
-	justify-content: center;
-	margin-top: ${token('space.100')};
-`;
-
 export const connectionPanelContainerHeader = css`
 	font-size: 20px;
 	font-weight: 500;
