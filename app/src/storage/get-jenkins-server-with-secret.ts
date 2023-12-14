@@ -18,6 +18,7 @@ const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<Je
 		}
 
 		const secret = await getJenkinsServerSecret(jenkinsServerUuid);
+
 		return {
 			...jenkinsServer,
 			secret

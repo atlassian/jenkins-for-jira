@@ -10,7 +10,8 @@ import {
 import {
 	connectedStateCell,
 	connectedStateCellContainer,
-	connectedStateCellEvent, connectedStateCellIcon,
+	connectedStateCellEvent,
+	connectedStateCellIcon,
 	connectedStateContainer
 } from './ConnectionPanel.styles';
 
