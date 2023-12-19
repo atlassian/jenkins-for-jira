@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
-import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -43,19 +42,12 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 		});
 };
 
-const ConnectionPanel = (): JSX.Element => {
-	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
+type ConnectionPanelProps = {
+	jenkinsServers: JenkinsServer[],
+	setJenkinsServers(updatedServers: JenkinsServer[]): void
+};
 
-	const fetchAllJenkinsServers = async () => {
-		const servers = await getAllJenkinsServers() || [];
-		const serversWithConnectedState = addConnectedState(servers);
-		setJenkinsServers(serversWithConnectedState);
-	};
-
-	useEffect(() => {
-		fetchAllJenkinsServers();
-	}, []);
-
+const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelProps): JSX.Element => {
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const updatedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid

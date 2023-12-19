@@ -6,7 +6,7 @@ export const serverManagementContainer = css`
 	max-width: 936px;
 `;
 
-export const modalHeaderContainer = css`
+export const headerContainer = css`
 	margin-top: 40px;
 `;
 
