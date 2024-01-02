@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd app && yarn lint:all
+cd app && yarn lint:all && yarn test
 cd jenkins-for-jira-ui && yarn test
