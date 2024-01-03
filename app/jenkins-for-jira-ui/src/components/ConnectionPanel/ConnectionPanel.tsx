@@ -35,7 +35,6 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 				if (ipAddress) ipAddressSet.add(ipAddress);
 			} else if (!server.pluginConfig && server.pipelines.length) {
 				connectedState = ConnectedState.UPDATE_AVAILABLE;
-				if (ipAddress) ipAddressSet.add(ipAddress);
 			}
 
 			return {
