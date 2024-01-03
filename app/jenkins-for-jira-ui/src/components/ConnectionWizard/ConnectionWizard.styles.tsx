@@ -1,16 +1,6 @@
 import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
 
-export const connectionWizardContainer = css`
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	justify-content: center;
-	margin: ${token('space.negative.400')} auto;
-	width: 360px;
-`;
-
 export const connectionWizardContentContainer = css`
 	margin-left: ${token('space.negative.400')};
 	width: 100%;

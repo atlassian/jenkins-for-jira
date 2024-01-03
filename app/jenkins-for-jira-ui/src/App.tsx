@@ -6,9 +6,8 @@ import {
 } from 'react-router';
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
-import { token } from '@atlaskit/tokens';
+import { token, setGlobalTheme } from '@atlaskit/tokens';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
-import { setGlobalTheme } from '@atlaskit/tokens';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
 import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -21,6 +20,7 @@ import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { FeatureFlags } from './hooks/useFeatureFlag';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
+import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -114,6 +114,8 @@ const App: React.FC = () => {
 							: <JenkinsServerList />
 						}
 					</Route>
+
+					{/* TODO - delete routes for old version post renovate rollout */}
 					<Route path="/install">
 						<InstallJenkins />
 					</Route>
@@ -128,6 +130,10 @@ const App: React.FC = () => {
 					</Route>
 					<Route path="/pending/:id">
 						<PendingDeploymentState />
+					</Route>
+
+					<Route path="/server-name">
+						<ServerNameForm />
 					</Route>
 				</Switch>
 			</Router>
