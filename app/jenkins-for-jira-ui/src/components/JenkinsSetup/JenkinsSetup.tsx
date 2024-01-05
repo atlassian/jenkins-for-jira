@@ -296,9 +296,9 @@ const JenkinsSetup = (): JSX.Element => {
 						</Button>
 					) : null}
 
+					<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
 					<div className={cx(jenkinsSetUpCopyHiddenContent)}>
 						<WebhookGuideContent divRef={webhookGuideRef} siteName={siteName} webhookUrl={webhookUrl} />
-						<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
 						<div ref={secretRef}>{secret}</div>
 						<div ref={webhookUrlRef}>{webhookUrl}</div>
 					</div>
