@@ -36,6 +36,8 @@ import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDr
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
+import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
@@ -188,9 +190,34 @@ const JenkinsSetup = (): JSX.Element => {
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
+	const [webhookUrl, setWebhookUrl] = useState('');
+	const [secret, setSecret] = useState<string>('');
+	const [siteName, setSiteName] = useState<string>('');
 
-	const secret = '1234';
-	const webhookUrl = 'somewebhookurl';
+	const getServer = useCallback(async () => {
+		try {
+			const { name, secret: retrievedSecret } = await getJenkinsServerWithSecret(uuid);
+			setServerName(name);
+			setSecret(retrievedSecret || '');
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
+	}, [uuid]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const url = await fetchGlobalPageUrl();
+				setSiteName(url);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+		getServer();
+		getWebhookUrl(setWebhookUrl, uuid);
+	}, [uuid, getServer]);
 
 	const handleCopyToClipboard = (copyRef: React.RefObject<HTMLDivElement>) => {
 		if (copyRef.current) {
@@ -202,19 +229,6 @@ const JenkinsSetup = (): JSX.Element => {
 			window.getSelection()?.removeAllRanges();
 		}
 	};
-
-	const getServer = useCallback(async () => {
-		try {
-			const { name } = await getJenkinsServerWithSecret(uuid);
-			setServerName(name);
-		} catch (e) {
-			console.error('No Jenkins server found.');
-		}
-	}, [uuid]);
-
-	useEffect(() => {
-		getServer();
-	}, [uuid, getServer]);
 
 	const handleMyJenkinsAdminClick = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -283,8 +297,8 @@ const JenkinsSetup = (): JSX.Element => {
 					) : null}
 
 					<div className={cx(jenkinsSetUpCopyHiddenContent)}>
-						<WebhookGuideContent divRef={webhookGuideRef} />
-						<SecretTokenContent divRef={secretTokenRef} />
+						<WebhookGuideContent divRef={webhookGuideRef} siteName={siteName} webhookUrl={webhookUrl} />
+						<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
 						<div ref={secretRef}>{secret}</div>
 						<div ref={webhookUrlRef}>{webhookUrl}</div>
 					</div>
