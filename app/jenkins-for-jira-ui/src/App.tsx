@@ -133,7 +133,7 @@ const App: React.FC = () => {
 						<PendingDeploymentState />
 					</Route>
 
-					<Route path="/server-name">
+					<Route path="/create-server">
 						<ServerNameForm />
 					</Route>
 					<Route path="/setup/:id">

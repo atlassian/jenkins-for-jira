@@ -27,7 +27,7 @@ const ConnectionWizard = (): JSX.Element => {
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		history.push('/server-name');
+		history.push('/create-server');
 	};
 
 	return (
