@@ -27,7 +27,7 @@ import {
 	jenkinsSetupServerName,
 	jenkinsSetUpInfoPanel,
 	jenkinsSetUpInfoPanelContentContainer,
-	jenkinsSetUpCopyContent
+	jenkinsSetUpCopyHiddenContent
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -282,7 +282,7 @@ const JenkinsSetup = (): JSX.Element => {
 						</Button>
 					) : null}
 
-					<div className={cx(jenkinsSetUpCopyContent)}>
+					<div className={cx(jenkinsSetUpCopyHiddenContent)}>
 						<WebhookGuideContent divRef={webhookGuideRef} />
 						<SecretTokenContent divRef={secretTokenRef} />
 						<div ref={secretRef}>{secret}</div>
