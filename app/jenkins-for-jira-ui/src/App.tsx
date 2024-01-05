@@ -21,6 +21,7 @@ import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { FeatureFlags } from './hooks/useFeatureFlag';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
+import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -134,6 +135,9 @@ const App: React.FC = () => {
 
 					<Route path="/server-name">
 						<ServerNameForm />
+					</Route>
+					<Route path="/setup/:id">
+						<JenkinsSetup />
 					</Route>
 				</Switch>
 			</Router>

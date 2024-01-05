@@ -8,7 +8,7 @@ export const connectionWizardContentContainer = css`
 
 export const connectionWizardHeader = css`
 	font-size: 24px;
-	margin: ${token('space.400')} ${token('space.0')};
+	margin: ${token('space.050')} ${token('space.0')};
 `;
 
 export const connectionWizardOrderedListItem = css`

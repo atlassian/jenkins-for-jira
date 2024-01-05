@@ -78,3 +78,8 @@ export const connectionFlowContainer = css`
 	margin: ${token('space.negative.400')} auto;
 	width: 360px;
 `;
+
+export const connectionFlowInnerContainer = css`
+	margin: ${token('space.400')} auto;
+	width: 420px;
+`;

@@ -7,8 +7,9 @@ import Form, {
 } from '@atlaskit/form';
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
+import { useHistory } from 'react-router';
 import { isValid } from '../../common/util/jenkinsConnectionsUtils';
-import { connectionFlowContainer 	} from '../../GlobalStyles.styles';
+import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { createJenkinsServer } from '../../api/createJenkinsServer';
 import { generateNewSecret } from '../../api/generateNewSecret';
@@ -17,7 +18,7 @@ import {
 	StyledTextfieldErrorContainer,
 	textfieldContainer
 } from '../JenkinsConfigurationForm/JenkinsConfigurationForm.styles';
-import { serverNameFormOuterContainer, serverNameFormInnerContainer } from './ServerNameForm.styles';
+import { serverNameFormOuterContainer } from './ServerNameForm.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 
@@ -75,6 +76,7 @@ const ServerNameFormField = ({
 };
 
 const ServerNameForm = (): JSX.Element => {
+	const history = useHistory();
 	const [serverName, setServerName] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -112,7 +114,7 @@ const ServerNameForm = (): JSX.Element => {
 				});
 
 				setIsLoading(false);
-				// TODO - add history.push to /setup ARC-2596
+				history.push(`/setup/${uuid}`);
 			} catch (e) {
 				console.error('Error: ', e);
 				setIsLoading(false);
@@ -127,7 +129,7 @@ const ServerNameForm = (): JSX.Element => {
 			<ConnectionFlowHeader />
 
 			<div className={cx(serverNameFormOuterContainer)}>
-				<div className={cx(serverNameFormInnerContainer)}>
+				<div className={cx(connectionFlowInnerContainer)}>
 
 					<h3>Get started</h3>
 					<p>Give your Jenkins server a name. We'll use this as a display name in
