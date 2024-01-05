@@ -1,14 +1,15 @@
 import React, {
+	RefObject,
 	useCallback, useEffect, useRef, useState
 } from 'react';
 import { cx } from '@emotion/css';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import InfoIcon from '@atlaskit/icon/glyph/info';
 import CopyIcon from '@atlaskit/icon/glyph/copy';
+import OpenIcon from '@atlaskit/icon/glyph/open';
 import Tooltip from '@atlaskit/tooltip';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import { useParams } from 'react-router';
-import { KeyboardOrMouseEvent } from '@atlaskit/modal-dialog';
 import {
 	connectionFlowContainer,
 	connectionFlowInnerContainer,
@@ -34,31 +35,44 @@ import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.s
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
-import { WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
+import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 
 type CopyProps = {
-	handleCopyToClipboard(
-		event: KeyboardOrMouseEvent
-	): Promise<void> | void;
+	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
+	secret?: string,
+	webhookUrl?: string
 };
 
-const CopyButton = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
+const CopyButton = ({
+	handleCopyToClipboard,
+	copyRef
+}: CopyProps & { copyRef: React.RefObject<HTMLDivElement> }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
 
-	const handleCopyClick = (e: React.MouseEvent) => {
-		handleCopyToClipboard(e);
-		setIsCopied(true);
-
-		setTimeout(() => {
-			setIsCopied(false);
-		}, 2000);
-	};
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+		if (isCopied) {
+			timeoutId = setTimeout(() => {
+				setIsCopied(false);
+			}, 2000);
+		}
+		return () => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+		};
+	}, [isCopied]);
 
 	return (
 		<div className={cx(jenkinsSetupCopyButtonContainer)}>
 			<Button
 				iconBefore={<CopyIcon label="Copy" size="medium" />}
-				onClick={(e) => handleCopyClick(e)}
+				onClick={() => {
+					if (copyRef && copyRef.current) {
+						handleCopyToClipboard(copyRef);
+						setIsCopied(true);
+					}
+				}}
 			>
 				Copy
 			</Button>
@@ -68,7 +82,16 @@ const CopyButton = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
 	);
 };
 
-const MyJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
+type MyJenkinsAdminProps = {
+	webhookGuideRef: RefObject<HTMLDivElement>,
+	secretTokenRef: RefObject<HTMLDivElement>
+};
+
+const MyJenkinsAdmin = ({
+	handleCopyToClipboard,
+	webhookGuideRef,
+	secretTokenRef
+}: CopyProps & MyJenkinsAdminProps): JSX.Element => {
 	const tooltipContent =
 		'Send this secret token separately to the webhook URL and step-by-step guide. For example, if you used chat to send the webhook, send the secret via email.';
 
@@ -79,14 +102,14 @@ const MyJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
 			<ol className={cx(orderedList, jenkinsSetupOrderedList)}>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL and step-by-step guide
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookGuideRef} />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Secret token
 					<Tooltip content={tooltipContent} position="bottom-start">
 						<InfoIcon label="help" size="small" />
 					</Tooltip>
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretTokenRef} />
 				</li>
 			</ol>
 
@@ -109,7 +132,20 @@ const MyJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
 	);
 };
 
-const IAmTheJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element => {
+type IAmTheJenkinsAdminProps = {
+	webhookUrlRef: RefObject<HTMLDivElement>,
+	secretRef: RefObject<HTMLDivElement>
+};
+
+const IAmTheJenkinsAdmin = ({
+	handleCopyToClipboard,
+	secret,
+	webhookUrl,
+	webhookUrlRef,
+	secretRef
+}: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
+	console.log(secret);
+	console.log(webhookUrl);
 	return (
 		<div className={cx(jenkinsSetupCopyContainer)}>
 			<p className={cx(jenkinsSetupContent)}>
@@ -119,15 +155,22 @@ const IAmTheJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element =
 			<ol className={cx(orderedList, jenkinsSetupOrderedList)}>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Step-by-step guide
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} />
+					<div className={cx(jenkinsSetupCopyButtonContainer)}>
+						<Button
+							iconBefore={<OpenIcon label="Open" size="medium" />}
+							// onClick={(e) => handleCopyClick(e)}
+						>
+							View
+						</Button>
+					</div>
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookUrlRef} />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Secret token
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretRef} />
 				</li>
 			</ol>
 
@@ -137,17 +180,26 @@ const IAmTheJenkinsAdmin = ({ handleCopyToClipboard }: CopyProps): JSX.Element =
 };
 
 const JenkinsSetup = (): JSX.Element => {
+	const webhookGuideRef = useRef<HTMLDivElement>(null);
+	const secretTokenRef = useRef<HTMLDivElement>(null);
+	const secretRef = useRef<HTMLDivElement>(null);
+	const webhookUrlRef = useRef<HTMLDivElement>(null);
 	const { id: uuid } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
-	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-	const handleCopyToClipboard = async () => {
-		if (textAreaRef.current) {
-			textAreaRef.current.select();
+	const secret = '1234';
+	const webhookUrl = 'somewebhookurl';
+
+	const handleCopyToClipboard = (copyRef: React.RefObject<HTMLDivElement>) => {
+		if (copyRef.current) {
+			const range = document.createRange();
+			range.selectNode(copyRef.current);
+			window.getSelection()?.removeAllRanges();
+			window.getSelection()?.addRange(range);
 			document.execCommand('copy');
-			textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
+			window.getSelection()?.removeAllRanges();
 		}
 	};
 
@@ -206,11 +258,21 @@ const JenkinsSetup = (): JSX.Element => {
 						</ButtonGroup>
 
 						{showMyJenkinsAdmin ? (
-							<MyJenkinsAdmin handleCopyToClipboard={handleCopyToClipboard} />
+							<MyJenkinsAdmin
+								handleCopyToClipboard={handleCopyToClipboard}
+								webhookGuideRef={webhookGuideRef}
+								secretTokenRef={secretTokenRef}
+							/>
 						) : null}
 
 						{showIAmTheJenkinsAdmin ? (
-							<IAmTheJenkinsAdmin handleCopyToClipboard={handleCopyToClipboard} />
+							<IAmTheJenkinsAdmin
+								handleCopyToClipboard={handleCopyToClipboard}
+								secret={secret}
+								webhookUrl={webhookUrl}
+								webhookUrlRef={webhookUrlRef}
+								secretRef={secretRef}
+							/>
 						) : null}
 					</div>
 
@@ -221,7 +283,10 @@ const JenkinsSetup = (): JSX.Element => {
 					) : null}
 
 					<div className={cx(jenkinsSetUpCopyContent)}>
-						<WebhookGuideContent textAreaRef={textAreaRef} />
+						<WebhookGuideContent divRef={webhookGuideRef} />
+						<SecretTokenContent divRef={secretTokenRef} />
+						<div ref={secretRef}>{secret}</div>
+						<div ref={webhookUrlRef}>{webhookUrl}</div>
 					</div>
 				</div>
 			</div>
