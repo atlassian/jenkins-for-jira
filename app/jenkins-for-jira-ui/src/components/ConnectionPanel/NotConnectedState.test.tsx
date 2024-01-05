@@ -21,16 +21,16 @@ describe('NotConnectedState', () => {
 	};
 
 	const refreshServers = jest.fn();
-	const handleRefreshPanel = jest.fn();
+	const handleRefreshAfterUpdate = jest.fn();
 	const setIsLoading = jest.fn();
 
 	test('renders with connected state DUPLICATE', () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.DUPLICATE}
 			jenkinsServer={mockServer}
-			refreshServers={refreshServers}
-			handleRefreshPanel={handleRefreshPanel}
 			isLoading={false}
+			refreshServersAfterDelete={refreshServers}
+			refreshServersAfterUpdate={handleRefreshAfterUpdate}
 			setIsLoading={setIsLoading}
 		/>);
 		expect(screen.getByText('Duplicate server')).toBeInTheDocument();
@@ -41,8 +41,8 @@ describe('NotConnectedState', () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.PENDING}
 			jenkinsServer={mockServer}
-			refreshServers={refreshServers}
-			handleRefreshPanel={handleRefreshPanel}
+			refreshServersAfterDelete={refreshServers}
+			refreshServersAfterUpdate={handleRefreshAfterUpdate}
 			isLoading={false}
 			setIsLoading={setIsLoading}
 		/>);
@@ -56,8 +56,8 @@ describe('NotConnectedState', () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.DUPLICATE}
 			jenkinsServer={mockServer}
-			refreshServers={refreshServers}
-			handleRefreshPanel={handleRefreshPanel}
+			refreshServersAfterDelete={refreshServers}
+			refreshServersAfterUpdate={handleRefreshAfterUpdate}
 			isLoading={false}
 			setIsLoading={setIsLoading}
 		/>);

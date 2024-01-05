@@ -22,7 +22,7 @@ type NotConnectedStateProps = {
 	firstButtonLabel: string,
 	secondButtonLabel?: string,
 	buttonOneOnClick(data?: any): void,
-	buttonTwoOnClick?(): void,
+	buttonTwoOnClick?(data: any): void,
 	testId?: string,
 	isLoading: boolean
 };
@@ -42,7 +42,7 @@ const ConnectionPanelContent = ({
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
-	if (connectedState === ConnectedState.CONNECTED) {
+	if (connectedState === ConnectedState.UPDATE_AVAILABLE) {
 		icon = <NoDataIcon />;
 	} else if (connectedState === ConnectedState.PENDING) {
 		icon = <ConnectionPendingIcon />;

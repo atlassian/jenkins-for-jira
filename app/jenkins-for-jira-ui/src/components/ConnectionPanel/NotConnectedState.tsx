@@ -13,17 +13,17 @@ import { ConnectionPanelContent } from './ConnectionPanelContent';
 type NotConnectedStateProps = {
 	connectedState: ConnectedState,
 	jenkinsServer: JenkinsServer,
-	refreshServers(serverToRemove: JenkinsServer): void,
-	handleRefreshPanel(serverToRemove: JenkinsServer): void,
+	refreshServersAfterDelete(serverToRefresh: JenkinsServer): void,
+	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	isLoading: boolean
 	setIsLoading(isLoading: boolean): void
 };
 
 const NotConnectedState = ({
 	connectedState,
-	refreshServers,
+	refreshServersAfterDelete,
 	jenkinsServer,
-	handleRefreshPanel,
+	refreshServersAfterUpdate,
 	isLoading,
 	setIsLoading
 }: NotConnectedStateProps): JSX.Element => {
@@ -39,7 +39,7 @@ const NotConnectedState = ({
 			setIsLoading(false);
 		}
 
-		refreshServers(serverToDelete);
+		refreshServersAfterDelete(serverToDelete);
 	};
 
 	const deleteServerWrapper = async () => {
@@ -79,7 +79,7 @@ const NotConnectedState = ({
 						buttonAppearance={isPending ? 'primary' : 'danger'}
 						firstButtonLabel={isPending ? 'Refresh' : 'Delete'}
 						secondButtonLabel={isPending ? 'Learn more' : undefined}
-						buttonOneOnClick={isPending ? handleRefreshPanel : deleteServerWrapper}
+						buttonOneOnClick={isPending ? refreshServersAfterUpdate : deleteServerWrapper}
 						buttonTwoOnClick={isPending ? handleLearnMore : undefined}
 						testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 						isLoading={isLoading}

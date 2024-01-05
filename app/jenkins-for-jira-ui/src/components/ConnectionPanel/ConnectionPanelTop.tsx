@@ -16,22 +16,43 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
 
-type ConnectionPanelTopProps = {
-	server: JenkinsServer,
-	refreshServers(serverToRemove: JenkinsServer): void
-};
-
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
 	[ConnectedState.CONNECTED]: { textColor: '#206e4e', backgroundColor: '#dcfff1' },
 	[ConnectedState.DUPLICATE]: { textColor: '#ae2e24', backgroundColor: '#ffecea' },
-	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' }
+	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' },
+	[ConnectedState.UPDATE_AVAILABLE]: { textColor: '#0054cb', backgroundColor: '#e8f2ff' }
 };
 
+const setConnectedState = (
+	server: JenkinsServer,
+	isUpdatingServer: boolean,
+	updatedServer?: JenkinsServer
+): ConnectedState => {
+	let connectedState;
+
+	if (isUpdatingServer || !updatedServer) {
+		connectedState = server.connectedState;
+	} else if (updatedServer && updatedServer.uuid === server.uuid) {
+		connectedState = updatedServer?.connectedState;
+	}
+
+	return connectedState || ConnectedState.PENDING;
+};
+
+type ConnectionPanelTopProps = {
+	server: JenkinsServer,
+	refreshServers(serverToRemove: JenkinsServer): void,
+	updatedServer?: JenkinsServer,
+	isUpdatingServer: boolean
+};
 const ConnectionPanelTop = ({
+
 	server,
-	refreshServers
+	refreshServers,
+	updatedServer,
+	isUpdatingServer
 }: ConnectionPanelTopProps): JSX.Element => {
-	const connectedState = server.connectedState || ConnectedState.PENDING;
+	const connectedState = setConnectedState(server, isUpdatingServer, updatedServer);
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
@@ -91,7 +112,7 @@ const ConnectionPanelTop = ({
 					)}
 				>
 					<DropdownItemGroup>
-						{/* TODO: add onClick (will be done when I build the server name screen) */}
+						{/* TODO: add onClick - ARC-2595 server name screen */}
 						<DropdownItem>Rename</DropdownItem>
 						{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
 						<DropdownItem>Connection settings</DropdownItem>

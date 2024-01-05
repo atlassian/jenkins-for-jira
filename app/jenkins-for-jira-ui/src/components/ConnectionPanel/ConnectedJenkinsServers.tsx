@@ -11,6 +11,7 @@ import {
 	connectedStateCell,
 	connectedStateCellContainer,
 	connectedStateCellEvent,
+	connectedStateCellIcon,
 	connectedStateContainer
 } from './ConnectionPanel.styles';
 
@@ -85,7 +86,7 @@ const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps
 						content: (
 							<div className={cx(connectedStateCellContainer)}>
 								<>
-									<div className={cx(connectedStateCell)}>
+									<div className={cx(connectedStateCell, connectedStateCellIcon)}>
 										{mapLastEventStatusIcons(pipeline.lastEventStatus)}
 									</div>
 								</>

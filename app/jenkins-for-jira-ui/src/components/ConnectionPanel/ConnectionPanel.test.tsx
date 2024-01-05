@@ -153,19 +153,20 @@ describe('Connection Panel Suite', () => {
 			const noPluginConfigButHasPipelinesResult = addConnectedState(noPluginConfigButHasPipelines);
 			const hasPluginConfigButNoPipelinesResult = addConnectedState(hasPluginConfigButNoPipelines);
 
-			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 			expect(noPluginConfigAndNoPipelinesResult[0].connectedState).toEqual(ConnectedState.PENDING);
+			expect(noPluginConfigButHasPipelinesResult[0].connectedState).toEqual(ConnectedState.UPDATE_AVAILABLE);
 			expect(hasPluginConfigButNoPipelinesResult[0].connectedState).toEqual(ConnectedState.CONNECTED);
 		});
 
 		it('should correctly set state for multiple servers with duplicate IPs and no pipelines', () => {
-			const duplicateServers: JenkinsServer[] = [servers[1], servers[5], servers[6]];
-			const result = addConnectedState(duplicateServers);
+			const serversWithConnectedState: JenkinsServer[] = [servers[1], servers[4], servers[5], servers[6]];
+			const result = addConnectedState(serversWithConnectedState);
 
-			expect(result[0].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(result[0].connectedState).toEqual(ConnectedState.UPDATE_AVAILABLE);
 			expect(result[1].connectedState).toEqual(ConnectedState.CONNECTED);
-			expect(result[2].connectedState).toEqual(ConnectedState.DUPLICATE);
-			expect(result[2].originalConnection).toEqual(servers[5].name);
+			expect(result[2].connectedState).toEqual(ConnectedState.CONNECTED);
+			expect(result[3].connectedState).toEqual(ConnectedState.DUPLICATE);
+			expect(result[3].originalConnection).toEqual(servers[5].name);
 		});
 	});
 
@@ -186,11 +187,19 @@ describe('Connection Panel Suite', () => {
 						autoDeploymentsRegex: ''
 					},
 					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
-					pipelines: []
+					pipelines: [
+						{
+							name: '#3456',
+							lastEventType: EventType.BUILD,
+							lastEventStatus: 'successful',
+							lastEventDate: new Date()
+						}
+					]
 				};
 
 				render(
 					<ConnectionPanelTop
+						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
 					/>
@@ -224,6 +233,7 @@ describe('Connection Panel Suite', () => {
 
 				render(
 					<ConnectionPanelTop
+						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
 					/>
@@ -250,6 +260,7 @@ describe('Connection Panel Suite', () => {
 
 				render(
 					<ConnectionPanelTop
+						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
 					/>
@@ -264,12 +275,47 @@ describe('Connection Panel Suite', () => {
 				expect(statusLabel).toHaveStyle({ color: '#a54900', backgroundColor: '#fff7d6' });
 				expect(statusLabel).toHaveTextContent('PENDING');
 			});
+
+			test('should render the correct content and styles for UPDATE_AVAILABLE state', () => {
+				const server: JenkinsServer = {
+					name: 'my server',
+					connectedState: ConnectedState.UPDATE_AVAILABLE,
+					pluginConfig: undefined,
+					uuid: 'djsnfudin-jhsdwefwe-238hnfuwef',
+					pipelines: [
+						{
+							name: '#3456',
+							lastEventType: EventType.BUILD,
+							lastEventStatus: 'successful',
+							lastEventDate: new Date()
+						}
+					]
+				};
+
+				render(
+					<ConnectionPanelTop
+						isUpdatingServer={false}
+						server={server}
+						refreshServers={refreshServers}
+					/>
+				);
+
+				const nameLabel = screen.getByText(server.name);
+				const ipAddressLabel = screen.queryByText(`IP address: ${server.pluginConfig?.ipAddress}`);
+				const statusLabel = screen.getByTestId('status-label');
+
+				expect(nameLabel).toBeInTheDocument();
+				expect(ipAddressLabel).not.toBeInTheDocument();
+				expect(statusLabel).toHaveStyle({ color: '#0054cb', backgroundColor: '#e8f2ff' });
+				expect(statusLabel).toHaveTextContent('UPDATE AVAILABLE');
+			});
 		});
 
 		describe('IP address', () => {
 			test('should render a server with the IP address if there is pluginConfig data', () => {
 				render(
 					<ConnectionPanelTop
+						isUpdatingServer={false}
 						server={servers[0]}
 						refreshServers={refreshServers}
 					/>
@@ -281,6 +327,7 @@ describe('Connection Panel Suite', () => {
 			test('should render a server without the IP address if there is no pluginConfig data', () => {
 				render(
 					<ConnectionPanelTop
+						isUpdatingServer={false}
 						server={servers[4]}
 						refreshServers={refreshServers}
 					/>
