@@ -7,7 +7,7 @@ import Form, {
 } from '@atlaskit/form';
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
-import { isValid } from '../../common/util/jenkinsConnectionsUtils';
+import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
 import { connectionFlowContainer 	} from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { createJenkinsServer } from '../../api/createJenkinsServer';
@@ -90,7 +90,7 @@ const ServerNameForm = (): JSX.Element => {
 	};
 
 	const handleSubmitCreateServer = async () => {
-		if (isValid(serverName, setErrorMessage)) {
+		if (isValidServerName(serverName, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();
 

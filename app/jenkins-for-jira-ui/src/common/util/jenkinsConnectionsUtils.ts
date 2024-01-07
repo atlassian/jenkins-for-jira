@@ -13,7 +13,7 @@ export const setName = async (event: React.ChangeEvent<HTMLInputElement>, setSer
 };
 
 // TODO kill off isFormValid when rollout is complete
-export const isValid = (
+export const isValidServerName = (
 	value: string,
 	setErrorMessage: {
 		(value: SetStateAction<string>): void; (value: SetStateAction<string>): void; (arg0: string): void;
