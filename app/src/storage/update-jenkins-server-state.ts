@@ -12,14 +12,21 @@ export const updatePipelines = (
 ): void => {
 	if (index === -1 && jenkinsServer.pipelines.length < MAX_JENKINS_PIPELINES) {
 		jenkinsServer.pipelines.push(pipelineToUpdate);
-	} else if (index === -1 && jenkinsServer.pipelines.length === 10) {
+	} else if (index === -1 && jenkinsServer.pipelines.length === MAX_JENKINS_PIPELINES) {
 		const oldPipelineEvent = jenkinsServer.pipelines.reduce((prev, curr) =>
 			(curr.lastEventDate < prev.lastEventDate ? curr : prev));
 
 		jenkinsServer.pipelines = jenkinsServer.pipelines.map((pipeline) =>
+			// TODO THIS WILL NEVER WORK? ITS COMPARING A NEWLY REDUCED OBJECT AGAINST ANOTHER OBJECT, JS SAYS NO!
 			(pipeline === oldPipelineEvent ? pipelineToUpdate : pipeline));
 	} else {
-		jenkinsServer.pipelines[index] = { ...pipelineToUpdate };
+		const concatenated = [jenkinsServer.pipelines[index].environmentName, pipelineToUpdate.environmentName].join(',');
+		// TODO-JK this is where we need to get cute with unknown counts
+		// count all envs not just unkown, so no uniqque any more just at the dispaly point configure
+		// probably here function extractEnvironmentNames(data): string {
+		const environment = [...new Set(concatenated.split(','))].join(',');
+
+		jenkinsServer.pipelines[index] = { ...pipelineToUpdate, environmentName: environment };
 	}
 };
 

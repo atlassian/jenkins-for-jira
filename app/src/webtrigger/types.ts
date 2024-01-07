@@ -36,6 +36,7 @@ export interface JenkinsEvent extends JenkinsRequest {
 	pipelineName?: string;
 	status?: BuildEventStatus | DeploymentEventStatus,
 	lastUpdated?: Date,
+	environmentName?: string,
 	payload: any
 }
 
