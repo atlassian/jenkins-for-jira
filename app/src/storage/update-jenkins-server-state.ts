@@ -5,29 +5,47 @@ import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 
-export const updatePipelines = (
-	index: number,
-	jenkinsServer: JenkinsServer,
-	pipelineToUpdate: JenkinsPipeline
-): void => {
-	if (index === -1 && jenkinsServer.pipelines.length < MAX_JENKINS_PIPELINES) {
-		jenkinsServer.pipelines.push(pipelineToUpdate);
-	} else if (index === -1 && jenkinsServer.pipelines.length === MAX_JENKINS_PIPELINES) {
-		const oldPipelineEvent = jenkinsServer.pipelines.reduce((prev, curr) =>
-			(curr.lastEventDate < prev.lastEventDate ? curr : prev));
+export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	const pipelineExists = jenkinsServer.pipelines.some((pipeline) => pipeline.name === incomingPipeline.name);
 
-		jenkinsServer.pipelines = jenkinsServer.pipelines.map((pipeline) =>
-			// TODO THIS WILL NEVER WORK? ITS COMPARING A NEWLY REDUCED OBJECT AGAINST ANOTHER OBJECT, JS SAYS NO!
-			(pipeline === oldPipelineEvent ? pipelineToUpdate : pipeline));
+	if (!pipelineExists) {
+		insertPipeline(jenkinsServer, incomingPipeline);
 	} else {
-		const concatenated = [jenkinsServer.pipelines[index].environmentName, pipelineToUpdate.environmentName].join(',');
-		// TODO-JK this is where we need to get cute with unknown counts
-		// count all envs not just unkown, so no uniqque any more just at the dispaly point configure
-		// probably here function extractEnvironmentNames(data): string {
-		const environment = [...new Set(concatenated.split(','))].join(',');
-
-		jenkinsServer.pipelines[index] = { ...pipelineToUpdate, environmentName: environment };
+		updatePipeline(jenkinsServer, incomingPipeline);
 	}
+};
+
+const insertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	jenkinsServer.pipelines.push(incomingPipeline);
+	enforcePipelineLimit(jenkinsServer);
+};
+
+const enforcePipelineLimit = (jenkinsServer: JenkinsServer): void => {
+	if (jenkinsServer.pipelines.length > MAX_JENKINS_PIPELINES) {
+		jenkinsServer.pipelines.shift();
+	}
+};
+
+const updatePipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	const existingPipelineIndex = jenkinsServer.pipelines.findIndex(
+		(pipeline) => pipeline.name === incomingPipeline.name
+	);
+	const existingPipeline = jenkinsServer.pipelines[existingPipelineIndex];
+	const updatedPipeline: JenkinsPipeline = {
+		...existingPipeline,
+		...incomingPipeline
+	};
+	updatedPipeline.environmentName = getUniqueEnvironmentNames(
+		existingPipeline.environmentName,
+		incomingPipeline.environmentName
+	);
+
+	jenkinsServer.pipelines[existingPipelineIndex] = updatedPipeline;
+};
+
+const getUniqueEnvironmentNames = (existingNames = '', incomingName = ''): string => {
+	const concatenatedEnvironmentNames = [existingNames, incomingName].join(',');
+	return [...new Set(concatenatedEnvironmentNames.split(','))].join(',');
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
@@ -51,11 +69,7 @@ async function updateJenkinsServerState(
 	try {
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
 
-		const index = jenkinsServer.pipelines.findIndex(
-			(pipeline) => pipeline.name === pipelineToUpdate.name
-		);
-
-		updatePipelines(index, jenkinsServer, pipelineToUpdate);
+		updateOrInsertPipeline(jenkinsServer, pipelineToUpdate);
 
 		await storage.set(
 			`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`,

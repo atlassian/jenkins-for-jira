@@ -21,7 +21,7 @@ interface EnvironmentData {
     offVariation: number;
     prerequisites: any[];
     _site: any;
-    _environmentName: string;
+    _environmentNames: string[];
     trackEvents: boolean;
     trackEventsFallthrough: boolean;
     _summary: any;

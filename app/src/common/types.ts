@@ -26,7 +26,7 @@ export interface JenkinsServer {
 
 export interface JenkinsPipeline {
 	name: string,
-	environmentName?: string, //  todo maybe not required if lastEventType uses it???
+	environmentName?: string,
 	lastEventDate: Date,
 	lastEventStatus: BuildEventStatus | DeploymentEventStatus,
 	lastEventType: EventType

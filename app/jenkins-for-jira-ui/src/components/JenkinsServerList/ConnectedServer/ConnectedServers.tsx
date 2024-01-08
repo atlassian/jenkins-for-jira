@@ -307,7 +307,8 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 									</StyledConnectedServerLatestEventIconContainer>
 								</>
 								<StyledConnectedServerTableCellDescriptionEvent>
-									{mapLastEventStatus(pipeline.lastEventStatus)} {pipeline.lastEventType}
+									{/* eslint-disable-next-line max-len */}
+									{mapLastEventStatus(pipeline.lastEventStatus)} {pipeline.lastEventType} {pipeline.environmentName}
 								</StyledConnectedServerTableCellDescriptionEvent>
 							</StyledConnectedServerTableCellContainer>
 						)

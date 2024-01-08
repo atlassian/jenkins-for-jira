@@ -53,14 +53,6 @@ export default async function handleJenkinsRequest(
 
 		switch (jenkinsRequest.requestType) {
 			case RequestType.EVENT: {
-				logger.info('jenkinsRequest');
-				logger.info('jenkinsRequest');
-				logger.info('jenkinsRequest');
-				logger.info('jenkinsRequest');
-				logger.info('jenkinsRequest');
-				logger.info(jenkinsRequest);
-				console.log('jenkinsRequest');
-				console.log(jenkinsRequest);
 				response = await handleEvent(jenkinsRequest as JenkinsEvent, jenkinsServerUuid, cloudId, logger);
 				break;
 			}
@@ -91,18 +83,12 @@ export default async function handleJenkinsRequest(
 }
 
 // @ts-ignore
-function extractEnvironmentNames(data): string {
-	console.log('data');
-	console.log('data should be payload');
-	console.log(data);
-	if (!data || !data.deployments) {
-		return '';
+function extractEnvironmentName(data): string {
+	const UNKNOWN_ENVIRONMENT = 'unknown environment';
+	if (!data || !data.deployments || !data.deployments[0].environment) {
+		return UNKNOWN_ENVIRONMENT;
 	}
-
-	// @ts-ignore
-	const displayNames = data.deployments.map((entry) => entry.environment?.displayName).filter(Boolean);
-
-	return displayNames.join(',');
+	return data.deployments[0].environment.displayName || UNKNOWN_ENVIRONMENT;
 }
 
 /**
@@ -124,13 +110,7 @@ async function handleEvent(
 	event.payload.properties = event.payload.properties || {};
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;
-	event.environmentName = extractEnvironmentNames(event.payload);
-	console.log('WHAT DOES IT LOOK LIKE!!!');
-	console.log('WHAT DOES IT LOOK LIKE!!!');
-	console.log('WHAT DOES IT LOOK LIKE!!!');
-	console.log('WHAT DOES IT LOOK LIKE!!!');
-	console.log('WHAT DOES IT LOOK LIKE!!!');
-	console.log(event.environmentName);
+
 	const jiraResponse = await sendEventToJira(event.eventType, cloudId, event.payload);
 	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
@@ -197,6 +177,6 @@ function convertToPipeline(event: JenkinsEvent): JenkinsPipeline {
 		lastEventType: event.eventType,
 		lastEventStatus: event.status!,
 		lastEventDate: event.lastUpdated!,
-		environmentName: extractEnvironmentNames(event.payload)
+		environmentName: extractEnvironmentName(event.payload)
 	};
 }
