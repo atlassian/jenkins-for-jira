@@ -7,6 +7,7 @@ import { ButtonGroup } from '@atlaskit/button';
 import Button from '@atlaskit/button/standard-button';
 import { cx } from '@emotion/css';
 import TextArea from '@atlaskit/textarea';
+import { useHistory } from 'react-router';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 import { serverManagementContainer, shareModalInstruction } from './ServerManagement.styles';
 import { addConnectedState, ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
@@ -88,6 +89,7 @@ export const contentToRenderServerManagementScreen = (
 };
 
 const ServerManagement = (): JSX.Element => {
+	const history = useHistory();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();
 	const [showSharePage, setshowSharePage] = useState<boolean>(false);
@@ -156,10 +158,19 @@ const ServerManagement = (): JSX.Element => {
 		};
 	}, [redirectToAdminPage]);
 
+	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
+		e.preventDefault();
+		history.push('/create-server');
+	};
+
 	const pageHeaderActions = (
 		<ButtonGroup>
-			{/* TODO handle empty state - ARC-2730 connection wizard */}
-			<Button appearance="primary">Connect a new Jenkins server</Button>
+			<Button
+				appearance="primary"
+				onClick={(e) => handleNavigateToServerNameScreen(e)}
+			>
+				Connect a new Jenkins server
+			</Button>
 			<Button onClick={() => handleShowSharePageModal()}>Share page</Button>
 		</ButtonGroup>
 	);

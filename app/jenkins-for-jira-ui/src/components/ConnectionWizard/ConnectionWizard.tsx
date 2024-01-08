@@ -3,9 +3,8 @@ import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
+import { useHistory } from 'react-router';
 import {
-	connectionWizardContainer,
-	connectionWizardHeader,
 	connectionWizardInfoPanel,
 	connectionWizardNestedOrderedListItem,
 	connectionWizardOrderedListItem,
@@ -15,21 +14,26 @@ import {
 	connectionWizardInfoPaneIphLink
 } from './ConnectionWizard.styles';
 import {
-	infoPanel, orderedList, orderedListItem
+	connectionFlowContainer,
+	infoPanel,
+	orderedList,
+	orderedListItem
 } from '../../GlobalStyles.styles';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
-import { JenkinsSyncJiraIcon } from '../icons/JenkinsSyncJiraIcon';
+import { ConnectionFlowHeader } from './ConnectionFlowHeader';
 
 const ConnectionWizard = (): JSX.Element => {
+	const history = useHistory();
+
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		// TODO - add onclick in build new server name
+		history.push('/create-server');
 	};
 
 	return (
-		<div className={cx(connectionWizardContainer)} data-testid="connection-wizard">
-			<JenkinsSyncJiraIcon />
-			<h3 className={cx(connectionWizardHeader)}>Connect Jenkins to Jira</h3>
+		<div className={cx(connectionFlowContainer)} data-testid="connection-wizard">
+			<ConnectionFlowHeader />
+
 			<div className={cx(connectionWizardContentContainer)}>
 				<p>To complete this connection you'll need:</p>
 

@@ -68,3 +68,13 @@ export const infoPanel = css`
 export const connectionWizardInfoPanelInstruction = css`
 	margin-bottom: ${token('space.400')};
 `;
+
+export const connectionFlowContainer = css`
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	justify-content: center;
+	margin: ${token('space.negative.400')} auto;
+	width: 360px;
+`;
