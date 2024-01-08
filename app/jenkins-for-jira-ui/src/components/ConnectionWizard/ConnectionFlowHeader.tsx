@@ -13,11 +13,11 @@ const ConnectionFlowHeader = (): JSX.Element => {
 	);
 };
 
-type ConnectionFlowServerNameSubHeader = {
+type ConnectionFlowServerNameSubHeaderProps = {
 	serverName: string
 };
 
-const ConnectionFlowServerNameSubHeader = ({ serverName }: ConnectionFlowServerNameSubHeader): JSX.Element => {
+const ConnectionFlowServerNameSubHeader = ({ serverName }: ConnectionFlowServerNameSubHeaderProps): JSX.Element => {
 	return (
 		<p className={cx(jenkinsSetupServerName)}>Server name: {serverName}</p>
 	);
