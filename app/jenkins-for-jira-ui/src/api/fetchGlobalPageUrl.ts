@@ -33,5 +33,6 @@ const fetchGlobalPageUrl = async (): Promise<string> => {
 };
 
 export {
-	fetchGlobalPageUrl, fetchSiteName
+	fetchGlobalPageUrl,
+	fetchSiteName
 };

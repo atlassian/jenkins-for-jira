@@ -7,7 +7,6 @@ export const inProductHelpActionLink = css`
 	color: ${token('color.link')};
 	margin-bottom: ${token('space.025')};
 	padding: ${token('space.0')} !important;
-	white-space: normal !important;
 
 	span {
     font-weight: normal;
