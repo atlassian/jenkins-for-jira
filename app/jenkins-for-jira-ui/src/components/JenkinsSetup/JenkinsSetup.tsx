@@ -267,7 +267,7 @@ const JenkinsSetup = (): JSX.Element => {
 			<ConnectionFlowHeader />
 
 			{isFetchingData ? (
-				<div className={cx(loadingContainer)}>
+				<div className={cx(loadingContainer)} data-testid="loading-spinner">
 					<Spinner size='large' />
 				</div>
 			) : (
