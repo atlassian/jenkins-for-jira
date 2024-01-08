@@ -89,6 +89,7 @@ describe('JenkinsSetup Component', () => {
 		});
 
 		expect(screen.getByText(/Server name:/i)).toBeInTheDocument();
+		expect(screen.getByText(/Server name:/i)).toHaveTextContent('Mocked Server');
 	});
 
 	it('toggles between "My Jenkins admin" and "I am the Jenkins admin" views', async () => {

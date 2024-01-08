@@ -8,8 +8,8 @@ import Form, {
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
 import { useHistory } from 'react-router';
-import { isValid } from '../../common/util/jenkinsConnectionsUtils';
-import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
+import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
+import { connectionFlowContainer, connectionFlowInnerContainer 	} from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { createJenkinsServer } from '../../api/createJenkinsServer';
 import { generateNewSecret } from '../../api/generateNewSecret';
@@ -92,7 +92,7 @@ const ServerNameForm = (): JSX.Element => {
 	};
 
 	const handleSubmitCreateServer = async () => {
-		if (isValid(serverName, setErrorMessage)) {
+		if (isValidServerName(serverName, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();
 
