@@ -3,6 +3,7 @@ import React, {
 	useCallback, useEffect, useRef, useState
 } from 'react';
 import { cx } from '@emotion/css';
+import { router } from '@forge/bridge';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import InfoIcon from '@atlaskit/icon/glyph/info';
 import CopyIcon from '@atlaskit/icon/glyph/copy';
@@ -10,6 +11,7 @@ import OpenIcon from '@atlaskit/icon/glyph/open';
 import Tooltip from '@atlaskit/tooltip';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import { useParams } from 'react-router';
+import Spinner from '@atlaskit/spinner';
 import {
 	connectionFlowContainer,
 	connectionFlowInnerContainer,
@@ -27,7 +29,8 @@ import {
 	jenkinsSetupServerName,
 	jenkinsSetUpInfoPanel,
 	jenkinsSetUpInfoPanelContentContainer,
-	jenkinsSetUpCopyHiddenContent
+	jenkinsSetUpCopyHiddenContent,
+	loadingContainer
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -37,17 +40,17 @@ import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
-import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
-	secret?: string,
-	webhookUrl?: string
+	testId?: string
 };
 
 const CopyButton = ({
 	handleCopyToClipboard,
-	copyRef
+	copyRef,
+	testId
 }: CopyProps & { copyRef: React.RefObject<HTMLDivElement> }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
 
@@ -66,7 +69,7 @@ const CopyButton = ({
 	}, [isCopied]);
 
 	return (
-		<div className={cx(jenkinsSetupCopyButtonContainer)}>
+		<div className={cx(jenkinsSetupCopyButtonContainer)} >
 			<Button
 				iconBefore={<CopyIcon label="Copy" size="medium" />}
 				onClick={() => {
@@ -75,6 +78,7 @@ const CopyButton = ({
 						setIsCopied(true);
 					}
 				}}
+				testId={testId}
 			>
 				Copy
 			</Button>
@@ -104,14 +108,14 @@ const MyJenkinsAdmin = ({
 			<ol className={cx(orderedList, jenkinsSetupOrderedList)}>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL and step-by-step guide
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookGuideRef} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookGuideRef} testId="copy-webhook-url-guide" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Secret token
 					<Tooltip content={tooltipContent} position="bottom-start">
 						<InfoIcon label="help" size="small" />
 					</Tooltip>
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretTokenRef} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretTokenRef} testId="copy-secret-token-guide" />
 				</li>
 			</ol>
 
@@ -141,13 +145,14 @@ type IAmTheJenkinsAdminProps = {
 
 const IAmTheJenkinsAdmin = ({
 	handleCopyToClipboard,
-	secret,
-	webhookUrl,
 	webhookUrlRef,
 	secretRef
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
-	console.log(secret);
-	console.log(webhookUrl);
+	const handleFollowLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
+		router.open('https://app.contentful.com/spaces/zsv3d0ugroxu/entries/4ccCes4jpnMlSVtI4Eqre9?focusedField=body');
+	};
+
 	return (
 		<div className={cx(jenkinsSetupCopyContainer)}>
 			<p className={cx(jenkinsSetupContent)}>
@@ -160,7 +165,7 @@ const IAmTheJenkinsAdmin = ({
 					<div className={cx(jenkinsSetupCopyButtonContainer)}>
 						<Button
 							iconBefore={<OpenIcon label="Open" size="medium" />}
-							// onClick={(e) => handleCopyClick(e)}
+							onClick={(e) => handleFollowLink(e)}
 						>
 							View
 						</Button>
@@ -168,11 +173,11 @@ const IAmTheJenkinsAdmin = ({
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookUrlRef} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookUrlRef} testId="copy-webhook-url" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Secret token
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretRef} />
+					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretRef} testId="copy-secret-token" />
 				</li>
 			</ol>
 
@@ -207,26 +212,39 @@ const JenkinsSetup = (): JSX.Element => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const url = await fetchGlobalPageUrl();
+				const url = await fetchSiteName({ withProtocol: false });
+				console.log('IN HERE: ', url);
 				setSiteName(url);
+				getServer();
+				getWebhookUrl(setWebhookUrl, uuid);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
 		};
 
 		fetchData();
-		getServer();
-		getWebhookUrl(setWebhookUrl, uuid);
 	}, [uuid, getServer]);
 
 	const handleCopyToClipboard = (copyRef: React.RefObject<HTMLDivElement>) => {
 		if (copyRef.current) {
 			const range = document.createRange();
 			range.selectNode(copyRef.current);
-			window.getSelection()?.removeAllRanges();
-			window.getSelection()?.addRange(range);
-			document.execCommand('copy');
-			window.getSelection()?.removeAllRanges();
+
+			const selection = window.getSelection();
+			if (selection) {
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+
+			try {
+				document.execCommand('copy');
+			} catch (err) {
+				console.error('Copy to clipboard failed:', err);
+			}
+
+			if (selection) {
+				selection.removeAllRanges();
+			}
 		}
 	};
 
@@ -242,68 +260,82 @@ const JenkinsSetup = (): JSX.Element => {
 		setShowMyJenkinsAdmin(false);
 	};
 
+	const isFetchingData = !serverName || !webhookUrl || !secret;
+
 	return (
 		<div className={cx(connectionFlowContainer)}>
 			<ConnectionFlowHeader />
-			<p className={cx(jenkinsSetupServerName)}>Server name: {serverName}</p>
 
-			<div className={cx(serverNameFormOuterContainer)}>
-				<div className={cx(connectionFlowInnerContainer)}>
-					<div className={cx(jenkinsSetupContainer)}>
-						<h3 className={cx(jenkinsSetupHeader)}>Set up Jenkins</h3>
-						<p className={cx(jenkinsSetupContent)}>
-							A Jenkins admin needs to set up your server to complete this connection.
-						</p>
-						<p className={cx(jenkinsSetupContent)}>Who's logging into Jenkins?</p>
-
-						<ButtonGroup>
-							<Button
-								onClick={(e) => handleMyJenkinsAdminClick(e)}
-								appearance={showMyJenkinsAdmin ? 'primary' : 'default'}
-							>
-								My Jenkins admin
-							</Button>
-							<Button
-								onClick={(e) => handleIAmTheJenkinsAdminClick(e)}
-								appearance={showIAmTheJenkinsAdmin ? 'primary' : 'default'}
-							>
-								I am (I'm a Jenkins admin)
-							</Button>
-						</ButtonGroup>
-
-						{showMyJenkinsAdmin ? (
-							<MyJenkinsAdmin
-								handleCopyToClipboard={handleCopyToClipboard}
-								webhookGuideRef={webhookGuideRef}
-								secretTokenRef={secretTokenRef}
-							/>
-						) : null}
-
-						{showIAmTheJenkinsAdmin ? (
-							<IAmTheJenkinsAdmin
-								handleCopyToClipboard={handleCopyToClipboard}
-								secret={secret}
-								webhookUrl={webhookUrl}
-								webhookUrlRef={webhookUrlRef}
-								secretRef={secretRef}
-							/>
-						) : null}
-					</div>
-
-					{showMyJenkinsAdmin || showIAmTheJenkinsAdmin ? (
-						<Button type="button" appearance="primary">
-							Next
-						</Button>
-					) : null}
-
-					<div className={cx(jenkinsSetUpCopyHiddenContent)}>
-						<WebhookGuideContent divRef={webhookGuideRef} siteName={siteName} webhookUrl={webhookUrl} />
-						<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
-						<div ref={secretRef}>{secret}</div>
-						<div ref={webhookUrlRef}>{webhookUrl}</div>
-					</div>
+			{isFetchingData ? (
+				<div className={cx(loadingContainer)}>
+					<Spinner size='large' />
 				</div>
-			</div>
+			) : (
+				<>
+					<p className={cx(jenkinsSetupServerName)}>Server name: {serverName}</p>
+					<div className={cx(serverNameFormOuterContainer)}>
+						<div className={cx(connectionFlowInnerContainer)}>
+							<div className={cx(jenkinsSetupContainer)}>
+								<h3 className={cx(jenkinsSetupHeader)}>Set up Jenkins</h3>
+								<p className={cx(jenkinsSetupContent)}>
+									A Jenkins admin needs to set up your server to complete this connection.
+								</p>
+								<p className={cx(jenkinsSetupContent)}>Who's logging into Jenkins?</p>
+
+								<ButtonGroup>
+									<Button
+										onClick={(e) => handleMyJenkinsAdminClick(e)}
+										appearance={showMyJenkinsAdmin ? 'primary' : 'default'}
+										testId="my-jenkins-admin"
+									>
+										My Jenkins admin
+									</Button>
+									<Button
+										onClick={(e) => handleIAmTheJenkinsAdminClick(e)}
+										appearance={showIAmTheJenkinsAdmin ? 'primary' : 'default'}
+										testId="i-am-the-jenkins-admin"
+									>
+										I am (I'm a Jenkins admin)
+									</Button>
+								</ButtonGroup>
+
+								{showMyJenkinsAdmin ? (
+									<MyJenkinsAdmin
+										handleCopyToClipboard={handleCopyToClipboard}
+										webhookGuideRef={webhookGuideRef}
+										secretTokenRef={secretTokenRef}
+									/>
+								) : null}
+
+								{showIAmTheJenkinsAdmin ? (
+									<IAmTheJenkinsAdmin
+										handleCopyToClipboard={handleCopyToClipboard}
+										webhookUrlRef={webhookUrlRef}
+										secretRef={secretRef}
+									/>
+								) : null}
+							</div>
+
+							{showMyJenkinsAdmin || showIAmTheJenkinsAdmin ? (
+								<Button type="button" appearance="primary">
+									Next
+								</Button>
+							) : null}
+
+							<div className={cx(jenkinsSetUpCopyHiddenContent)}>
+								<WebhookGuideContent
+									divRef={webhookGuideRef}
+									siteName={siteName}
+									webhookUrl={webhookUrl}
+								/>
+								<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
+								<div ref={secretRef}>{secret}</div>
+								<div ref={webhookUrlRef}>{webhookUrl}</div>
+							</div>
+						</div>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
