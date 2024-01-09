@@ -56,7 +56,7 @@ const givenStorageQueryReturnsServeMaxPipelines = jest.fn().mockImplementation((
 	};
 });
 
-describe.skip('Update Jenkins Plugin Config State Suite', () => {
+describe('Update Jenkins Plugin Config State Suite', () => {
 	const mockLogger = {
 		error: jest.fn(),
 	} as unknown as Logger;
@@ -107,7 +107,7 @@ describe.skip('Update Jenkins Plugin Config State Suite', () => {
 	});
 });
 
-describe.skip('Update Jenkins Server Suite', () => {
+describe('Update Jenkins Server Suite', () => {
 	it('Should update Jenkins server state to Forge Storage', async () => {
 		await updateJenkinsServerState('unique-uid', {
 			name: 'PipelineA',

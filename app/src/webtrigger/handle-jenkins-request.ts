@@ -82,13 +82,13 @@ export default async function handleJenkinsRequest(
 	}
 }
 
-// @ts-ignore
-function extractEnvironmentName(data): string {
+function extractEnvironmentName(event: JenkinsEvent): string {
 	const UNKNOWN_ENVIRONMENT = 'unknown environment';
-	if (!data || !data.deployments || !data.deployments[0].environment) {
+	const { payload } = event;
+	if (!payload || !payload.deployments || !payload.deployments[0].environment) {
 		return UNKNOWN_ENVIRONMENT;
 	}
-	return data.deployments[0].environment.displayName || UNKNOWN_ENVIRONMENT;
+	return payload.deployments[0].environment.displayName || UNKNOWN_ENVIRONMENT;
 }
 
 /**
@@ -166,17 +166,11 @@ function isBuildOrDeploymentEvent(type: EventType): boolean {
 }
 
 function convertToPipeline(event: JenkinsEvent): JenkinsPipeline {
-	console.log('event');
-	console.log('event');
-	console.log('event');
-	console.log(event);
-	console.log('event.eventType');
-	console.log(event.eventType);
 	return {
 		name: event.pipelineName!,
 		lastEventType: event.eventType,
 		lastEventStatus: event.status!,
 		lastEventDate: event.lastUpdated!,
-		environmentName: extractEnvironmentName(event.payload)
+		environmentName: extractEnvironmentName(event)
 	};
 }

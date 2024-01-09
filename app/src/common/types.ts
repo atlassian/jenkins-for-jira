@@ -38,5 +38,5 @@ export interface JenkinsPluginConfig {
 	autoBuildEnabled?: boolean,
 	autoBuildRegex?: string,
 	autoDeploymentsEnabled?: boolean,
-	autoDeploymentsRegex?: string,
+	autoDeploymentsRegex?: string
 }

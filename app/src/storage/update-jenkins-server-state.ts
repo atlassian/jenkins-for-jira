@@ -1,4 +1,5 @@
 import { storage } from '@forge/api';
+import { uniq } from 'lodash';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
@@ -22,6 +23,9 @@ const insertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsP
 
 const enforcePipelineLimit = (jenkinsServer: JenkinsServer): void => {
 	if (jenkinsServer.pipelines.length > MAX_JENKINS_PIPELINES) {
+		jenkinsServer.pipelines.sort((a, b) => {
+			return a.lastEventDate.getTime() - b.lastEventDate.getTime();
+		});
 		jenkinsServer.pipelines.shift();
 	}
 };
@@ -43,9 +47,11 @@ const updatePipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsP
 	jenkinsServer.pipelines[existingPipelineIndex] = updatedPipeline;
 };
 
-const getUniqueEnvironmentNames = (existingNames = '', incomingName = ''): string => {
-	const concatenatedEnvironmentNames = [existingNames, incomingName].join(',');
-	return [...new Set(concatenatedEnvironmentNames.split(','))].join(',');
+const getUniqueEnvironmentNames = (existingCSVNames = '', incomingName = ''): string => {
+	const concatenatedEnvironmentNamesCSV = [existingCSVNames, incomingName].join(',');
+	const concatenatedEnvironmentNamesArray = concatenatedEnvironmentNamesCSV.split(',');
+	const uniqueEnvironmentNames = uniq(concatenatedEnvironmentNamesArray);
+	return uniqueEnvironmentNames.join(',');
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {

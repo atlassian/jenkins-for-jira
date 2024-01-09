@@ -5,8 +5,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "run-ui": "cd jenkins-for-jira-ui && yarn start",
-    "forge": "open -a Terminal && forge tunnel",
     "test": "jest",
     "test:coverage": "yarn test --coverage --watchAll=false && open coverage/index.html",
     "lint": "eslint src/**",
