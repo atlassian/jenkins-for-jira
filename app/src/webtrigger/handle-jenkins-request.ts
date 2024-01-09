@@ -82,6 +82,14 @@ export default async function handleJenkinsRequest(
 	}
 }
 
+function extractEnvironmentName(event: JenkinsEvent): string {
+	const { payload } = event;
+
+	return (
+		payload?.deployments?.[0]?.environment?.displayName || 'unknown environment'
+	);
+}
+
 /**
  * Handles an incoming build or deployment event. Updates the JenkinsServer in storage and
  * then forwards the event to Jira.
@@ -101,6 +109,7 @@ async function handleEvent(
 	event.payload.properties = event.payload.properties || {};
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;
+
 	const jiraResponse = await sendEventToJira(event.eventType, cloudId, event.payload);
 	logJiraResponse(jiraResponse, logger);
 	return createWebtriggerResponse(jiraResponse.status, jiraResponse.body);
@@ -160,6 +169,7 @@ function convertToPipeline(event: JenkinsEvent): JenkinsPipeline {
 		name: event.pipelineName!,
 		lastEventType: event.eventType,
 		lastEventStatus: event.status!,
-		lastEventDate: event.lastUpdated!
+		lastEventDate: event.lastUpdated!,
+		environmentName: extractEnvironmentName(event)
 	};
 }

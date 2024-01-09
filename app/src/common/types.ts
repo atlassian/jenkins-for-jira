@@ -26,6 +26,7 @@ export interface JenkinsServer {
 
 export interface JenkinsPipeline {
 	name: string,
+	environmentName?: string,
 	lastEventDate: Date,
 	lastEventStatus: BuildEventStatus | DeploymentEventStatus,
 	lastEventType: EventType
@@ -37,5 +38,5 @@ export interface JenkinsPluginConfig {
 	autoBuildEnabled?: boolean,
 	autoBuildRegex?: string,
 	autoDeploymentsEnabled?: boolean,
-	autoDeploymentsRegex?: string,
+	autoDeploymentsRegex?: string
 }
