@@ -62,6 +62,7 @@ describe('JenkinsSetup Component', () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
 
 		const { getByText, queryByText } = render(<JenkinsSetup />);
+		expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 		expect(getByText('Connect Jenkins to Jira')).toBeInTheDocument();
 		expect(queryByText('Server name:')).toBeNull();
 	});

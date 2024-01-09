@@ -1,26 +1,54 @@
 import { storage } from '@forge/api';
+import { uniq } from 'lodash';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 
-export const updatePipelines = (
-	index: number,
-	jenkinsServer: JenkinsServer,
-	pipelineToUpdate: JenkinsPipeline
-): void => {
-	if (index === -1 && jenkinsServer.pipelines.length < MAX_JENKINS_PIPELINES) {
-		jenkinsServer.pipelines.push(pipelineToUpdate);
-	} else if (index === -1 && jenkinsServer.pipelines.length === 10) {
-		const oldPipelineEvent = jenkinsServer.pipelines.reduce((prev, curr) =>
-			(curr.lastEventDate < prev.lastEventDate ? curr : prev));
+export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	const pipelineExists = jenkinsServer.pipelines.some((pipeline) => pipeline.name === incomingPipeline.name);
 
-		jenkinsServer.pipelines = jenkinsServer.pipelines.map((pipeline) =>
-			(pipeline === oldPipelineEvent ? pipelineToUpdate : pipeline));
+	if (!pipelineExists) {
+		insertPipeline(jenkinsServer, incomingPipeline);
 	} else {
-		jenkinsServer.pipelines[index] = { ...pipelineToUpdate };
+		updatePipeline(jenkinsServer, incomingPipeline);
 	}
+};
+
+const insertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	jenkinsServer.pipelines.unshift(incomingPipeline);
+	enforcePipelineLimit(jenkinsServer);
+};
+
+const enforcePipelineLimit = (jenkinsServer: JenkinsServer): void => {
+	if (jenkinsServer.pipelines.length > MAX_JENKINS_PIPELINES) {
+		jenkinsServer.pipelines.pop();
+	}
+};
+
+const updatePipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
+	const existingPipelineIndex = jenkinsServer.pipelines.findIndex(
+		(pipeline) => pipeline.name === incomingPipeline.name
+	);
+	const existingPipeline = jenkinsServer.pipelines[existingPipelineIndex];
+	const updatedPipeline: JenkinsPipeline = {
+		...existingPipeline,
+		...incomingPipeline
+	};
+	updatedPipeline.environmentName = getUniqueEnvironmentNames(
+		existingPipeline.environmentName,
+		incomingPipeline.environmentName
+	);
+
+	jenkinsServer.pipelines[existingPipelineIndex] = updatedPipeline;
+};
+
+const getUniqueEnvironmentNames = (existingCSVNames = '', incomingName = ''): string => {
+	const concatenatedEnvironmentNamesCSV = [existingCSVNames, incomingName].join(',');
+	const concatenatedEnvironmentNamesArray = concatenatedEnvironmentNamesCSV.split(',');
+	const uniqueEnvironmentNames = uniq(concatenatedEnvironmentNamesArray);
+	return uniqueEnvironmentNames.join(',');
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
@@ -44,11 +72,7 @@ async function updateJenkinsServerState(
 	try {
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
 
-		const index = jenkinsServer.pipelines.findIndex(
-			(pipeline) => pipeline.name === pipelineToUpdate.name
-		);
-
-		updatePipelines(index, jenkinsServer, pipelineToUpdate);
+		updateOrInsertPipeline(jenkinsServer, pipelineToUpdate);
 
 		await storage.set(
 			`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`,
