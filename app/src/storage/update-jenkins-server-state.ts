@@ -23,9 +23,6 @@ const insertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsP
 
 const enforcePipelineLimit = (jenkinsServer: JenkinsServer): void => {
 	if (jenkinsServer.pipelines.length > MAX_JENKINS_PIPELINES) {
-		// jenkinsServer.pipelines.sort((a, b) => {
-		// 	return b.lastEventDate.getTime() - a.lastEventDate.getTime();
-		// });
 		jenkinsServer.pipelines.pop();
 	}
 };
