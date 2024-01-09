@@ -41,6 +41,7 @@ import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
+import { HELP_LINK } from '../../common/constants';
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
@@ -83,7 +84,7 @@ const CopyButton = ({
 				Copy
 			</Button>
 
-			{isCopied ? <CopiedToClipboard /> : null}
+			{isCopied && <CopiedToClipboard />}
 		</div>
 	);
 };
@@ -150,7 +151,7 @@ const IAmTheJenkinsAdmin = ({
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
 	const handleFollowLink = (e: React.MouseEvent): void => {
 		e.preventDefault();
-		router.open('https://app.contentful.com/spaces/zsv3d0ugroxu/entries/4ccCes4jpnMlSVtI4Eqre9?focusedField=body');
+		router.open(HELP_LINK);
 	};
 
 	return (
@@ -212,8 +213,7 @@ const JenkinsSetup = (): JSX.Element => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const url = await fetchSiteName({ withProtocol: false });
-				console.log('IN HERE: ', url);
+				const url = await fetchSiteName();
 				setSiteName(url);
 				getServer();
 				getWebhookUrl(setWebhookUrl, uuid);

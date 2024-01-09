@@ -1,17 +1,8 @@
 import { invoke } from '@forge/bridge';
 
-type FetchSiteNameProps = {
-	withProtocol: boolean
-};
-
-const fetchSiteName = async ({ withProtocol }: FetchSiteNameProps): Promise<string> => {
+const fetchSiteName = async (): Promise<string> => {
 	const context: FetchGlobalPageUrlContext = await invoke('fetchAppData');
 	const { siteUrl } = context;
-
-	if (withProtocol) {
-		return `${siteUrl}`;
-	}
-
 	return siteUrl.replace(/^https?:\/\//, '');
 };
 
