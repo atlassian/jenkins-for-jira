@@ -24,11 +24,11 @@ export const copyToClipboardContainer = css`
 	border-radius: 3px;
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
-	max-width: 160px;
+	max-width: 165px;
 	position: absolute;
 	padding: ${token('space.200')};
 	top: -115%;
-	left: 68%;
+	left: 116%;
 	transform: translate(-50%, -50%);
 	width: 194px;
 	z-index: 2;
