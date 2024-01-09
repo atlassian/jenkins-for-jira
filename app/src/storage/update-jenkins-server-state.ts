@@ -17,16 +17,16 @@ export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPip
 };
 
 const insertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
-	jenkinsServer.pipelines.push(incomingPipeline);
+	jenkinsServer.pipelines.unshift(incomingPipeline);
 	enforcePipelineLimit(jenkinsServer);
 };
 
 const enforcePipelineLimit = (jenkinsServer: JenkinsServer): void => {
 	if (jenkinsServer.pipelines.length > MAX_JENKINS_PIPELINES) {
-		jenkinsServer.pipelines.sort((a, b) => {
-			return a.lastEventDate.getTime() - b.lastEventDate.getTime();
-		});
-		jenkinsServer.pipelines.shift();
+		// jenkinsServer.pipelines.sort((a, b) => {
+		// 	return b.lastEventDate.getTime() - a.lastEventDate.getTime();
+		// });
+		jenkinsServer.pipelines.pop();
 	}
 };
 
