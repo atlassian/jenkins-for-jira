@@ -1,5 +1,11 @@
 import { invoke } from '@forge/bridge';
 
+const fetchSiteName = async (): Promise<string> => {
+	const context: FetchGlobalPageUrlContext = await invoke('fetchAppData');
+	const { siteUrl } = context;
+	return siteUrl.replace(/^https?:\/\//, '');
+};
+
 type FetchGlobalPageUrlContext = {
 	siteUrl: string;
 	appId: string;
@@ -18,5 +24,6 @@ const fetchGlobalPageUrl = async (): Promise<string> => {
 };
 
 export {
-	fetchGlobalPageUrl
+	fetchGlobalPageUrl,
+	fetchSiteName
 };

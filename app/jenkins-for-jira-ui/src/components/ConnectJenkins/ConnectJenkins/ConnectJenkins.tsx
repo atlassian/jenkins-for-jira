@@ -17,7 +17,7 @@ import {
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
-interface ParamTypes {
+export interface ParamTypes {
 	id: string;
 }
 
