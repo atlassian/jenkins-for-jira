@@ -83,12 +83,11 @@ export default async function handleJenkinsRequest(
 }
 
 function extractEnvironmentName(event: JenkinsEvent): string {
-	const UNKNOWN_ENVIRONMENT = 'unknown environment';
 	const { payload } = event;
-	if (!payload || !payload.deployments || !payload.deployments[0].environment) {
-		return UNKNOWN_ENVIRONMENT;
-	}
-	return payload.deployments[0].environment.displayName || UNKNOWN_ENVIRONMENT;
+
+	return (
+		payload?.deployments?.[0]?.environment?.displayName || 'unknown environment'
+	);
 }
 
 /**
