@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { cx } from '@emotion/css';
 import LoadingButton from '@atlaskit/button/loading-button';
 import Button from '@atlaskit/button/standard-button';
@@ -9,9 +10,10 @@ import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
 import { useHistory } from 'react-router';
 import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
-import { connectionFlowContainer, connectionFlowInnerContainer 	} from '../../GlobalStyles.styles';
+import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { createJenkinsServer } from '../../api/createJenkinsServer';
+import { updateJenkinsServer } from '../../api/updateJenkinsServer';
 import { generateNewSecret } from '../../api/generateNewSecret';
 import {
 	loadingIcon,
@@ -21,6 +23,7 @@ import {
 import { serverNameFormOuterContainer } from './ServerNameForm.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
+import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 
 const jenkinsServerNameExists = (servers: JenkinsServer[], serverName: string): boolean => {
 	return servers.some((server: JenkinsServer) => server.name === serverName);
@@ -80,6 +83,8 @@ const ServerNameForm = (): JSX.Element => {
 	const [serverName, setServerName] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+	const params = useParams<ParamTypes>();
+	const editingServerUuid = params ? params.id : undefined;
 
 	const setServerNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newServerName = event.target.value;
@@ -91,34 +96,57 @@ const ServerNameForm = (): JSX.Element => {
 		setServerName(newServerName);
 	};
 
-	const handleSubmitCreateServer = async () => {
-		if (isValidServerName(serverName, setErrorMessage)) {
-			setIsLoading(true);
-			const uuid = uuidv4();
+	const handleFormSubmit = async () => {
+		if (!isValidServerName(serverName, setErrorMessage)) {
+			return;
+		}
 
-			const servers = await getAllJenkinsServers() || [];
-			const serverExists = jenkinsServerNameExists(servers, serverName);
+		setIsLoading(true);
+		const servers = await getAllJenkinsServers() || [];
 
-			if (serverExists) {
-				setErrorMessage('This name is already in use. Choose a unique name.');
-				setIsLoading(false);
+		if (jenkinsServerNameExists(servers, serverName)) {
+			setErrorMessage('This name is already in use. Choose a unique name.');
+		} else if (editingServerUuid) {
+			await updateServer(servers);
+		} else {
+			await createServer();
+		}
+		setIsLoading(false);
+	};
+
+	const updateServer = async (jenkinsServers: JenkinsServer[]) => {
+		try {
+			const jenkinsServerToUpdate = jenkinsServers.find(
+				(server) => server.uuid === editingServerUuid
+			);
+			if (!jenkinsServerToUpdate) {
 				return;
 			}
+			await updateJenkinsServer({
+				...jenkinsServerToUpdate,
+				name: serverName
+			});
+			setIsLoading(false);
+			history.push(`/`);
+		} catch (e) {
+			console.error('Error: ', e);
+		}
+	};
 
-			try {
-				await createJenkinsServer({
-					name: serverName,
-					uuid,
-					secret: await generateNewSecret(),
-					pipelines: []
-				});
+	const createServer = async () => {
+		const uuid = uuidv4();
 
-				setIsLoading(false);
-				history.push(`/setup/${uuid}`);
-			} catch (e) {
-				console.error('Error: ', e);
-				setIsLoading(false);
-			}
+		try {
+			await createJenkinsServer({
+				name: serverName,
+				uuid,
+				secret: await generateNewSecret(),
+				pipelines: []
+			});
+			setIsLoading(false);
+			history.push(`/setup/${uuid}`);
+		} catch (e) {
+			console.error('Error: ', e);
 		}
 	};
 
@@ -131,13 +159,15 @@ const ServerNameForm = (): JSX.Element => {
 			<div className={cx(serverNameFormOuterContainer)}>
 				<div className={cx(connectionFlowInnerContainer)}>
 
-					<h3>Get started</h3>
-					<p>Give your Jenkins server a name. We'll use this as a display name in
-					Jira to keep track of your connection.</p>
+					{editingServerUuid ? <h3>Update Server name.</h3> : <>
+						<h3>Get started</h3>
+						<p>Give your Jenkins server a name. We'll use this as a display name in
+						Jira to keep track of your connection.</p>
+					</>}
 
-					<Form onSubmit={handleSubmitCreateServer}>
+					<Form onSubmit={handleFormSubmit}>
 						{({ formProps }: any) => (
-							<form {...formProps} name='create-server-form' data-testid="createServerForm">
+							<form {...formProps} name='create-server-form' data-testid="serverNameForm">
 								<ServerNameFormField
 									serverName={serverName}
 									setServerName={setServerNameHandler}
@@ -154,7 +184,7 @@ const ServerNameForm = (): JSX.Element => {
 											isDisabled={submitButtonIsDisabled}
 											testId='submit-button'
 										>
-										Next
+											{editingServerUuid ? 'Save' : 'Next'}
 										</Button>
 									}
 								</FormFooter>
