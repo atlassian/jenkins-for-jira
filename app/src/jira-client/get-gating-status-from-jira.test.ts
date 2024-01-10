@@ -2,7 +2,6 @@ import api from '@forge/api';
 import { Errors } from '../common/error-messages';
 import { getGatingStatusFromJira } from './get-gating-status-from-jira';
 import { InvalidPayloadError } from '../common/error';
-import {deleteDeployments} from "./delete-deployments";
 
 jest.mock('@forge/api', () => ({
 	...jest.requireActual('@forge/api'),
