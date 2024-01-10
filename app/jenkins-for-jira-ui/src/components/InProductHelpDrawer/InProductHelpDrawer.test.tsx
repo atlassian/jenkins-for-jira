@@ -5,7 +5,7 @@ import { InProductHelpAction, InProductHelpActionType } from './InProductHelpAct
 describe('InProductHelpAction', () => {
 	test('renders InProductHelpAction with label', () => {
 		const { getByText } = render(
-			<InProductHelpAction label="build" type={InProductHelpActionType.HelpButton} appearance="primary" />
+			<InProductHelpAction label="build" type={InProductHelpActionType.HelpButton} />
 		);
 
 		expect(getByText('build')).toBeInTheDocument();

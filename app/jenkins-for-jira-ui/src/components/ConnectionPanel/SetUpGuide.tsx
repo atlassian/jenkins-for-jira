@@ -1,6 +1,5 @@
 import React from 'react';
 import { cx } from '@emotion/css';
-import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import Button from '@atlaskit/button/standard-button';
 import {
 	setUpGuideOrderListItemHeader,
@@ -14,8 +13,9 @@ import { JenkinsPluginConfig } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import {
-	infoPanel, nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
+	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
+import { InfoPanel } from '../InfoPanel/InfoPanel';
 
 type UpdateAvailableProps = {
 	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
@@ -35,7 +35,8 @@ export const UpdateAvailable = ({
 			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
 				a Jenkins admin must log into this server and update the plugin.</p>
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
-				<InProductHelpAction label="Learn more" type={InProductHelpActionType.HelpButton} appearance="primary" />
+				{/* Button */}
+				<InProductHelpAction label="Learn more" type={InProductHelpActionType.HelpButton} />
 
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
@@ -57,7 +58,6 @@ const SetUpGuidePipelineStepInstruction = ({
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
-				appearance="link"
 			/>&nbsp;step to the end of {eventType} stages.
 		</p>
 	);
@@ -106,7 +106,6 @@ export const SetUpGuideInstructions = ({
 					<InProductHelpAction
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
-						appearance="link"
 					/>
 				</p>
 			</>
@@ -114,7 +113,7 @@ export const SetUpGuideInstructions = ({
 	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
 		contentToRender =
 			<p>
-				<InProductHelpAction label="No setup required" type={InProductHelpActionType.HelpLink} appearance="link" />
+				<InProductHelpAction label="No setup required" type={InProductHelpActionType.HelpLink} />
 			</p>;
 	} else {
 		contentToRender = (
@@ -150,7 +149,7 @@ const SetUpGuide = ({
 								Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction label="JIRA-1234" type={InProductHelpActionType.HelpLink} appearance="link" />)
+						(e.g. <InProductHelpAction label="JIRA-1234" type={InProductHelpActionType.HelpLink} />)
 						into their branch names and commit message.
 					</p>
 				</li>
@@ -171,13 +170,11 @@ const SetUpGuide = ({
 				</li>
 			</ol>
 
-			<div className={cx(infoPanel)}>
-				<PeopleGroup label="people-group" />
-				<p>
-					Not sure who should use this guide? It depends how your teams use Jenkins.&nbsp;
-					<InProductHelpAction label="Here’s what you need to know." type={InProductHelpActionType.HelpLink} appearance="link" />
-				</p>
-			</div>
+			<InfoPanel
+				content="Not sure who should use this guide? It depends how your teams use Jenkins."
+				iphLabel="Here’s what you need to know."
+				iphType={InProductHelpActionType.HelpLink}
+			/>
 		</>
 	);
 };
