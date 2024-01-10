@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { cx } from '@emotion/css';
-import Button, { Appearance } from '@atlaskit/button';
-import { inProductHelpActionLink } from './InProductHelp.styles';
+import { inProductHelpActionButton, inProductHelpActionLink } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
 
 export enum InProductHelpActionType {
@@ -11,41 +10,45 @@ export enum InProductHelpActionType {
 
 type InProductHelpActionProps = {
 	label: string,
-	type: InProductHelpActionType,
-	appearance: Appearance,
-	className?: string
+	type: InProductHelpActionType
 };
 
 export const InProductHelpAction = ({
 	label,
-	type,
-	appearance,
-	className
+	type
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const inProductHelpTypeClassName =
-		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : '';
+		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : inProductHelpActionButton;
+	const actionRole = InProductHelpActionType.HelpLink ? 'link' : 'button';
 
 	const openDrawer = () => {
 		setIsDrawerOpen(true);
 	};
 
 	return (
-		<span className={cx(className)}>
-			<Button
+		<>
+			<span
+				role={actionRole}
 				className={cx(inProductHelpTypeClassName)}
 				onClick={(e) => {
 					e.preventDefault();
 					openDrawer();
 				}}
-				appearance={appearance}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						openDrawer();
+					}
+				}}
+				tabIndex={0}
 			>
 				{label}
-			</Button>
+			</span>
 			<InProductHelpDrawer
 				isDrawerOpen={isDrawerOpen}
 				setIsDrawerOpen={setIsDrawerOpen}
 			/>
-		</span>
+		</>
 	);
 };

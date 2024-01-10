@@ -12,7 +12,6 @@ import InfoIcon from '@atlaskit/icon/glyph/info';
 import CopyIcon from '@atlaskit/icon/glyph/copy';
 import OpenIcon from '@atlaskit/icon/glyph/open';
 import Tooltip from '@atlaskit/tooltip';
-import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import { useHistory, useParams } from 'react-router';
 import Spinner from '@atlaskit/spinner';
 import {
@@ -29,21 +28,20 @@ import {
 	jenkinsSetupHeader,
 	jenkinsSetupListItem,
 	jenkinsSetupOrderedList,
-	jenkinsSetUpInfoPanel,
-	jenkinsSetUpInfoPanelContentContainer,
 	jenkinsSetUpCopyHiddenContent,
 	loadingContainer
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
-import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
 import { HELP_LINK } from '../../common/constants';
+import { InfoPanel } from '../InfoPanel/InfoPanel';
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
@@ -122,21 +120,11 @@ const MyJenkinsAdmin = ({
 				</li>
 			</ol>
 
-			{/* TODO - convert info panel to a component */}
-			<div className={cx(jenkinsSetUpInfoPanel)}>
-				<PeopleGroup label="people-group" />
-				<div className={cx(jenkinsSetUpInfoPanelContentContainer)}>
-					<p>
-						Your Jenkins admin may need your input as they set up this server.&nbsp;
-						<InProductHelpAction
-							label="How to set up Jenkins servers to suit your team’s needs"
-							type={InProductHelpActionType.HelpLink}
-							appearance="link"
-							className="setUpInfoPanelHelpLink"
-						/>
-					</p>
-				</div>
-			</div>
+			<InfoPanel
+				content="Your Jenkins admin may need your input as they set up this server."
+				iphLabel="How to set up Jenkins servers to suit your team’s needs"
+				iphType={InProductHelpActionType.HelpLink}
+			/>
 		</div>
 	);
 };

@@ -20,7 +20,7 @@ import {
 	StyledTextfieldErrorContainer,
 	textfieldContainer
 } from '../JenkinsConfigurationForm/JenkinsConfigurationForm.styles';
-import { serverNameFormOuterContainer } from './ServerNameForm.styles';
+import { serverNameForm, serverNameFormButton, serverNameFormOuterContainer } from './ServerNameForm.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -103,7 +103,6 @@ const ServerNameForm = (): JSX.Element => {
 
 		setIsLoading(true);
 		const servers = await getAllJenkinsServers() || [];
-
 		if (jenkinsServerNameExists(servers, serverName)) {
 			setErrorMessage('This name is already in use. Choose a unique name.');
 		} else if (editingServerUuid) {
@@ -159,7 +158,7 @@ const ServerNameForm = (): JSX.Element => {
 			<div className={cx(serverNameFormOuterContainer)}>
 				<div className={cx(connectionFlowInnerContainer)}>
 
-					{editingServerUuid ? <h3>Update Server name.</h3> : <>
+					{editingServerUuid ? <h3>Update server name</h3> : <>
 						<h3>Get started</h3>
 						<p>Give your Jenkins server a name. We'll use this as a display name in
 						Jira to keep track of your connection.</p>
@@ -167,7 +166,12 @@ const ServerNameForm = (): JSX.Element => {
 
 					<Form onSubmit={handleFormSubmit}>
 						{({ formProps }: any) => (
-							<form {...formProps} name='create-server-form' data-testid="serverNameForm">
+							<form
+								{...formProps}
+								name='create-server-form'
+								data-testid="serverNameForm"
+								className={cx(serverNameForm)}
+							>
 								<ServerNameFormField
 									serverName={serverName}
 									setServerName={setServerNameHandler}
@@ -183,6 +187,7 @@ const ServerNameForm = (): JSX.Element => {
 											appearance='primary'
 											isDisabled={submitButtonIsDisabled}
 											testId='submit-button'
+											className={cx(serverNameFormButton)}
 										>
 											{editingServerUuid ? 'Save' : 'Next'}
 										</Button>
