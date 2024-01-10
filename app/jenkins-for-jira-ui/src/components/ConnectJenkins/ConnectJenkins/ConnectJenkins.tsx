@@ -19,6 +19,7 @@ import { AnalyticsClient } from '../../../common/analytics/analytics-client';
 
 export interface ParamTypes {
 	id: string;
+	admin: string;
 }
 
 const analyticsClient = new AnalyticsClient();

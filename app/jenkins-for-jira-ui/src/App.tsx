@@ -22,6 +22,7 @@ import { FeatureFlags } from './hooks/useFeatureFlag';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
 import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
+import { ConnectionComplete } from './components/ConnectionComplete/ConnectionComplete';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -138,6 +139,9 @@ const App: React.FC = () => {
 					</Route>
 					<Route path="/setup/:id">
 						<JenkinsSetup />
+					</Route>
+					<Route path="/connection-complete/:id/:admin">
+						<ConnectionComplete />
 					</Route>
 				</Switch>
 			</Router>

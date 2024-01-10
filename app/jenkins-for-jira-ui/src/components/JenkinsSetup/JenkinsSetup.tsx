@@ -1,6 +1,9 @@
 import React, {
 	RefObject,
-	useCallback, useEffect, useRef, useState
+	useCallback,
+	useEffect,
+	useRef,
+	useState
 } from 'react';
 import { cx } from '@emotion/css';
 import { router } from '@forge/bridge';
@@ -10,7 +13,7 @@ import CopyIcon from '@atlaskit/icon/glyph/copy';
 import OpenIcon from '@atlaskit/icon/glyph/open';
 import Tooltip from '@atlaskit/tooltip';
 import PeopleGroup from '@atlaskit/icon/glyph/people-group';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Spinner from '@atlaskit/spinner';
 import {
 	connectionFlowContainer,
@@ -26,7 +29,6 @@ import {
 	jenkinsSetupHeader,
 	jenkinsSetupListItem,
 	jenkinsSetupOrderedList,
-	jenkinsSetupServerName,
 	jenkinsSetUpInfoPanel,
 	jenkinsSetUpInfoPanelContentContainer,
 	jenkinsSetUpCopyHiddenContent,
@@ -37,7 +39,7 @@ import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
-import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
+import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
@@ -188,6 +190,7 @@ const IAmTheJenkinsAdmin = ({
 };
 
 const JenkinsSetup = (): JSX.Element => {
+	const history = useHistory();
 	const webhookGuideRef = useRef<HTMLDivElement>(null);
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
@@ -260,6 +263,19 @@ const JenkinsSetup = (): JSX.Element => {
 		setShowMyJenkinsAdmin(false);
 	};
 
+	const handleNavigateToConnectionCompleteScreen = (e: React.MouseEvent) => {
+		e.preventDefault();
+
+		let pathParam = '';
+		if (showMyJenkinsAdmin) {
+			pathParam = 'requires-jenkins-admin';
+		} else {
+			pathParam = 'is-admin';
+		}
+
+		history.push(`/connection-complete/${uuid}/${pathParam}`);
+	};
+
 	const isFetchingData = !serverName || !webhookUrl || !secret;
 
 	return (
@@ -272,7 +288,7 @@ const JenkinsSetup = (): JSX.Element => {
 				</div>
 			) : (
 				<>
-					<p className={cx(jenkinsSetupServerName)}>Server name: {serverName}</p>
+					<ConnectionFlowServerNameSubHeader serverName={serverName} />
 					<div className={cx(serverNameFormOuterContainer)}>
 						<div className={cx(connectionFlowInnerContainer)}>
 							<div className={cx(jenkinsSetupContainer)}>
@@ -317,7 +333,11 @@ const JenkinsSetup = (): JSX.Element => {
 							</div>
 
 							{showMyJenkinsAdmin || showIAmTheJenkinsAdmin ? (
-								<Button type="button" appearance="primary">
+								<Button
+									type="button"
+									appearance="primary"
+									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
+								>
 									Next
 								</Button>
 							) : null}

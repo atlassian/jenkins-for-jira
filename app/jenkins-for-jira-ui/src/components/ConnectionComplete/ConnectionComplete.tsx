@@ -1,0 +1,86 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { cx } from '@emotion/css';
+import Spinner from '@atlaskit/spinner';
+import Button from '@atlaskit/button/standard-button';
+import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
+import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
+import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
+import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
+import { connectionCompleteConfirmation, connectionCompleteContent } from './ConnectionComplete.styles';
+
+const ConnectionComplete = () => {
+	const history = useHistory();
+	const { admin: isJenkinsAdmin, id: uuid } = useParams<ParamTypes>();
+	const [serverName, setServerName] = useState('');
+
+	const getServer = useCallback(async () => {
+		try {
+			const { name } = await getJenkinsServerWithSecret(uuid);
+			setServerName(name);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
+	}, [uuid]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				getServer();
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+	}, [uuid, getServer]);
+
+	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
+		e.preventDefault();
+		history.push('/');
+	};
+
+	return (
+		<div className={cx(connectionFlowContainer)}>
+			<ConnectionFlowHeader />
+
+			{!serverName ? (
+				<div className={cx(loadingContainer)} data-testid="loading-spinner">
+					<Spinner size='large' />
+				</div>
+			) : (
+				<>
+					<ConnectionFlowServerNameSubHeader serverName={serverName} />
+					<div className={cx(serverNameFormOuterContainer)}>
+						<div className={cx(connectionFlowInnerContainer)}>
+							<h4 className={cx(connectionCompleteConfirmation)}>Connection complete</h4>
+
+							{isJenkinsAdmin === 'is-admin'
+								? <p className={cx(connectionCompleteContent)}>Your Jenkins server is now connected.</p>
+								: <p className={cx(connectionCompleteContent)}>
+										Your Jenkins admin will complete this connection and
+										let you know when it’s ready.
+								</p>
+							}
+
+							<p className={cx(connectionCompleteContent)}>
+								To use this connection, choose what data this server sends to Jira in server management.
+							</p>
+
+							<Button
+								appearance="primary"
+								onClick={(e) => handleNavigateToConnectionServerManagementScreen(e)}
+							>
+								Go to server management
+							</Button>
+						</div>
+					</div>
+				</>
+			)}
+		</div>
+	);
+};
+
+export { ConnectionComplete };
