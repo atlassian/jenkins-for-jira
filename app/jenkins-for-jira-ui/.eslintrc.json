@@ -33,6 +33,7 @@
 	],
 	"rules": {
 		"no-unused-vars": "off",
+		"no-focused-tests": "off",
 		"@typescript-eslint/no-unused-vars": ["error"],
 		"indent": "off",
 		"@typescript-eslint/indent": ["error", "tab", {
