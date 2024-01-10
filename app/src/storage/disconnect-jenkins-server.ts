@@ -7,8 +7,8 @@ export const disconnectJenkinsServer = async (uuid: string): Promise<boolean> =>
 	const logger = Logger.getInstance('disconnectJenkinsServer');
 
 	try {
-		const deleteJenkinsServerPromise = await storage.delete(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`);
-		const deleteSecretPromise = await storage.deleteSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`);
+		const deleteJenkinsServerPromise = storage.delete(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`);
+		const deleteSecretPromise = storage.deleteSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`);
 		await Promise.all([deleteJenkinsServerPromise, deleteSecretPromise]);
 
 		logger.info('Jenkins server successfully disconnected!', { uuid });

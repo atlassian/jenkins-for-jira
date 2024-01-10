@@ -1,3 +1,4 @@
+import api, { route } from '@forge/api';
 import { EventType } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
 import { JiraResponse } from './types';
@@ -13,9 +14,9 @@ async function invokeApi(
 ): Promise<JiraResponse> {
 	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
 	// eslint-disable-next-line no-underscore-dangle
-	const apiResponse = await global.api
+	const apiResponse = await api
 		.asApp()
-		.__requestAtlassian(url, {
+		.requestJira(route`${url}`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
