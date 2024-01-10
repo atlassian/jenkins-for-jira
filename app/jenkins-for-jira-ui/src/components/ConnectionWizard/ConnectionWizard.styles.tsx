@@ -4,6 +4,10 @@ import { token } from '@atlaskit/tokens';
 export const connectionWizardContentContainer = css`
 	margin-left: ${token('space.negative.400')};
 	width: 100%;
+
+	#connection-wizard-instruction {
+		margin-top: ${token('space.400')};
+	}
 `;
 
 export const connectionWizardHeader = css`
@@ -25,19 +29,12 @@ export const connectionWizardInfoPanel = css`
 	width: 360px;
 `;
 
-export const connectionWizardInfoPaneIphLink = css`
+export const connectionWizardIphContainerClassName = css`
 	max-width: 330px;
 `;
 
 export const connectionWizardInfoPanelContent = css`
 	display: flex;
-`;
-
-export const connectionWizardInProductHelpLink = css`
-	line-height: 20px;
-	margin-top: ${token('space.negative.050')};
-	text-align: left;
-	max-width: 330px;
 `;
 
 export const connectionWizardButton = css`

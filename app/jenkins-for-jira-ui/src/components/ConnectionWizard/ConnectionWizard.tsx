@@ -1,26 +1,22 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
-import PeopleGroup from '@atlaskit/icon/glyph/people-group';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { useHistory } from 'react-router';
 import {
-	connectionWizardInfoPanel,
 	connectionWizardNestedOrderedListItem,
 	connectionWizardOrderedListItem,
 	connectionWizardContentContainer,
-	connectionWizardInProductHelpLink,
-	connectionWizardButton,
-	connectionWizardInfoPaneIphLink
+	connectionWizardButton
 } from './ConnectionWizard.styles';
 import {
 	connectionFlowContainer,
-	infoPanel,
 	orderedList,
 	orderedListItem
 } from '../../GlobalStyles.styles';
-import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { ConnectionFlowHeader } from './ConnectionFlowHeader';
+import { InfoPanel } from '../InfoPanel/InfoPanel';
 
 const ConnectionWizard = (): JSX.Element => {
 	const history = useHistory();
@@ -35,7 +31,7 @@ const ConnectionWizard = (): JSX.Element => {
 			<ConnectionFlowHeader />
 
 			<div className={cx(connectionWizardContentContainer)}>
-				<p>To complete this connection you'll need:</p>
+				<p id="connection-wizard-instruction">To complete this connection you'll need:</p>
 
 				<ol className={cx(orderedList)}>
 					<li className={cx(orderedListItem, connectionWizardOrderedListItem)}>An active Jenkins server</li>
@@ -54,18 +50,12 @@ const ConnectionWizard = (): JSX.Element => {
 				</ol>
 			</div>
 
-			<div className={cx(infoPanel, connectionWizardInfoPanel)}>
-				<PeopleGroup label="people-group" />
-				<p className={cx(connectionWizardInfoPaneIphLink)}>
-					If this is your first time connecting a Jenkins server, take a few minutes to talk to your team.
-					<InProductHelpAction
-						label="What to discuss with your team before connecting Jenkins"
-						type={InProductHelpActionType.HelpLink}
-						appearance="link"
-						className={connectionWizardInProductHelpLink}
-					/>
-				</p>
-			</div>
+			<InfoPanel
+				content="If this is your first time connecting a Jenkins server, take a few minutes to talk to your team."
+				iphContainerWidth="340px"
+				iphLabel="What to discuss with your team before connecting Jenkins"
+				iphType={InProductHelpActionType.HelpLink}
+			/>
 
 			<Button
 				appearance="primary"

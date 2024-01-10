@@ -50,21 +50,6 @@ export const nestedOrderedListItem = css`
 	margin-bottom: ${token('space.400')};
 `;
 
-export const infoPanel = css`
-	background-color: #F7F8F9;
-	display: flex;
-	margin-left: ${token('space.100')};
-	padding: ${token('space.250')};
-
-	[role=img] {
-		margin-right: ${token('space.200')};
-	}
-
-	p {
-		margin-top: ${token('space.0')};
-	}
-`;
-
 export const connectionWizardInfoPanelInstruction = css`
 	margin-bottom: ${token('space.400')};
 `;
