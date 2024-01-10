@@ -84,7 +84,7 @@ const CopyButton = ({
 				Copy
 			</Button>
 
-			{isCopied && <CopiedToClipboard />}
+			{isCopied && <CopiedToClipboard leftPositionPercent="115%" />}
 		</div>
 	);
 };

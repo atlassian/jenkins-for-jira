@@ -11,7 +11,7 @@ export const jenkinsSetupContainer = css`
 
 export const jenkinsSetupServerName = css`
 	color: ${token('color.text.subtle')};
-	margin-bottom: ${token('space.300')};
+	margin-bottom: ${token('space.0')};
 `;
 
 export const jenkinsSetupHeader = css`

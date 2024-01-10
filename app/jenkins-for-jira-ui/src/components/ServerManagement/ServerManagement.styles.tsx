@@ -28,7 +28,6 @@ export const copyToClipboardContainer = css`
 	position: absolute;
 	padding: ${token('space.200')};
 	top: -115%;
-	left: 116%;
 	transform: translate(-50%, -50%);
 	width: 194px;
 	z-index: 2;
