@@ -12,6 +12,16 @@ export const setName = async (event: React.ChangeEvent<HTMLInputElement>, setSer
 	setServerName(event.target.value);
 };
 
+export const sanitizeInput = (input: string): string => {
+	// Replace <, >, &, ", ' with their HTML entities
+	return input
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/&/g, '&amp;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+};
+
 // TODO kill off isFormValid when rollout is complete
 export const isValidServerName = (
 	value: string,
@@ -19,12 +29,9 @@ export const isValidServerName = (
 		(value: SetStateAction<string>): void; (value: SetStateAction<string>): void; (arg0: string): void;
 	}
 ): boolean => {
-	if (!value) {
-		setErrorMessage('This field is required.');
-		return false;
-	}
+	const sanitizedValue = sanitizeInput(value);
 
-	if (value.length > 100) {
+	if (sanitizedValue.length > 100) {
 		setErrorMessage('Server name exceeds 100 characters. Choose a shorter server name and try again.');
 		return false;
 	}

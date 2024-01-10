@@ -18,7 +18,7 @@ import {
 	StyledTextfieldErrorContainer,
 	textfieldContainer
 } from '../JenkinsConfigurationForm/JenkinsConfigurationForm.styles';
-import { serverNameFormOuterContainer } from './ServerNameForm.styles';
+import { serverNameForm, serverNameFormButton, serverNameFormOuterContainer } from './ServerNameForm.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 
@@ -95,7 +95,6 @@ const ServerNameForm = (): JSX.Element => {
 		if (isValidServerName(serverName, setErrorMessage)) {
 			setIsLoading(true);
 			const uuid = uuidv4();
-
 			const servers = await getAllJenkinsServers() || [];
 			const serverExists = jenkinsServerNameExists(servers, serverName);
 
@@ -137,7 +136,12 @@ const ServerNameForm = (): JSX.Element => {
 
 					<Form onSubmit={handleSubmitCreateServer}>
 						{({ formProps }: any) => (
-							<form {...formProps} name='create-server-form' data-testid="createServerForm">
+							<form
+								{...formProps}
+								name='create-server-form'
+								data-testid="createServerForm"
+								className={cx(serverNameForm)}
+							>
 								<ServerNameFormField
 									serverName={serverName}
 									setServerName={setServerNameHandler}
@@ -153,6 +157,7 @@ const ServerNameForm = (): JSX.Element => {
 											appearance='primary'
 											isDisabled={submitButtonIsDisabled}
 											testId='submit-button'
+											className={cx(serverNameFormButton)}
 										>
 										Next
 										</Button>
