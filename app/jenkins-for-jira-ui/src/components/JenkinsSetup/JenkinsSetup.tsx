@@ -129,21 +129,6 @@ const MyJenkinsAdmin = ({
 	);
 };
 
-// <div className={cx(jenkinsSetUpInfoPanel)}>
-// 	<PeopleGroup label="people-group" />
-// 	<div className={cx(jenkinsSetUpInfoPanelContentContainer)}>
-// 		<p>
-// 			Your Jenkins admin may need your input as they set up this server.&nbsp;
-// 			<InProductHelpAction
-// 				label="How to set up Jenkins servers to suit your team’s needs"
-// 				type={InProductHelpActionType.HelpLink}
-// 				appearance="link"
-// 				className="setUpInfoPanelHelpLink"
-// 			/>
-// 		</p>
-// 	</div>
-// </div>
-
 type IAmTheJenkinsAdminProps = {
 	webhookUrlRef: RefObject<HTMLDivElement>,
 	secretRef: RefObject<HTMLDivElement>
