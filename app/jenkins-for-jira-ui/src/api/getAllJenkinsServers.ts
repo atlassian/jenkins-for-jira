@@ -56,7 +56,7 @@ const getAllJenkinsServers = async (): Promise<JenkinsServer[]> => {
 	try {
 		const jenkinsServers = await invoke('getAllJenkinsServers') as JenkinsServer[];
 
-		if (jenkinsServers?.length) {
+		if (jenkinsServers.length) {
 			sendJenkinsServersAnalytics(jenkinsServers);
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.TrackEvent,
