@@ -127,7 +127,6 @@ describe('JenkinsSetup Component', () => {
 	});
 
 	it('copies content to clipboard when "Copy" button is clicked', async () => {
-
 		(fetchGlobalPageUrlModule.fetchSiteName as jest.Mock).mockResolvedValueOnce('https://mocked-site-name.com');
 
 		(getJenkinsServerWithSecretModule.getJenkinsServerWithSecret as jest.Mock).mockResolvedValueOnce({

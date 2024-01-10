@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	render, screen, fireEvent, act
+	render, screen, act
 } from '@testing-library/react';
 import { useParams } from 'react-router';
 import { ConnectionComplete } from './ConnectionComplete';
-import * as api from '../../api/getJenkinsServerWithSecret';
 import * as getJenkinsServerWithSecretModule from '../../api/getJenkinsServerWithSecret';
 
 jest.mock('../../api/getJenkinsServerWithSecret');
