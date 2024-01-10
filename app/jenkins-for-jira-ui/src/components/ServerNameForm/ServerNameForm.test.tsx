@@ -18,7 +18,7 @@ describe('Create - ServerNameForm suite', () => {
 		(useParams as jest.Mock).mockReturnValue({});
 	});
 
-	it('should render form elements correctly', () => {
+	it('should render create form elements correctly', () => {
 		const { getByText, getByLabelText } = screen;
 		render(<ServerNameForm />);
 
@@ -27,8 +27,9 @@ describe('Create - ServerNameForm suite', () => {
 		expect(getByText('Next')).toBeInTheDocument();
 	});
 
-	it('should submit the form correctly on valid input', async () => {
-		const { getByLabelText, getByTestId, queryByTestId } = render(<ServerNameForm />);
+	it('should submit the create form correctly on valid input', async () => {
+		const { queryByTestId, getByLabelText, getByTestId } = screen;
+		render(<ServerNameForm />);
 		const serverNameInput = getByLabelText('server name field');
 
 		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
@@ -49,16 +50,18 @@ describe('Update - ServerNameForm', () => {
 		(useParams as jest.Mock).mockReturnValue(mockParams);
 	});
 
-	it('should render form elements correctly', () => {
-		const { getByLabelText, getByText } = render(<ServerNameForm />);
+	it('should render update form elements correctly', () => {
+		const { getByText, getByLabelText } = screen;
+		render(<ServerNameForm />);
 
 		expect(getByLabelText('server name field')).toBeInTheDocument();
 		expect(getByText('Update server name', { exact: false })).toBeInTheDocument();
 		expect(getByText('Save')).toBeInTheDocument();
 	});
 
-	it('should submit the form correctly on valid input', async () => {
-		const { getByLabelText, getByTestId, queryByTestId } = render(<ServerNameForm />);
+	it('should submit the update form correctly on valid input', async () => {
+		const { queryByTestId, getByLabelText, getByTestId } = screen;
+		render(<ServerNameForm />);
 		const serverNameInput = getByLabelText('server name field');
 
 		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
