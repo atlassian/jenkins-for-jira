@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import {
 	render, fireEvent, waitFor, act, screen
 } from '@testing-library/react';
@@ -6,10 +7,18 @@ import { ServerNameForm } from './ServerNameForm';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
+	useParams: jest.fn()
+}));
 jest.mock('../../api/getAllJenkinsServers');
 
-describe('ServerNameForm suite', () => {
-	it('should render form elements correctly', () => {
+describe('Create - ServerNameForm suite', () => {
+	beforeEach(() => {
+		(useParams as jest.Mock).mockReturnValue({});
+	});
+
+	it('should render create form elements correctly', () => {
 		const { getByText, getByLabelText } = screen;
 		render(<ServerNameForm />);
 
@@ -18,28 +27,60 @@ describe('ServerNameForm suite', () => {
 		expect(getByText('Next')).toBeInTheDocument();
 	});
 
-	it('should handle server name input change correctly', () => {
-		render(<ServerNameForm />);
-		const serverNameInput = screen.getByLabelText('server name field') as HTMLInputElement;
-
-		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
-
-		expect(serverNameInput.value).toBe('MyServer');
-	});
-
-	it('should submit the form correctly on valid input', async () => {
+	it('should submit the create form correctly on valid input', async () => {
 		const { queryByTestId, getByLabelText, getByTestId } = screen;
 		render(<ServerNameForm />);
 		const serverNameInput = getByLabelText('server name field');
 
 		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
-		fireEvent.submit(getByTestId('createServerForm'));
+		fireEvent.submit(getByTestId('serverNameForm'));
 
 		expect(getByTestId('loading-button')).toBeInTheDocument();
 
 		await waitFor(() => {});
 
 		expect(queryByTestId('loading-button')).toBeNull();
+	});
+});
+
+describe('Update - ServerNameForm', () => {
+	const mockParams = { id: '2468' };
+
+	beforeEach(() => {
+		(useParams as jest.Mock).mockReturnValue(mockParams);
+	});
+
+	it('should render update form elements correctly', () => {
+		const { getByText, getByLabelText } = screen;
+		render(<ServerNameForm />);
+
+		expect(getByLabelText('server name field')).toBeInTheDocument();
+		expect(getByText('Update server name', { exact: false })).toBeInTheDocument();
+		expect(getByText('Save')).toBeInTheDocument();
+	});
+
+	it('should submit the update form correctly on valid input', async () => {
+		const { queryByTestId, getByLabelText, getByTestId } = screen;
+		render(<ServerNameForm />);
+		const serverNameInput = getByLabelText('server name field');
+
+		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
+		fireEvent.submit(getByTestId('serverNameForm'));
+
+		expect(getByTestId('loading-button')).toBeInTheDocument();
+
+		await waitFor(() => {});
+
+		expect(queryByTestId('loading-button')).toBeNull();
+	});
+});
+
+describe('Shared - ServerNameForm', () => {
+	it('should handle server name input change correctly', () => {
+		render(<ServerNameForm />);
+		const serverNameInput = screen.getByLabelText('server name field') as HTMLInputElement;
+		fireEvent.change(serverNameInput, { target: { value: 'MyServer' } });
+		expect(serverNameInput.value).toBe('MyServer');
 	});
 
 	it('should display an error message when input is too long', async () => {
@@ -58,7 +99,7 @@ describe('ServerNameForm suite', () => {
 			}
 		);
 
-		fireEvent.submit(getByTestId('createServerForm'));
+		fireEvent.submit(getByTestId('serverNameForm'));
 		expect(getByText('Server name exceeds 100 characters. Choose a shorter server name and try again.')).toBeInTheDocument();
 	});
 
@@ -97,7 +138,7 @@ describe('ServerNameForm suite', () => {
 		fireEvent.change(serverNameInput, { target: { value: 'I already exist' } });
 
 		await act(async () => {
-			fireEvent.submit(getByTestId('createServerForm'));
+			fireEvent.submit(getByTestId('serverNameForm'));
 		});
 
 		expect(getByText('This name is already in use. Choose a unique name.')).toBeInTheDocument();
