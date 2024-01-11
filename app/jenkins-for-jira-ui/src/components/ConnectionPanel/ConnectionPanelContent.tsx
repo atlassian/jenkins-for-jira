@@ -12,6 +12,7 @@ import {
 import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
+import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -24,7 +25,8 @@ type NotConnectedStateProps = {
 	buttonOneOnClick(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
 	testId?: string,
-	isLoading: boolean
+	isLoading: boolean,
+	isIph?: boolean
 };
 
 const ConnectionPanelContent = ({
@@ -38,7 +40,8 @@ const ConnectionPanelContent = ({
 	buttonOneOnClick,
 	buttonTwoOnClick,
 	testId,
-	isLoading
+	isLoading,
+	isIph
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
@@ -48,6 +51,18 @@ const ConnectionPanelContent = ({
 		icon = <ConnectionPendingIcon />;
 	} else {
 		icon = <DuplicateServerIcon />;
+	}
+
+	let secondaryButton;
+
+	if (isIph) {
+		secondaryButton =
+			<InProductHelpAction
+				label="Learn more"
+				type={InProductHelpActionType.HelpButton}
+			/>;
+	} else {
+		secondaryButton = <Button onClick={buttonTwoOnClick}>{secondButtonLabel}</Button>;
 	}
 
 	return (
@@ -72,7 +87,7 @@ const ConnectionPanelContent = ({
 							</Button>
 							{
 								secondButtonLabel
-									? <Button onClick={buttonTwoOnClick}>{secondButtonLabel}</Button>
+									? <>{secondaryButton}</>
 									: <></>
 							}
 						</ButtonGroup>

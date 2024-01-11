@@ -32,11 +32,15 @@ export const InProductHelpAction = ({
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : inProductHelpActionButton;
 	const actionRole = InProductHelpActionType.HelpLink ? 'link' : 'button';
-	const inProductHelpButtonStyles = appearance === InProductHelpActionButtonAppearance.Primary ? inProductHelpActionButtonPrimary : inProductHelpActionButtonDefault;
+	const inProductHelpButtonStyles =
+		appearance === InProductHelpActionButtonAppearance.Primary
+			? inProductHelpActionButtonPrimary : inProductHelpActionButtonDefault;
 
 	const openDrawer = () => {
 		setIsDrawerOpen(true);
 	};
+
+	console.log('inProductHelpButtonStyles:', inProductHelpButtonStyles);
 
 	return (
 		<>

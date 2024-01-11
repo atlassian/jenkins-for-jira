@@ -83,6 +83,7 @@ const NotConnectedState = ({
 						buttonTwoOnClick={isPending ? handleLearnMore : undefined}
 						testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 						isLoading={isLoading}
+						isIph={true}
 					/>
 				</>
 			)}
