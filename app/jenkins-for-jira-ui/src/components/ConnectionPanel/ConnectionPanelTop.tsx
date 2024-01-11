@@ -68,6 +68,9 @@ const ConnectionPanelTop = ({
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
 		history.push(`/setup/${serverToOpen.uuid}`);
 	};
+	const onClickRename = async (serverToRename: JenkinsServer) => {
+		history.push(`/update-server-name/${serverToRename.uuid}`);
+	};
 
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
@@ -118,9 +121,7 @@ const ConnectionPanelTop = ({
 					)}
 				>
 					<DropdownItemGroup>
-						{/* TODO: add onClick - ARC-2595 server name screen */}
-						<DropdownItem>Rename</DropdownItem>
-						{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
+						<DropdownItem onClick={() => onClickRename(server)}>Rename</DropdownItem>
 						<DropdownItem onClick={() => onClickConnectionSettings(server)}>
 							Connection settings
 						</DropdownItem>
