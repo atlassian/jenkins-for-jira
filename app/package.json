@@ -13,7 +13,7 @@
     "prepare": "cd ../ && husky install"
   },
   "dependencies": {
-    "@forge/api": "7.0.0",
+    "@forge/api": "3.0.0",
     "@forge/metrics": "0.2.0",
     "@forge/resolver": "1.5.14",
     "atlassian-jwt": "^2.0.2",
