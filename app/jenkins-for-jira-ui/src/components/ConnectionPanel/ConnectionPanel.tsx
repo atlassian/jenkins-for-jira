@@ -80,7 +80,6 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 	};
 
 	const handleRefreshUpdateServer = async (uuid: string) => {
-		console.log('refreshing...', uuid);
 		setIsUpdatingServer(true);
 		setUuidOfRefreshServer(uuid);
 
