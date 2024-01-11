@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
@@ -52,6 +53,7 @@ const ConnectionPanelTop = ({
 	updatedServer,
 	isUpdatingServer
 }: ConnectionPanelTopProps): JSX.Element => {
+	const history = useHistory();
 	const connectedState = setConnectedState(server, isUpdatingServer, updatedServer);
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
@@ -61,6 +63,10 @@ const ConnectionPanelTop = ({
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
+	};
+
+	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
+		history.push(`/setup/${serverToOpen.uuid}`);
 	};
 
 	const disconnectJenkinsServerHandler = async (
@@ -115,12 +121,13 @@ const ConnectionPanelTop = ({
 						{/* TODO: add onClick - ARC-2595 server name screen */}
 						<DropdownItem>Rename</DropdownItem>
 						{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
-						<DropdownItem>Connection settings</DropdownItem>
+						<DropdownItem onClick={() => onClickConnectionSettings(server)}>
+							Connection settings
+						</DropdownItem>
 						<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
 					</DropdownItemGroup>
 				</DropdownMenu>
 			}
-
 			<JenkinsModal
 				dataTestId={DISCONNECT_MODAL_TEST_ID}
 				server={serverToDisconnect}
