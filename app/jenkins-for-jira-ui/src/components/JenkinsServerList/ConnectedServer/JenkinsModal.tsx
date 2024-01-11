@@ -9,15 +9,11 @@ import Modal, {
 	ModalTransition,
 	Appearance as ModalAppearance
 } from '@atlaskit/modal-dialog';
-import EditorSuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import { cx } from '@emotion/css';
 import { JenkinsServer } from '../../../../../src/common/types';
 import { loadingIcon } from './JenkinsModal.styles';
-import {
-	copyToClipboard,
-	copyToClipboardContainer,
-	secondaryButtonContainer
-} from '../../ServerManagement/ServerManagement.styles';
+import { secondaryButtonContainer } from '../../ServerManagement/ServerManagement.styles';
+import { CopiedToClipboard } from '../../CopiedToClipboard/CopiedToClipboard';
 
 type ModalProps = {
 	server?: JenkinsServer;
@@ -93,17 +89,7 @@ const JenkinsModal: React.FC<ModalProps> = ({
 											{secondaryButtonLabel}
 										</Button>
 
-										{isCopiedToClipboard && (
-											<div className={cx(copyToClipboardContainer)}>
-												<EditorSuccessIcon
-													primaryColor="#23a06b"
-													label="Copied to clipboard successfully"
-												/>
-												<div className={cx(copyToClipboard)}>
-													Copied to clipboard
-												</div>
-											</div>
-										)}
+										{isCopiedToClipboard && <CopiedToClipboard leftPositionPercent="70%" />}
 									</div>
 								)}
 
