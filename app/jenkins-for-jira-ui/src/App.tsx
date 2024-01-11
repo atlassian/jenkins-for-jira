@@ -62,12 +62,15 @@ const AppContainer = styled.div`
 
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
+	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 
 	useEffect(() => {
 		let isMounted = true;
 
 		const fetchData = async () => {
+			setIsFetchingFlag(true);
+
 			try {
 				const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
 					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
@@ -75,6 +78,7 @@ const App: React.FC = () => {
 
 				if (isMounted) {
 					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
+					setIsFetchingFlag(false);
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -94,7 +98,7 @@ const App: React.FC = () => {
 		};
 	}, []);
 
-	if (!history) {
+	if (!history || isFetchingFlag) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
