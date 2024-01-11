@@ -65,6 +65,9 @@ const ConnectionPanelTop = ({
 		setShowConfirmServerDisconnect(true);
 	};
 
+	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
+		history.push(`/setup/${serverToOpen.uuid}`);
+	};
 	const onClickRename = async (serverToRename: JenkinsServer) => {
 		history.push(`/update-server-name/${serverToRename.uuid}`);
 	};
@@ -119,13 +122,13 @@ const ConnectionPanelTop = ({
 				>
 					<DropdownItemGroup>
 						<DropdownItem onClick={() => onClickRename(server)}>Rename</DropdownItem>
-						{/* TODO: add onClick - will be done when I build the new set up jenkins screen */}
-						<DropdownItem>Connection settings</DropdownItem>
+						<DropdownItem onClick={() => onClickConnectionSettings(server)}>
+							Connection settings
+						</DropdownItem>
 						<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
 					</DropdownItemGroup>
 				</DropdownMenu>
 			}
-
 			<JenkinsModal
 				dataTestId={DISCONNECT_MODAL_TEST_ID}
 				server={serverToDisconnect}
