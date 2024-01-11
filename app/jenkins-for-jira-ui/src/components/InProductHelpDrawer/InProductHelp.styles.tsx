@@ -15,7 +15,6 @@ export const inProductHelpActionLink = css`
 `;
 
 export const inProductHelpActionButton = css`
-	background-color: ${token('color.link')};
 	border-radius: 3px;
 	color: ${token('color.text.inverse')};
 	cursor: pointer;
@@ -27,6 +26,22 @@ export const inProductHelpActionButton = css`
 	vertical-align: middle;
 	white-space: nowrap;
 	width: auto;
+`;
+
+export const inProductHelpActionButtonPrimary = css`
+	background-color: ${token('color.link')};
+
+	&:hover {
+		background-color: ${token('color.background.brand.bold.hovered')};
+	}
+
+	&:active {
+		background-color: ${token('color.background.brand.bold.pressed')};
+	}
+`;
+
+export const inProductHelpActionButtonDefault = css`
+	background-color: green;
 
 	&:hover {
 		background-color: ${token('color.background.brand.bold.hovered')};

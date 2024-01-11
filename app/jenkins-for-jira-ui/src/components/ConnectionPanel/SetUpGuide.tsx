@@ -11,7 +11,11 @@ import {
 } from './ConnectionPanel.styles';
 import { JenkinsPluginConfig } from '../../../../src/common/types';
 import { UpdateAvailableIcon } from '../icons/UpdateAvailableIcon';
-import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import {
+	InProductHelpAction,
+	InProductHelpActionButtonAppearance,
+	InProductHelpActionType
+} from '../InProductHelpDrawer/InProductHelpAction';
 import {
 	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
@@ -35,9 +39,11 @@ export const UpdateAvailable = ({
 			<p className={cx(setUpGuideUpdateAvailableContent)}>To access features like this set up guide,
 				a Jenkins admin must log into this server and update the plugin.</p>
 			<div className={cx(setUpGuideUpdateAvailableButtonContainer)}>
-				{/* Button */}
-				<InProductHelpAction label="Learn more" type={InProductHelpActionType.HelpButton} />
-
+				<InProductHelpAction
+					label="Learn more"
+					type={InProductHelpActionType.HelpButton}
+					appearance={InProductHelpActionButtonAppearance.Primary}
+				/>
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
 		</>
