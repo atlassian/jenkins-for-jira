@@ -70,6 +70,7 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 	const [isLoading, setIsLoading] = useState(false);
 	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
+	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
 
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
@@ -79,7 +80,9 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 	};
 
 	const handleRefreshUpdateServer = async (uuid: string) => {
+		console.log('refreshing...', uuid);
 		setIsUpdatingServer(true);
+		setUuidOfRefreshServer(uuid);
 
 		try {
 			const server = await getJenkinsServerWithSecret(uuid);
@@ -114,6 +117,7 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 								setIsLoading={setIsLoading}
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
+								uuidOfRefreshServer={uuidOfRefreshServer}
 							/>
 						</div>
 					);

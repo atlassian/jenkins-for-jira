@@ -40,8 +40,6 @@ export const InProductHelpAction = ({
 		setIsDrawerOpen(true);
 	};
 
-	console.log('inProductHelpButtonStyles:', inProductHelpButtonStyles);
-
 	return (
 		<>
 			<span

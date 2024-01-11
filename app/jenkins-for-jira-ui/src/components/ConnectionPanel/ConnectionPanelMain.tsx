@@ -53,7 +53,8 @@ type ConnectionPanelMainProps = {
 	isLoading: boolean,
 	setIsLoading(isLoading: boolean): void
 	updatedServer?: JenkinsServer,
-	isUpdatingServer: boolean
+	isUpdatingServer: boolean,
+	uuidOfRefreshServer?: string,
 };
 
 const ConnectionPanelMain = ({
@@ -63,7 +64,8 @@ const ConnectionPanelMain = ({
 	isLoading,
 	setIsLoading,
 	updatedServer,
-	isUpdatingServer
+	isUpdatingServer,
+	uuidOfRefreshServer
 }: ConnectionPanelMainProps): JSX.Element => {
 	const connectedState = jenkinsServer.connectedState || ConnectedState.PENDING;
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -78,7 +80,7 @@ const ConnectionPanelMain = ({
 
 	let setUpGuideUpdateAvailableContent;
 
-	if (isLoading || isUpdatingServer) {
+	if (isLoading || (isUpdatingServer && uuidOfRefreshServer === jenkinsServer.uuid)) {
 		setUpGuideUpdateAvailableContent = (
 			<Panel data-testid="updateAvailable">
 				<div className={cx(setUpGuideUpdateAvailableLoadingContainer)}>
@@ -169,6 +171,8 @@ const ConnectionPanelMain = ({
 											refreshServersAfterUpdate={handleRefreshUpdateServer}
 											isLoading={isLoading}
 											setIsLoading={setIsLoading}
+											uuidOfRefreshServer={uuidOfRefreshServer}
+											isUpdatingServer={isUpdatingServer}
 										/>
 									</Panel>
 							}

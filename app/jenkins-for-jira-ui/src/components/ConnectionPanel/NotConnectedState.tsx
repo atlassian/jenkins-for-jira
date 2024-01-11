@@ -16,7 +16,9 @@ type NotConnectedStateProps = {
 	refreshServersAfterDelete(serverToRefresh: JenkinsServer): void,
 	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	isLoading: boolean
-	setIsLoading(isLoading: boolean): void
+	setIsLoading(isLoading: boolean): void,
+	uuidOfRefreshServer?: string,
+	isUpdatingServer?: boolean,
 };
 
 const NotConnectedState = ({
@@ -25,7 +27,9 @@ const NotConnectedState = ({
 	jenkinsServer,
 	refreshServersAfterUpdate,
 	isLoading,
-	setIsLoading
+	setIsLoading,
+	uuidOfRefreshServer,
+	isUpdatingServer
 }: NotConnectedStateProps): JSX.Element => {
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsLoading(true);
@@ -46,15 +50,11 @@ const NotConnectedState = ({
 		await deleteServer(jenkinsServer);
 	};
 
-	const handleLearnMore = async () => {
-		// TODO - ARC-2736 IPH
-	};
-
 	const isPending = connectedState === ConnectedState.PENDING;
 
 	return (
 		<div className={cx(notConnectedStateContainer)}>
-			{isLoading ? (
+			{isLoading || (isUpdatingServer && jenkinsServer.uuid === uuidOfRefreshServer) ? (
 				<div className={cx(notConnectedSpinnerContainer)}>
 					<Spinner size='large' />
 				</div>
@@ -79,8 +79,8 @@ const NotConnectedState = ({
 						buttonAppearance={isPending ? 'primary' : 'danger'}
 						firstButtonLabel={isPending ? 'Refresh' : 'Delete'}
 						secondButtonLabel={isPending ? 'Learn more' : undefined}
-						buttonOneOnClick={isPending ? refreshServersAfterUpdate : deleteServerWrapper}
-						buttonTwoOnClick={isPending ? handleLearnMore : undefined}
+						buttonOneOnClick={
+							isPending ? () => refreshServersAfterUpdate(jenkinsServer.uuid) : deleteServerWrapper}
 						testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 						isLoading={isLoading}
 						isIph={true}
