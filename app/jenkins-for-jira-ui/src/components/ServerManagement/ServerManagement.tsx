@@ -8,6 +8,7 @@ import Button from '@atlaskit/button/standard-button';
 import { cx } from '@emotion/css';
 import TextArea from '@atlaskit/textarea';
 import { useHistory } from 'react-router';
+import { isEqual } from 'lodash';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 import { serverManagementContainer, shareModalInstruction } from './ServerManagement.styles';
 import { addConnectedState, ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
@@ -20,6 +21,9 @@ import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
 import { ConnectionWizard } from '../ConnectionWizard/ConnectionWizard';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { ConnectedState } from '../StatusLabel/StatusLabel';
+import { updateJenkinsServer } from '../../api/updateJenkinsServer';
 
 export const getSiteNameFromUrl = (url: string): string => {
 	try {
@@ -36,57 +40,99 @@ export const contentToRenderServerManagementScreen = (
 	servers: JenkinsServer[],
 	pageHeaderActions: ReactElement<any, string>,
 	setJenkinsServers: (updatedServers: JenkinsServer[]) => void,
-	isLoading?: boolean
+	updatedServer: JenkinsServer | undefined,
+	isUpdatingServer: boolean,
+	uuidOfRefreshServer: string,
+	handleRefreshUpdateServer: (uuid: string) => void
 ) => {
 	let contentToRender;
 
-	if (isLoading) {
-		contentToRender = <JenkinsSpinner secondaryClassName={spinnerHeight} />;
-	} else {
-		switch (moduleKey) {
-			case 'jenkins-for-jira-ui-admin-page':
-				if (servers?.length) {
-					contentToRender = (
-						<>
-							<div className={serverManagementContainer}>
-								<div className={headerContainer}>
-									<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
-								</div>
-
-								<TopPanel />
-
-								<ConnectionPanel jenkinsServers={servers} setJenkinsServers={setJenkinsServers} />
-							</div>
-						</>
-					);
-				} else {
-					contentToRender = (
-						<div className={serverManagementContainer}>
-							<ConnectionWizard />
-						</div>
-					);
-				}
-				break;
-
-			case 'get-started-page':
+	switch (moduleKey) {
+		case 'jenkins-for-jira-ui-admin-page':
+			if (servers?.length) {
 				contentToRender = (
 					<>
-						<div className={headerContainer}>
-							<PageHeader>Jenkins configuration</PageHeader>
+						<div className={serverManagementContainer}>
+							<div className={headerContainer}>
+								<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
+							</div>
+
+							<TopPanel />
+
+							<ConnectionPanel
+								jenkinsServers={servers}
+								setJenkinsServers={setJenkinsServers}
+								updatedServer={updatedServer}
+								isUpdatingServer={isUpdatingServer}
+								uuidOfRefreshServer={uuidOfRefreshServer}
+								handleRefreshUpdateServer={handleRefreshUpdateServer}
+							/>
 						</div>
-						<JenkinsSpinner />
 					</>
 				);
-				break;
+			} else {
+				contentToRender = (
+					<div className={serverManagementContainer}>
+						<ConnectionWizard />
+					</div>
+				);
+			}
+			break;
 
-			default:
-				contentToRender = <JenkinsSpinner secondaryClassName={spinnerHeight} />;
-				break;
-		}
+		case 'get-started-page':
+			contentToRender = (
+				<>
+					<div className={headerContainer}>
+						<PageHeader>Jenkins configuration</PageHeader>
+					</div>
+					<JenkinsSpinner />
+				</>
+			);
+			break;
+
+		default:
+			contentToRender = <JenkinsSpinner secondaryClassName={spinnerHeight} />;
+			break;
 	}
 
 	return contentToRender;
 };
+
+const addConnectedStateToServer =
+	(allServers: JenkinsServer[], singleServer: JenkinsServer, ipAddress?: string): JenkinsServer => {
+		const isDuplicate =
+		ipAddress &&
+		allServers.some((server: JenkinsServer) =>
+			server !== singleServer && server.pluginConfig?.ipAddress === ipAddress);
+
+		let updatedServer: JenkinsServer;
+
+		if (isDuplicate) {
+			updatedServer = { ...singleServer, connectedState: ConnectedState.DUPLICATE };
+		} else if (singleServer.pipelines.length && !singleServer.pluginConfig) {
+			updatedServer = { ...singleServer, connectedState: ConnectedState.UPDATE_AVAILABLE };
+		} else if (singleServer.pluginConfig) {
+			updatedServer = { ...singleServer, connectedState: ConnectedState.CONNECTED };
+		} else {
+			updatedServer = { ...singleServer, connectedState: ConnectedState.PENDING };
+		}
+
+		return updatedServer;
+	};
+
+const updateServerOnRefresh =
+	async (server: JenkinsServer, allServers: JenkinsServer[]): Promise<JenkinsServer> => {
+		const ipAddress = server.pluginConfig?.ipAddress;
+		const updatedServer = addConnectedStateToServer(allServers, server, ipAddress);
+
+		if (server !== updatedServer) {
+			await updateJenkinsServer(updatedServer);
+		}
+
+		console.log('updatedServer', updatedServer);
+
+		return updatedServer;
+	};
 
 const ServerManagement = (): JSX.Element => {
 	const history = useHistory();
@@ -97,6 +143,9 @@ const ServerManagement = (): JSX.Element => {
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const isMountedRef = React.useRef<boolean>(true);
+	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
+	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
+	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -163,6 +212,35 @@ const ServerManagement = (): JSX.Element => {
 		history.push('/create-server');
 	};
 
+	// Refresh for PENDING and UPDATE AVAILABLE servers
+	const handleRefreshUpdateServer = async (uuid: string) => {
+		setIsUpdatingServer(true);
+		setUuidOfRefreshServer(uuid);
+
+		try {
+			const server = await getJenkinsServerWithSecret(uuid);
+			const updatedServerData = await updateServerOnRefresh(server, jenkinsServers);
+			const index = jenkinsServers.findIndex((s) => s.uuid === updatedServerData?.uuid);
+
+			if (index !== -1 && updatedServerData) {
+				const isDifferent = !isEqual(jenkinsServers[index], updatedServerData);
+
+				if (isDifferent) {
+					const newJenkinsServers = [...jenkinsServers];
+					newJenkinsServers[index] = updatedServerData;
+					setJenkinsServers(newJenkinsServers);
+				}
+			}
+
+			setUpdatedServer(updatedServerData);
+			setIsUpdatingServer(false);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		} finally {
+			setIsUpdatingServer(false);
+		}
+	};
+
 	const pageHeaderActions = (
 		<ButtonGroup>
 			<Button
@@ -189,7 +267,11 @@ You'll need to follow the set up guide for each server connected.`;
 			moduleKey,
 			jenkinsServers,
 			pageHeaderActions,
-			setJenkinsServers
+			setJenkinsServers,
+			updatedServer,
+			isUpdatingServer,
+			uuidOfRefreshServer,
+			handleRefreshUpdateServer
 		);
 
 	return (

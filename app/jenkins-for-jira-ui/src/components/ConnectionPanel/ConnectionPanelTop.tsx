@@ -24,22 +24,6 @@ const connectedStateColors: Record<ConnectedState, { textColor: string; backgrou
 	[ConnectedState.UPDATE_AVAILABLE]: { textColor: '#0054cb', backgroundColor: '#e8f2ff' }
 };
 
-const setConnectedState = (
-	server: JenkinsServer,
-	isUpdatingServer: boolean,
-	updatedServer?: JenkinsServer
-): ConnectedState => {
-	let connectedState;
-
-	if (isUpdatingServer || !updatedServer) {
-		connectedState = server.connectedState;
-	} else if (updatedServer && updatedServer.uuid === server.uuid) {
-		connectedState = updatedServer?.connectedState;
-	}
-
-	return connectedState || ConnectedState.PENDING;
-};
-
 type ConnectionPanelTopProps = {
 	server: JenkinsServer,
 	refreshServers(serverToRemove: JenkinsServer): void,
@@ -47,14 +31,11 @@ type ConnectionPanelTopProps = {
 	isUpdatingServer: boolean
 };
 const ConnectionPanelTop = ({
-
 	server,
-	refreshServers,
-	updatedServer,
-	isUpdatingServer
+	refreshServers
 }: ConnectionPanelTopProps): JSX.Element => {
 	const history = useHistory();
-	const connectedState = setConnectedState(server, isUpdatingServer, updatedServer);
+	const connectedState = server.connectedState || ConnectedState.PENDING;
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
