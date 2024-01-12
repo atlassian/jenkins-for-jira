@@ -66,8 +66,9 @@ const ConnectionPanelTop = ({
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
-		history.push(`/setup/${serverToOpen.uuid}`);
+		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
 	};
+
 	const onClickRename = async (serverToRename: JenkinsServer) => {
 		history.push(`/update-server-name/${serverToRename.uuid}`);
 	};

@@ -18,6 +18,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 type PanelProps = {
 	children: ReactNode,
@@ -50,8 +51,6 @@ type ConnectionPanelMainProps = {
 	jenkinsServer: JenkinsServer,
 	refreshServers(serverToRefresh: JenkinsServer): void
 	handleRefreshUpdateServer(serverUuidToUpdateUuid: string): void,
-	isLoading: boolean,
-	setIsLoading(isLoading: boolean): void
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
 	uuidOfRefreshServer?: string,
@@ -61,14 +60,14 @@ const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers,
 	handleRefreshUpdateServer,
-	isLoading,
-	setIsLoading,
 	updatedServer,
 	isUpdatingServer,
 	uuidOfRefreshServer
 }: ConnectionPanelMainProps): JSX.Element => {
 	const connectedState = jenkinsServer.connectedState || ConnectedState.PENDING;
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+	const [isCheckingPipelineData, setIsCheckingPipelineData] = useState<boolean>(false);
+	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(1);
@@ -78,9 +77,21 @@ const ConnectionPanelMain = ({
 		setSelectedTabIndex(index);
 	};
 
+	const handleRefreshToCheckServerPipelines = async (uuid: string) => {
+		setIsCheckingPipelineData(true);
+
+		try {
+			const refreshedServer = await getJenkinsServerWithSecret(uuid);
+			setServerWithUpdatedPipelines(refreshedServer);
+			setIsCheckingPipelineData(false);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		}
+	};
+
 	let setUpGuideUpdateAvailableContent;
 
-	if (isLoading || (isUpdatingServer && uuidOfRefreshServer === jenkinsServer.uuid)) {
+	if (isUpdatingServer && uuidOfRefreshServer === jenkinsServer.uuid) {
 		setUpGuideUpdateAvailableContent = (
 			<Panel data-testid="updateAvailable">
 				<div className={cx(setUpGuideUpdateAvailableLoadingContainer)}>
@@ -107,6 +118,33 @@ const ConnectionPanelMain = ({
 		);
 	}
 
+	let connectionPanelConnectedContent;
+
+	if (isCheckingPipelineData) {
+		connectionPanelConnectedContent = (
+			<Panel data-testid="connectedServer">
+				<div className={cx(setUpGuideUpdateAvailableLoadingContainer)}>
+					<Spinner size='large' />
+				</div>
+			</Panel>
+		);
+	} else {
+		connectionPanelConnectedContent = (
+			<ConnectionPanelContent
+				connectedState={connectedState}
+				contentHeader="No data received"
+				contentInstructionOne="This server is connected but hasn't sent any data to Jira yet."
+				contentInstructionTwo="Use this server's set up guide to choose what data this server sends to Jira."
+				buttonAppearance="primary"
+				firstButtonLabel="Open set up guide"
+				secondButtonLabel="Refresh"
+				buttonOneOnClick={handleClickSetupGuide}
+				buttonTwoOnClick={handleRefreshToCheckServerPipelines}
+				jenkinsServerUuid={jenkinsServer.uuid}
+			/>
+		);
+	}
+
 	return (
 		<div className={cx(connectionPanelMainContainer)}>
 			{
@@ -116,8 +154,6 @@ const ConnectionPanelMain = ({
 						jenkinsServer={jenkinsServer}
 						refreshServersAfterDelete={refreshServers}
 						refreshServersAfterUpdate={handleRefreshUpdateServer}
-						isLoading={isLoading}
-						setIsLoading={setIsLoading}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
@@ -147,20 +183,10 @@ const ConnectionPanelMain = ({
 								connectedState === ConnectedState.UPDATE_AVAILABLE
 									?	<Panel connectedState={connectedState} data-testid="connectedServersPanel">
 										{
+											serverWithUpdatedPipelines.pipelines.length ||
 											jenkinsServer.pipelines.length
 												? <ConnectedJenkinsServers connectedJenkinsServer={jenkinsServer} />
-												: <ConnectionPanelContent
-													connectedState={connectedState}
-													contentHeader="No data received"
-													contentInstructionOne="This server is connected but hasn't sent any data to Jira yet."
-													contentInstructionTwo="Use this server's set up guide to choose what data this server sends to Jira."
-													buttonAppearance="primary"
-													firstButtonLabel="Open set up guide"
-													secondButtonLabel="Refresh"
-													buttonOneOnClick={handleClickSetupGuide}
-													buttonTwoOnClick={handleRefreshUpdateServer}
-													isLoading={isLoading}
-												/>
+												: <>{connectionPanelConnectedContent}</>
 										}
 									</Panel>
 									: <Panel data-testid="notConnectedPanel">
@@ -169,8 +195,6 @@ const ConnectionPanelMain = ({
 											jenkinsServer={jenkinsServer}
 											refreshServersAfterDelete={refreshServers}
 											refreshServersAfterUpdate={handleRefreshUpdateServer}
-											isLoading={isLoading}
-											setIsLoading={setIsLoading}
 											uuidOfRefreshServer={uuidOfRefreshServer}
 											isUpdatingServer={isUpdatingServer}
 										/>

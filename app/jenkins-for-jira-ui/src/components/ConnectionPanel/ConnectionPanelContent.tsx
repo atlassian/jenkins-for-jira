@@ -1,13 +1,11 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button, { Appearance, ButtonGroup } from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import {
 	connectionPanelContainerContainer,
 	connectionPanelContainerHeader,
-	connectionPanelContainerParagraph,
-	notConnectedSpinnerContainer
+	connectionPanelContainerParagraph
 } from './ConnectionPanel.styles';
 import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
@@ -25,8 +23,8 @@ type NotConnectedStateProps = {
 	buttonOneOnClick(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
 	testId?: string,
-	isLoading: boolean,
-	isIph?: boolean
+	isIph?: boolean,
+	jenkinsServerUuid?: string
 };
 
 const ConnectionPanelContent = ({
@@ -40,8 +38,8 @@ const ConnectionPanelContent = ({
 	buttonOneOnClick,
 	buttonTwoOnClick,
 	testId,
-	isLoading,
-	isIph
+	isIph,
+	jenkinsServerUuid
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
@@ -62,37 +60,31 @@ const ConnectionPanelContent = ({
 				type={InProductHelpActionType.HelpButton}
 			/>;
 	} else {
-		secondaryButton = <Button onClick={buttonTwoOnClick}>{secondButtonLabel}</Button>;
+		secondaryButton =
+			buttonTwoOnClick &&
+			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
 	}
 
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
-			{
-				isLoading
-					? <div className={cx(notConnectedSpinnerContainer)}>
-						<Spinner size='large' />
-					</div>
-					: <>
-						{icon}
-						<h3 className={cx(connectionPanelContainerHeader)}>{contentHeader}</h3>
-						<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
-						<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
-						<ButtonGroup>
-							<Button
-								appearance={buttonAppearance}
-								onClick={buttonOneOnClick}
-								testId={testId}
-							>
-								{firstButtonLabel}
-							</Button>
-							{
-								secondButtonLabel
-									? <>{secondaryButton}</>
-									: <></>
-							}
-						</ButtonGroup>
-					</>
-			}
+			{icon}
+			<h3 className={cx(connectionPanelContainerHeader)}>{contentHeader}</h3>
+			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
+			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
+			<ButtonGroup>
+				<Button
+					appearance={buttonAppearance}
+					onClick={buttonOneOnClick}
+					testId={testId}
+				>
+					{firstButtonLabel}
+				</Button>
+				{
+					secondButtonLabel
+						? <>{secondaryButton}</>
+						: <></>
+				}
+			</ButtonGroup>
 		</div>
 	);
 };

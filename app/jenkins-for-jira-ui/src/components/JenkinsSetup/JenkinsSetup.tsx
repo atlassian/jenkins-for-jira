@@ -183,13 +183,14 @@ const JenkinsSetup = (): JSX.Element => {
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
 	const webhookUrlRef = useRef<HTMLDivElement>(null);
-	const { id: uuid } = useParams<ParamTypes>();
+	const { id: uuid, settings } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
+	const connectionSettings = settings === 'connection-settings';
 
 	const getServer = useCallback(async () => {
 		try {
@@ -261,7 +262,11 @@ const JenkinsSetup = (): JSX.Element => {
 			pathParam = 'is-admin';
 		}
 
-		history.push(`/connection-complete/${uuid}/${pathParam}`);
+		if (connectionSettings) {
+			history.push('/');
+		} else {
+			history.push(`/connection-complete/${uuid}/${pathParam}`);
+		}
 	};
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
@@ -326,7 +331,7 @@ const JenkinsSetup = (): JSX.Element => {
 									appearance="primary"
 									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
 								>
-									Next
+									{connectionSettings ? 'Done' : 'Next'}
 								</Button>
 							) : null}
 

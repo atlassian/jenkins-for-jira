@@ -67,7 +67,6 @@ type ConnectionPanelProps = {
 };
 
 const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelProps): JSX.Element => {
-	const [isLoading, setIsLoading] = useState(false);
 	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
 	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
@@ -112,8 +111,6 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 								jenkinsServer={server}
 								refreshServers={handleServerRefresh}
 								handleRefreshUpdateServer={handleRefreshUpdateServer}
-								isLoading={isLoading}
-								setIsLoading={setIsLoading}
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
