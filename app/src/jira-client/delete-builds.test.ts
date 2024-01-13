@@ -1,26 +1,27 @@
-import api from '@forge/api';
 import { deleteBuilds } from './delete-builds';
 import { Errors } from '../common/error-messages';
 import { InvalidPayloadError } from '../common/error';
 
-jest.mock('@forge/api', () => ({
-	...jest.requireActual('@forge/api'),
-	asApp: jest.fn().mockReturnValue({
-		requestJira: jest.fn()
-	})
-}));
-
 describe('deleteBuilds suite', () => {
 	it('Should throw an error if no cloudId is passed', async () => {
-		const error = new InvalidPayloadError(Errors.MISSING_CLOUD_ID);
-		await expect(deleteBuilds(null!)).rejects.toThrow(error);
+		(global as any).api = {
+			asApp: () => ({
+				__requestAtlassian: () => ({})
+			})
+		};
+
+		expect(async () => {
+			// @ts-ignore
+			await deleteBuilds(null);
+		}).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_CLOUD_ID));
 	});
 
 	it('Should return status for successful response', async () => {
-		const mockResponse = { status: 200 };
-		api.asApp().requestJira = jest.fn().mockImplementation(() => ({
-			then: (callback: any) => Promise.resolve(callback(mockResponse))
-		}));
+		(global as any).api = {
+			asApp: () => ({
+				__requestAtlassian: () => ({ status: 200 })
+			})
+		};
 
 		const response = await deleteBuilds('1234');
 		expect(response).toEqual({ status: 200, body: {} });
