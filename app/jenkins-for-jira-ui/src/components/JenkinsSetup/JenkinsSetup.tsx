@@ -131,13 +131,15 @@ const MyJenkinsAdmin = ({
 
 type IAmTheJenkinsAdminProps = {
 	webhookUrlRef: RefObject<HTMLDivElement>,
-	secretRef: RefObject<HTMLDivElement>
+	secretRef: RefObject<HTMLDivElement>,
+	connectionSettings: boolean
 };
 
 const IAmTheJenkinsAdmin = ({
 	handleCopyToClipboard,
 	webhookUrlRef,
-	secretRef
+	secretRef,
+	connectionSettings
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
 	const handleFollowLink = (e: React.MouseEvent): void => {
 		e.preventDefault();
@@ -172,7 +174,7 @@ const IAmTheJenkinsAdmin = ({
 				</li>
 			</ol>
 
-			<p className={cx(jenkinsSetupContent)}>When you’re done, select Next</p>
+			<p className={cx(jenkinsSetupContent)}>When you’re done, select {connectionSettings ? 'Done' : 'Next'}</p>
 		</div>
 	);
 };
@@ -321,6 +323,7 @@ const JenkinsSetup = (): JSX.Element => {
 										handleCopyToClipboard={handleCopyToClipboard}
 										webhookUrlRef={webhookUrlRef}
 										secretRef={secretRef}
+										connectionSettings={connectionSettings}
 									/>
 								) : null}
 							</div>
