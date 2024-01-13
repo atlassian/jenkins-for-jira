@@ -57,7 +57,6 @@ resolver.define('disconnectJenkinsServer', async (req) => {
 	const { cloudId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
 	internalMetrics.counter(metricResolverEmitter.disconnectJenkinsServer).incr();
-
 	return Promise.all([
 		disconnectJenkinsServer(jenkinsServerUuid),
 		deleteBuilds(cloudId, jenkinsServerUuid),
