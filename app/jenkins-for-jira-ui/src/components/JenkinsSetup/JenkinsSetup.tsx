@@ -100,7 +100,7 @@ const MyJenkinsAdmin = ({
 	secretTokenRef
 }: CopyProps & MyJenkinsAdminProps): JSX.Element => {
 	const tooltipContent =
-		'Send this secret token separately to the webhook URL and step-by-step guide. For example, if you used chat to send the webhook, send the secret via email.';
+		'Send this token separately to the webhook URL and step-by-step guide. It\'s best practice to use a secure channel like a password management tool.';
 
 	return (
 		<div className={cx(jenkinsSetupCopyContainer)}>
