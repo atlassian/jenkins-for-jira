@@ -28,13 +28,13 @@ const handleSendEventToJiraErrors = (
 };
 
 async function invokeApi(
-	requestRoute: Route,
+	sendEventToJiraRoute: Route,
 	payload: object,
 	logger: Logger
 ): Promise<JiraResponse> {
 	const apiResponse = await api
 		.asApp()
-		.requestConnectedData(requestRoute, {
+		.requestConnectedData(sendEventToJiraRoute, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -58,7 +58,7 @@ async function invokeApi(
 	const result = { status: apiResponse.status, body: jiraResponse };
 
 	if (apiResponse.status >= 400 && apiResponse.status < 599) {
-		handleSendEventToJiraErrors(apiResponse, jiraResponse, requestRoute.value, logger);
+		handleSendEventToJiraErrors(apiResponse, jiraResponse, sendEventToJiraRoute.value, logger);
 		return result;
 	}
 
