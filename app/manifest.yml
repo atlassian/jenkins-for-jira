@@ -70,6 +70,8 @@ permissions:
       - unsafe-inline
   scopes:
     - storage:app
-    - write:build:jira-software
-    - write:deployment:jira-software
+    - write:build-info:jira
+    - delete:build-info:jira
+    - write:deployment-info:jira
     - delete:deployment-info:jira
+    - read:permission:jira
