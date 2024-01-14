@@ -143,7 +143,7 @@ const App: React.FC = () => {
 					<Route path="/update-server-name/:id">
 						<ServerNameForm />
 					</Route>
-					<Route path="/setup/:id">
+					<Route path="/setup/:id/:settings">
 						<JenkinsSetup />
 					</Route>
 					<Route path="/connection-complete/:id/:admin">

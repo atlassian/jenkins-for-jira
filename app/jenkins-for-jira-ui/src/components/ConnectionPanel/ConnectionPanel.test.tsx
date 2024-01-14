@@ -113,7 +113,14 @@ describe('Connection Panel Suite', () => {
 	test('fetches and displays servers on mount', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
-		render(<ConnectionPanel jenkinsServers={servers} setJenkinsServers={jest.fn()} />);
+		render(<ConnectionPanel
+			jenkinsServers={servers}
+			setJenkinsServers={jest.fn()}
+			isUpdatingServer={false}
+			uuidOfRefreshServer='198219dnq9fn1293r12'
+			updatedServer={undefined}
+			handleRefreshUpdateServer={jest.fn()}
+		/>);
 
 		await waitFor(() => {
 			expect(screen.getByText(servers[0].name)).toBeInTheDocument();

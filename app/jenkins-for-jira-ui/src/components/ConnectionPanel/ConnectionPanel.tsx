@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
-import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -45,55 +44,28 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 		});
 };
 
-const addConnectedStateToSingleServer = (singleServer: JenkinsServer, allServers: JenkinsServer[]): JenkinsServer => {
-	const ipAddress = singleServer.pluginConfig?.ipAddress;
-
-	const isDuplicate =
-		ipAddress &&
-		allServers.some((server: JenkinsServer) =>
-			server !== singleServer && server.pluginConfig?.ipAddress === ipAddress);
-
-	const connectedState: ConnectedState = isDuplicate ? ConnectedState.DUPLICATE : ConnectedState.CONNECTED;
-
-	return {
-		...singleServer,
-		connectedState
-	};
-};
-
 type ConnectionPanelProps = {
 	jenkinsServers: JenkinsServer[],
-	setJenkinsServers(updatedServers: JenkinsServer[]): void
+	setJenkinsServers(updatedServers: JenkinsServer[]): void,
+	updatedServer: JenkinsServer | undefined,
+	isUpdatingServer: boolean,
+	uuidOfRefreshServer: string,
+	handleRefreshUpdateServer(uuid: string): void
 };
 
-const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelProps): JSX.Element => {
-	const [isLoading, setIsLoading] = useState(false);
-	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
-	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
-	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
-
+const ConnectionPanel = ({
+	jenkinsServers,
+	setJenkinsServers,
+	updatedServer,
+	isUpdatingServer,
+	uuidOfRefreshServer,
+	handleRefreshUpdateServer
+}: ConnectionPanelProps): JSX.Element => {
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid
 		);
 		setJenkinsServers(refreshedServers);
-	};
-
-	const handleRefreshUpdateServer = async (uuid: string) => {
-		setIsUpdatingServer(true);
-		setUuidOfRefreshServer(uuid);
-
-		try {
-			const server = await getJenkinsServerWithSecret(uuid);
-
-			if (server.pluginConfig) {
-				setUpdatedServer(addConnectedStateToSingleServer(server, jenkinsServers));
-			}
-
-			setIsUpdatingServer(false);
-		} catch (e) {
-			console.error('No Jenkins server found.');
-		}
 	};
 
 	return (
@@ -112,8 +84,6 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 								jenkinsServer={server}
 								refreshServers={handleServerRefresh}
 								handleRefreshUpdateServer={handleRefreshUpdateServer}
-								isLoading={isLoading}
-								setIsLoading={setIsLoading}
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
