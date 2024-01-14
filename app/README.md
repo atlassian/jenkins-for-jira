@@ -80,7 +80,7 @@ Follow the instructions in this setup wizard. Enter the hostname for your Jira s
 
 ## Running the app
 To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. To do this:
-1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config>`.`.
+1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config>`.
 2. Confirm this was set correctly by running `forge settings list`. You should see a table that includes this variable with a value set to your ngrok config path.
 
 ### Run the app locally
