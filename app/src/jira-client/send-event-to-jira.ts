@@ -1,3 +1,4 @@
+import api, { route } from '@forge/api';
 import { EventType } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
 import { JiraResponse } from './types';
@@ -11,14 +12,13 @@ async function invokeApi(
 	eventType: EventType,
 	logger: Logger
 ): Promise<JiraResponse> {
-	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
-	// eslint-disable-next-line no-underscore-dangle
-	const apiResponse = await global.api
+	const apiResponse = await api
 		.asApp()
-		.__requestAtlassian(url, {
+		.requestJira(route`${url}`, {
 			method: 'POST',
 			headers: {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				Accept: 'application/json'
 			},
 			body: JSON.stringify(payload)
 		});
@@ -35,6 +35,8 @@ async function invokeApi(
 	// unwrap the response from the Jira API
 	const jiraResponse = JSON.parse(responseString);
 	const responseData = getResponseData(jiraResponse);
+
+	// TODO - add metric for failed requests
 
 	logger.info('Called Jira API', { path: url, status: apiResponse.status, response: responseData });
 

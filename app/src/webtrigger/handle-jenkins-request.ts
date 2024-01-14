@@ -74,7 +74,10 @@ export default async function handleJenkinsRequest(
 				throw new InvalidPayloadError(`unsupported request type ${jenkinsRequest.requestType}`);
 		}
 
-		logger.info('Jenkins request success', { type: jenkinsRequest.requestType });
+		if (response.statusCode >= 200 && response.statusCode < 300) {
+			logger.info('Jenkins request success', { type: jenkinsRequest.requestType });
+		}
+
 		return response;
 	} catch (error) {
 		logger.error('Failed to fetch Jenkins server list', { error });
