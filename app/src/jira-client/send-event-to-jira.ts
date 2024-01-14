@@ -1,4 +1,4 @@
-import api, { route } from '@forge/api';
+import api, { APIResponse, route } from '@forge/api';
 import { internalMetrics } from '@forge/metrics';
 import { EventType } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
@@ -7,6 +7,25 @@ import { Errors } from '../common/error-messages';
 import { Logger } from '../config/logger';
 import { getResponseData } from '../utils/get-data-from-response';
 import { metricFailedRequests } from '../common/metric-names';
+
+const handleSendEventToJiraErrors = (
+	apiResponse: APIResponse,
+	jiraResponse: { errorMessages: any; },
+	url: string,
+	logger: Logger
+) => {
+	logger.error('Send event to Jira error', {
+		statusCode: apiResponse.status,
+		error: jiraResponse.errorMessages,
+		path: url
+	});
+
+	if (apiResponse.status === 403) {
+		internalMetrics.counter(metricFailedRequests.sendEventToJiraUnauthorizedError).incr();
+	} else {
+		internalMetrics.counter(metricFailedRequests.sendEventToJiraError).incr();
+	}
+};
 
 async function invokeApi(
 	url: string,
@@ -40,23 +59,11 @@ async function invokeApi(
 	const result = { status: apiResponse.status, body: jiraResponse };
 
 	if (apiResponse.status >= 400 && apiResponse.status < 599) {
-		logger.error('Send event to Jira error', {
-			statusCode: apiResponse.status,
-			error: jiraResponse.errorMessages,
-			path: url
-		});
-
-		if (apiResponse.status === 403) {
-			internalMetrics.counter(metricFailedRequests.sendEventToJiraUnauthorizedError).incr();
-		} else {
-			internalMetrics.counter(metricFailedRequests.sendEventToJiraError).incr();
-		}
-
+		handleSendEventToJiraErrors(apiResponse, jiraResponse, url, logger);
 		return result;
 	}
 
 	logger.info('Called Jira API', { path: url, status: apiResponse.status, response: responseData });
-
 	return result;
 }
 
