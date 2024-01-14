@@ -79,7 +79,9 @@ Follow the instructions in this setup wizard. Enter the hostname for your Jira s
 > NOTE: This is the *only* step that needs to be repeated to install on different Jira sites. Do not repeat the steps above `forge deploy`. To run your app, follow the steps below.
 
 ## Running the app
-To run the app, make sure you have installed the app on your site as described above.
+To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. To do this:
+1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config`. This should be something like `/Users/<username>/Library/Application\ Support/ngrok/ngrok.yml`.
+2. Confirm this was set correctly by running `forge settings list`. You should see a table that includes this variable with a value set to your ngrok config path.
 
 ### Run the app locally
 
@@ -87,7 +89,7 @@ To start the app locally, run `yarn start` in **/app/jenkins-for-jira-ui**.
 
 The command line will suggest navigating to `localhost:3000` but this does not work for `Custom UI` Forge apps. For more information, see [here](https://community.developer.atlassian.com/t/forge-tunneling-customui-with-ui-resolver-error-cannot-read-property-callbridge-of-undefined/47010/3).
 
-To see your local app in the Jira instance you installed the app into, run `forge tunnel` in the **/app** folder.
+To see your local app in the Jira instance you installed the app into, run `forge tunnel` in the **/app** folder. If this fails, ensure you have correctly set `ngrok-config-path`. 
 
 All your changes are instantly propagated to your Jira site and you can see them without the need to rebuild or redeploy your app.
 
