@@ -1,4 +1,4 @@
-import api, { APIResponse, route } from '@forge/api';
+import api, { APIResponse, route, Route } from '@forge/api';
 import { internalMetrics } from '@forge/metrics';
 import { EventType } from '../common/types';
 import { InvalidPayloadError } from '../common/error';
@@ -28,14 +28,13 @@ const handleSendEventToJiraErrors = (
 };
 
 async function invokeApi(
-	url: string,
+	requestRoute: Route,
 	payload: object,
-	eventType: EventType,
 	logger: Logger
 ): Promise<JiraResponse> {
 	const apiResponse = await api
 		.asApp()
-		.requestJira(route`${url}`, {
+		.requestConnectedData(requestRoute, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -59,11 +58,11 @@ async function invokeApi(
 	const result = { status: apiResponse.status, body: jiraResponse };
 
 	if (apiResponse.status >= 400 && apiResponse.status < 599) {
-		handleSendEventToJiraErrors(apiResponse, jiraResponse, url, logger);
+		handleSendEventToJiraErrors(apiResponse, jiraResponse, requestRoute.value, logger);
 		return result;
 	}
 
-	logger.info('Called Jira API', { path: url, status: apiResponse.status, response: responseData });
+	logger.info('Called Jira API', { path: 'url', status: apiResponse.status, response: responseData });
 	return result;
 }
 
@@ -81,9 +80,9 @@ async function sendEventToJira(
 
 	switch (eventType) {
 		case EventType.BUILD:
-			return invokeApi(`/jira/builds/0.1/cloud/${cloudId}/bulk`, payload, eventType, logger);
+			return invokeApi(route`/builds/0.1/cloud/${cloudId}/bulk`, payload, logger);
 		case EventType.DEPLOYMENT:
-			return invokeApi(`/jira/deployments/0.1/cloud/${cloudId}/bulk`, payload, eventType, logger);
+			return invokeApi(route`/deployments/0.1/cloud/${cloudId}/bulk`, payload, logger);
 		default:
 			logger.error(Errors.INVALID_EVENT_TYPE);
 			throw new InvalidPayloadError(Errors.INVALID_EVENT_TYPE);
