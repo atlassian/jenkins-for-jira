@@ -19,7 +19,7 @@ const envVars: EnvVars = {
 	LAUNCHDARKLY_STAGING_USER_KEY: process.env.REACT_APP_LAUNCHDARKLY_STAGING_USER_KEY || '',
 	LAUNCHDARKLY_PRODUCTION_CLIENT_ID: process.env.REACT_APP_LAUNCHDARKLY_PRODUCTION_CLIENT_ID || '',
 	LAUNCHDARKLY_PRODUCTION_USER_KEY: process.env.REACT_APP_LAUNCHDARKLY_PRODUCTION_USER_KEY || '',
-	ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY || ''
+	ALGOLIA_API_KEY: process.env.REACT_APP_ALGOLIA_API_KEY || ''
 };
 
 export type Environment = 'test' | 'development' | 'staging' | 'production';

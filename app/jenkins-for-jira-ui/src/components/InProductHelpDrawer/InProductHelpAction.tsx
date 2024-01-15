@@ -6,8 +6,7 @@ import {
 	inProductHelpActionLink
 } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
-import { useAlgolia } from '../../hooks/useAlgolia';
-import { Hit } from '../../hooks/old';
+import { Hit } from '../../hooks/useAlgolia';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -45,10 +44,7 @@ export const InProductHelpAction = ({
 			? inProductHelpActionButtonPrimary
 			: inProductHelpActionButtonDefault;
 
-	const { hits: searchResults } = useAlgolia({ indexName });
-
 	const openDrawer = () => {
-		setHits(searchResults);
 		setIsDrawerOpen(true);
 	};
 
@@ -76,6 +72,7 @@ export const InProductHelpAction = ({
 				setIsDrawerOpen={setIsDrawerOpen}
 				hits={hits}
 				indexName={indexName}
+				setHits={setHits}
 			/>
 		</>
 	);
