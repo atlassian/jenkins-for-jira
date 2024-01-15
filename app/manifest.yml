@@ -53,29 +53,25 @@ resources:
 
 app:
   id: ari:cloud:ecosystem::app/df76f661-4cbe-4768-a119-13992dc4ce2d
-  # This is caused by a forge bug related to deserialising externally allocated memory. TODO: Remove when fix comes out
   runtime:
-    snapshots: false
-  features:
-    autoUserConsent: true
+    name: nodejs18.x
 permissions:
   external:
     fetch:
       client:
-        - 'https://api-private.atlassian.com'
-        - 'https://app.launchdarkly.com'
-        - 'https://events.launchdarkly.com'
-        - 'https://clientstream.launchdarkly.com'
+        - https://api-private.atlassian.com
+        - https://app.launchdarkly.com
+        - https://events.launchdarkly.com
+        - https://clientstream.launchdarkly.com
       backend:
-        - 'https://app.launchdarkly.com/api/v2/flags/Jenkins'
-
+        - https://app.launchdarkly.com/api/v2/flags/Jenkins
   content:
     styles:
-      - 'unsafe-inline'
+      - unsafe-inline
   scopes:
-    - 'storage:app'
-    - 'write:build-info:jira'
-    - 'delete:build-info:jira'
-    - 'write:deployment-info:jira'
-    - 'delete:deployment-info:jira'
-    - 'read:permission:jira'
+    - storage:app
+    - write:build-info:jira
+    - delete:build-info:jira
+    - write:deployment-info:jira
+    - delete:deployment-info:jira
+    - read:permission:jira

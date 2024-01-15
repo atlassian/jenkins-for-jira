@@ -10,3 +10,8 @@ export const metricResolverEmitter = {
 	generateNewSecretForServer: `${server}.generateNewSecret.emitted`,
 	redirectFromGetStartedPage: `${server}.getStartedRedirect.emitted`
 };
+
+export const metricFailedRequests = {
+	sendEventToJiraUnauthorizedError: `${server}.sendEventToJiraUnauthorized.failure`,
+	sendEventToJiraError: `${server}.sendEventToJira.failure`
+};

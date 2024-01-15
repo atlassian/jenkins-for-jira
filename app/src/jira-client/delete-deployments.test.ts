@@ -1,27 +1,26 @@
+import api from '@forge/api';
 import { Errors } from '../common/error-messages';
 import { deleteDeployments } from './delete-deployments';
 import { InvalidPayloadError } from '../common/error';
 
+jest.mock('@forge/api', () => ({
+	...jest.requireActual('@forge/api'),
+	asApp: jest.fn().mockReturnValue({
+		requestConnectedData: jest.fn()
+	})
+}));
+
 describe('deleteDeployments suite', () => {
 	it('Should throw an error if no cloudId is passed', async () => {
-		(global as any).api = {
-			asApp: () => ({
-				__requestAtlassian: () => ({})
-			})
-		};
-
-		expect(async () => {
-			// @ts-ignore
-			await deleteDeployments(null);
-		}).rejects.toThrow(new InvalidPayloadError(Errors.MISSING_CLOUD_ID));
+		const error = new InvalidPayloadError(Errors.MISSING_CLOUD_ID);
+		await expect(deleteDeployments(null!)).rejects.toThrow(error);
 	});
 
 	it('Should return status for successful response', async () => {
-		(global as any).api = {
-			asApp: () => ({
-				__requestAtlassian: () => ({ status: 200 })
-			})
-		};
+		const mockResponse = { status: 200 };
+		api.asApp().requestConnectedData = jest.fn().mockImplementation(() => ({
+			then: (callback: any) => Promise.resolve(callback(mockResponse))
+		}));
 
 		const response = await deleteDeployments('1234');
 		expect(response).toEqual({ status: 200, body: {} });
