@@ -6,6 +6,8 @@ import {
 	inProductHelpActionLink
 } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
+import { useAlgolia } from '../../hooks/useAlgolia';
+import { Hit } from '../../hooks/old';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -20,23 +22,33 @@ export enum InProductHelpActionType {
 type InProductHelpActionProps = {
 	label: string,
 	type: InProductHelpActionType,
-	appearance?: InProductHelpActionButtonAppearance
+	appearance?: InProductHelpActionButtonAppearance,
+	indexName: string
 };
+// ...
 
 export const InProductHelpAction = ({
 	label,
 	type,
-	appearance
+	appearance,
+	indexName
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [hits, setHits] = useState<Hit[]>([]);
 	const inProductHelpTypeClassName =
-		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : inProductHelpActionButton;
+		type === InProductHelpActionType.HelpLink
+			? inProductHelpActionLink
+			: inProductHelpActionButton;
 	const actionRole = InProductHelpActionType.HelpLink ? 'link' : 'button';
 	const inProductHelpButtonStyles =
 		appearance === InProductHelpActionButtonAppearance.Primary
-			? inProductHelpActionButtonPrimary : inProductHelpActionButtonDefault;
+			? inProductHelpActionButtonPrimary
+			: inProductHelpActionButtonDefault;
+
+	const { hits: searchResults } = useAlgolia({ indexName });
 
 	const openDrawer = () => {
+		setHits(searchResults);
 		setIsDrawerOpen(true);
 	};
 
@@ -62,6 +74,8 @@ export const InProductHelpAction = ({
 			<InProductHelpDrawer
 				isDrawerOpen={isDrawerOpen}
 				setIsDrawerOpen={setIsDrawerOpen}
+				hits={hits}
+				indexName={indexName}
 			/>
 		</>
 	);

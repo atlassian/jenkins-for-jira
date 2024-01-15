@@ -43,6 +43,7 @@ export const UpdateAvailable = ({
 					label="Learn more"
 					type={InProductHelpActionType.HelpButton}
 					appearance={InProductHelpActionButtonAppearance.Primary}
+					indexName="learn-more-set-up-guide"
 				/>
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
@@ -64,6 +65,7 @@ const SetUpGuidePipelineStepInstruction = ({
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
+				indexName={pipelineStepLabel}
 			/>&nbsp;step to the end of {eventType} stages.
 		</p>
 	);
@@ -112,6 +114,7 @@ export const SetUpGuideInstructions = ({
 					<InProductHelpAction
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
+						indexName={regex || '<regex>'}
 					/>
 				</p>
 			</>
@@ -119,7 +122,11 @@ export const SetUpGuideInstructions = ({
 	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
 		contentToRender =
 			<p>
-				<InProductHelpAction label="No setup required" type={InProductHelpActionType.HelpLink} />
+				<InProductHelpAction
+					label="No setup required"
+					type={InProductHelpActionType.HelpLink}
+					indexName="no-set-up-required"
+				/>
 			</p>;
 	} else {
 		contentToRender = (
@@ -155,7 +162,11 @@ const SetUpGuide = ({
 								Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction label="JIRA-1234" type={InProductHelpActionType.HelpLink} />)
+						(e.g. <InProductHelpAction
+						label="JIRA-1234"
+						type={InProductHelpActionType.HelpLink}
+						indexName="JIRA-1234"
+					/>)
 						into their branch names and commit message.
 					</p>
 				</li>

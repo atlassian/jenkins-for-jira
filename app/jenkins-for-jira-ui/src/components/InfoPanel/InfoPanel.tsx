@@ -22,6 +22,7 @@ const InfoPanel = ({
 				<InProductHelpAction
 					label={iphLabel}
 					type={iphType}
+					indexName={iphLabel}
 				/>
 			</p>
 		</div>
