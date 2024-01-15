@@ -100,7 +100,7 @@ const MyJenkinsAdmin = ({
 	secretTokenRef
 }: CopyProps & MyJenkinsAdminProps): JSX.Element => {
 	const tooltipContent =
-		'Send this secret token separately to the webhook URL and step-by-step guide. For example, if you used chat to send the webhook, send the secret via email.';
+		'Send this token separately to the webhook URL and step-by-step guide. It\'s best practice to use a secure channel like a password management tool.';
 
 	return (
 		<div className={cx(jenkinsSetupCopyContainer)}>
@@ -131,13 +131,15 @@ const MyJenkinsAdmin = ({
 
 type IAmTheJenkinsAdminProps = {
 	webhookUrlRef: RefObject<HTMLDivElement>,
-	secretRef: RefObject<HTMLDivElement>
+	secretRef: RefObject<HTMLDivElement>,
+	connectionSettings: boolean
 };
 
 const IAmTheJenkinsAdmin = ({
 	handleCopyToClipboard,
 	webhookUrlRef,
-	secretRef
+	secretRef,
+	connectionSettings
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
 	const handleFollowLink = (e: React.MouseEvent): void => {
 		e.preventDefault();
@@ -172,7 +174,7 @@ const IAmTheJenkinsAdmin = ({
 				</li>
 			</ol>
 
-			<p className={cx(jenkinsSetupContent)}>When you’re done, select Next</p>
+			<p className={cx(jenkinsSetupContent)}>When you’re done, select {connectionSettings ? 'Done' : 'Next'}</p>
 		</div>
 	);
 };
@@ -183,13 +185,14 @@ const JenkinsSetup = (): JSX.Element => {
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
 	const webhookUrlRef = useRef<HTMLDivElement>(null);
-	const { id: uuid } = useParams<ParamTypes>();
+	const { id: uuid, settings } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
+	const connectionSettings = settings === 'connection-settings';
 
 	const getServer = useCallback(async () => {
 		try {
@@ -261,7 +264,11 @@ const JenkinsSetup = (): JSX.Element => {
 			pathParam = 'is-admin';
 		}
 
-		history.push(`/connection-complete/${uuid}/${pathParam}`);
+		if (connectionSettings) {
+			history.push('/');
+		} else {
+			history.push(`/connection-complete/${uuid}/${pathParam}`);
+		}
 	};
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
@@ -316,6 +323,7 @@ const JenkinsSetup = (): JSX.Element => {
 										handleCopyToClipboard={handleCopyToClipboard}
 										webhookUrlRef={webhookUrlRef}
 										secretRef={secretRef}
+										connectionSettings={connectionSettings}
 									/>
 								) : null}
 							</div>
@@ -326,7 +334,7 @@ const JenkinsSetup = (): JSX.Element => {
 									appearance="primary"
 									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
 								>
-									Next
+									{connectionSettings ? 'Done' : 'Next'}
 								</Button>
 							) : null}
 
