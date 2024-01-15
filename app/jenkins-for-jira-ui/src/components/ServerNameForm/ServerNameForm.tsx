@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router';
 import { cx } from '@emotion/css';
 import LoadingButton from '@atlaskit/button/loading-button';
 import Button from '@atlaskit/button/standard-button';
@@ -8,7 +8,6 @@ import Form, {
 } from '@atlaskit/form';
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
-import { useHistory } from 'react-router';
 import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
@@ -24,6 +23,10 @@ import { serverNameForm, serverNameFormButton, serverNameFormOuterContainer } fr
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+
+const analyticsClient = new AnalyticsClient();
 
 const jenkinsServerNameExists = (servers: JenkinsServer[], serverName: string): boolean => {
 	return servers.some((server: JenkinsServer) => server.name === serverName);
@@ -85,6 +88,15 @@ const ServerNameForm = (): JSX.Element => {
 	const [isLoading, setIsLoading] = useState(false);
 	const params = useParams<ParamTypes>();
 	const editingServerUuid = params ? params.id : undefined;
+
+	useEffect(() => {
+		const viewType = editingServerUuid ? 'editing server name' : 'creating server name';
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ServerNameScreenName,
+			{ viewType }
+		);
+	}, [editingServerUuid]);
 
 	const setServerNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newServerName = event.target.value;

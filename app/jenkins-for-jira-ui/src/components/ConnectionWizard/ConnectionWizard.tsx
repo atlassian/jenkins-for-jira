@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
@@ -17,9 +17,20 @@ import {
 import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { ConnectionFlowHeader } from './ConnectionFlowHeader';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 const ConnectionWizard = (): JSX.Element => {
 	const history = useHistory();
+
+	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConnectionWizardScreenName
+		);
+	}, []);
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -45,7 +56,7 @@ const ConnectionWizard = (): JSX.Element => {
 						The help of your Jenkins admin
 					</li>
 					<p className={cx(connectionWizardNestedOrderedListItem)}>
-						Unless you’re an admin yourself
+						Unless you're an admin yourself
 					</p>
 				</ol>
 			</div>
@@ -55,6 +66,7 @@ const ConnectionWizard = (): JSX.Element => {
 				iphContainerWidth="340px"
 				iphLabel="What to discuss with your team before connecting Jenkins"
 				iphType={InProductHelpActionType.HelpLink}
+				screenName='home-page-empty-state'
 			/>
 
 			<Button

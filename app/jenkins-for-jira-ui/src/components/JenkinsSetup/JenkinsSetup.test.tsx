@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	act, fireEvent, render, screen
+	act, fireEvent, render, screen, waitFor
 } from '@testing-library/react';
 import { useParams } from 'react-router';
 import { JenkinsSetup } from './JenkinsSetup';
@@ -117,13 +117,17 @@ describe('JenkinsSetup Component', () => {
 
 		const { getByText, queryByText } = screen;
 
-		fireEvent.click(getByText('My Jenkins admin'));
-		expect(getByText('Copy the items below and give them to your Jenkins admin')).toBeInTheDocument();
-		expect(queryByText('Log in to Jenkins in another window and use the items below to set up your server.')).not.toBeInTheDocument();
+		await waitFor(() => {
+			fireEvent.click(getByText('My Jenkins admin'));
+			expect(getByText('Copy the items below and give them to your Jenkins admin')).toBeInTheDocument();
+			expect(queryByText('Log in to Jenkins in another window and use the items below to set up your server.')).not.toBeInTheDocument();
+		});
 
-		fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
-		expect(queryByText('Copy the items below and give them to your Jenkins admin')).not.toBeInTheDocument();
-		expect(getByText('Log in to Jenkins in another window and use the items below to set up your server.')).toBeInTheDocument();
+		await waitFor(() => {
+			fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
+			expect(queryByText('Copy the items below and give them to your Jenkins admin')).not.toBeInTheDocument();
+			expect(getByText('Log in to Jenkins in another window and use the items below to set up your server.')).toBeInTheDocument();
+		});
 	});
 
 	it('copies content to clipboard when "Copy" button is clicked', async () => {
@@ -150,7 +154,9 @@ describe('JenkinsSetup Component', () => {
 
 		const { getByText, getByTestId } = screen;
 
-		fireEvent.click(getByText('My Jenkins admin'));
+		await waitFor(() => {
+			fireEvent.click(getByText('My Jenkins admin'));
+		});
 
 		await act(async () => {
 			fireEvent.click(getByTestId('copy-webhook-url-guide'));
@@ -204,10 +210,14 @@ describe('JenkinsSetup Component', () => {
 
 		const { getByText } = screen;
 
-		fireEvent.click(getByText('My Jenkins admin'));
-		expect(getByText('Next')).toBeInTheDocument();
+		await waitFor(() => {
+			fireEvent.click(getByText('My Jenkins admin'));
+			expect(getByText('Next')).toBeInTheDocument();
+		});
 
-		fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
-		expect(getByText('Next')).toBeInTheDocument();
+		await waitFor(() => {
+			fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
+			expect(getByText('Next')).toBeInTheDocument();
+		});
 	});
 });

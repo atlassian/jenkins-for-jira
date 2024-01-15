@@ -14,7 +14,11 @@ export enum AnalyticsScreenEventsEnum {
 	CreateJenkinsServerScreenName = 'createJenkinsServerScreen',
 	ConnectJenkinsServerScreenName = 'connectJenkinsServerScreen',
 	ManageJenkinsConnectionScreenName = 'manageJenkinsConnectionScreen',
-	PendingDeploymentStateScreenName = 'pendingDeploymentStateScreen'
+	PendingDeploymentStateScreenName = 'pendingDeploymentStateScreen',
+	ConnectionWizardScreenName = 'connectWizardScreen',
+	ServerNameScreenName = 'serverNameScreen',
+	JenkinsSetupScreenName = 'jenkinsSetupScreen',
+	ConnectionCompleteScreenName = 'connectionCompleteScreen'
 }
 
 export enum AnalyticsUiEventsEnum {
@@ -38,7 +42,12 @@ export enum AnalyticsUiEventsEnum {
 	DisconnectServerModalClosedConfiguredStateName = 'disconnectServerModalClosedConfiguredState',
 	DisconnectServerConfirmConfiguredStateName = 'disconnectServerConfirmConfiguredState',
 	ManageConnectionPendingStateName = 'manageConnectionPendingState',
-	NavigateBackPendingDeploymentStateName = 'navigateBackPendingDeploymentState'
+	NavigateBackPendingDeploymentStateName = 'navigateBackPendingDeploymentState',
+	OpenInProductionHelpDrawerName = 'openInProductHelpDrawer',
+	MyJenkinsAdminTabName = 'myJenkinsAdminTab',
+	IAmAJenkinsAdminTabName = 'iAmAJenkinsAdminTab',
+	CopiedToClipboardName = 'copiedToClipboard',
+	ViewStepByStepGuideName = 'viewStepByStepGuide'
 }
 
 export enum AnalyticsTrackEventsEnum {

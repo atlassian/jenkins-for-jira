@@ -6,6 +6,12 @@ import {
 	inProductHelpActionLink
 } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -20,24 +26,54 @@ export enum InProductHelpActionType {
 type InProductHelpActionProps = {
 	label: string,
 	type: InProductHelpActionType,
-	appearance?: InProductHelpActionButtonAppearance
+	appearance?: InProductHelpActionButtonAppearance,
+	screenName?: string
+};
+
+const analyticsClient = new AnalyticsClient();
+
+const iphClickSource = (screenName?: string): string => {
+	switch (screenName) {
+		case 'home-page-configured-state':
+			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
+			break;
+		default:
+			return '';
+			break;
+	}
 };
 
 export const InProductHelpAction = ({
 	label,
 	type,
-	appearance
+	appearance,
+	screenName
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const inProductHelpTypeClassName =
-		type === InProductHelpActionType.HelpLink ? inProductHelpActionLink : inProductHelpActionButton;
+		type === InProductHelpActionType.HelpLink
+			? inProductHelpActionLink
+			: inProductHelpActionButton;
 	const actionRole = InProductHelpActionType.HelpLink ? 'link' : 'button';
 	const inProductHelpButtonStyles =
 		appearance === InProductHelpActionButtonAppearance.Primary
-			? inProductHelpActionButtonPrimary : inProductHelpActionButtonDefault;
+			? inProductHelpActionButtonPrimary
+			: inProductHelpActionButtonDefault;
 
-	const openDrawer = () => {
+	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
+
+	const openDrawer = async () => {
 		setIsDrawerOpen(true);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
+			{
+				source: iphClickSource(screenName) || '',
+				actionSubject,
+				elementName: label
+			}
+		);
 	};
 
 	return (
