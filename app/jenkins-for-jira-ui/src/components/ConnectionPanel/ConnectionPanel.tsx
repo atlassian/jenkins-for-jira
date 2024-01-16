@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
@@ -6,6 +6,10 @@ import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -78,6 +82,7 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 		);
 		setJenkinsServers(refreshedServers);
 	};
+	console.log(jenkinsServers);
 
 	const handleRefreshUpdateServer = async (uuid: string) => {
 		setIsUpdatingServer(true);
@@ -95,6 +100,16 @@ const ConnectionPanel = ({ jenkinsServers, setJenkinsServers }: ConnectionPanelP
 			console.error('No Jenkins server found.');
 		}
 	};
+
+	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ConnectionWizardScreenName,
+			{
+				numberOfServers: jenkinsServers.length
+			}
+		);
+	}, [jenkinsServers]);
 
 	return (
 		<>

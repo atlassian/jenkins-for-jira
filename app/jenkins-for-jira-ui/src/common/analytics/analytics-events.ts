@@ -18,7 +18,8 @@ export enum AnalyticsScreenEventsEnum {
 	ConnectionWizardScreenName = 'connectWizardScreen',
 	ServerNameScreenName = 'serverNameScreen',
 	JenkinsSetupScreenName = 'jenkinsSetupScreen',
-	ConnectionCompleteScreenName = 'connectionCompleteScreen'
+	ConnectionCompleteScreenName = 'connectionCompleteScreen',
+	ServerManagementScreenName = 'serverManagementScreen'
 }
 
 export enum AnalyticsUiEventsEnum {

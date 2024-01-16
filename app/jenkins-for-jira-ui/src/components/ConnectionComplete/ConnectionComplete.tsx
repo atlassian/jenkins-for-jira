@@ -32,7 +32,7 @@ const ConnectionComplete = () => {
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ConnectionCompleteScreenName
+			AnalyticsScreenEventsEnum.ServerManagementScreenName
 		);
 
 		const fetchData = async () => {
@@ -44,7 +44,7 @@ const ConnectionComplete = () => {
 		};
 
 		fetchData();
-	}, [uuid, getServer]);
+	}, [uuid, getServer, isJenkinsAdmin]);
 
 	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
