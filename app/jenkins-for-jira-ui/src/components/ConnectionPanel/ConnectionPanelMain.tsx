@@ -19,12 +19,12 @@ import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
-import {AnalyticsClient} from "../../common/analytics/analytics-client";
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
-} from "../../common/analytics/analytics-events";
+} from '../../common/analytics/analytics-events';
 
 const analyticsClient = new AnalyticsClient();
 
