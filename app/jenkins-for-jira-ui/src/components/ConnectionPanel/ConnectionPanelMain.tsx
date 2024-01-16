@@ -64,6 +64,8 @@ type ConnectionPanelMainProps = {
 	uuidOfRefreshServer?: string,
 };
 
+const SET_UP_GUIDE_TAB = 1;
+
 const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers,
@@ -78,11 +80,11 @@ const ConnectionPanelMain = ({
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 
 	const handleClickSetupGuide = () => {
-		setSelectedTabIndex(1);
+		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
 
 	const handleTabSelect = async (index: number) => {
-		if (index === 1) {
+		if (index === SET_UP_GUIDE_TAB) {
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.SetUpGuideName,

@@ -41,16 +41,12 @@ const iphClickSource = (screenName?: string): string => {
 	switch (screenName) {
 		case SET_UP_GUIDE_SCREEN_NAME:
 			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
-			break;
 		case CONNECTION_WIZARD_SCREEN_NAME:
 			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
-			break;
 		case JENKINS_SETUP_SCREEN_NAME:
 			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
-			break;
 		default:
 			return '';
-			break;
 	}
 };
 

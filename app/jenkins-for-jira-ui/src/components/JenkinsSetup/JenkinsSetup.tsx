@@ -53,7 +53,7 @@ const analyticsClient = new AnalyticsClient();
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => Promise<void> | void;
-	testId?: string | undefined
+	testId?: string
 };
 
 const CopyButton = ({
@@ -243,15 +243,6 @@ const JenkinsSetup = (): JSX.Element => {
 
 	const handleCopyToClipboard =
 		async (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => {
-			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.UiEvent,
-				AnalyticsUiEventsEnum.CopiedToClipboardName,
-				{
-					source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
-					buttonClicked: elementName || 'Copy button'
-				}
-			);
-
 			if (copyRef.current) {
 				const range = document.createRange();
 				range.selectNode(copyRef.current);
@@ -272,10 +263,22 @@ const JenkinsSetup = (): JSX.Element => {
 					selection.removeAllRanges();
 				}
 			}
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.UiEvent,
+				AnalyticsUiEventsEnum.CopiedToClipboardName,
+				{
+					source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+					buttonClicked: elementName || 'Copy button'
+				}
+			);
 		};
 
 	const handleMyJenkinsAdminClick = async (e: React.MouseEvent) => {
 		e.preventDefault();
+
+		setShowMyJenkinsAdmin(true);
+		setShowIAmTheJenkinsAdmin(false);
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
@@ -284,13 +287,13 @@ const JenkinsSetup = (): JSX.Element => {
 				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
 			}
 		);
-
-		setShowMyJenkinsAdmin(true);
-		setShowIAmTheJenkinsAdmin(false);
 	};
 
 	const handleIAmTheJenkinsAdminClick = async (e: React.MouseEvent) => {
 		e.preventDefault();
+
+		setShowIAmTheJenkinsAdmin(true);
+		setShowMyJenkinsAdmin(false);
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
@@ -301,9 +304,6 @@ const JenkinsSetup = (): JSX.Element => {
 				actionSubject: 'button'
 			}
 		);
-
-		setShowIAmTheJenkinsAdmin(true);
-		setShowMyJenkinsAdmin(false);
 	};
 
 	const handleNavigateToConnectionCompleteScreen = (e: React.MouseEvent) => {
