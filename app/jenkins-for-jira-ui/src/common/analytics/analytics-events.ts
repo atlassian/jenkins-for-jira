@@ -48,7 +48,13 @@ export enum AnalyticsUiEventsEnum {
 	MyJenkinsAdminTabName = 'myJenkinsAdminTab',
 	IAmAJenkinsAdminTabName = 'iAmAJenkinsAdminTab',
 	CopiedToClipboardName = 'copiedToClipboard',
-	ViewStepByStepGuideName = 'viewStepByStepGuide'
+	ViewStepByStepGuideName = 'viewStepByStepGuide',
+	SharePageName = 'sharePage',
+	RenameServerName = 'renameServer',
+	ConnectionSettingsName = 'connectionSettings',
+	DisconnectServerName = 'disconnectServer',
+	ConfirmDisconnectServerName = 'confirmDisconnectServer',
+	SetUpGuideName = 'setUpGuideName'
 }
 
 export enum AnalyticsTrackEventsEnum {

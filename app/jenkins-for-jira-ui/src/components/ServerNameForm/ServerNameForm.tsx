@@ -155,7 +155,7 @@ const ServerNameForm = (): JSX.Element => {
 				pipelines: []
 			});
 			setIsLoading(false);
-			history.push(`/setup/${uuid}`);
+			history.push(`/setup/${uuid}/new-connection`);
 		} catch (e) {
 			console.error('Error: ', e);
 		}

@@ -16,28 +16,16 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
+import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
 	[ConnectedState.CONNECTED]: { textColor: '#206e4e', backgroundColor: '#dcfff1' },
 	[ConnectedState.DUPLICATE]: { textColor: '#ae2e24', backgroundColor: '#ffecea' },
 	[ConnectedState.PENDING]: { textColor: '#a54900', backgroundColor: '#fff7d6' },
 	[ConnectedState.UPDATE_AVAILABLE]: { textColor: '#0054cb', backgroundColor: '#e8f2ff' }
-};
-
-const setConnectedState = (
-	server: JenkinsServer,
-	isUpdatingServer: boolean,
-	updatedServer?: JenkinsServer
-): ConnectedState => {
-	let connectedState;
-
-	if (isUpdatingServer || !updatedServer) {
-		connectedState = server.connectedState;
-	} else if (updatedServer && updatedServer.uuid === server.uuid) {
-		connectedState = updatedServer?.connectedState;
-	}
-
-	return connectedState || ConnectedState.PENDING;
 };
 
 type ConnectionPanelTopProps = {
@@ -47,34 +35,52 @@ type ConnectionPanelTopProps = {
 	isUpdatingServer: boolean
 };
 const ConnectionPanelTop = ({
-
 	server,
-	refreshServers,
-	updatedServer,
-	isUpdatingServer
+	refreshServers
 }: ConnectionPanelTopProps): JSX.Element => {
 	const history = useHistory();
-	const connectedState = setConnectedState(server, isUpdatingServer, updatedServer);
+	const connectedState = server.connectedState || ConnectedState.PENDING;
 	const { textColor, backgroundColor } = connectedStateColors[connectedState];
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerName
+		);
+
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
-		history.push(`/setup/${serverToOpen.uuid}`);
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectionSettingsName
+		);
+
+		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
 	};
+
 	const onClickRename = async (serverToRename: JenkinsServer) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.RenameServerName
+		);
+
 		history.push(`/update-server-name/${serverToRename.uuid}`);
 	};
 
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfirmDisconnectServerName
+		);
+
 		setIsLoading(true);
 
 		try {
