@@ -16,6 +16,10 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
+import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 const connectedStateColors: Record<ConnectedState, { textColor: string; backgroundColor: string }> = {
 	[ConnectedState.CONNECTED]: { textColor: '#206e4e', backgroundColor: '#dcfff1' },
@@ -42,21 +46,41 @@ const ConnectionPanelTop = ({
 	const [isLoading, setIsLoading] = useState(false);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.DisconnectServerName
+		);
+
 		setServerToDisconnect(serverToDelete);
 		setShowConfirmServerDisconnect(true);
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectionSettingsName
+		);
+
 		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
 	};
 
 	const onClickRename = async (serverToRename: JenkinsServer) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.RenameServerName
+		);
+
 		history.push(`/update-server-name/${serverToRename.uuid}`);
 	};
 
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConfirmDisconnectServerName
+		);
+
 		setIsLoading(true);
 
 		try {

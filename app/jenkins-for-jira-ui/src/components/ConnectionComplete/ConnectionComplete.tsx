@@ -10,6 +10,10 @@ import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
 import { connectionCompleteConfirmation, connectionCompleteContent } from './ConnectionComplete.styles';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 const ConnectionComplete = () => {
 	const history = useHistory();
@@ -26,6 +30,11 @@ const ConnectionComplete = () => {
 	}, [uuid]);
 
 	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ServerManagementScreenName
+		);
+
 		const fetchData = async () => {
 			try {
 				getServer();
@@ -35,7 +44,7 @@ const ConnectionComplete = () => {
 		};
 
 		fetchData();
-	}, [uuid, getServer]);
+	}, [uuid, getServer, isJenkinsAdmin]);
 
 	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
