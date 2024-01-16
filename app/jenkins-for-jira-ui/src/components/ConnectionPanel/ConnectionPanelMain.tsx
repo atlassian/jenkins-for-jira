@@ -19,6 +19,14 @@ import { ConnectedJenkinsServers } from './ConnectedJenkinsServers';
 import { SetUpGuide, UpdateAvailable } from './SetUpGuide';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+
+const analyticsClient = new AnalyticsClient();
 
 type PanelProps = {
 	children: ReactNode,
@@ -57,6 +65,8 @@ type ConnectionPanelMainProps = {
 	moduleKey: string
 };
 
+const SET_UP_GUIDE_TAB = 1;
+
 const ConnectionPanelMain = ({
 	jenkinsServer,
 	refreshServers,
@@ -72,10 +82,21 @@ const ConnectionPanelMain = ({
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 
 	const handleClickSetupGuide = () => {
-		setSelectedTabIndex(1);
+		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
 
-	const handleTabSelect = (index: number) => {
+	const handleTabSelect = async (index: number) => {
+		if (index === SET_UP_GUIDE_TAB) {
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.UiEvent,
+				AnalyticsUiEventsEnum.SetUpGuideName,
+				{
+					// TODO ARC-2648 set this with moduleKey
+					source: AnalyticsScreenEventsEnum.ServerManagementScreenName
+				}
+			);
+		}
+
 		setSelectedTabIndex(index);
 	};
 

@@ -24,6 +24,14 @@ import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { updateJenkinsServer } from '../../api/updateJenkinsServer';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 export const getSiteNameFromUrl = (url: string): string => {
 	try {
@@ -129,8 +137,6 @@ const updateServerOnRefresh =
 			await updateJenkinsServer(updatedServer);
 		}
 
-		console.log('updatedServer', updatedServer);
-
 		return updatedServer;
 	};
 
@@ -165,6 +171,14 @@ const ServerManagement = (): JSX.Element => {
 	}, []);
 
 	const handleShowSharePageModal = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.SharePageName,
+			{
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+			}
+		);
+
 		setshowSharePage(true);
 	};
 
@@ -173,6 +187,14 @@ const ServerManagement = (): JSX.Element => {
 	};
 
 	const handleCopyToClipboard = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.CopiedToClipboardName,
+			{
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+			}
+		);
+
 		if (textAreaRef.current) {
 			textAreaRef.current.select();
 			document.execCommand('copy');

@@ -81,6 +81,7 @@ permissions:
     - storage:app
     - write:build-info:jira
     - delete:build-info:jira
+    - read:deployment-info:jira
     - write:deployment-info:jira
     - delete:deployment-info:jira
     - read:permission:jira
