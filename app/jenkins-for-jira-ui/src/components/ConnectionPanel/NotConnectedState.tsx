@@ -17,6 +17,7 @@ type NotConnectedStateProps = {
 	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	uuidOfRefreshServer?: string,
 	isUpdatingServer?: boolean,
+	moduleKey: string
 };
 
 const NotConnectedState = ({
@@ -25,7 +26,8 @@ const NotConnectedState = ({
 	jenkinsServer,
 	refreshServersAfterUpdate,
 	uuidOfRefreshServer,
-	isUpdatingServer
+	isUpdatingServer,
+	moduleKey
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
@@ -87,6 +89,7 @@ const NotConnectedState = ({
 								testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 								isIph={true}
 								jenkinsServerUuid={serverToDeleteUuid}
+								moduleKey={moduleKey}
 							/>
 						</>
 					)}

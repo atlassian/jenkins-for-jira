@@ -11,6 +11,7 @@ import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import {CONFIG_PAGE} from "../../common/constants";
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -24,7 +25,8 @@ type NotConnectedStateProps = {
 	buttonTwoOnClick?(data: any): void,
 	testId?: string,
 	isIph?: boolean,
-	jenkinsServerUuid?: string
+	jenkinsServerUuid?: string,
+	moduleKey: string
 };
 
 const ConnectionPanelContent = ({
@@ -39,7 +41,8 @@ const ConnectionPanelContent = ({
 	buttonTwoOnClick,
 	testId,
 	isIph,
-	jenkinsServerUuid
+	jenkinsServerUuid,
+	moduleKey
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
@@ -65,26 +68,30 @@ const ConnectionPanelContent = ({
 			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
 	}
 
+	const isAdminPage = moduleKey === CONFIG_PAGE;
+
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
 			{icon}
 			<h3 className={cx(connectionPanelContainerHeader)}>{contentHeader}</h3>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
-			<ButtonGroup>
-				<Button
-					appearance={buttonAppearance}
-					onClick={buttonOneOnClick}
-					testId={testId}
-				>
-					{firstButtonLabel}
-				</Button>
-				{
-					secondButtonLabel
-						? <>{secondaryButton}</>
-						: <></>
-				}
-			</ButtonGroup>
+			{
+				isAdminPage && <ButtonGroup>
+					<Button
+						appearance={buttonAppearance}
+						onClick={buttonOneOnClick}
+						testId={testId}
+					>
+						{firstButtonLabel}
+					</Button>
+					{
+						secondButtonLabel
+							? <>{secondaryButton}</>
+							: <></>
+					}
+				</ButtonGroup>
+			}
 		</div>
 	);
 };

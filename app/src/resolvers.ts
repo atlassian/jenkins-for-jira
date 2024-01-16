@@ -14,6 +14,7 @@ import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
 import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
+import { fetchModuleKey } from './utils/fetch-module-key';
 
 const resolver = new Resolver();
 
@@ -40,7 +41,10 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== 'jenkins-for-jira-global-page') {
+		await adminPermissionCheck(req);
+	}
+
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
 });
@@ -86,6 +90,10 @@ resolver.define('fetchAppData', async (req): Promise<FetchAppDataProps> => {
 	await adminPermissionCheck(req);
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return fetchAppData(req);
+});
+
+resolver.define('fetchModuleKey', async (req): Promise<string> => {
+	return fetchModuleKey(req);
 });
 
 export default resolver.getDefinitions();

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
+import { fetchModuleKey } from '../../api/fetchModuleKey';
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -61,12 +62,23 @@ const ConnectionPanel = ({
 	uuidOfRefreshServer,
 	handleRefreshUpdateServer
 }: ConnectionPanelProps): JSX.Element => {
+	const [moduleKey, setModuleKey] = useState<string>('');
+
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid
 		);
 		setJenkinsServers(refreshedServers);
 	};
+
+	const getModuleKey = async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	};
+
+	useEffect(() => {
+		getModuleKey();
+	}, []);
 
 	return (
 		<>
@@ -79,6 +91,7 @@ const ConnectionPanel = ({
 								refreshServers={handleServerRefresh}
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
+								moduleKey={moduleKey}
 							/>
 							<ConnectionPanelMain
 								jenkinsServer={server}
@@ -87,6 +100,7 @@ const ConnectionPanel = ({
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
+								moduleKey={moduleKey}
 							/>
 						</div>
 					);
