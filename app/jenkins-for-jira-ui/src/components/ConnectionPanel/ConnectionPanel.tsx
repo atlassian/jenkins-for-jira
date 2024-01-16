@@ -81,7 +81,7 @@ const ConnectionPanel = ({
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ConnectionWizardScreenName,
+			AnalyticsScreenEventsEnum.ServerNameScreenName,
 			{
 				numberOfServers: jenkinsServers.length,
 				numberOfPendingServers: connectedStateCount(jenkinsServers, ConnectedState.PENDING),

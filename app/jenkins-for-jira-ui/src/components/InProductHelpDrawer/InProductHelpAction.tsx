@@ -12,6 +12,11 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {
+	CONNECTION_WIZARD_SCREEN_NAME,
+	JENKINS_SETUP_SCREEN_NAME,
+	SET_UP_GUIDE_SCREEN_NAME
+} from '../../common/constants';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -34,8 +39,14 @@ const analyticsClient = new AnalyticsClient();
 
 const iphClickSource = (screenName?: string): string => {
 	switch (screenName) {
-		case 'home-page-configured-state':
+		case SET_UP_GUIDE_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
+			break;
+		case CONNECTION_WIZARD_SCREEN_NAME:
 			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
+			break;
+		case JENKINS_SETUP_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
 			break;
 		default:
 			return '';

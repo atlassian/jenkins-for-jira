@@ -20,13 +20,12 @@ import {
 	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
+import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
 
 type UpdateAvailableProps = {
 	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
 	serverUuid: string
 };
-
-const SET_UP_GUIDE_SCREEN_NAME = 'home-page-configured-state';
 
 export const UpdateAvailable = ({
 	refreshServerAfterUpdate,

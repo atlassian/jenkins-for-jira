@@ -40,7 +40,7 @@ import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../Conn
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
-import { HELP_LINK } from '../../common/constants';
+import { HELP_LINK, JENKINS_SETUP_SCREEN_NAME } from '../../common/constants';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
 import {
 	AnalyticsEventTypes,
@@ -132,7 +132,7 @@ const MyJenkinsAdmin = ({
 				content="Your Jenkins admin may need your input as they set up this server."
 				iphLabel="How to set up Jenkins servers to suit your team's needs"
 				iphType={InProductHelpActionType.HelpLink}
-				screenName='jenkins-setup'
+				screenName={JENKINS_SETUP_SCREEN_NAME}
 			/>
 		</div>
 	);
