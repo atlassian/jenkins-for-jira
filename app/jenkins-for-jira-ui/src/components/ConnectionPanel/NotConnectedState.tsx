@@ -31,7 +31,7 @@ const NotConnectedState = ({
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
-
+	console.log('NotConnectedState', moduleKey);
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
 		setServerToDelteUuid(serverToDelete.uuid);
@@ -53,9 +53,6 @@ const NotConnectedState = ({
 	};
 
 	const isPending = connectedState === ConnectedState.PENDING;
-	console.log('CONNECTED STATE: ', connectedState);
-	console.log('isPending: ', isPending);
-	console.log('jenkinsServer.name: ', jenkinsServer.name);
 
 	return (
 		<div className={cx(notConnectedStateContainer)}>
@@ -91,7 +88,8 @@ const NotConnectedState = ({
 										? () => (refreshServersAfterUpdate || (() => {}))(jenkinsServer.uuid)
 										: deleteServerWrapper
 								}
-								testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
+								testId={`delete-button-${jenkinsServer.name}`}
+								// testId={!isPending ?  : undefined}
 								isIph={true}
 								jenkinsServerUuid={serverToDeleteUuid}
 								moduleKey={moduleKey}

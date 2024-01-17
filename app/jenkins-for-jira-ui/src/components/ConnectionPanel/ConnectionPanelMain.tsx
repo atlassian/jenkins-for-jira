@@ -82,6 +82,7 @@ const ConnectionPanelMain = ({
 	const [isCheckingPipelineData, setIsCheckingPipelineData] = useState<boolean>(false);
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 
+	console.log('ConnectionPanelMain', moduleKey);
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
