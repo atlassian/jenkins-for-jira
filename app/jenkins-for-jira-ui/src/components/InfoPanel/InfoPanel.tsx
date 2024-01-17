@@ -8,11 +8,12 @@ type InfoPanelProps = {
 	content: string,
 	iphContainerWidth?: string,
 	iphLabel: string,
-	iphType: InProductHelpActionType
+	iphType: InProductHelpActionType,
+	screenName: string
 };
 
 const InfoPanel = ({
-	content, iphContainerWidth, iphLabel, iphType
+	content, iphContainerWidth, iphLabel, iphType, screenName
 }: InfoPanelProps) => {
 	return (
 		<div className={cx(infoPanelContainer)} style={{ width: iphContainerWidth }}>
@@ -23,6 +24,7 @@ const InfoPanel = ({
 					label={iphLabel}
 					type={iphType}
 					indexName={iphLabel}
+					screenName={screenName}
 				/>
 			</p>
 		</div>

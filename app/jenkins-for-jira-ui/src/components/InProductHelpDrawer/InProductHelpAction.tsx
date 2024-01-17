@@ -7,6 +7,17 @@ import {
 } from './InProductHelp.styles';
 import { InProductHelpDrawer } from './InProductHelpDrawer';
 import { Hit } from '../../hooks/useAlgolia';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {
+	CONNECTION_WIZARD_SCREEN_NAME,
+	JENKINS_SETUP_SCREEN_NAME,
+	SET_UP_GUIDE_SCREEN_NAME
+} from '../../common/constants';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -23,6 +34,22 @@ type InProductHelpActionProps = {
 	type: InProductHelpActionType,
 	appearance?: InProductHelpActionButtonAppearance,
 	indexName: string
+	screenName?: string
+};
+
+const analyticsClient = new AnalyticsClient();
+
+const iphClickSource = (screenName?: string): string => {
+	switch (screenName) {
+		case SET_UP_GUIDE_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
+		case CONNECTION_WIZARD_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
+		case JENKINS_SETUP_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
+		default:
+			return '';
+	}
 };
 // ...
 
@@ -30,7 +57,8 @@ export const InProductHelpAction = ({
 	label,
 	type,
 	appearance,
-	indexName
+	indexName,
+	screenName
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [hits, setHits] = useState<Hit[]>([]);
@@ -44,8 +72,20 @@ export const InProductHelpAction = ({
 			? inProductHelpActionButtonPrimary
 			: inProductHelpActionButtonDefault;
 
-	const openDrawer = () => {
+	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
+
+	const openDrawer = async () => {
 		setIsDrawerOpen(true);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
+			{
+				source: iphClickSource(screenName) || '',
+				actionSubject,
+				elementName: label
+			}
+		);
 	};
 
 	return (

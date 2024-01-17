@@ -20,6 +20,7 @@ import {
 	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
+import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
 
 type UpdateAvailableProps = {
 	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
@@ -44,6 +45,7 @@ export const UpdateAvailable = ({
 					type={InProductHelpActionType.HelpButton}
 					appearance={InProductHelpActionButtonAppearance.Primary}
 					indexName="learn-more-set-up-guide"
+					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
@@ -66,6 +68,7 @@ const SetUpGuidePipelineStepInstruction = ({
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
 				indexName={pipelineStepLabel}
+				screenName={SET_UP_GUIDE_SCREEN_NAME}
 			/>&nbsp;step to the end of {eventType} stages.
 		</p>
 	);
@@ -115,6 +118,7 @@ export const SetUpGuideInstructions = ({
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
 						indexName={regex || '<regex>'}
+						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>
 				</p>
 			</>
@@ -126,6 +130,7 @@ export const SetUpGuideInstructions = ({
 					label="No setup required"
 					type={InProductHelpActionType.HelpLink}
 					indexName="no-set-up-required"
+					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 			</p>;
 	} else {
@@ -159,13 +164,14 @@ const SetUpGuide = ({
 			<ol className={cx(orderedList)}>
 				<li className={cx(orderedListItem)}>
 					<strong className={cx(setUpGuideOrderListItemHeader)}>
-								Developers in your project teams
+						Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
 						(e.g. <InProductHelpAction
 						label="JIRA-1234"
 						type={InProductHelpActionType.HelpLink}
 						indexName="JIRA-1234"
+						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>)
 						into their branch names and commit message.
 					</p>
@@ -189,8 +195,9 @@ const SetUpGuide = ({
 
 			<InfoPanel
 				content="Not sure who should use this guide? It depends how your teams use Jenkins."
-				iphLabel="Here’s what you need to know."
+				iphLabel="Here's what you need to know."
 				iphType={InProductHelpActionType.HelpLink}
+				screenName={SET_UP_GUIDE_SCREEN_NAME}
 			/>
 		</>
 	);

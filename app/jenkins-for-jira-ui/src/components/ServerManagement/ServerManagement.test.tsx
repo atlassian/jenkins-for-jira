@@ -165,10 +165,8 @@ describe('ServerManagement Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
-
-		fireEvent.click(screen.getByText('Share page'));
-		fireEvent.click(screen.getByText('Copy to clipboard'));
-
+		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
+		await waitFor(() => fireEvent.click(screen.getByText('Copy to clipboard')));
 		await waitFor(() => screen.getByText('Copied to clipboard'));
 		expect(document.execCommand).toHaveBeenCalledWith('copy');
 	});
@@ -179,8 +177,8 @@ describe('ServerManagement Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
+		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
 
-		fireEvent.click(screen.getByText('Share page'));
 		expect(screen.getByText('Copy to clipboard')).toBeInTheDocument();
 
 		await waitFor(() => screen.getByText('Close'));

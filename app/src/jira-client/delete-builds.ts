@@ -1,3 +1,4 @@
+import api, { route, Route } from '@forge/api';
 import { JiraResponse } from './types';
 import { InvalidPayloadError } from '../common/error';
 import { Errors } from '../common/error-messages';
@@ -11,16 +12,17 @@ async function deleteBuilds(cloudId: string, jenkinsServerUuid?: string): Promis
 		throw new InvalidPayloadError(Errors.MISSING_CLOUD_ID);
 	}
 
-	let url = `/jira/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}`;
+	let deleteBuildsRoute: Route;
 	if (jenkinsServerUuid) {
-		url += `&jenkinsServerUuid=${jenkinsServerUuid}`;
+		// eslint-disable-next-line max-len
+		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}&jenkinsServerUuid=${jenkinsServerUuid}`;
+	} else {
+		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}`;
 	}
 
-	// @ts-ignore // required so that Typescript doesn't complain about the missing 'api' property
-	// eslint-disable-next-line no-underscore-dangle
-	const apiResponse = await global.api
+	const apiResponse = await api
 		.asApp()
-		.__requestAtlassian(url, {
+		.requestConnectedData(deleteBuildsRoute, {
 			method: 'DELETE'
 		});
 

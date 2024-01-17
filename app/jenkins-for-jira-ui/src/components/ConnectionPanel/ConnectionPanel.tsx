@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => {
 	const ipAddressSet = new Set<string>();
@@ -44,6 +48,12 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 		});
 };
 
+const connectedStateCount = (jenkinsServers: JenkinsServer[], connectedState: ConnectedState): number => {
+	const stateCount =
+		jenkinsServers.filter((server: JenkinsServer) => server.connectedState === connectedState);
+	return stateCount.length;
+};
+
 type ConnectionPanelProps = {
 	jenkinsServers: JenkinsServer[],
 	setJenkinsServers(updatedServers: JenkinsServer[]): void,
@@ -67,6 +77,20 @@ const ConnectionPanel = ({
 		);
 		setJenkinsServers(refreshedServers);
 	};
+
+	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.ServerNameScreenName,
+			{
+				numberOfServers: jenkinsServers.length,
+				numberOfPendingServers: connectedStateCount(jenkinsServers, ConnectedState.PENDING),
+				numberOfUpdateAvailableServers: connectedStateCount(jenkinsServers, ConnectedState.UPDATE_AVAILABLE),
+				numberOfConnectedServers: connectedStateCount(jenkinsServers, ConnectedState.CONNECTED),
+				numberOfDuplicateServers: connectedStateCount(jenkinsServers, ConnectedState.DUPLICATE)
+			}
+		);
+	}, [jenkinsServers]);
 
 	return (
 		<>

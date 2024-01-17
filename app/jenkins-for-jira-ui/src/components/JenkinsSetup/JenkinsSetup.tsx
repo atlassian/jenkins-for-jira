@@ -40,11 +40,19 @@ import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../Conn
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
-import { HELP_LINK } from '../../common/constants';
+import { HELP_LINK, JENKINS_SETUP_SCREEN_NAME } from '../../common/constants';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 type CopyProps = {
-	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>) => Promise<void> | void;
+	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => Promise<void> | void;
 	testId?: string
 };
 
@@ -75,7 +83,7 @@ const CopyButton = ({
 				iconBefore={<CopyIcon label="Copy" size="medium" />}
 				onClick={() => {
 					if (copyRef && copyRef.current) {
-						handleCopyToClipboard(copyRef);
+						handleCopyToClipboard(copyRef, testId);
 						setIsCopied(true);
 					}
 				}}
@@ -122,8 +130,9 @@ const MyJenkinsAdmin = ({
 
 			<InfoPanel
 				content="Your Jenkins admin may need your input as they set up this server."
-				iphLabel="How to set up Jenkins servers to suit your team’s needs"
+				iphLabel="How to set up Jenkins servers to suit your team's needs"
 				iphType={InProductHelpActionType.HelpLink}
+				screenName={JENKINS_SETUP_SCREEN_NAME}
 			/>
 		</div>
 	);
@@ -141,8 +150,14 @@ const IAmTheJenkinsAdmin = ({
 	secretRef,
 	connectionSettings
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
-	const handleFollowLink = (e: React.MouseEvent): void => {
+	const handleFollowLink = async (e: React.MouseEvent): Promise<void> => {
 		e.preventDefault();
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ViewStepByStepGuideName
+		);
+
 		router.open(HELP_LINK);
 	};
 
@@ -166,7 +181,9 @@ const IAmTheJenkinsAdmin = ({
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookUrlRef} testId="copy-webhook-url" />
+					<CopyButton
+						handleCopyToClipboard={handleCopyToClipboard}
+						copyRef={webhookUrlRef} testId="copy-webhook-url" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Secret token
@@ -174,7 +191,7 @@ const IAmTheJenkinsAdmin = ({
 				</li>
 			</ol>
 
-			<p className={cx(jenkinsSetupContent)}>When you’re done, select {connectionSettings ? 'Done' : 'Next'}</p>
+			<p className={cx(jenkinsSetupContent)}>When you're done, select {connectionSettings ? 'Done' : 'Next'}</p>
 		</div>
 	);
 };
@@ -205,6 +222,11 @@ const JenkinsSetup = (): JSX.Element => {
 	}, [uuid]);
 
 	useEffect(() => {
+		analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.ScreenEvent,
+			AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+		);
+
 		const fetchData = async () => {
 			try {
 				const url = await fetchSiteName();
@@ -219,39 +241,69 @@ const JenkinsSetup = (): JSX.Element => {
 		fetchData();
 	}, [uuid, getServer]);
 
-	const handleCopyToClipboard = (copyRef: React.RefObject<HTMLDivElement>) => {
-		if (copyRef.current) {
-			const range = document.createRange();
-			range.selectNode(copyRef.current);
+	const handleCopyToClipboard =
+		async (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => {
+			if (copyRef.current) {
+				const range = document.createRange();
+				range.selectNode(copyRef.current);
 
-			const selection = window.getSelection();
-			if (selection) {
-				selection.removeAllRanges();
-				selection.addRange(range);
+				const selection = window.getSelection();
+				if (selection) {
+					selection.removeAllRanges();
+					selection.addRange(range);
+				}
+
+				try {
+					document.execCommand('copy');
+				} catch (err) {
+					console.error('Copy to clipboard failed:', err);
+				}
+
+				if (selection) {
+					selection.removeAllRanges();
+				}
 			}
 
-			try {
-				document.execCommand('copy');
-			} catch (err) {
-				console.error('Copy to clipboard failed:', err);
-			}
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.UiEvent,
+				AnalyticsUiEventsEnum.CopiedToClipboardName,
+				{
+					source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+					buttonClicked: elementName || 'Copy button'
+				}
+			);
+		};
 
-			if (selection) {
-				selection.removeAllRanges();
-			}
-		}
-	};
-
-	const handleMyJenkinsAdminClick = (e: React.MouseEvent) => {
+	const handleMyJenkinsAdminClick = async (e: React.MouseEvent) => {
 		e.preventDefault();
+
 		setShowMyJenkinsAdmin(true);
 		setShowIAmTheJenkinsAdmin(false);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.MyJenkinsAdminTabName,
+			{
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+			}
+		);
 	};
 
-	const handleIAmTheJenkinsAdminClick = (e: React.MouseEvent) => {
+	const handleIAmTheJenkinsAdminClick = async (e: React.MouseEvent) => {
 		e.preventDefault();
+
 		setShowIAmTheJenkinsAdmin(true);
 		setShowMyJenkinsAdmin(false);
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
+			{
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+				action: 'clicked I am (I\'m a Jenkins admin)',
+				actionSubject: 'button'
+			}
+		);
 	};
 
 	const handleNavigateToConnectionCompleteScreen = (e: React.MouseEvent) => {
