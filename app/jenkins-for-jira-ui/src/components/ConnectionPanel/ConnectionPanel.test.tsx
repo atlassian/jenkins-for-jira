@@ -121,6 +121,7 @@ describe('Connection Panel Suite', () => {
 			uuidOfRefreshServer='198219dnq9fn1293r12'
 			updatedServer={undefined}
 			handleRefreshUpdateServer={jest.fn()}
+			moduleKey={CONFIG_PAGE}
 		/>);
 
 		await waitFor(() => {
