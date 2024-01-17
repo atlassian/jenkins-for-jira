@@ -11,22 +11,33 @@ export type SearchState = {
 	hits: Hit[]
 };
 
+// type Hits = {
+// 	id: string,
+// 	body: string,
+// 	objectID: string,
+// 	title: string
+// };
+
 export type InProductHelpDrawerProps = {
 	isDrawerOpen: boolean,
 	setIsDrawerOpen(isDrawerOpen: boolean): void,
-	hits: Hit[]
+	searchResults: any
 };
 
 export const InProductHelpDrawer = ({
 	isDrawerOpen,
 	setIsDrawerOpen,
-	hits
+	searchResults
 }: InProductHelpDrawerProps): JSX.Element => {
 	const closeDrawer = () => {
 		setIsDrawerOpen(false);
 	};
 
-	console.log('hits:', hits);
+	const results = Array.isArray(searchResults)
+		? searchResults
+		: searchResults.hits;
+
+	console.log('hits:', results);
 
 	return (
 		<Drawer
@@ -35,7 +46,8 @@ export const InProductHelpDrawer = ({
 			width="wide"
 			label="Basic drawer"
 		>
-			<div>Add content here for each link item</div>
+			<h4>{results[0].title}</h4>
+			<div dangerouslySetInnerHTML={{ __html: results[0].body }} />
 		</Drawer>
 	);
 };

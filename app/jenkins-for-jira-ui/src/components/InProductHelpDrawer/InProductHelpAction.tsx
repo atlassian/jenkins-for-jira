@@ -6,7 +6,7 @@ import {
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import {Hit, InProductHelpDrawer, SearchState} from './InProductHelpDrawer';
+import { Hit, InProductHelpDrawer, SearchState } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -63,12 +63,11 @@ export const InProductHelpAction = ({
 	searchQuery,
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
-	const [searchState, setSearchState] = useState<SearchState>({
+	const [searchResults, setSearchResults] = useState<SearchState>({
 		query: searchQuery,
 		hits: []
 	});
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [hits, setHits] = useState<Hit[]>([]);
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink
 			? inProductHelpActionLink
@@ -101,19 +100,19 @@ export const InProductHelpAction = ({
 	const index = algoliaClient.initIndex(indexName);
 
 	const search = useCallback(async () => {
-		if (searchState.query.trim() === '') {
-			setSearchState({ ...searchState, hits: [] });
+		if (searchResults.query.trim() === '') {
+			setSearchResults({ ...searchResults, hits: [] });
 			return;
 		}
 
 		try {
 			const results = await index.search<Hit>('fkXjwybosO2ev4g5lLsZw');
-			console.log('Algolia results:', results, searchState.query); // Log Algolia results
-			setSearchState(results);
+			console.log('Algolia results:', results, searchResults.query); // Log Algolia results
+			setSearchResults(results);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 		}
-	}, [index, searchState, setSearchState]);
+	}, [index, searchResults, setSearchResults]);
 
 	return (
 		<>
@@ -139,7 +138,7 @@ export const InProductHelpAction = ({
 					<InProductHelpDrawer
 						isDrawerOpen={isDrawerOpen}
 						setIsDrawerOpen={setIsDrawerOpen}
-						hits={hits}
+						searchResults={searchResults}
 					/>
 			}
 		</>
