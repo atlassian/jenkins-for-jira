@@ -53,6 +53,9 @@ const NotConnectedState = ({
 	};
 
 	const isPending = connectedState === ConnectedState.PENDING;
+	console.log('CONNECTED STATE: ', connectedState);
+	console.log('isPending: ', isPending);
+	console.log('jenkinsServer.name: ', jenkinsServer.name);
 
 	return (
 		<div className={cx(notConnectedStateContainer)}>

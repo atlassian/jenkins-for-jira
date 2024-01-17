@@ -75,7 +75,6 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			{
-				connectedState !== ConnectedState.DUPLICATE &&
 				moduleKey === CONFIG_PAGE && <ButtonGroup>
 					<Button
 						appearance={buttonAppearance}

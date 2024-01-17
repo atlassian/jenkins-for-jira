@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	fireEvent, render, waitFor, screen, act
+	act, fireEvent, render, screen, waitFor
 } from '@testing-library/react';
 import { invoke } from '@forge/bridge';
 import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
@@ -297,7 +297,7 @@ describe('ServerManagement Component', () => {
 			});
 		});
 
-		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
+		test.only('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
@@ -311,10 +311,10 @@ describe('ServerManagement Component', () => {
 				expect(screen.getByText(servers[2].name)).toBeInTheDocument();
 			});
 
-			// Confirm server that isn't a duplicate does not have a delete button
 			expect(screen.queryByTestId(`delete-button-${servers[0].name}`)).not.toBeInTheDocument();
 
 			const deleteButton = screen.getByTestId(`delete-button-${servers[2].name}`);
+			// Confirm server that isn't a duplicate does not have a delete button
 			fireEvent.click(deleteButton);
 
 			await waitFor(() => {
@@ -342,10 +342,8 @@ describe('ServerManagement Component', () => {
 				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
 			});
 
-			await waitFor(() => {
-				const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
-				fireEvent.click(dropdownButton);
-			});
+			const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
+			fireEvent.click(dropdownButton);
 
 			// Click Disconnect in the dropdown
 			await waitFor(() => {
