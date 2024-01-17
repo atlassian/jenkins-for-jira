@@ -51,7 +51,6 @@ const iphClickSource = (screenName?: string): string => {
 			return '';
 	}
 };
-// ...
 
 export const InProductHelpAction = ({
 	label,
