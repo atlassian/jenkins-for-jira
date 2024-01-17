@@ -22,7 +22,6 @@ export type SearchState = {
 };
 
 export function useAlgolia({ indexName, searchState, setSearchState }: UseAlgoliaProps) {
-	console.log('ALGOLIA_API_KEY', ALGOLIA_API_KEY);
 	const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 	const index = algoliaClient.initIndex(indexName);
 
