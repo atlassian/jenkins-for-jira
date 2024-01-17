@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	render, fireEvent, waitFor, screen
+	render, waitFor, screen
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { GlobalPage } from './GlobalPage';
@@ -130,7 +130,8 @@ describe('GlobalPage Component', () => {
 	// todo - uncomment in ARC-2648
 	// it('should render Empty state when there are no servers', async () => {
 	// 	jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
-	// 	jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+	// 	jest.spyOn(
+	// 	fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 	// 	jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 	//
 	// 	render(<GlobalPage />);
