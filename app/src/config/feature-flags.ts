@@ -92,9 +92,9 @@ const baseHeaders = {
     }
 };
 
-async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
-    const logger = Logger.getInstance('featureFlags');
+const logger = Logger.getInstance('featureFlags');
 
+async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
     try {
         const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders });
 
@@ -119,7 +119,6 @@ export const launchDarklyService = {
 };
 
 export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
-    const logger = Logger.getInstance('featureFlags');
     try {
         // custom env var as Forge overrides NODE_ENV in every environment with production
         // left NODE_ENV as a fallback as it's needed for tests and pipelines
