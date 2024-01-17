@@ -25,6 +25,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -58,7 +59,7 @@ export const Panel = ({
 type ConnectionPanelMainProps = {
 	jenkinsServer: JenkinsServer,
 	refreshServers(serverToRefresh: JenkinsServer): void
-	handleRefreshUpdateServer(serverUuidToUpdateUuid: string): void,
+	handleRefreshUpdateServer?(serverUuidToUpdateUuid: string): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
 	uuidOfRefreshServer?: string,
@@ -85,14 +86,17 @@ const ConnectionPanelMain = ({
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
 
+	const pageSource =
+		moduleKey === CONFIG_PAGE
+			? AnalyticsScreenEventsEnum.ServerManagementScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
+
 	const handleTabSelect = async (index: number) => {
 		if (index === SET_UP_GUIDE_TAB) {
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.SetUpGuideName,
 				{
-					// TODO ARC-2648 set this with moduleKey
-					source: AnalyticsScreenEventsEnum.ServerManagementScreenName
+					source: pageSource
 				}
 			);
 		}

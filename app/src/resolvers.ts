@@ -15,7 +15,7 @@ import { generateNewSecret } from './storage/generate-new-secret';
 import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 import { fetchModuleKey } from './utils/fetch-module-key';
-import {Logger} from "./config/logger";
+import { GLOBAL_PAGE } from '../jenkins-for-jira-ui/src/common/constants';
 
 const resolver = new Resolver();
 
@@ -42,21 +42,19 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	const logger = Logger.getInstance('blah');
-	logger.info('here: ', req.context);
-	if (req.context.moduleKey !== 'jenkins-for-jira-global-page') {
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
 		await adminPermissionCheck(req);
 	}
-
-	logger.info('skipping admin check');
 
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
-	// TODO - do we want to allow refresh??
-	// await adminPermissionCheck(req);
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
+		await adminPermissionCheck(req);
+	}
+
 	const jenkinsServerUuid = req.payload.uuid as string;
 	internalMetrics.counter(metricResolverEmitter.getJenkinsServerWithSecret).incr();
 	return getJenkinsServerWithSecret(jenkinsServerUuid);

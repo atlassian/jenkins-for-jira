@@ -68,8 +68,6 @@ const ConnectionPanelContent = ({
 			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
 	}
 
-	const isAdminPage = moduleKey === CONFIG_PAGE;
-
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
 			{icon}
@@ -77,7 +75,8 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			{
-				isAdminPage && <ButtonGroup>
+				connectedState !== ConnectedState.DUPLICATE &&
+				moduleKey === CONFIG_PAGE && <ButtonGroup>
 					<Button
 						appearance={buttonAppearance}
 						onClick={buttonOneOnClick}

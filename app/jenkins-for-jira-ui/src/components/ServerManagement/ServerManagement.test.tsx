@@ -342,8 +342,10 @@ describe('ServerManagement Component', () => {
 				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
 			});
 
-			const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
-			fireEvent.click(dropdownButton);
+			await waitFor(() => {
+				const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
+				fireEvent.click(dropdownButton);
+			});
 
 			// Click Disconnect in the dropdown
 			await waitFor(() => {

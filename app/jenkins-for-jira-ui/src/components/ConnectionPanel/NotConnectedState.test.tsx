@@ -8,7 +8,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import { NotConnectedState } from './NotConnectedState';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
-import {CONFIG_PAGE} from "../../common/constants";
+import { CONFIG_PAGE } from '../../common/constants';
 
 describe('NotConnectedState', () => {
 	const mockServer = {

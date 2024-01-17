@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PageHeader from '@atlaskit/page-header';
-import { isEqual } from 'lodash';
 import Button from '@atlaskit/button/standard-button';
 import { cx } from '@emotion/css';
 import TextArea from '@atlaskit/textarea';
@@ -8,11 +7,10 @@ import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
 import { JenkinsServer } from '../../../../src/common/types';
-import { ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
+import { addConnectedState, ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 import { TopPanel } from '../ServerManagement/TopPanel/TopPanel';
-import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
-import { getSharePageMessage, updateServerOnRefresh } from '../ServerManagement/ServerManagement';
+import { getSharePageMessage } from '../ServerManagement/ServerManagement';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -27,9 +25,6 @@ const analyticsClient = new AnalyticsClient();
 
 export const GlobalPage = (): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
-	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
-	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
-	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
 	const [showSharePage, setshowSharePage] = useState<boolean>(false);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const isMountedRef = React.useRef<boolean>(true);
@@ -38,7 +33,8 @@ export const GlobalPage = (): JSX.Element => {
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
-		setJenkinsServers(servers);
+		const serversWithConnectedState = addConnectedState(servers);
+		setJenkinsServers(serversWithConnectedState);
 	};
 
 	useEffect(() => {
@@ -62,34 +58,6 @@ export const GlobalPage = (): JSX.Element => {
 	if (!jenkinsServers) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
-
-	const handleRefreshUpdateServer = async (uuid: string) => {
-		setIsUpdatingServer(true);
-		setUuidOfRefreshServer(uuid);
-
-		try {
-			const server = await getJenkinsServerWithSecret(uuid);
-			const updatedServerData = await updateServerOnRefresh(server, jenkinsServers);
-			const index = jenkinsServers.findIndex((s) => s.uuid === updatedServerData?.uuid);
-
-			if (index !== -1 && updatedServerData) {
-				const isDifferent = !isEqual(jenkinsServers[index], updatedServerData);
-
-				if (isDifferent) {
-					const newJenkinsServers = [...jenkinsServers];
-					newJenkinsServers[index] = updatedServerData;
-					setJenkinsServers(newJenkinsServers);
-				}
-			}
-
-			setUpdatedServer(updatedServerData);
-			setIsUpdatingServer(false);
-		} catch (e) {
-			console.error('No Jenkins server found.');
-		} finally {
-			setIsUpdatingServer(false);
-		}
-	};
 
 	const handleShowSharePageModal = async () => {
 		await analyticsClient.sendAnalytics(
@@ -146,14 +114,7 @@ export const GlobalPage = (): JSX.Element => {
 				? <>
 					<TopPanel />
 
-					<ConnectionPanel
-						jenkinsServers={jenkinsServers}
-						setJenkinsServers={setJenkinsServers}
-						updatedServer={updatedServer}
-						isUpdatingServer={isUpdatingServer}
-						uuidOfRefreshServer={uuidOfRefreshServer}
-						handleRefreshUpdateServer={handleRefreshUpdateServer}
-					/>
+					<ConnectionPanel jenkinsServers={jenkinsServers} />
 				</>
 				: <>
 					{/* TODO - add empty state (to be done in ARC-2648) */}

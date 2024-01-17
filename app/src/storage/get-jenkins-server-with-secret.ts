@@ -10,7 +10,7 @@ const getJenkinsServerWithSecret = async (jenkinsServerUuid: string): Promise<Je
 
 	try {
 		const jenkinsServer: JenkinsServer = await storage.get(`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServerUuid}`);
-
+		logger.debug('jenkinsServer', jenkinsServer);
 		if (!jenkinsServer) {
 			const errorMsg = `Couldn't find Jenkins server ${jenkinsServerUuid}`;
 			logger.error(errorMsg);

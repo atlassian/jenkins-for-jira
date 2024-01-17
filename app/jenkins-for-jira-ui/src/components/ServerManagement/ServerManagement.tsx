@@ -106,7 +106,7 @@ export const contentToRenderServerManagementScreen = (
 	return contentToRender;
 };
 
-const addConnectedStateToServer =
+export const addConnectedStateToServer =
 	(allServers: JenkinsServer[], singleServer: JenkinsServer, ipAddress?: string): JenkinsServer => {
 		const isDuplicate =
 		ipAddress &&
