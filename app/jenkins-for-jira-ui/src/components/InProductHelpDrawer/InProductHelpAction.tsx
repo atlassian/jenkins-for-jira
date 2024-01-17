@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { cx } from '@emotion/css';
+import algoliasearch from 'algoliasearch';
 import {
 	inProductHelpActionButton, inProductHelpActionButtonDefault,
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import { InProductHelpDrawer } from './InProductHelpDrawer';
-import { Hit } from '../../hooks/useAlgolia';
+import {Hit, InProductHelpDrawer, SearchState} from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -18,6 +18,7 @@ import {
 	JENKINS_SETUP_SCREEN_NAME,
 	SET_UP_GUIDE_SCREEN_NAME
 } from '../../common/constants';
+import envVars from '../../common/env';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -52,6 +53,9 @@ const iphClickSource = (screenName?: string): string => {
 	}
 };
 
+const ALGOLIA_APP_ID = '8K6J5OJIQW';
+const { ALGOLIA_API_KEY } = envVars;
+
 export const InProductHelpAction = ({
 	label,
 	type,
@@ -59,6 +63,10 @@ export const InProductHelpAction = ({
 	searchQuery,
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
+	const [searchState, setSearchState] = useState<SearchState>({
+		query: searchQuery,
+		hits: []
+	});
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [hits, setHits] = useState<Hit[]>([]);
 	const inProductHelpTypeClassName =
@@ -75,6 +83,7 @@ export const InProductHelpAction = ({
 
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
+		await search();
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
@@ -86,6 +95,25 @@ export const InProductHelpAction = ({
 			}
 		);
 	};
+
+	const indexName = 'product_help_dev';
+	const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+	const index = algoliaClient.initIndex(indexName);
+
+	const search = useCallback(async () => {
+		if (searchState.query.trim() === '') {
+			setSearchState({ ...searchState, hits: [] });
+			return;
+		}
+
+		try {
+			const results = await index.search<Hit>('fkXjwybosO2ev4g5lLsZw');
+			console.log('Algolia results:', results, searchState.query); // Log Algolia results
+			setSearchState(results);
+		} catch (e) {
+			console.error('Error searching Algolia index:', e);
+		}
+	}, [index, searchState, setSearchState]);
 
 	return (
 		<>
@@ -106,13 +134,14 @@ export const InProductHelpAction = ({
 			>
 				{label}
 			</span>
-			<InProductHelpDrawer
-				isDrawerOpen={isDrawerOpen}
-				setIsDrawerOpen={setIsDrawerOpen}
-				hits={hits}
-				searchQuery={searchQuery}
-				setHits={setHits}
-			/>
+			{
+				isDrawerOpen &&
+					<InProductHelpDrawer
+						isDrawerOpen={isDrawerOpen}
+						setIsDrawerOpen={setIsDrawerOpen}
+						hits={hits}
+					/>
+			}
 		</>
 	);
 };

@@ -1,38 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Drawer from '@atlaskit/drawer';
-import { Hit, SearchState, useAlgolia } from '../../hooks/useAlgolia';
+
+export type Hit = {
+	objectID: number,
+	title: string
+};
+
+export type SearchState = {
+	query: string,
+	hits: Hit[]
+};
 
 export type InProductHelpDrawerProps = {
 	isDrawerOpen: boolean,
 	setIsDrawerOpen(isDrawerOpen: boolean): void,
-	hits: Hit[],
-	searchQuery: string,
-	setHits(hits: Hit[]): void
+	hits: Hit[]
 };
 
 export const InProductHelpDrawer = ({
 	isDrawerOpen,
 	setIsDrawerOpen,
-	hits,
-	searchQuery,
-	setHits
+	hits
 }: InProductHelpDrawerProps): JSX.Element => {
-	const [searchState, setSearchState] = useState<SearchState>({
-		query: searchQuery,
-		hits: []
-	});
-
 	const closeDrawer = () => {
 		setIsDrawerOpen(false);
 	};
 
-	const { hits: searchResults } = useAlgolia({ searchState, setSearchState });
-
-	useEffect(() => {
-		setHits(searchResults);
-	});
-
-	console.log(hits);
+	console.log('hits:', hits);
 
 	return (
 		<Drawer
@@ -41,7 +35,7 @@ export const InProductHelpDrawer = ({
 			width="wide"
 			label="Basic drawer"
 		>
-			<div>Add content here for each link item {searchQuery}</div>
+			<div>Add content here for each link item</div>
 		</Drawer>
 	);
 };
