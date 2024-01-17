@@ -32,7 +32,7 @@ const ConnectionComplete = () => {
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ServerManagementScreenName
+			AnalyticsScreenEventsEnum.ConnectionCompleteScreenName
 		);
 
 		const fetchData = async () => {

@@ -15,6 +15,7 @@ import { generateNewSecret } from './storage/generate-new-secret';
 import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 import { fetchModuleKey } from './utils/fetch-module-key';
+import {Logger} from "./config/logger";
 
 const resolver = new Resolver();
 
@@ -41,9 +42,13 @@ resolver.define('updateJenkinsServer', async (req) => {
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
+	const logger = Logger.getInstance('blah');
+	logger.info('here: ', req.context);
 	if (req.context.moduleKey !== 'jenkins-for-jira-global-page') {
 		await adminPermissionCheck(req);
 	}
+
+	logger.info('skipping admin check');
 
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();

@@ -140,6 +140,16 @@ export const updateServerOnRefresh =
 		return updatedServer;
 	};
 
+export const getSharePageMessage = (globalPageUrl: string): string => {
+	return `Hi there,
+Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+
+To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
+${globalPageUrl}
+
+You'll need to follow the set up guide for each server connected.`;
+};
+
 const ServerManagement = (): JSX.Element => {
 	const history = useHistory();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
@@ -175,7 +185,7 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.SharePageName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName
 			}
 		);
 
@@ -191,7 +201,7 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName
 			}
 		);
 
@@ -223,6 +233,7 @@ const ServerManagement = (): JSX.Element => {
 		};
 
 		fetchData();
+
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
@@ -275,14 +286,7 @@ const ServerManagement = (): JSX.Element => {
 		</ButtonGroup>
 	);
 
-	const sharePageMessage =
-		`Hi there,
-Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
-
-To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
-${globalPageUrl}
-
-You'll need to follow the set up guide for each server connected.`;
+	const sharePageMessage = getSharePageMessage(globalPageUrl);
 
 	const contentToRender =
 		contentToRenderServerManagementScreen(

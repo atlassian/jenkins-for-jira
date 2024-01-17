@@ -23,6 +23,8 @@ import { ServerManagement } from './components/ServerManagement/ServerManagement
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
 import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
 import { ConnectionComplete } from './components/ConnectionComplete/ConnectionComplete';
+import { GlobalPage } from './components/GlobalPage/GlobalPage';
+import { fetchModuleKey } from './api/fetchModuleKey';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -60,10 +62,21 @@ const AppContainer = styled.div`
 	padding-bottom: ${token('space.300')};
 `;
 
+const GlobalContainer = styled.div`
+	margin: auto;
+	max-width: 936px;
+`;
+
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
 	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
+	const [moduleKey, setModuleKey] = useState<string>('');
+
+	const getModuleKey = async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	};
 
 	useEffect(() => {
 		let isMounted = true;
@@ -75,6 +88,8 @@ const App: React.FC = () => {
 				const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
 					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 				);
+
+				getModuleKey();
 
 				if (isMounted) {
 					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
@@ -98,7 +113,7 @@ const App: React.FC = () => {
 		};
 	}, []);
 
-	if (!history || isFetchingFlag) {
+	if (!history || isFetchingFlag || !moduleKey) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -111,47 +126,61 @@ const App: React.FC = () => {
 	});
 
 	return (
-		<AppContainer>
-			<Router history={history}>
-				<Switch>
-					<Route exact path="/">
-						{renovateConfigFlag
-							? <ServerManagement />
-							: <JenkinsServerList />
-						}
-					</Route>
+		<>
+			{moduleKey === 'jenkins-for-jira-global-page' ? (
+				<GlobalContainer>
+					<Router history={history}>
+						<Switch>
+							<Route path="/">
+								<GlobalPage />
+							</Route>
+						</Switch>
+					</Router>
+				</GlobalContainer>
+			) : (
+				<AppContainer>
+					<Router history={history}>
+						<Switch>
+							<Route exact path="/">
+								{renovateConfigFlag
+									? <ServerManagement />
+									: <JenkinsServerList />
+								}
+							</Route>
 
-					{/* TODO - delete routes for old version post renovate rollout */}
-					<Route path="/install">
-						<InstallJenkins />
-					</Route>
-					<Route path="/create">
-						<CreateServer />
-					</Route>
-					<Route path="/connect/:id">
-						<ConnectJenkins />
-					</Route>
-					<Route path="/manage/:id">
-						<ManageConnection />
-					</Route>
-					<Route path="/pending/:id">
-						<PendingDeploymentState />
-					</Route>
-					<Route path="/create-server">
-						<ServerNameForm />
-					</Route>
-					<Route path="/update-server-name/:id">
-						<ServerNameForm />
-					</Route>
-					<Route path="/setup/:id/:settings">
-						<JenkinsSetup />
-					</Route>
-					<Route path="/connection-complete/:id/:admin">
-						<ConnectionComplete />
-					</Route>
-				</Switch>
-			</Router>
-		</AppContainer>
+							{/* TODO - delete routes for old version post renovate rollout */}
+							<Route path="/install">
+								<InstallJenkins />
+							</Route>
+							<Route path="/create">
+								<CreateServer />
+							</Route>
+							<Route path="/connect/:id">
+								<ConnectJenkins />
+							</Route>
+							<Route path="/manage/:id">
+								<ManageConnection />
+							</Route>
+							<Route path="/pending/:id">
+								<PendingDeploymentState />
+							</Route>
+							<Route path="/create-server">
+								<ServerNameForm />
+							</Route>
+							<Route path="/update-server-name/:id">
+								<ServerNameForm />
+							</Route>
+							<Route path="/setup/:id/:settings">
+								<JenkinsSetup />
+							</Route>
+							<Route path="/connection-complete/:id/:admin">
+								<ConnectionComplete />
+							</Route>
+						</Switch>
+					</Router>
+				</AppContainer>
+			)}
+		</>
 	);
 };
 

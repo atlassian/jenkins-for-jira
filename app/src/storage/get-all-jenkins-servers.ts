@@ -13,6 +13,7 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 
 		let results: Result[] = [];
 		let response = await fetchInitialResult();
+		logger.debug('response', response);
 		results = response.results;
 
 		while (response.nextCursor) {
@@ -22,7 +23,7 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 		}
 
 		const jenkinsServers = transformToJenkinsServers(results);
-
+		logger.debug('have the servers uyo', jenkinsServers);
 		return jenkinsServers;
 	} catch (error) {
 		logger.error('Failed to fetch Jenkins server list', { error });

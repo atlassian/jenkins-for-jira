@@ -6,7 +6,7 @@ export interface EnvVars {
 
 const envVars: EnvVars = {
     LAUNCHDARKLY_API_KEY: process.env.LAUNCHDARKLY_API_KEY || '',
-    LAUNCHDARKLY_APP_NAME: process.env.LAUNCHDARKLY_APP_NAME || '',
+    LAUNCHDARKLY_APP_NAME: process.env.LAUNCHDARKLY_APP_NAME || 'jenkins-for-jira',
     JENKINS_ENV: process.env.JENKINS_ENV || ''
 };
 
