@@ -20,7 +20,7 @@ import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
-import {fetchModuleKey} from "../../api/fetchModuleKey";
+import { fetchModuleKey } from '../../api/fetchModuleKey';
 
 const analyticsClient = new AnalyticsClient();
 

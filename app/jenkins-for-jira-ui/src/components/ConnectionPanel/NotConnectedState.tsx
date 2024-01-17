@@ -31,7 +31,6 @@ const NotConnectedState = ({
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
-	console.log('NotConnectedState', moduleKey);
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
 		setServerToDelteUuid(serverToDelete.uuid);

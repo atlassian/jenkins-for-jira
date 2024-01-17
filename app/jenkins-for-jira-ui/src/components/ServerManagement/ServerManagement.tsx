@@ -170,8 +170,6 @@ const ServerManagement = (): JSX.Element => {
 		setJenkinsServers(serversWithConnectedState);
 	};
 
-	console.log('moduleKey 1: ', moduleKey);
-
 	const redirectToAdminPage = useCallback(async () => {
 		try {
 			if (isMountedRef.current) {

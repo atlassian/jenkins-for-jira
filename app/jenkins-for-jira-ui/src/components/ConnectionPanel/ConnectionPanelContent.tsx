@@ -68,8 +68,6 @@ const ConnectionPanelContent = ({
 			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
 	}
 
-	console.log('moduleKey', moduleKey);
-
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
 			{icon}
