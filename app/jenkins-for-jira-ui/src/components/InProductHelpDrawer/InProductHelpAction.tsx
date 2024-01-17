@@ -6,7 +6,7 @@ import {
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import { Hit, InProductHelpDrawer, SearchState } from './InProductHelpDrawer';
+import { Hit, InProductHelpDrawer } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -64,10 +64,7 @@ export const InProductHelpAction = ({
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [searchResults, setSearchResults] = useState<SearchState>({
-		query: searchQuery,
-		hits: []
-	});
+	const [searchResults, setSearchResults] = useState<Hit[]>([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink
@@ -103,21 +100,28 @@ export const InProductHelpAction = ({
 	const search = useCallback(async () => {
 		setIsLoading(true);
 
-		if (searchResults.query.trim() === '') {
-			setSearchResults({ ...searchResults, hits: [] });
+		if (searchQuery.trim() === '') {
+			setSearchResults([]);
 			return;
 		}
 
 		try {
 			const results = await index.search<Hit>('1uM1eoE33LGKdqDxsd3Jpg');
-			console.log('Algolia results:', results, searchResults.query);
-			setSearchResults(results);
+			const hitsData: Hit[] = results.hits.map((hit) => ({
+				id: hit.objectID,
+				objectID: hit.objectID,
+				title: hit.title,
+				body: hit.body || '',
+				bodyText: hit.bodyText || ''
+			}));
+
+			setSearchResults(hitsData);
 			setIsLoading(false);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 		}
-	}, [index, searchResults, setSearchResults]);
+	}, [index, setSearchResults, searchQuery]);
 
 	return (
 		<>

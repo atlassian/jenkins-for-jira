@@ -2,21 +2,12 @@ import React from 'react';
 import Drawer from '@atlaskit/drawer';
 
 export type Hit = {
-	objectID: number,
+	id: string,
+	body?: string,
+	bodyText?: string,
+	objectID: string,
 	title: string
 };
-
-export type SearchState = {
-	query: string,
-	hits: Hit[]
-};
-
-// type Hits = {
-// 	id: string,
-// 	body: string,
-// 	objectID: string,
-// 	title: string
-// };
 
 export type InProductHelpDrawerProps = {
 	isDrawerOpen: boolean,
