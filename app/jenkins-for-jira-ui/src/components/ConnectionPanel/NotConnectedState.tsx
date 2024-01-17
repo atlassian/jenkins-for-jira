@@ -88,8 +88,7 @@ const NotConnectedState = ({
 										? () => (refreshServersAfterUpdate || (() => {}))(jenkinsServer.uuid)
 										: deleteServerWrapper
 								}
-								testId={`delete-button-${jenkinsServer.name}`}
-								// testId={!isPending ?  : undefined}
+								testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 								isIph={true}
 								jenkinsServerUuid={serverToDeleteUuid}
 								moduleKey={moduleKey}

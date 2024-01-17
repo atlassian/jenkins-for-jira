@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { cx } from '@emotion/css';
 import { ConnectionPanelMain } from './ConnectionPanelMain';
 import { ConnectionPanelTop } from './ConnectionPanelTop';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
-import { fetchModuleKey } from '../../api/fetchModuleKey';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { CONFIG_PAGE } from '../../common/constants';
@@ -62,7 +61,8 @@ type ConnectionPanelProps = {
 	updatedServer?: JenkinsServer | undefined,
 	isUpdatingServer?: boolean,
 	uuidOfRefreshServer?: string,
-	handleRefreshUpdateServer?(uuid: string): void
+	handleRefreshUpdateServer?(uuid: string): void,
+	moduleKey: string
 };
 
 const ConnectionPanel = ({
@@ -71,10 +71,9 @@ const ConnectionPanel = ({
 	updatedServer,
 	isUpdatingServer,
 	uuidOfRefreshServer,
-	handleRefreshUpdateServer
+	handleRefreshUpdateServer,
+	moduleKey
 }: ConnectionPanelProps): JSX.Element => {
-	const [moduleKey, setModuleKey] = useState<string>('');
-
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid
@@ -85,18 +84,21 @@ const ConnectionPanel = ({
 		}
 	};
 
-	const getModuleKey = async () => {
-		const currentModuleKey = await fetchModuleKey();
-		setModuleKey(currentModuleKey);
-	};
-
 	const screenEvent =
 		moduleKey ===
 		CONFIG_PAGE ? AnalyticsScreenEventsEnum.ServerNameScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
+	console.log('moduleKey blah', moduleKey);
 	useEffect(() => {
-		getModuleKey();
+		const fetchData = async () => {
+			try {
+				// await getModuleKey();
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
 
+		fetchData();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			screenEvent,

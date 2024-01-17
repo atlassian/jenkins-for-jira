@@ -74,6 +74,7 @@ export const contentToRenderServerManagementScreen = (
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
 								handleRefreshUpdateServer={handleRefreshUpdateServer}
+								moduleKey={moduleKey}
 							/>
 						</div>
 					</>
@@ -168,6 +169,8 @@ const ServerManagement = (): JSX.Element => {
 		const serversWithConnectedState = addConnectedState(servers);
 		setJenkinsServers(serversWithConnectedState);
 	};
+
+	console.log('moduleKey 1: ', moduleKey);
 
 	const redirectToAdminPage = useCallback(async () => {
 		try {

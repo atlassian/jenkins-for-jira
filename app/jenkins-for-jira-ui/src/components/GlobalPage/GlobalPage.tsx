@@ -20,6 +20,7 @@ import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+import {fetchModuleKey} from "../../api/fetchModuleKey";
 
 const analyticsClient = new AnalyticsClient();
 
@@ -30,6 +31,12 @@ export const GlobalPage = (): JSX.Element => {
 	const isMountedRef = React.useRef<boolean>(true);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const [moduleKey, setModuleKey] = useState<string>();
+
+	const getModuleKey = async () => {
+		const currentModuleKey = await fetchModuleKey();
+		setModuleKey(currentModuleKey);
+	};
 
 	const fetchAllJenkinsServers = async () => {
 		const servers = await getAllJenkinsServers() || [];
@@ -43,6 +50,7 @@ export const GlobalPage = (): JSX.Element => {
 				const url = await fetchGlobalPageUrl();
 				setGlobalPageUrl(url);
 				await fetchAllJenkinsServers();
+				await getModuleKey();
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -55,7 +63,7 @@ export const GlobalPage = (): JSX.Element => {
 		};
 	}, []);
 
-	if (!jenkinsServers) {
+	if (!jenkinsServers || !moduleKey) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -114,7 +122,7 @@ export const GlobalPage = (): JSX.Element => {
 				? <>
 					<TopPanel />
 
-					<ConnectionPanel jenkinsServers={jenkinsServers} />
+					<ConnectionPanel jenkinsServers={jenkinsServers} moduleKey={moduleKey} />
 				</>
 				: <>
 					{/* TODO - add empty state (to be done in ARC-2648) */}

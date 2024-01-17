@@ -7,7 +7,7 @@ import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import * as redirectFromGetStartedModule from '../../api/redirectFromGetStarted';
 import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
-import * as fetchModuleKeyModule from '../../api/fetchModuleKey';
+// import * as fetchModuleKeyModule from '../../api/fetchModuleKey';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE } from '../../common/constants';
 
@@ -117,6 +117,7 @@ const servers: JenkinsServer[] = [
 document.execCommand = jest.fn();
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
+jest.mock('../../api/fetchModuleKey');
 
 describe('getSiteNameFromUrlt', () => {
 	test('correctly extracts site name from URL', async () => {
@@ -153,7 +154,7 @@ describe('ServerManagement Component', () => {
 
 	test('should render the ConnectionWizard when there are no servers', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
-		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
@@ -163,7 +164,7 @@ describe('ServerManagement Component', () => {
 
 	test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
-		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
@@ -175,7 +176,7 @@ describe('ServerManagement Component', () => {
 
 	test('should close the share modal when "Close" is clicked', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
-		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 		await waitFor(() => render(<ServerManagement />));
@@ -195,7 +196,7 @@ describe('ServerManagement Component', () => {
 	describe('Main panel states', () => {
 		test('should render panel content for PENDING server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[7]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -208,7 +209,7 @@ describe('ServerManagement Component', () => {
 
 		test('should render panel content for DUPLICATE server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -221,7 +222,7 @@ describe('ServerManagement Component', () => {
 
 		test('should render panel content for CONNECTED server without pipeline data', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[1]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -239,7 +240,7 @@ describe('ServerManagement Component', () => {
 
 		test('should render panel content for CONNECTED server with pipeline data', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[3]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -255,7 +256,7 @@ describe('ServerManagement Component', () => {
 
 		test('should render panel content for UPDATE_AVAILABLE server with pipeline data', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -271,7 +272,7 @@ describe('ServerManagement Component', () => {
 
 		test('should handle refreshing the panel for an UPDATE AVAILABLE server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -297,10 +298,10 @@ describe('ServerManagement Component', () => {
 			});
 		});
 
-		test.only('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
+		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
-			jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
+			// jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -332,7 +333,7 @@ describe('ServerManagement Component', () => {
 		test('should handle server disconnection and refreshing servers correctly', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
-			jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
+			// jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -388,7 +389,7 @@ describe('ServerManagement Component', () => {
 			};
 
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -422,7 +423,7 @@ describe('ServerManagement Component', () => {
 			};
 
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([server]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
