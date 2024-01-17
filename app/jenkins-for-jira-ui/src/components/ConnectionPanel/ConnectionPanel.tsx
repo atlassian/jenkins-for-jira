@@ -100,7 +100,7 @@ const ConnectionPanel = ({
 				numberOfDuplicateServers: connectedStateCount(jenkinsServers, ConnectedState.DUPLICATE)
 			}
 		);
-	}, []);
+	}, [jenkinsServers]);
 
 	return (
 		<>

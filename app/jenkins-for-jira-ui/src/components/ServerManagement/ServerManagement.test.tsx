@@ -7,7 +7,9 @@ import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import * as redirectFromGetStartedModule from '../../api/redirectFromGetStarted';
 import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
+import * as fetchModuleKeyModule from '../../api/fetchModuleKey';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const servers: JenkinsServer[] = [
 	{
@@ -297,7 +299,8 @@ describe('ServerManagement Component', () => {
 
 		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+			jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));
@@ -328,7 +331,8 @@ describe('ServerManagement Component', () => {
 
 		test('should handle server disconnection and refreshing servers correctly', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce('jenkins-for-jira-ui-admin-page');
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+			jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));

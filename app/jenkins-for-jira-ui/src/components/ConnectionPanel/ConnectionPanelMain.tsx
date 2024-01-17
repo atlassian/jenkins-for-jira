@@ -164,6 +164,7 @@ const ConnectionPanelMain = ({
 				buttonOneOnClick={handleClickSetupGuide}
 				buttonTwoOnClick={handleRefreshToCheckServerPipelines}
 				jenkinsServerUuid={jenkinsServer.uuid}
+				moduleKey={moduleKey}
 			/>
 		);
 	}

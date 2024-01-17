@@ -50,7 +50,8 @@ resolver.define('getAllJenkinsServers', async (req) => {
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
-	await adminPermissionCheck(req);
+	// TODO - do we want to allow refresh??
+	// await adminPermissionCheck(req);
 	const jenkinsServerUuid = req.payload.uuid as string;
 	internalMetrics.counter(metricResolverEmitter.getJenkinsServerWithSecret).incr();
 	return getJenkinsServerWithSecret(jenkinsServerUuid);

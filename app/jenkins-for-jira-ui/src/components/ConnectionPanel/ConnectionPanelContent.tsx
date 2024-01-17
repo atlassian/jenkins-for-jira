@@ -11,7 +11,7 @@ import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
-import {CONFIG_PAGE} from "../../common/constants";
+import { CONFIG_PAGE } from '../../common/constants';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;

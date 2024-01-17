@@ -128,7 +128,7 @@ const addConnectedStateToServer =
 		return updatedServer;
 	};
 
-const updateServerOnRefresh =
+export const updateServerOnRefresh =
 	async (server: JenkinsServer, allServers: JenkinsServer[]): Promise<JenkinsServer> => {
 		const ipAddress = server.pluginConfig?.ipAddress;
 		const updatedServer = addConnectedStateToServer(allServers, server, ipAddress);

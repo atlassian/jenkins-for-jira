@@ -8,6 +8,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import { NotConnectedState } from './NotConnectedState';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
+import {CONFIG_PAGE} from "../../common/constants";
 
 describe('NotConnectedState', () => {
 	const mockServer = {
@@ -29,6 +30,7 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServersAfterDelete={refreshServers}
 			refreshServersAfterUpdate={handleRefreshAfterUpdate}
+			moduleKey={CONFIG_PAGE}
 		/>);
 		expect(screen.getByText('Duplicate server')).toBeInTheDocument();
 		expect(screen.getByText('Delete')).toBeInTheDocument();
@@ -40,6 +42,7 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServersAfterDelete={refreshServers}
 			refreshServersAfterUpdate={handleRefreshAfterUpdate}
+			moduleKey={CONFIG_PAGE}
 		/>);
 		expect(screen.getByText('Connection pending')).toBeInTheDocument();
 		expect(screen.getByText('Refresh')).toBeInTheDocument();
@@ -53,6 +56,7 @@ describe('NotConnectedState', () => {
 			jenkinsServer={mockServer}
 			refreshServersAfterDelete={refreshServers}
 			refreshServersAfterUpdate={handleRefreshAfterUpdate}
+			moduleKey={CONFIG_PAGE}
 		/>);
 
 		fireEvent.click(screen.getByText('Delete'));
