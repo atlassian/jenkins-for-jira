@@ -6,7 +6,7 @@ export type InProductHelpDrawerProps = {
 	isDrawerOpen: boolean,
 	setIsDrawerOpen(isDrawerOpen: boolean): void,
 	hits: Hit[],
-	indexName: string,
+	searchQuery: string,
 	setHits(hits: Hit[]): void
 };
 
@@ -14,11 +14,11 @@ export const InProductHelpDrawer = ({
 	isDrawerOpen,
 	setIsDrawerOpen,
 	hits,
-	indexName,
+	searchQuery,
 	setHits
 }: InProductHelpDrawerProps): JSX.Element => {
 	const [searchState, setSearchState] = useState<SearchState>({
-		query: 'product_help_dev',
+		query: searchQuery,
 		hits: []
 	});
 
@@ -26,7 +26,7 @@ export const InProductHelpDrawer = ({
 		setIsDrawerOpen(false);
 	};
 
-	const { hits: searchResults } = useAlgolia({ indexName, searchState, setSearchState });
+	const { hits: searchResults } = useAlgolia({ searchState, setSearchState });
 
 	useEffect(() => {
 		setHits(searchResults);
@@ -41,7 +41,7 @@ export const InProductHelpDrawer = ({
 			width="wide"
 			label="Basic drawer"
 		>
-			<div>Add content here for each link item {indexName}</div>
+			<div>Add content here for each link item {searchQuery}</div>
 		</Drawer>
 	);
 };

@@ -33,7 +33,7 @@ type InProductHelpActionProps = {
 	label: string,
 	type: InProductHelpActionType,
 	appearance?: InProductHelpActionButtonAppearance,
-	indexName: string
+	searchQuery: string
 	screenName?: string
 };
 
@@ -56,7 +56,7 @@ export const InProductHelpAction = ({
 	label,
 	type,
 	appearance,
-	indexName,
+	searchQuery,
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -110,7 +110,7 @@ export const InProductHelpAction = ({
 				isDrawerOpen={isDrawerOpen}
 				setIsDrawerOpen={setIsDrawerOpen}
 				hits={hits}
-				indexName={indexName}
+				searchQuery={searchQuery}
 				setHits={setHits}
 			/>
 		</>

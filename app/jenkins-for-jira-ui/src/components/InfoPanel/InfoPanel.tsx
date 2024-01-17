@@ -23,7 +23,7 @@ const InfoPanel = ({
 				<InProductHelpAction
 					label={iphLabel}
 					type={iphType}
-					indexName={iphLabel}
+					searchQuery={iphLabel}
 					screenName={screenName}
 				/>
 			</p>

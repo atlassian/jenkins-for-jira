@@ -11,7 +11,6 @@ export type Hit = {
 };
 
 type UseAlgoliaProps = {
-	indexName: string,
 	searchState: SearchState,
 	setSearchState(searchResults: SearchState): void
 };
@@ -21,9 +20,10 @@ export type SearchState = {
 	hits: Hit[]
 };
 
-export function useAlgolia({ indexName, searchState, setSearchState }: UseAlgoliaProps) {
+export function useAlgolia({ searchState, setSearchState }: UseAlgoliaProps) {
+	const indexName = 'product_help_dev';
 	const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
-	const index = algoliaClient.initIndex(indexName);
+	const index = algoliaClient.initIndex('product_help_dev');
 
 	const search = useCallback(async () => {
 		if (searchState.query.trim() === '') {

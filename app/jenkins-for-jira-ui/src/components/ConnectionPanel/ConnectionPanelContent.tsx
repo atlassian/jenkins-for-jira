@@ -58,7 +58,7 @@ const ConnectionPanelContent = ({
 			<InProductHelpAction
 				label="Learn more"
 				type={InProductHelpActionType.HelpButton}
-				indexName="learn-more-connection-panel"
+				searchQuery="learn-more-connection-panel"
 			/>;
 	} else {
 		secondaryButton =

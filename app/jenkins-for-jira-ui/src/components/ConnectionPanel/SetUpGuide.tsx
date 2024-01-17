@@ -44,7 +44,7 @@ export const UpdateAvailable = ({
 					label="Learn more"
 					type={InProductHelpActionType.HelpButton}
 					appearance={InProductHelpActionButtonAppearance.Primary}
-					indexName="learn-more-set-up-guide"
+					searchQuery="learn-more-set-up-guide"
 					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
@@ -67,7 +67,7 @@ const SetUpGuidePipelineStepInstruction = ({
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
-				indexName={pipelineStepLabel}
+				searchQuery={pipelineStepLabel}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}
 			/>&nbsp;step to the end of {eventType} stages.
 		</p>
@@ -117,7 +117,7 @@ export const SetUpGuideInstructions = ({
 					<InProductHelpAction
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
-						indexName={regex || '<regex>'}
+						searchQuery={regex || '<regex>'}
 						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>
 				</p>
@@ -129,7 +129,7 @@ export const SetUpGuideInstructions = ({
 				<InProductHelpAction
 					label="No setup required"
 					type={InProductHelpActionType.HelpLink}
-					indexName="no-set-up-required"
+					searchQuery="no-set-up-required"
 					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 			</p>;
@@ -170,7 +170,7 @@ const SetUpGuide = ({
 						(e.g. <InProductHelpAction
 						label="JIRA-1234"
 						type={InProductHelpActionType.HelpLink}
-						indexName="JIRA-1234"
+						searchQuery="JIRA-1234"
 						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>)
 						into their branch names and commit message.
