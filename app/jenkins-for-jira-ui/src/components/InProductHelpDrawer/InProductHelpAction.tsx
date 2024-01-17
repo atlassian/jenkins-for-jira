@@ -63,6 +63,7 @@ export const InProductHelpAction = ({
 	searchQuery,
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
+	const [isLoading, setIsLoading] = useState(false);
 	const [searchResults, setSearchResults] = useState<SearchState>({
 		query: searchQuery,
 		hits: []
@@ -100,17 +101,21 @@ export const InProductHelpAction = ({
 	const index = algoliaClient.initIndex(indexName);
 
 	const search = useCallback(async () => {
+		setIsLoading(true);
+
 		if (searchResults.query.trim() === '') {
 			setSearchResults({ ...searchResults, hits: [] });
 			return;
 		}
 
 		try {
-			const results = await index.search<Hit>('fkXjwybosO2ev4g5lLsZw');
-			console.log('Algolia results:', results, searchResults.query); // Log Algolia results
+			const results = await index.search<Hit>('1uM1eoE33LGKdqDxsd3Jpg');
+			console.log('Algolia results:', results, searchResults.query);
 			setSearchResults(results);
+			setIsLoading(false);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
+			setIsLoading(false);
 		}
 	}, [index, searchResults, setSearchResults]);
 
@@ -139,6 +144,7 @@ export const InProductHelpAction = ({
 						isDrawerOpen={isDrawerOpen}
 						setIsDrawerOpen={setIsDrawerOpen}
 						searchResults={searchResults}
+						isLoading={isLoading}
 					/>
 			}
 		</>

@@ -21,13 +21,15 @@ export type SearchState = {
 export type InProductHelpDrawerProps = {
 	isDrawerOpen: boolean,
 	setIsDrawerOpen(isDrawerOpen: boolean): void,
-	searchResults: any
+	searchResults: any,
+	isLoading: boolean
 };
 
 export const InProductHelpDrawer = ({
 	isDrawerOpen,
 	setIsDrawerOpen,
-	searchResults
+	searchResults,
+	isLoading
 }: InProductHelpDrawerProps): JSX.Element => {
 	const closeDrawer = () => {
 		setIsDrawerOpen(false);
@@ -46,8 +48,11 @@ export const InProductHelpDrawer = ({
 			width="wide"
 			label="Basic drawer"
 		>
-			<h4>{results[0].title}</h4>
-			<div dangerouslySetInnerHTML={{ __html: results[0].body }} />
+			{
+				isLoading
+					? <div>add loader...</div>
+					: <div dangerouslySetInnerHTML={{ __html: results[0].body || results[0].bodyText }} />
+			}
 		</Drawer>
 	);
 };
