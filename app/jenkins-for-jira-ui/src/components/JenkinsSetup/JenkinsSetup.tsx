@@ -48,6 +48,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -133,6 +134,7 @@ const MyJenkinsAdmin = ({
 				iphLabel="How to set up Jenkins servers to suit your team's needs"
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={JENKINS_SETUP_SCREEN_NAME}
+				searchQuery={InProductHelpIds.JENKINS_SET_UP_NON_ADMIN_HOW_TO}
 			/>
 		</div>
 	);

@@ -21,7 +21,7 @@ export const inProductHelpActionButton = css`
 	line-height: 30px;
 	padding: 0 10px;
 	text-decoration: none;
-	transition: background 0.1s ease-out,box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+	transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
 	vertical-align: middle;
 	white-space: nowrap;
 	width: auto;
@@ -50,4 +50,12 @@ export const inProductHelpActionButtonDefault = css`
 	&:active {
 		background-color: ${token('color.background.neutral.pressed')};
 	}
+`;
+
+export const inProductHelpDrawerContainer = css`
+	padding: ${token('space.100')} ${token('space.800')} ${token('space.400')} ${token('space.0')};
+`;
+
+export const inProductHelpDrawerTitle = css`
+	margin-bottom: ${token('space.100')};
 `;
