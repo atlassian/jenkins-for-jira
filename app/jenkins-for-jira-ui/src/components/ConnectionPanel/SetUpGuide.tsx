@@ -185,7 +185,7 @@ const SetUpGuide = ({
 						(e.g. <InProductHelpAction
 						label="JIRA-1234"
 						type={InProductHelpActionType.HelpLink}
-						searchQuery="JIRA-1234"
+						searchQuery="1uM1eoE33LGKdqDxsd3Jpg"
 						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>)
 						into their branch names and commit message.

@@ -125,6 +125,7 @@ export const InProductHelpAction = ({
 
 		try {
 			const results = await index.search<Hit>(searchQuery);
+			console.log('results: ', results);
 			const hitsData: Hit[] = results.hits.map((hit) => ({
 				id: hit.objectID,
 				objectID: hit.objectID,
