@@ -1,5 +1,10 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import Drawer from '@atlaskit/drawer';
+import { cx } from '@emotion/css';
+import Spinner from '@atlaskit/spinner';
+import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
+import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
 
 export type Hit = {
 	id: string,
@@ -41,8 +46,24 @@ export const InProductHelpDrawer = ({
 		>
 			{
 				isLoading
-					? <div>add loader...</div>
-					: <div dangerouslySetInnerHTML={{ __html: results[0].body || results[0].bodyText }} />
+					? <div className={cx(loadingContainer)} data-testid="loading-spinner">
+						<Spinner size='large' />
+					</div>
+					: <div className={cx(inProductHelpDrawerContainer)}>
+						{
+							results.length
+								? <>
+									<h3 className={cx(inProductHelpDrawerTitle)}>{results[0].title}</h3>
+									<div
+										dangerouslySetInnerHTML={{
+											__html: DOMPurify.sanitize(results[0].body) ||
+												DOMPurify.sanitize(results[0].bodyText)
+										}}
+									/>
+								</>
+								: <></>
+						}
+					</div>
 			}
 		</Drawer>
 	);

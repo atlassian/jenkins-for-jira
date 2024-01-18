@@ -54,7 +54,25 @@ const iphClickSource = (screenName?: string): string => {
 };
 
 const ALGOLIA_APP_ID = '8K6J5OJIQW';
-const { ALGOLIA_API_KEY } = envVars;
+const { ALGOLIA_API_KEY, ENVIRONMENT } = envVars;
+
+enum AlgoliaEnvironmentIndicies {
+	Development = 'product_help_dev',
+	Staging = 'product_help_stg',
+	Production = 'product_help_prod'
+}
+
+const getIndexNameForEnvironment = (): string => {
+	if (ENVIRONMENT === 'staging') {
+		return AlgoliaEnvironmentIndicies.Staging;
+	}
+
+	if (ENVIRONMENT === 'production') {
+		return AlgoliaEnvironmentIndicies.Production;
+	}
+
+	return AlgoliaEnvironmentIndicies.Development;
+};
 
 export const InProductHelpAction = ({
 	label,
@@ -77,7 +95,7 @@ export const InProductHelpAction = ({
 			: inProductHelpActionButtonDefault;
 
 	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
-
+	console.log('search: ', searchQuery);
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
 		await search();
@@ -93,7 +111,7 @@ export const InProductHelpAction = ({
 		);
 	};
 
-	const indexName = 'product_help_dev';
+	const indexName = getIndexNameForEnvironment();
 	const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 	const index = algoliaClient.initIndex(indexName);
 
@@ -106,7 +124,7 @@ export const InProductHelpAction = ({
 		}
 
 		try {
-			const results = await index.search<Hit>('1uM1eoE33LGKdqDxsd3Jpg');
+			const results = await index.search<Hit>(searchQuery);
 			const hitsData: Hit[] = results.hits.map((hit) => ({
 				id: hit.objectID,
 				objectID: hit.objectID,

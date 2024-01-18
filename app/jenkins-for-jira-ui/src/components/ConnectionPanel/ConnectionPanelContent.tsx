@@ -11,6 +11,7 @@ import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -58,7 +59,7 @@ const ConnectionPanelContent = ({
 			<InProductHelpAction
 				label="Learn more"
 				type={InProductHelpActionType.HelpButton}
-				searchQuery="learn-more-connection-panel"
+				searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}
 			/>;
 	} else {
 		secondaryButton =
