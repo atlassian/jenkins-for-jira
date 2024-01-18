@@ -3,6 +3,7 @@ import PageHeader from '@atlaskit/page-header';
 import Button from '@atlaskit/button/standard-button';
 import { cx } from '@emotion/css';
 import TextArea from '@atlaskit/textarea';
+import { isEqual } from 'lodash';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
@@ -10,7 +11,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { addConnectedState, ConnectionPanel } from '../ConnectionPanel/ConnectionPanel';
 import { headerContainer } from '../JenkinsServerList/JenkinsServerList.styles';
 import { TopPanel } from '../ServerManagement/TopPanel/TopPanel';
-import { getSharePageMessage } from '../ServerManagement/ServerManagement';
+import { getSharePageMessage, updateServerOnRefresh } from '../ServerManagement/ServerManagement';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -21,6 +22,7 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { fetchModuleKey } from '../../api/fetchModuleKey';
+import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -32,6 +34,9 @@ export const GlobalPage = (): JSX.Element => {
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const [moduleKey, setModuleKey] = useState<string>();
+	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
+	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
+	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
 
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
@@ -107,6 +112,34 @@ export const GlobalPage = (): JSX.Element => {
 		setshowSharePage(false);
 	};
 
+	const handleRefreshUpdateServer = async (uuid: string) => {
+		setIsUpdatingServer(true);
+		setUuidOfRefreshServer(uuid);
+
+		try {
+			const server = await getJenkinsServerWithSecret(uuid);
+			const updatedServerData = await updateServerOnRefresh(server, jenkinsServers);
+			const index = jenkinsServers.findIndex((s) => s.uuid === updatedServerData?.uuid);
+
+			if (index !== -1 && updatedServerData) {
+				const isDifferent = !isEqual(jenkinsServers[index], updatedServerData);
+
+				if (isDifferent) {
+					const newJenkinsServers = [...jenkinsServers];
+					newJenkinsServers[index] = updatedServerData;
+					setJenkinsServers(newJenkinsServers);
+				}
+			}
+
+			setUpdatedServer(updatedServerData);
+			setIsUpdatingServer(false);
+		} catch (e) {
+			console.error('No Jenkins server found.');
+		} finally {
+			setIsUpdatingServer(false);
+		}
+	};
+
 	const pageHeaderAction = (
 		<Button onClick={() => handleShowSharePageModal()}>Share page</Button>
 	);
@@ -122,7 +155,15 @@ export const GlobalPage = (): JSX.Element => {
 				? <>
 					<TopPanel />
 
-					<ConnectionPanel jenkinsServers={jenkinsServers} moduleKey={moduleKey} />
+					<ConnectionPanel
+						jenkinsServers={jenkinsServers}
+						setJenkinsServers={setJenkinsServers}
+						updatedServer={updatedServer}
+						isUpdatingServer={isUpdatingServer}
+						uuidOfRefreshServer={uuidOfRefreshServer}
+						handleRefreshUpdateServer={handleRefreshUpdateServer}
+						moduleKey={moduleKey}
+					/>
 				</>
 				: <>
 					{/* TODO - add empty state (to be done in ARC-2648) */}

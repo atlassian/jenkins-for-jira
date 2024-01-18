@@ -59,10 +59,10 @@ export const Panel = ({
 type ConnectionPanelMainProps = {
 	jenkinsServer: JenkinsServer,
 	refreshServers(serverToRefresh: JenkinsServer): void
-	handleRefreshUpdateServer?(serverUuidToUpdateUuid: string): void,
+	handleRefreshUpdateServer(serverUuidToUpdateUuid: string): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
-	uuidOfRefreshServer?: string,
+	uuidOfRefreshServer: string,
 	moduleKey: string
 };
 
@@ -168,7 +168,6 @@ const ConnectionPanelMain = ({
 				buttonOneOnClick={handleClickSetupGuide}
 				buttonTwoOnClick={handleRefreshToCheckServerPipelines}
 				jenkinsServerUuid={jenkinsServer.uuid}
-				moduleKey={moduleKey}
 			/>
 		);
 	}

@@ -65,6 +65,7 @@ const AppContainer = styled.div`
 const GlobalContainer = styled.div`
 	margin: auto;
 	max-width: 936px;
+	padding-bottom: ${token('space.300')};
 `;
 
 const App: React.FC = () => {

@@ -9,12 +9,13 @@ import {
 import { JenkinsServer } from '../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
+import { GLOBAL_PAGE } from '../../common/constants';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState,
 	jenkinsServer: JenkinsServer,
 	refreshServersAfterDelete(serverToRefresh: JenkinsServer): void,
-	refreshServersAfterUpdate?(serverUuidToUpdate: string): void,
+	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	uuidOfRefreshServer?: string,
 	isUpdatingServer?: boolean,
 	moduleKey: string
@@ -53,6 +54,16 @@ const NotConnectedState = ({
 
 	const isPending = connectedState === ConnectedState.PENDING;
 
+	let firstButtonLabel;
+
+	if (connectedState === ConnectedState.DUPLICATE && moduleKey !== GLOBAL_PAGE) {
+		firstButtonLabel = 'Delete';
+	} else if (connectedState === ConnectedState.DUPLICATE && moduleKey === GLOBAL_PAGE) {
+		firstButtonLabel = undefined;
+	} else {
+		firstButtonLabel = 'Refresh';
+	}
+
 	return (
 		<div className={cx(notConnectedStateContainer)}>
 			{
@@ -80,17 +91,15 @@ const NotConnectedState = ({
 											: undefined
 									}
 								buttonAppearance={isPending ? 'primary' : 'danger'}
-								firstButtonLabel={isPending ? 'Refresh' : 'Delete'}
+								firstButtonLabel={firstButtonLabel}
 								secondButtonLabel={isPending ? 'Learn more' : undefined}
 								buttonOneOnClick={
 									isPending
-										? () => (refreshServersAfterUpdate || (() => {}))(jenkinsServer.uuid)
-										: deleteServerWrapper
+										? () => refreshServersAfterUpdate(jenkinsServer.uuid) : deleteServerWrapper
 								}
 								testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 								isIph={true}
 								jenkinsServerUuid={serverToDeleteUuid}
-								moduleKey={moduleKey}
 							/>
 						</>
 					)}
