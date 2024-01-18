@@ -61,7 +61,21 @@ export const connectionFlowContainer = css`
 	height: 100vh;
 	justify-content: center;
 	margin: ${token('space.negative.400')} auto;
+	// margin: ${token('space.negative.400')} auto;
 	width: 360px;
+`;
+
+// export const connectionFlowContainer = css`
+// 	align-items: center;
+// 	display: flex;
+// 	flex-direction: column;
+// 	justify-content: center;
+// 	margin: ${token('space.1000')} auto;
+// 	width: 360px;
+// `;
+
+export const connectionFlowHeaderContainer = css`
+	//margin-top: ${token('space.1000')};
 `;
 
 export const connectionFlowInnerContainer = css`

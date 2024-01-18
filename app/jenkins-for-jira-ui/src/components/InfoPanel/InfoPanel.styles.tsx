@@ -3,6 +3,7 @@ import { token } from '@atlaskit/tokens';
 
 export const infoPanelContainer = css`
 	background-color: #F7F8F9;
+	border: 3px;
 	display: flex;
 	padding: ${token('space.250')};
 

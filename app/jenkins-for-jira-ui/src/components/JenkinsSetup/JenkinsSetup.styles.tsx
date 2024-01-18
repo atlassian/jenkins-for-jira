@@ -9,9 +9,13 @@ export const jenkinsSetupContainer = css`
 	}
 `;
 
-export const jenkinsSetupServerName = css`
+export const jenkinsSetupServerNameContainer = css`
 	color: ${token('color.text.subtle')};
 	margin-bottom: ${token('space.0')};
+`;
+
+export const jenkinsSetupServerName = css`
+	font-weight: bold;
 `;
 
 export const jenkinsSetupHeader = css`
@@ -29,7 +33,8 @@ export const jenkinsSetupCopyContainer = css`
 	margin-top: ${token('space.400')};
 
 	[type=button] {
-		border-radius: 0;
+		border-radius: 3px;
+		width: 90px;
 	}
 `;
 
@@ -54,6 +59,10 @@ export const jenkinsSetupListItem = css`
 export const jenkinsSetupCopyButtonContainer = css`
 	margin-left: auto;
 	position: relative;
+`;
+
+export const jenkinsSetupViewButton = css`
+	width: 400px;
 `;
 
 export const jenkinsSetupInfoPanelContentContainer = css`

@@ -172,7 +172,7 @@ const SetUpGuide = ({
 					</p>
 				</li>
 
-				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
+				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile(s)</strong>
 					<ol className={cx(nestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
 							eventType={PipelineEventType.BUILD}
@@ -189,7 +189,7 @@ const SetUpGuide = ({
 			</ol>
 
 			<InfoPanel
-				content="Not sure who should use this guide? It depends how your teams use Jenkins."
+				content="Not sure who should use this guide?"
 				iphLabel="Here's what you need to know."
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}

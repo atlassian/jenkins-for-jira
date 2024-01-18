@@ -34,6 +34,7 @@ export const copyToClipboardContainer = css`
 `;
 
 export const copyToClipboard = css`
+	font-weight: normal;
 	margin-left: ${token('space.075')};
 `;
 
