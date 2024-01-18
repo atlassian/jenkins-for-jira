@@ -57,11 +57,11 @@ const connectedStateCount = (jenkinsServers: JenkinsServer[], connectedState: Co
 
 type ConnectionPanelProps = {
 	jenkinsServers: JenkinsServer[],
-	setJenkinsServers?(updatedServers: JenkinsServer[]): void,
-	updatedServer?: JenkinsServer | undefined,
-	isUpdatingServer?: boolean,
-	uuidOfRefreshServer?: string,
-	handleRefreshUpdateServer?(uuid: string): void,
+	setJenkinsServers(updatedServers: JenkinsServer[]): void,
+	updatedServer: JenkinsServer | undefined,
+	isUpdatingServer: boolean,
+	uuidOfRefreshServer: string,
+	handleRefreshUpdateServer(uuid: string): void,
 	moduleKey: string
 };
 
@@ -88,7 +88,6 @@ const ConnectionPanel = ({
 		moduleKey ===
 		CONFIG_PAGE ? AnalyticsScreenEventsEnum.ServerNameScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
-	console.log('moduleKey blah', moduleKey);
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -122,7 +121,7 @@ const ConnectionPanel = ({
 								server={server}
 								refreshServers={handleServerRefresh}
 								updatedServer={updatedServer}
-								isUpdatingServer={isUpdatingServer || false}
+								isUpdatingServer={isUpdatingServer}
 								moduleKey={moduleKey}
 							/>
 							<ConnectionPanelMain
@@ -130,7 +129,7 @@ const ConnectionPanel = ({
 								refreshServers={handleServerRefresh}
 								handleRefreshUpdateServer={handleRefreshUpdateServer}
 								updatedServer={updatedServer}
-								isUpdatingServer={isUpdatingServer || false}
+								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
 								moduleKey={moduleKey}
 							/>

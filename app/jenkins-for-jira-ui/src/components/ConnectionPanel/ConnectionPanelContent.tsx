@@ -11,7 +11,6 @@ import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
-import { CONFIG_PAGE } from '../../common/constants';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -19,14 +18,13 @@ type NotConnectedStateProps = {
 	contentInstructionOne: string,
 	contentInstructionTwo?: string,
 	buttonAppearance: Appearance,
-	firstButtonLabel: string,
+	firstButtonLabel?: string,
 	secondButtonLabel?: string,
 	buttonOneOnClick(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
 	testId?: string,
 	isIph?: boolean,
-	jenkinsServerUuid?: string,
-	moduleKey: string
+	jenkinsServerUuid?: string
 };
 
 const ConnectionPanelContent = ({
@@ -41,8 +39,7 @@ const ConnectionPanelContent = ({
 	buttonTwoOnClick,
 	testId,
 	isIph,
-	jenkinsServerUuid,
-	moduleKey
+	jenkinsServerUuid
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
 
@@ -68,16 +65,15 @@ const ConnectionPanelContent = ({
 			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
 	}
 
-	console.log('moduleKey', moduleKey);
-
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
 			{icon}
 			<h3 className={cx(connectionPanelContainerHeader)}>{contentHeader}</h3>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
-			{
-				moduleKey === CONFIG_PAGE && <ButtonGroup>
+			<ButtonGroup>
+				{
+					firstButtonLabel &&
 					<Button
 						appearance={buttonAppearance}
 						onClick={buttonOneOnClick}
@@ -85,13 +81,13 @@ const ConnectionPanelContent = ({
 					>
 						{firstButtonLabel}
 					</Button>
-					{
-						secondButtonLabel
-							? <>{secondaryButton}</>
-							: <></>
-					}
-				</ButtonGroup>
-			}
+				}
+				{
+					secondButtonLabel
+						? <>{secondaryButton}</>
+						: <></>
+				}
+			</ButtonGroup>
 		</div>
 	);
 };

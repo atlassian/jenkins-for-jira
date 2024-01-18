@@ -23,7 +23,7 @@ import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
 
 type UpdateAvailableProps = {
-	refreshServerAfterUpdate?(serverUuidToUpdate: string): void,
+	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
 	serverUuid: string
 };
 
@@ -46,7 +46,7 @@ export const UpdateAvailable = ({
 					appearance={InProductHelpActionButtonAppearance.Primary}
 					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
-				<Button onClick={() => (refreshServerAfterUpdate || (() => {}))(serverUuid)}>Refresh</Button>
+				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
 			</div>
 		</>
 	);

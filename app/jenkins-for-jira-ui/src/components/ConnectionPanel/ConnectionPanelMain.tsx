@@ -59,10 +59,10 @@ export const Panel = ({
 type ConnectionPanelMainProps = {
 	jenkinsServer: JenkinsServer,
 	refreshServers(serverToRefresh: JenkinsServer): void
-	handleRefreshUpdateServer?(serverUuidToUpdateUuid: string): void,
+	handleRefreshUpdateServer(serverUuidToUpdateUuid: string): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
-	uuidOfRefreshServer?: string,
+	uuidOfRefreshServer: string,
 	moduleKey: string
 };
 
@@ -82,7 +82,6 @@ const ConnectionPanelMain = ({
 	const [isCheckingPipelineData, setIsCheckingPipelineData] = useState<boolean>(false);
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 
-	console.log('ConnectionPanelMain', moduleKey);
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
@@ -169,7 +168,6 @@ const ConnectionPanelMain = ({
 				buttonOneOnClick={handleClickSetupGuide}
 				buttonTwoOnClick={handleRefreshToCheckServerPipelines}
 				jenkinsServerUuid={jenkinsServer.uuid}
-				moduleKey={moduleKey}
 			/>
 		);
 	}
