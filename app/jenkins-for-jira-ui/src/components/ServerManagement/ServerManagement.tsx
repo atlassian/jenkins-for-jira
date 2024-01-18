@@ -221,6 +221,8 @@ const ServerManagement = (): JSX.Element => {
 		}
 	};
 
+	console.log('IN SM');
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {

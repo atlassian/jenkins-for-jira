@@ -73,7 +73,7 @@ const App: React.FC = () => {
 	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 	const [moduleKey, setModuleKey] = useState<string>('');
-
+	console.log('APP');
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
 		setModuleKey(currentModuleKey);
