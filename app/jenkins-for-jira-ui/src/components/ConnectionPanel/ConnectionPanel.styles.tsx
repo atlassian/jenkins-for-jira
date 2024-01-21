@@ -199,6 +199,11 @@ export const setUpGuideOrderListItemHeader = css`
 	margin-bottom: ${token('space.200')};
 `;
 
+export const setUpGuideCode = css`
+	font-weight: bold;
+	margin-bottom: ${token('space.200')};
+`;
+
 export const setUpGuideUpdatedContainer = css`
 	margin: ${token('space.200')} 0 ${token('space.300')};
 `;

@@ -3,8 +3,31 @@ import DOMPurify from 'dompurify';
 import Drawer from '@atlaskit/drawer';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
+// import Button from '@atlaskit/button/standard-button';
+import { router } from '@forge/bridge';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
+
+const replaceAnchorsWithButtons = (content: string) => {
+	const tempDiv = document.createElement('div');
+	tempDiv.innerHTML = DOMPurify.sanitize(content);
+
+	const anchorTags = tempDiv.getElementsByTagName('a');
+
+	Array.from(anchorTags).forEach((anchorTag: HTMLAnchorElement) => {
+		const linkButton = document.createElement('button');
+		linkButton.innerHTML = DOMPurify.sanitize(anchorTag.innerText);
+		linkButton.addEventListener('click', (e) => {
+			e.preventDefault();
+			router.open(anchorTag.href);
+		});
+
+		// Replace the anchor tag with the link button
+		anchorTag.parentNode?.replaceChild(linkButton, anchorTag);
+	});
+
+	return tempDiv.innerHTML;
+};
 
 export type Hit = {
 	id: string,
@@ -56,8 +79,8 @@ export const InProductHelpDrawer = ({
 									<h3 className={cx(inProductHelpDrawerTitle)}>{results[0].title}</h3>
 									<div
 										dangerouslySetInnerHTML={{
-											__html: DOMPurify.sanitize(results[0].body) ||
-												DOMPurify.sanitize(results[0].bodyText)
+											__html: DOMPurify.sanitize(replaceAnchorsWithButtons(results[0].body)) ||
+												DOMPurify.sanitize(replaceAnchorsWithButtons(results[0].bodyText))
 										}}
 									/>
 								</>

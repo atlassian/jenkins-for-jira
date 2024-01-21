@@ -182,13 +182,7 @@ const SetUpGuide = ({
 						Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction
-						label="JIRA-1234"
-						type={InProductHelpActionType.HelpLink}
-						searchQuery="JIRA-1234"
-						screenName={SET_UP_GUIDE_SCREEN_NAME}
-					/>)
-						into their branch names and commit message.
+						(e.g. <code>JIRA-1234</code>) into their branch names and commit message.
 					</p>
 				</li>
 
