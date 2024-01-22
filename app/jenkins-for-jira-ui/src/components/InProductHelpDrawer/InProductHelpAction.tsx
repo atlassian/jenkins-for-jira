@@ -166,6 +166,7 @@ export const InProductHelpAction = ({
 						setIsDrawerOpen={setIsDrawerOpen}
 						searchResults={searchResults}
 						isLoading={isLoading}
+						searchQuery={searchQuery}
 					/>
 			}
 		</>
