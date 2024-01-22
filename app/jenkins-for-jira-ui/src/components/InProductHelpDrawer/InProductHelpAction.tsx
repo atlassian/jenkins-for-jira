@@ -95,7 +95,6 @@ export const InProductHelpAction = ({
 			: inProductHelpActionButtonDefault;
 
 	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
-	console.log('search: ', searchQuery);
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
 		await search();
