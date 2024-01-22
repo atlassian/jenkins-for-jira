@@ -11,3 +11,18 @@ export enum InProductHelpIds {
 	SET_UP_GUIDE_DEPLOYMENT_STAGES = '4EUiNVCtuDGhvKHuomL94F',
 	SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW = '5FbkJQKBJRN92vTktHCbA0'
 }
+
+export const getIdForLinkInIphDrawer = (searchQueryText: string) => {
+	switch (searchQueryText) {
+		case 'set up a Jenkinsfile to explicitly send deployment events to Jira.':
+			return InProductHelpIds.SET_UP_GUIDE_DEPLOYMENT_STAGES;
+		case 'Discuss your connection with your team' || 'Here’s how to find out.':
+			return InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM;
+		case 'set up guide' || 'Set up guides':
+			return InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW;
+		case 'pending':
+			return InProductHelpIds.PENDING_SERVER_LEARN_MORE;
+		default:
+			return '';
+	}
+};

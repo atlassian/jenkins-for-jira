@@ -5,7 +5,7 @@ import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
-import { InProductHelpIds } from './InProductHelpIds';
+import { getIdForLinkInIphDrawer } from './InProductHelpIds';
 
 const replaceAnchorsWithSpanElement = (content: string, searchQuery: string) => {
 	const tempDiv = document.createElement('div');
@@ -109,10 +109,12 @@ export const InProductHelpDrawer = ({
 		if (container) {
 			container.addEventListener('click', (e) => {
 				const clickedElement = e.target as HTMLElement;
+				console.log('clickedElement', clickedElement.innerHTML);
 
 				if (clickedElement.className === 'iph-link') {
 					e.preventDefault();
-					search(InProductHelpIds.SET_UP_GUIDE_NO_SET_UP_REQUIRED);
+					const iphDrawerLinkId = getIdForLinkInIphDrawer(clickedElement.innerText);
+					search(iphDrawerLinkId);
 				}
 			});
 		}
