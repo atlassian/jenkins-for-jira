@@ -117,7 +117,9 @@ export const InProductHelpAction = ({
 	const search = useCallback(async () => {
 		setIsLoading(true);
 
-		if (searchQuery.trim() === '') {
+		console.log('searchquery', searchQuery);
+
+		if (searchQuery && searchQuery.trim() === '') {
 			setSearchResults([]);
 			return;
 		}
@@ -167,6 +169,9 @@ export const InProductHelpAction = ({
 						searchResults={searchResults}
 						isLoading={isLoading}
 						searchQuery={searchQuery}
+						setIsLoading={setIsLoading}
+						setSearchResults={setSearchResults}
+						index={index}
 					/>
 			}
 		</>
