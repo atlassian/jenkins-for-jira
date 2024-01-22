@@ -3,30 +3,42 @@ import DOMPurify from 'dompurify';
 import Drawer from '@atlaskit/drawer';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
+import { router } from '@forge/bridge';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
 import { getIdForLinkInIphDrawer } from './InProductHelpIds';
+
+const openUrlInNewTab = () => {
+	const url = 'https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-jenkins';
+	router.open(url);
+};
 
 const replaceAnchorsWithSpanElement = (content: string, searchQuery: string) => {
 	const tempDiv = document.createElement('div');
 	tempDiv.innerHTML = DOMPurify.sanitize(content);
 
+	const anchorMap: { link?: string } = {};
 	const anchorTags = tempDiv.getElementsByTagName('a');
 
 	Array.from(anchorTags).forEach((anchorTag: HTMLAnchorElement) => {
 		const linkSpan = document.createElement('span');
 		linkSpan.id = `${searchQuery}`;
-		linkSpan.className = 'iph-link';
+
+		if (anchorTag.innerText !== 'Set up a Jenkins server to connect to Jira') {
+			linkSpan.className = 'iph-link';
+		}
+
 		linkSpan.style.color = '#0C66E4';
 		linkSpan.style.cursor = 'pointer';
 		linkSpan.innerHTML = anchorTag.innerText;
 		linkSpan.tabIndex = 0;
+		anchorMap.link = anchorTag.href;
 
 		// Replace the anchor tag with the span element
 		anchorTag.parentNode?.replaceChild(linkSpan, anchorTag);
 	});
 
-	return { tempDiv };
+	return { tempDiv, anchorMap };
 };
 
 export type Hit = {
@@ -65,6 +77,7 @@ export const InProductHelpDrawer = ({
 	};
 
 	const results = Array.isArray(searchResults) ? searchResults : searchResults.hits;
+
 	const {
 		tempDiv: tempDivBody
 	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].body, searchQuery)) as {
@@ -109,7 +122,10 @@ export const InProductHelpDrawer = ({
 		if (container) {
 			container.addEventListener('click', (e) => {
 				const clickedElement = e.target as HTMLElement;
-				console.log('clickedElement', clickedElement.innerHTML);
+
+				if (clickedElement.innerHTML === 'Set up a Jenkins server to connect to Jira') {
+					openUrlInNewTab();
+				}
 
 				if (clickedElement.className === 'iph-link') {
 					e.preventDefault();
