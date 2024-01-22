@@ -92,6 +92,7 @@ const ConnectedJenkinsServers = ({ connectedJenkinsServer }: ConnectedStateProps
 								</>
 								<div className={cx(connectedStateCell, connectedStateCellEvent)}>
 									{mapLastEventStatus(pipeline.lastEventStatus)} {pipeline.lastEventType}
+									{' '}{pipeline.environmentName}
 								</div>
 							</div>
 						)
