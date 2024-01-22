@@ -2,13 +2,14 @@
   "name": "jenkins-for-jira-ui",
   "version": "0.1.0",
   "engines": {
-		"node": ">=20.0.0 <21.0.0"
+    "node": ">=20.0.0 <21.0.0"
   },
   "private": true,
   "homepage": ".",
   "dependencies": {
     "@atlaskit/avatar": "20.5.10",
     "@atlaskit/button": "16.10.1",
+    "@atlaskit/code": "^15.1.0",
     "@atlaskit/css-reset": "6.5.4",
     "@atlaskit/drawer": "^7.6.5",
     "@atlaskit/dropdown-menu": "11.14.2",

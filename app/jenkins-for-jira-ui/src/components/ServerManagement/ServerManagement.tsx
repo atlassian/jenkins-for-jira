@@ -62,7 +62,7 @@ export const contentToRenderServerManagementScreen = (
 					<>
 						<div className={serverManagementContainer}>
 							<div className={headerContainer}>
-								<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
+								<PageHeader actions={pageHeaderActions}>Jenkins server management</PageHeader>
 							</div>
 
 							<TopPanel />
@@ -231,7 +231,7 @@ const ServerManagement = (): JSX.Element => {
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		history.push('/create-server');
+		history.push('/connection-info');
 	};
 
 	// Refresh for PENDING and UPDATE AVAILABLE servers
@@ -276,13 +276,12 @@ const ServerManagement = (): JSX.Element => {
 	);
 
 	const sharePageMessage =
-		`Hi there,
-Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+		`Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
 
-To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
+To set up what data Jenkins sends to Jira, follow this link:
 ${globalPageUrl}
 
-You'll need to follow the set up guide for each server connected.`;
+Follow the set up guide(s) for each server on this page to receive build and deployment data from Jenkins.`;
 
 	const contentToRender =
 		contentToRenderServerManagementScreen(

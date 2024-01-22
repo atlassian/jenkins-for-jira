@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
+import { Code } from '@atlaskit/code';
 import {
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
@@ -163,16 +164,12 @@ const SetUpGuide = ({
 						Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction
-						label="JIRA-1234"
-						type={InProductHelpActionType.HelpLink}
-						screenName={SET_UP_GUIDE_SCREEN_NAME}
-					/>)
+						(e.g. <Code>JIRA-1234</Code>)
 						into their branch names and commit message.
 					</p>
 				</li>
 
-				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
+				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile(s)</strong>
 					<ol className={cx(nestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
 							eventType={PipelineEventType.BUILD}
@@ -189,7 +186,7 @@ const SetUpGuide = ({
 			</ol>
 
 			<InfoPanel
-				content="Not sure who should use this guide? It depends how your teams use Jenkins."
+				content="Not sure who should use this guide?"
 				iphLabel="Here's what you need to know."
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}

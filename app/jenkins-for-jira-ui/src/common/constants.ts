@@ -1,4 +1,4 @@
-export const HELP_LINK = 'https://app.contentful.com/spaces/zsv3d0ugroxu/entries/4ccCes4jpnMlSVtI4Eqre9?focusedField=body';
+export const HELP_LINK = 'https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-jenkins';
 export const CONFIG_PAGE = 'jenkins-for-jira-ui-admin-page';
 export const GLOBAL_PAGE = 'jenkins-for-jira-global-page';
 export const GET_STARTED_PAGE = 'get-started-page';
