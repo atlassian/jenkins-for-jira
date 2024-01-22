@@ -62,7 +62,7 @@ export const contentToRenderServerManagementScreen = (
 					<>
 						<div className={serverManagementContainer}>
 							<div className={headerContainer}>
-								<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
+								<PageHeader actions={pageHeaderActions}>Jenkins server management</PageHeader>
 							</div>
 
 							<TopPanel />

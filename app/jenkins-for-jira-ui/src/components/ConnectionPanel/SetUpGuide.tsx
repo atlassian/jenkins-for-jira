@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
+import { Code } from '@atlaskit/code';
 import {
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
@@ -163,11 +164,7 @@ const SetUpGuide = ({
 						Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction
-						label="JIRA-1234"
-						type={InProductHelpActionType.HelpLink}
-						screenName={SET_UP_GUIDE_SCREEN_NAME}
-					/>)
+						(e.g. <Code>JIRA-1234</Code>)
 						into their branch names and commit message.
 					</p>
 				</li>
