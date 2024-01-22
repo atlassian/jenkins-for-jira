@@ -89,15 +89,6 @@ const ConnectionPanel = ({
 		CONFIG_PAGE ? AnalyticsScreenEventsEnum.ServerNameScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				// await getModuleKey();
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		};
-
-		fetchData();
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			screenEvent,
