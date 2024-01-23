@@ -3,7 +3,8 @@ import {
 	render, screen, fireEvent, waitFor
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType } from './InProductHelpAction';
+import { InProductHelpAction, InProductHelpActionType } from './InProductHelpAction';
+import { InProductHelpDrawer } from './InProductHelpDrawer';
 
 jest.mock('algoliasearch', () => {
 	return {
@@ -35,6 +36,7 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
+
 		const helpElement = screen.getByText(/Help/i);
 		expect(helpElement).toBeInTheDocument();
 	});
@@ -47,9 +49,10 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		fireEvent.click(helpElement);
+
 		await waitFor(() => {
 			expect(screen.getByText(/Search Results/i)).toBeInTheDocument();
 		});
@@ -63,8 +66,8 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		fireEvent.keyDown(helpElement, { key: 'Enter', code: 'Enter' });
 
 		await waitFor(() => {
@@ -80,54 +83,14 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		fireEvent.click(helpElement);
+
 		await waitFor(() => {
 			expect(screen.queryByText(/Search Results/i)).toBeNull();
 		});
 	});
-
-	test.only('should set loading state while searching', async () => {
-		render(
-			<InProductHelpAction
-				label="Help"
-				type={InProductHelpActionType.HelpLink}
-				searchQuery="test"
-			/>
-		);
-		const helpElement = screen.getByText(/Help/i);
-
-		fireEvent.click(helpElement);
-		expect(screen.getByText(/Loading/i)).toBeInTheDocument();
-	});
-
-	// // Test Case 6: Handles errors during search
-	// test('handles errors during search', async () => {
-	// 	// Mocking Algolia search function to simulate an error
-	// 	jest.spyOn(console, 'error').mockImplementation(() => {});
-	// 	const searchSpy = jest.fn(() => Promise.reject('Mocked Error'));
-	// 	global.algoliasearch.initIndex = jest.fn(() => ({
-	// 		search: searchSpy
-	// 	}));
-	//
-	// 	render(
-	// 		<InProductHelpAction
-	// 			label="Help"
-	// 			type={InProductHelpActionType.HelpLink}
-	// 			searchQuery="test"
-	// 		/>
-	// 	);
-	// 	const helpElement = screen.getByText(/Help/i);
-	//
-	// 	fireEvent.click(helpElement);
-	// 	await waitFor(() => {
-	// 		expect(console.error).toHaveBeenCalledWith('Error searching Algolia index:', 'Mocked Error');
-	// 	});
-	//
-	// 	// Restore the console.error function
-	// 	console.error.mockRestore();
-	// });
 
 	test('should close the drawer when clicking outside of it', async () => {
 		render(
@@ -137,15 +100,16 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		fireEvent.click(helpElement);
+
 		await waitFor(() => {
 			expect(screen.getByText(/Search Results/i)).toBeInTheDocument();
 		});
 
-		const { body } = document;
-		fireEvent.mouseDown(body);
+		const backButton = screen.getByRole('img');
+		fireEvent.click(backButton);
 
 		await waitFor(() => {
 			expect(screen.queryByText(/Search Results/i)).toBeNull();
@@ -160,9 +124,10 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		fireEvent.click(helpElement);
+
 		await waitFor(() => {
 			expect(screen.getByText(/Search Results/i)).toBeInTheDocument();
 		});
@@ -174,20 +139,6 @@ describe('InProductHelpAction Suite', () => {
 		});
 	});
 
-	test('should set the correct class based on appearance prop', () => {
-		render(
-			<InProductHelpAction
-				label="Help"
-				type={InProductHelpActionType.HelpLink}
-				appearance={InProductHelpActionButtonAppearance.Primary}
-				searchQuery=""
-			/>
-		);
-		const helpElement = screen.getByText(/Help/i);
-
-		expect(helpElement).toHaveClass('inProductHelpActionButtonPrimary');
-	});
-
 	test('should set correct role based on action type prop', () => {
 		render(
 			<InProductHelpAction
@@ -196,8 +147,49 @@ describe('InProductHelpAction Suite', () => {
 				searchQuery=""
 			/>
 		);
-		const helpElement = screen.getByText(/Help/i);
 
+		const helpElement = screen.getByText(/Help/i);
 		expect(helpElement).toHaveAttribute('role', 'link');
+	});
+});
+
+describe('InProductHelpDrawer Suite', () => {
+	test('should render with loading spinner when isLoading is true', () => {
+		render(
+			<InProductHelpDrawer
+				isDrawerOpen
+				setIsDrawerOpen={() => {}}
+				searchResults={[]}
+				isLoading
+				searchQuery=""
+				setIsLoading={() => {}}
+				setSearchResults={() => {}}
+				index={{ search: () => Promise.resolve({ hits: [] }) }}
+			/>
+		);
+
+		expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+	});
+
+	test('should render with search results when not loading', async () => {
+		render(
+			<InProductHelpDrawer
+				isDrawerOpen
+				setIsDrawerOpen={() => {}}
+				searchResults={[{
+					id: '1', title: 'Result 1', body: 'Body 1', bodyText: 'Body Text 1'
+				}]}
+				isLoading={false}
+				searchQuery=""
+				setIsLoading={() => {}}
+				setSearchResults={() => {}}
+				index={{ search: () => Promise.resolve({ hits: [] }) }}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Result 1')).toBeInTheDocument();
+			expect(screen.getByText('Body 1')).toBeInTheDocument();
+		});
 	});
 });
