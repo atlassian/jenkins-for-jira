@@ -19,7 +19,7 @@ export const getIdForLinkInIphDrawer = (searchQueryText: string) => {
 			return InProductHelpIds.SET_UP_GUIDE_JIRA_SEND_BUILD_INFO;
 		case 'discuss your connection with your team' || 'here’s how to find out.':
 			return InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM;
-		case 'set up guide' || 'set up guides':
+		case 'set up guide' || 'set up guides' || 'or share that guide with your project teams':
 			return InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW;
 		case 'update the server’s atlassian software cloud plugin':
 			return InProductHelpIds.UPDATE_AVAILABLE_SERVER_LEARN_MORE;
