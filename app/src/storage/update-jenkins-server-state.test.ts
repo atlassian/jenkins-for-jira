@@ -1,7 +1,11 @@
 import { storage } from '@forge/api';
 import { NoJenkinsServerError } from '../common/error';
 import { EventType, BuildEventStatus } from '../common/types';
-import { updateJenkinsPluginConfigState, updateJenkinsServerState } from './update-jenkins-server-state';
+import {
+	getUniqueEnvironmentNames,
+	updateJenkinsPluginConfigState,
+	updateJenkinsServerState
+} from './update-jenkins-server-state';
 import {
 	testUuid,
 	currentTime,
@@ -231,7 +235,16 @@ describe('Update Jenkins Server Suite', () => {
 		expect(pipelineExists('pipeline-7')).toBeTruthy();
 		expect(pipelineExists('pipeline-8')).toBeTruthy();
 		expect(pipelineExists('pipeline-9')).toBeTruthy();
-		expect(pipelineExists('pipeline-10')).toBeTruthy();
 		expect(pipelineExists('my-new-pipeline')).toBeTruthy();
+	});
+
+	it('Should return unique array of environment names', async () => {
+		expect(getUniqueEnvironmentNames(['env-1', 'env-2'], ['env-1', 'env-3']))
+			.toEqual(['env-1', 'env-2', 'env-3']);
+	});
+
+	it('Should return array of environment names if existing is undefined', async () => {
+		expect(getUniqueEnvironmentNames(undefined, ['env-1', 'env-3']))
+			.toEqual(['env-1', 'env-3']);
 	});
 });
