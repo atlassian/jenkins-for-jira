@@ -67,8 +67,6 @@ export const InProductHelpAction = ({
 			? inProductHelpActionButtonPrimary
 			: inProductHelpActionButtonDefault;
 
-	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
-
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
 
@@ -77,7 +75,6 @@ export const InProductHelpAction = ({
 			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
 			{
 				source: iphClickSource(screenName) || '',
-				actionSubject,
 				elementName: label
 			}
 		);

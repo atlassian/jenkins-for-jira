@@ -301,9 +301,7 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
-				action: 'clicked I\'m logging into Jenkins myself',
-				actionSubject: 'button'
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
 			}
 		);
 	};
