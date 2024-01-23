@@ -81,14 +81,7 @@ const NotConnectedState = ({
 									{
 										isPending
 											? 'This connection is pending completion by a Jenkins admin.'
-											: `This connection is a duplicate of ${jenkinsServer.originalConnection}.`
-									}
-								contentInstructionTwo=
-									{
-										!isPending
-											? `Delete this connection and use
-										${jenkinsServer.originalConnection} to manage this connection instead`
-											: undefined
+											: `Use ${jenkinsServer.originalConnection} to manage this connection.`
 									}
 								buttonAppearance={isPending ? 'primary' : 'danger'}
 								firstButtonLabel={firstButtonLabel}

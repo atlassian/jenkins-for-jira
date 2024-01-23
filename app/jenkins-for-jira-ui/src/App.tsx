@@ -25,6 +25,7 @@ import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
 import { ConnectionComplete } from './components/ConnectionComplete/ConnectionComplete';
 import { GlobalPage } from './components/GlobalPage/GlobalPage';
 import { fetchModuleKey } from './api/fetchModuleKey';
+import { ConnectionWizard } from './components/ConnectionWizard/ConnectionWizard';
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
@@ -176,6 +177,9 @@ const App: React.FC = () => {
 							</Route>
 							<Route path="/connection-complete/:id/:admin">
 								<ConnectionComplete />
+							</Route>
+							<Route path="/connection-info">
+								<ConnectionWizard />
 							</Route>
 						</Switch>
 					</Router>

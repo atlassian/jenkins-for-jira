@@ -72,6 +72,8 @@ permissions:
         - https://app.launchdarkly.com
         - https://events.launchdarkly.com
         - https://clientstream.launchdarkly.com
+        - https://8k6j5ojiqw-dsn.algolia.net
+        - https://support.atlassian.com
       backend:
         - https://app.launchdarkly.com/api/v2/flags/Jenkins
   content:
