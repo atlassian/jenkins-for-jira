@@ -36,19 +36,18 @@ const updatePipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsP
 		...existingPipeline,
 		...incomingPipeline
 	};
-	updatedPipeline.environmentName = getUniqueEnvironmentNames(
-		existingPipeline.environmentName,
-		incomingPipeline.environmentName
+	updatedPipeline.environmentNames = getUniqueEnvironmentNames(
+		existingPipeline.environmentNames,
+		incomingPipeline.environmentNames
 	);
 
 	jenkinsServer.pipelines[existingPipelineIndex] = updatedPipeline;
 };
 
-const getUniqueEnvironmentNames = (existingCSVNames = '', incomingName = ''): string => {
-	const concatenatedEnvironmentNamesCSV = [existingCSVNames, incomingName].join(',');
-	const concatenatedEnvironmentNamesArray = concatenatedEnvironmentNamesCSV.split(',');
-	const uniqueEnvironmentNames = uniq(concatenatedEnvironmentNamesArray);
-	return uniqueEnvironmentNames.join(', ');
+// eslint-disable-next-line max-len
+export const getUniqueEnvironmentNames = (existingEnvNames: string[] = [], incomingEnvNames: string[] = []): string[] => {
+	const environmentNames = [...existingEnvNames, ...incomingEnvNames];
+	return uniq(environmentNames);
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
