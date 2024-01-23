@@ -117,8 +117,6 @@ export const InProductHelpAction = ({
 	const search = useCallback(async () => {
 		setIsLoading(true);
 
-		console.log('searchquery', searchQuery);
-
 		if (searchQuery && searchQuery.trim() === '') {
 			setSearchResults([]);
 			return;

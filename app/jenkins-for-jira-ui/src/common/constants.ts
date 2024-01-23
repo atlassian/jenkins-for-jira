@@ -5,3 +5,4 @@ export const GET_STARTED_PAGE = 'get-started-page';
 export const SET_UP_GUIDE_SCREEN_NAME = 'home-page-configured-state';
 export const CONNECTION_WIZARD_SCREEN_NAME = 'home-page-empty-state';
 export const JENKINS_SETUP_SCREEN_NAME = 'jenkins-setup';
+export const EXTERNAL_LINK_IPH_TEXT = 'set up a jenkins server to connect to jira';

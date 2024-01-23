@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
 import Drawer from '@atlaskit/drawer';
 import { cx } from '@emotion/css';
@@ -7,13 +7,24 @@ import { router } from '@forge/bridge';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
 import { getIdForLinkInIphDrawer } from './InProductHelpIds';
+import { EXTERNAL_LINK_IPH_TEXT, HELP_LINK } from '../../common/constants';
 
 const openUrlInNewTab = () => {
-	const url = 'https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-jenkins';
+	const url = HELP_LINK;
 	router.open(url);
 };
 
-const replaceAnchorsWithSpanElement = (content: string, searchQuery: string) => {
+const addAttributesToSpanElement =
+	(linkSpan: HTMLSpanElement, anchorTag: HTMLAnchorElement, anchorMap: { link?: string }) => {
+		linkSpan.className = 'iph-link';
+		linkSpan.style.color = '#0C66E4';
+		linkSpan.style.cursor = 'pointer';
+		linkSpan.innerHTML = anchorTag.innerText;
+		linkSpan.tabIndex = 0;
+		anchorMap.link = anchorTag.href;
+	};
+
+const replaceAnchorsWithSpanElement = (content: string) => {
 	const tempDiv = document.createElement('div');
 	tempDiv.innerHTML = DOMPurify.sanitize(content);
 
@@ -22,44 +33,58 @@ const replaceAnchorsWithSpanElement = (content: string, searchQuery: string) => 
 
 	Array.from(anchorTags).forEach((anchorTag: HTMLAnchorElement) => {
 		const linkSpan = document.createElement('span');
-		linkSpan.id = `${searchQuery}`;
-
-		if (anchorTag.innerText !== 'Set up a Jenkins server to connect to Jira') {
-			linkSpan.className = 'iph-link';
-		}
-
-		linkSpan.style.color = '#0C66E4';
-		linkSpan.style.cursor = 'pointer';
-		linkSpan.innerHTML = anchorTag.innerText;
-		linkSpan.tabIndex = 0;
-		anchorMap.link = anchorTag.href;
-
-		// Replace the anchor tag with the span element
+		addAttributesToSpanElement(linkSpan, anchorTag, anchorMap);
 		anchorTag.parentNode?.replaceChild(linkSpan, anchorTag);
 	});
 
 	return { tempDiv, anchorMap };
 };
 
+const mapInnerIphLinks = (
+	containers: HTMLCollectionOf<Element>,
+	setIsDrawerOpen: (isOpen: boolean) => void,
+	setInnerSearchQuery: (query: string) => void,
+	search: (query: string) => void
+) => {
+	Array.from(containers).forEach((container) => {
+		if (container instanceof HTMLElement) {
+			container.addEventListener('click', (e) => {
+				const clickedElement = e.target as HTMLElement;
+				const linkText = clickedElement.innerHTML.toLowerCase();
+
+				if (linkText === EXTERNAL_LINK_IPH_TEXT) {
+					setIsDrawerOpen(false);
+					openUrlInNewTab();
+				} else {
+					e.preventDefault();
+					const iphDrawerLinkId = getIdForLinkInIphDrawer(linkText);
+					setInnerSearchQuery(iphDrawerLinkId);
+					search(iphDrawerLinkId);
+				}
+			});
+		}
+	});
+};
+
 export type Hit = {
-	id: string;
-	body?: string;
-	bodyText?: string;
-	objectID: string;
-	title: string;
+	id: string,
+	body?: string,
+	bodyText?: string,
+	objectID: string,
+	title: string
 };
 
 export type InProductHelpDrawerProps = {
-	isDrawerOpen: boolean;
-	setIsDrawerOpen(isDrawerOpen: boolean): void;
-	searchResults: any;
-	isLoading: boolean;
-	searchQuery: string;
+	isDrawerOpen: boolean,
+	setIsDrawerOpen(isDrawerOpen: boolean): void,
+	searchResults: any,
+	isLoading: boolean,
+	searchQuery: string,
 	setIsLoading(isLoading: boolean): void,
 	setSearchResults(hits: Hit[]): void,
 	index: {
-		search<T>(query: string): Promise<{ hits: T[] }>;
-	};
+		search<T>(query: string): Promise<{ hits: T[] }>
+	}
 };
 
 export const InProductHelpDrawer = ({
@@ -72,28 +97,37 @@ export const InProductHelpDrawer = ({
 	setSearchResults,
 	index
 }: InProductHelpDrawerProps): JSX.Element => {
-	const closeDrawer = () => {
-		setIsDrawerOpen(false);
+	const [innerSearchQuery, setInnerSearchQuery] = useState<string>('');
+	const closeDrawer = (e: React.SyntheticEvent<HTMLElement, Event>) => {
+		e.preventDefault();
+		const target = e.target as HTMLElement;
+
+		if (innerSearchQuery && target.role !== 'presentation') {
+			setInnerSearchQuery('');
+			search(searchQuery);
+		} else {
+			setIsDrawerOpen(false);
+		}
 	};
 
 	const results = Array.isArray(searchResults) ? searchResults : searchResults.hits;
 
 	const {
 		tempDiv: tempDivBody
-	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].body, searchQuery)) as {
+	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].body)) as {
 		tempDiv: HTMLDivElement;
 	};
 
 	const {
 		tempDiv: tempDivBodyText
-	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].bodyText, searchQuery)) as {
+	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].bodyText)) as {
 		tempDiv: HTMLDivElement;
 	};
 
 	const search = useCallback(async (searchId: string) => {
 		setIsLoading(true);
 
-		if (searchQuery.trim() === '') {
+		if (innerSearchQuery && innerSearchQuery.trim() === '') {
 			setSearchResults([]);
 			return;
 		}
@@ -114,27 +148,12 @@ export const InProductHelpDrawer = ({
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 		}
-	}, [index, setSearchResults, searchQuery, setIsLoading]);
+	}, [index, setSearchResults, innerSearchQuery, setIsLoading]);
 
 	useEffect(() => {
-		// Add a click event listener to the container after the component is mounted
-		const container = document.getElementById(searchQuery);
-		if (container) {
-			container.addEventListener('click', (e) => {
-				const clickedElement = e.target as HTMLElement;
-
-				if (clickedElement.innerHTML === 'Set up a Jenkins server to connect to Jira') {
-					openUrlInNewTab();
-				}
-
-				if (clickedElement.className === 'iph-link') {
-					e.preventDefault();
-					const iphDrawerLinkId = getIdForLinkInIphDrawer(clickedElement.innerText);
-					search(iphDrawerLinkId);
-				}
-			});
-		}
-	}, [searchQuery, search]);
+		const containers = document.getElementsByClassName('iph-link');
+		mapInnerIphLinks(containers, setIsDrawerOpen, setInnerSearchQuery, search);
+	}, [search, setIsDrawerOpen]);
 
 	return (
 		<Drawer onClose={closeDrawer} isOpen={isDrawerOpen} width="wide" label="Basic drawer">

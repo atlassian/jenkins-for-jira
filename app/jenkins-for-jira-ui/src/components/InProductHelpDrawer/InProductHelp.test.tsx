@@ -3,14 +3,24 @@ import {
 	render, screen, fireEvent, waitFor
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType} from './InProductHelpAction';
+import { InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType } from './InProductHelpAction';
 
 jest.mock('algoliasearch', () => {
 	return {
 		__esModule: true,
 		default: () => ({
 			initIndex: jest.fn(() => ({
-				search: jest.fn(() => Promise.resolve({ hits: [] }))
+				search: jest.fn(() => Promise.resolve({
+					hits: [
+						{
+							id: '12323445345',
+							objectID: '12323445345',
+							title: 'Search Results',
+							body: '',
+							bodyText: ''
+						}
+					]
+				}))
 			}))
 		})
 	};
@@ -29,7 +39,7 @@ describe('InProductHelpAction Suite', () => {
 		expect(helpElement).toBeInTheDocument();
 	});
 
-	test.only('should open the drawer on click', async () => {
+	test('should open the drawer on click', async () => {
 		render(
 			<InProductHelpAction
 				label="Help"
@@ -56,6 +66,7 @@ describe('InProductHelpAction Suite', () => {
 		const helpElement = screen.getByText(/Help/i);
 
 		fireEvent.keyDown(helpElement, { key: 'Enter', code: 'Enter' });
+
 		await waitFor(() => {
 			expect(screen.getByText(/Search Results/i)).toBeInTheDocument();
 		});
@@ -77,7 +88,7 @@ describe('InProductHelpAction Suite', () => {
 		});
 	});
 
-	test('should set loading state while searching', async () => {
+	test.only('should set loading state while searching', async () => {
 		render(
 			<InProductHelpAction
 				label="Help"
