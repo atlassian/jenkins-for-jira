@@ -7,7 +7,12 @@ import { router } from '@forge/bridge';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
 import { getIdForLinkInIphDrawer } from './InProductHelpIds';
-import { EXTERNAL_LINK_IPH_TEXT, HELP_LINK } from '../../common/constants';
+import {
+	HELP_LINK,
+	SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT,
+	HERE,
+	SHARE_GUIDE_WITH_PROJECT_TEAMS, HOW_TO_FIND_OUT
+} from '../../common/constants';
 
 const openUrlInNewTab = () => {
 	const url = HELP_LINK;
@@ -38,32 +43,6 @@ const replaceAnchorsWithSpanElement = (content: string) => {
 	});
 
 	return { tempDiv, anchorMap };
-};
-
-const mapInnerIphLinks = (
-	containers: HTMLCollectionOf<Element>,
-	setIsDrawerOpen: (isOpen: boolean) => void,
-	setInnerSearchQuery: (query: string) => void,
-	search: (query: string) => void
-) => {
-	Array.from(containers).forEach((container) => {
-		if (container instanceof HTMLElement) {
-			container.addEventListener('click', (e) => {
-				const clickedElement = e.target as HTMLElement;
-				const linkText = clickedElement.innerHTML.toLowerCase();
-
-				if (linkText === EXTERNAL_LINK_IPH_TEXT) {
-					setIsDrawerOpen(false);
-					openUrlInNewTab();
-				} else {
-					e.preventDefault();
-					const iphDrawerLinkId = getIdForLinkInIphDrawer(linkText);
-					setInnerSearchQuery(iphDrawerLinkId);
-					search(iphDrawerLinkId);
-				}
-			});
-		}
-	});
 };
 
 export type Hit = {
@@ -152,7 +131,30 @@ export const InProductHelpDrawer = ({
 
 	useEffect(() => {
 		const containers = document.getElementsByClassName('iph-link');
-		mapInnerIphLinks(containers, setIsDrawerOpen, setInnerSearchQuery, search);
+
+		Array.from(containers).forEach((container) => {
+			if (container instanceof HTMLElement) {
+				container.addEventListener('click', (e) => {
+					const clickedElement = e.target as HTMLElement;
+					const linkText = clickedElement.innerHTML.toLowerCase();
+
+					const openSupportUrl = linkText === SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT ||
+						linkText === HERE ||
+						linkText === SHARE_GUIDE_WITH_PROJECT_TEAMS ||
+						linkText === HOW_TO_FIND_OUT;
+
+					if (openSupportUrl) {
+						setIsDrawerOpen(false);
+						openUrlInNewTab();
+					} else {
+						e.preventDefault();
+						const iphDrawerLinkId = getIdForLinkInIphDrawer(linkText);
+						setInnerSearchQuery(iphDrawerLinkId);
+						search(iphDrawerLinkId);
+					}
+				});
+			}
+		});
 	}, [search, setIsDrawerOpen]);
 
 	return (

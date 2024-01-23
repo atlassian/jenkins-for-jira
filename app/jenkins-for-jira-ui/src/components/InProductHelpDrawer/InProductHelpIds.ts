@@ -13,12 +13,16 @@ export enum InProductHelpIds {
 
 export const getIdForLinkInIphDrawer = (searchQueryText: string) => {
 	switch (searchQueryText) {
-		case 'set up a Jenkinsfile to explicitly send deployment events to Jira.':
-			return InProductHelpIds.SET_UP_GUIDE_DEPLOYMENT_STAGES;
+		case 'set up a jenkinsfile to explicitly send deployment events to jira':
+			return InProductHelpIds.SET_UP_GUIDE_JIRA_SEND_DEPLOYMENT_INFO;
+		case 'set up a jenkinsfile to explicitly send build events to jira':
+			return InProductHelpIds.SET_UP_GUIDE_JIRA_SEND_BUILD_INFO;
 		case 'discuss your connection with your team' || 'here’s how to find out.':
 			return InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM;
 		case 'set up guide' || 'set up guides':
 			return InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW;
+		case 'update the server’s atlassian software cloud plugin':
+			return InProductHelpIds.UPDATE_AVAILABLE_SERVER_LEARN_MORE;
 		case 'pending':
 			return InProductHelpIds.PENDING_SERVER_LEARN_MORE;
 		default:
