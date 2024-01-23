@@ -26,6 +26,7 @@ const addAttributesToSpanElement =
 		linkSpan.style.cursor = 'pointer';
 		linkSpan.innerHTML = anchorTag.innerText;
 		linkSpan.tabIndex = 0;
+		linkSpan.role = 'link';
 		anchorMap.link = anchorTag.href;
 	};
 
