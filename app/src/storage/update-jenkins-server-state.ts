@@ -48,7 +48,7 @@ const getUniqueEnvironmentNames = (existingCSVNames = '', incomingName = ''): st
 	const concatenatedEnvironmentNamesCSV = [existingCSVNames, incomingName].join(',');
 	const concatenatedEnvironmentNamesArray = concatenatedEnvironmentNamesCSV.split(',');
 	const uniqueEnvironmentNames = uniq(concatenatedEnvironmentNamesArray);
-	return uniqueEnvironmentNames.join(',');
+	return uniqueEnvironmentNames.join(', ');
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
