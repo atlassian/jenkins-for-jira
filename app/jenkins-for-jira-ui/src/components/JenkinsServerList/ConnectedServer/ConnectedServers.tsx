@@ -41,6 +41,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import { DISCONNECT_MODAL_TEST_ID } from '../../../common/constants';
 
 export const mapLastEventStatus = (
 	lastEventStatus: string
@@ -393,8 +394,6 @@ const ConnectedServers = ({ jenkinsServerList, refreshServers }: ConnectedServer
 		</StyledConnectedServerContainer>
 	);
 };
-
-export const DISCONNECT_MODAL_TEST_ID = 'disconnectModal';
 
 export {
 	ConnectedServers

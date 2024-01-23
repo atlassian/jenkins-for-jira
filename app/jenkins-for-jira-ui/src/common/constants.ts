@@ -9,3 +9,5 @@ export const SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT = 'set up a jenkins server to c
 export const HERE = 'here';
 export const SHARE_GUIDE_WITH_PROJECT_TEAMS = 'or share that guide with your project teams.';
 export const HOW_TO_FIND_OUT = 'here’s how to find out.';
+export const DISCONNECT_MODAL_TEST_ID = 'disconnectModal';
+export const DELETE_MODAL_TEST_ID = 'deleteModal';

@@ -9,7 +9,8 @@ import {
 import { JenkinsServer } from '../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
-import { GLOBAL_PAGE } from '../../common/constants';
+import { DELETE_MODAL_TEST_ID, GLOBAL_PAGE} from '../../common/constants';
+import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState,
@@ -32,15 +33,19 @@ const NotConnectedState = ({
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
+	const [disconnectError, setDisconnectError] = useState(false);
+	const [showRetryServerDelete, setShowRetryServerDelete] = useState(false);
+
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
+		setDisconnectError(false);
 		setServerToDelteUuid(serverToDelete.uuid);
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
-			// TODO - ARC-2722 handle error state
+			setDisconnectError(true);
 		} finally {
 			setIsDeletingServer(false);
 		}
@@ -96,6 +101,22 @@ const NotConnectedState = ({
 							/>
 						</>
 					)}
+
+			<JenkinsModal
+				dataTestId={DELETE_MODAL_TEST_ID}
+				server={jenkinsServer}
+				show={showConfirmServerDisconnect}
+				modalAppearance={buttonAndIconAppearance}
+				title={modalTitleMessage}
+				body={modalBodyMessage}
+				onClose={closeConfirmServerDisconnect}
+				primaryButtonAppearance='subtle'
+				primaryButtonLabel='Cancel'
+				secondaryButtonAppearance={buttonAndIconAppearance}
+				secondaryButtonLabel={secondaryButtonLabel}
+				secondaryButtonOnClick={disconnectJenkinsServerHandler}
+				isLoading={isLoading}
+			/>
 		</div>
 	);
 };
