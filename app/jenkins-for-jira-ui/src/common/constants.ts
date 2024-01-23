@@ -5,3 +5,7 @@ export const GET_STARTED_PAGE = 'get-started-page';
 export const SET_UP_GUIDE_SCREEN_NAME = 'home-page-configured-state';
 export const CONNECTION_WIZARD_SCREEN_NAME = 'home-page-empty-state';
 export const JENKINS_SETUP_SCREEN_NAME = 'jenkins-setup';
+export const SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT = 'set up a jenkins server to connect to jira';
+export const HERE = 'here';
+export const SHARE_GUIDE_WITH_PROJECT_TEAMS = 'or share that guide with your project teams.';
+export const HOW_TO_FIND_OUT = 'here’s how to find out.';

@@ -23,7 +23,7 @@ export const WebhookGuideContent = ({ divRef, webhookUrl, siteName }: WebhookGui
 			<br />
 
 			<p>Site name:</p>
-			<p >{siteName}</p>
+			<p>{siteName}</p>
 			<br />
 
 			<p>Webhook URL:</p>
