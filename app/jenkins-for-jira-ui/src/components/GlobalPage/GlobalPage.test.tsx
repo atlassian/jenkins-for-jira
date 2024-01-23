@@ -127,7 +127,18 @@ describe('GlobalPage Component', () => {
 		expect(await screen.findByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
-	it('should render configured state when there are serversa', async () => {
+	it('should render empty state when there are no servers', async () => {
+		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
+		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
+
+		render(<GlobalPage />);
+		await waitFor(() => {});
+
+		expect(screen.getByText('No servers connected')).toBeInTheDocument();
+	});
+
+	it('should render configured state when there are servers', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);

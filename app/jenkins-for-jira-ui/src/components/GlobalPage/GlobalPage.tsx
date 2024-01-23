@@ -22,6 +22,7 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { fetchModuleKey } from '../../api/fetchModuleKey';
+import { GlobalPageEmptyState } from './GlobalPageEmptyState';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 
 const analyticsClient = new AnalyticsClient();
@@ -166,8 +167,8 @@ export const GlobalPage = (): JSX.Element => {
 					/>
 				</>
 				: <>
-					{/* TODO - add empty state (to be done in ARC-2648) */}
-					<div>No Jenkins servers...</div>
+					<TopPanel />
+					<GlobalPageEmptyState />
 				</>
 			}
 
