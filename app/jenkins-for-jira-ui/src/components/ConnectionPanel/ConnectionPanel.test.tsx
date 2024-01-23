@@ -5,6 +5,7 @@ import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { addConnectedState, ConnectionPanel } from './ConnectionPanel';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const servers: JenkinsServer[] = [
 	{
@@ -120,6 +121,7 @@ describe('Connection Panel Suite', () => {
 			uuidOfRefreshServer='198219dnq9fn1293r12'
 			updatedServer={undefined}
 			handleRefreshUpdateServer={jest.fn()}
+			moduleKey={CONFIG_PAGE}
 		/>);
 
 		await waitFor(() => {
@@ -209,6 +211,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 
@@ -243,6 +246,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 
@@ -270,6 +274,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 
@@ -304,6 +309,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={server}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 
@@ -325,6 +331,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={servers[0]}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 
@@ -337,6 +344,7 @@ describe('Connection Panel Suite', () => {
 						isUpdatingServer={false}
 						server={servers[4]}
 						refreshServers={refreshServers}
+						moduleKey={CONFIG_PAGE}
 					/>
 				);
 

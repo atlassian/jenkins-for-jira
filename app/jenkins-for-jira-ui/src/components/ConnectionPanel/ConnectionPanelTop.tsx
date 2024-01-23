@@ -16,6 +16,7 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
+import { CONFIG_PAGE } from '../../common/constants';
 import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
@@ -32,11 +33,13 @@ type ConnectionPanelTopProps = {
 	server: JenkinsServer,
 	refreshServers(serverToRemove: JenkinsServer): void,
 	updatedServer?: JenkinsServer,
-	isUpdatingServer: boolean
+	isUpdatingServer: boolean,
+	moduleKey: string
 };
 const ConnectionPanelTop = ({
 	server,
-	refreshServers
+	refreshServers,
+	moduleKey
 }: ConnectionPanelTopProps): JSX.Element => {
 	const history = useHistory();
 	const connectedState = server.connectedState || ConnectedState.PENDING;
@@ -100,6 +103,9 @@ const ConnectionPanelTop = ({
 		setIsLoading(false);
 	};
 
+	const serverIsNotDuplicate = server.connectedState !== ConnectedState.DUPLICATE;
+	const isConfigPage = moduleKey && moduleKey === CONFIG_PAGE;
+
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
 			<div className={cx(connectionPanelHeaderContainer)}>
@@ -115,7 +121,7 @@ const ConnectionPanelTop = ({
 				</div>
 			</div>
 
-			{server.connectedState !== ConnectedState.DUPLICATE &&
+			{serverIsNotDuplicate && isConfigPage &&
 				<DropdownMenu
 					trigger={({ triggerRef, ...props }) => (
 						<Button

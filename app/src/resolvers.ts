@@ -14,6 +14,8 @@ import { metricResolverEmitter } from './common/metric-names';
 import { generateNewSecret } from './storage/generate-new-secret';
 import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
+import { fetchModuleKey } from './utils/fetch-module-key';
+import { GLOBAL_PAGE } from '../jenkins-for-jira-ui/src/common/constants';
 
 const resolver = new Resolver();
 
@@ -33,20 +35,29 @@ resolver.define('connectJenkinsServer', async (req) => {
 });
 
 resolver.define('updateJenkinsServer', async (req) => {
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
+		await adminPermissionCheck(req);
+	}
+
 	const payload = req.payload as JenkinsServer;
 	internalMetrics.counter(metricResolverEmitter.updateJenkinsServer).incr();
 	return updateJenkinsServer(payload);
 });
 
 resolver.define('getAllJenkinsServers', async (req) => {
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
+		await adminPermissionCheck(req);
+	}
+
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();
 });
 
 resolver.define('getJenkinsServerWithSecret', async (req) => {
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
+		await adminPermissionCheck(req);
+	}
+
 	const jenkinsServerUuid = req.payload.uuid as string;
 	internalMetrics.counter(metricResolverEmitter.getJenkinsServerWithSecret).incr();
 	return getJenkinsServerWithSecret(jenkinsServerUuid);
@@ -83,9 +94,16 @@ resolver.define('fetchCloudId', async (req): Promise<string> => {
 });
 
 resolver.define('fetchAppData', async (req): Promise<FetchAppDataProps> => {
-	await adminPermissionCheck(req);
+	if (req.context.moduleKey !== GLOBAL_PAGE) {
+		await adminPermissionCheck(req);
+	}
+
 	internalMetrics.counter(metricResolverEmitter.generateNewSecretForServer).incr();
 	return fetchAppData(req);
+});
+
+resolver.define('fetchModuleKey', async (req): Promise<string> => {
+	return fetchModuleKey(req);
 });
 
 export default resolver.getDefinitions();

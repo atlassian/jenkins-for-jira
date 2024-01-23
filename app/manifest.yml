@@ -1,4 +1,13 @@
 modules:
+  jira:globalPage:
+    - key: jenkins-for-jira-global-page
+      resource: main
+      resolver:
+        function: resolver
+      title: Jenkins for Jira - non-admin page
+      layout: blank
+      icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
+
   jira:adminPage:
     - key: jenkins-for-jira-ui-admin-page
       resource: main

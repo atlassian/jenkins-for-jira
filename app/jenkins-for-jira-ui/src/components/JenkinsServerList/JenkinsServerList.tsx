@@ -17,6 +17,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { redirectFromGetStarted } from '../../api/redirectFromGetStarted';
+import { CONFIG_PAGE, GET_STARTED_PAGE } from '../../common/constants';
 
 const JenkinsServerList = (): JSX.Element => {
 	const history = useHistory();
@@ -57,7 +58,7 @@ const JenkinsServerList = (): JSX.Element => {
 		};
 	}, [redirectToAdminPage]);
 
-	if (!jenkinsServers || !moduleKey || moduleKey === 'get-started-page') {
+	if (!jenkinsServers || !moduleKey || moduleKey === GET_STARTED_PAGE) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -85,7 +86,7 @@ const JenkinsServerList = (): JSX.Element => {
 
 	let contentToRender;
 
-	if (jenkinsServers?.length && moduleKey === 'jenkins-for-jira-ui-admin-page') {
+	if (jenkinsServers?.length && moduleKey === CONFIG_PAGE) {
 		contentToRender = (
 			<>
 				<div className={headerContainer}>
@@ -100,7 +101,7 @@ const JenkinsServerList = (): JSX.Element => {
 				<ConnectedServers jenkinsServerList={jenkinsServers} refreshServers={fetchAllJenkinsServers} />
 			</>
 		);
-	} else if (moduleKey === 'get-started-page') {
+	} else if (moduleKey === GET_STARTED_PAGE) {
 		contentToRender = (
 			<>
 				<div className={headerContainer}>

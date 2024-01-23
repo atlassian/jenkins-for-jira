@@ -19,7 +19,7 @@ type NotConnectedStateProps = {
 	contentInstructionOne: string,
 	contentInstructionTwo?: string,
 	buttonAppearance: Appearance,
-	firstButtonLabel: string,
+	firstButtonLabel?: string,
 	secondButtonLabel?: string,
 	buttonOneOnClick(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
@@ -74,13 +74,16 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			<ButtonGroup>
-				<Button
-					appearance={buttonAppearance}
-					onClick={buttonOneOnClick}
-					testId={testId}
-				>
-					{firstButtonLabel}
-				</Button>
+				{
+					firstButtonLabel &&
+					<Button
+						appearance={buttonAppearance}
+						onClick={buttonOneOnClick}
+						testId={testId}
+					>
+						{firstButtonLabel}
+					</Button>
+				}
 				{
 					secondButtonLabel
 						? <>{secondaryButton}</>

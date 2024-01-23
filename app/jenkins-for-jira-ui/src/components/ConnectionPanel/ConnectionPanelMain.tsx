@@ -25,6 +25,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -61,7 +62,8 @@ type ConnectionPanelMainProps = {
 	handleRefreshUpdateServer(serverUuidToUpdateUuid: string): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
-	uuidOfRefreshServer?: string,
+	uuidOfRefreshServer: string,
+	moduleKey: string
 };
 
 const SET_UP_GUIDE_TAB = 1;
@@ -72,7 +74,8 @@ const ConnectionPanelMain = ({
 	handleRefreshUpdateServer,
 	updatedServer,
 	isUpdatingServer,
-	uuidOfRefreshServer
+	uuidOfRefreshServer,
+	moduleKey
 }: ConnectionPanelMainProps): JSX.Element => {
 	const connectedState = jenkinsServer.connectedState || ConnectedState.PENDING;
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -83,14 +86,17 @@ const ConnectionPanelMain = ({
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
 	};
 
+	const pageSource =
+		moduleKey === CONFIG_PAGE
+			? AnalyticsScreenEventsEnum.ServerManagementScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
+
 	const handleTabSelect = async (index: number) => {
 		if (index === SET_UP_GUIDE_TAB) {
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.SetUpGuideName,
 				{
-					// TODO ARC-2648 set this with moduleKey
-					source: AnalyticsScreenEventsEnum.ServerManagementScreenName
+					source: pageSource
 				}
 			);
 		}
@@ -175,6 +181,7 @@ const ConnectionPanelMain = ({
 						jenkinsServer={jenkinsServer}
 						refreshServersAfterDelete={refreshServers}
 						refreshServersAfterUpdate={handleRefreshUpdateServer}
+						moduleKey={moduleKey}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
@@ -218,6 +225,7 @@ const ConnectionPanelMain = ({
 											refreshServersAfterUpdate={handleRefreshUpdateServer}
 											uuidOfRefreshServer={uuidOfRefreshServer}
 											isUpdatingServer={isUpdatingServer}
+											moduleKey={moduleKey}
 										/>
 									</Panel>
 							}
