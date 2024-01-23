@@ -26,7 +26,7 @@ export interface JenkinsServer {
 
 export interface JenkinsPipeline {
 	name: string,
-	environmentName?: string,
+	environmentNames?: string[],
 	lastEventDate: Date,
 	lastEventStatus: BuildEventStatus | DeploymentEventStatus,
 	lastEventType: EventType

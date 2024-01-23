@@ -174,6 +174,10 @@ export const connectedStateCellIcon = css`
 
 export const connectedStateCellEvent = css`
 	margin-left: ${token('space.100')};
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 	&:first-letter {
 		text-transform: capitalize;
