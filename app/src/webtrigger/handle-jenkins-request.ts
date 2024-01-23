@@ -173,6 +173,6 @@ function convertToPipeline(event: JenkinsEvent): JenkinsPipeline {
 		lastEventType: event.eventType,
 		lastEventStatus: event.status!,
 		lastEventDate: event.lastUpdated!,
-		environmentName: extractEnvironmentName(event)
+		environmentNames: [extractEnvironmentName(event)]
 	};
 }
