@@ -93,7 +93,7 @@ describe('JenkinsSetup Component', () => {
 		expect(screen.getByText(/Server name:/i)).toHaveTextContent('Mocked Server');
 	});
 
-	it('toggles between "My Jenkins admin" and "I am the Jenkins admin" views', async () => {
+	it('toggles between "A Jenkins admin is helping me" and "I am the Jenkins admin" views', async () => {
 		(fetchGlobalPageUrlModule.fetchSiteName as jest.Mock).mockResolvedValueOnce('https://mocked-site-name.com');
 
 		(getJenkinsServerWithSecretModule.getJenkinsServerWithSecret as jest.Mock).mockResolvedValueOnce({
@@ -118,13 +118,13 @@ describe('JenkinsSetup Component', () => {
 		const { getByText, queryByText } = screen;
 
 		await waitFor(() => {
-			fireEvent.click(getByText('My Jenkins admin'));
+			fireEvent.click(getByText('A Jenkins admin is helping me'));
 			expect(getByText('Copy the items below and give them to your Jenkins admin')).toBeInTheDocument();
 			expect(queryByText('Log in to Jenkins in another window and use the items below to set up your server.')).not.toBeInTheDocument();
 		});
 
 		await waitFor(() => {
-			fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
+			fireEvent.click(getByText('I\'m logging into Jenkins myself'));
 			expect(queryByText('Copy the items below and give them to your Jenkins admin')).not.toBeInTheDocument();
 			expect(getByText('Log in to Jenkins in another window and use the items below to set up your server.')).toBeInTheDocument();
 		});
@@ -155,7 +155,7 @@ describe('JenkinsSetup Component', () => {
 		const { getByText, getByTestId } = screen;
 
 		await waitFor(() => {
-			fireEvent.click(getByText('My Jenkins admin'));
+			fireEvent.click(getByText('A Jenkins admin is helping me'));
 		});
 
 		await act(async () => {
@@ -186,7 +186,7 @@ describe('JenkinsSetup Component', () => {
 		expect(document.execCommand).toHaveBeenCalledWith('copy');
 	});
 
-	it('displays "Next" button when either "My Jenkins admin" or "I am the Jenkins admin" is selected', async () => {
+	it('displays "Next" button when either "A Jenkins admin is helping me" or "I\'m logging into Jenkins myself" is selected', async () => {
 		(fetchGlobalPageUrlModule.fetchSiteName as jest.Mock).mockResolvedValueOnce('https://mocked-site-name.com');
 
 		(getJenkinsServerWithSecretModule.getJenkinsServerWithSecret as jest.Mock).mockResolvedValueOnce({
@@ -211,12 +211,12 @@ describe('JenkinsSetup Component', () => {
 		const { getByText } = screen;
 
 		await waitFor(() => {
-			fireEvent.click(getByText('My Jenkins admin'));
+			fireEvent.click(getByText('A Jenkins admin is helping me'));
 			expect(getByText('Next')).toBeInTheDocument();
 		});
 
 		await waitFor(() => {
-			fireEvent.click(getByText('I am (I\'m a Jenkins admin)'));
+			fireEvent.click(getByText('I\'m logging into Jenkins myself'));
 			expect(getByText('Next')).toBeInTheDocument();
 		});
 	});

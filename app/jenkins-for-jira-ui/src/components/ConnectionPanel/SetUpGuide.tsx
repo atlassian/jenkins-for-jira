@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
+import { Code } from '@atlaskit/code';
 import {
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
@@ -21,6 +22,7 @@ import {
 } from '../../GlobalStyles.styles';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 type UpdateAvailableProps = {
 	refreshServerAfterUpdate(serverUuidToUpdate: string): void,
@@ -44,6 +46,7 @@ export const UpdateAvailable = ({
 					label="Learn more"
 					type={InProductHelpActionType.HelpButton}
 					appearance={InProductHelpActionButtonAppearance.Primary}
+					searchQuery={InProductHelpIds.UPDATE_AVAILABLE_SERVER_LEARN_MORE}
 					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 				<Button onClick={() => refreshServerAfterUpdate(serverUuid)}>Refresh</Button>
@@ -54,18 +57,21 @@ export const UpdateAvailable = ({
 
 type SetUpGuidePipelineStepInstructionProps = {
 	eventType: string,
-	pipelineStepLabel: string
+	pipelineStepLabel: string,
+	searchQuery: string
 };
 
 const SetUpGuidePipelineStepInstruction = ({
 	eventType,
-	pipelineStepLabel
+	pipelineStepLabel,
+	searchQuery
 }: SetUpGuidePipelineStepInstructionProps): JSX.Element => {
 	return (
 		<p>Add a&nbsp;
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
+				searchQuery={searchQuery}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}
 			/>&nbsp;step to the end of {eventType} stages.
 		</p>
@@ -93,6 +99,16 @@ export const SetUpGuideInstructions = ({
 			? 'jiraSendBuildInfo'
 			: 'jiraSendDeploymentInfo';
 
+	const infoSearchQuery =
+		eventType === PipelineEventType.BUILD
+			? InProductHelpIds.SET_UP_GUIDE_JIRA_SEND_BUILD_INFO
+			: InProductHelpIds.SET_UP_GUIDE_JIRA_SEND_DEPLOYMENT_INFO;
+
+	const regexSearchQuery =
+		eventType === PipelineEventType.BUILD
+			? InProductHelpIds.SET_UP_GUIDE_BUILD_STAGES
+			: InProductHelpIds.SET_UP_GUIDE_DEPLOYMENT_STAGES;
+
 	let contentToRender;
 
 	if (
@@ -105,6 +121,7 @@ export const SetUpGuideInstructions = ({
 				<SetUpGuidePipelineStepInstruction
 					eventType={eventType}
 					pipelineStepLabel={pipelineStepLabel}
+					searchQuery={infoSearchQuery}
 				/>
 				<p>
 					<strong>OR</strong>
@@ -115,6 +132,7 @@ export const SetUpGuideInstructions = ({
 					<InProductHelpAction
 						label={regex || '<regex>'}
 						type={InProductHelpActionType.HelpLink}
+						searchQuery={regexSearchQuery}
 						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>
 				</p>
@@ -126,6 +144,7 @@ export const SetUpGuideInstructions = ({
 				<InProductHelpAction
 					label="No setup required"
 					type={InProductHelpActionType.HelpLink}
+					searchQuery={InProductHelpIds.SET_UP_GUIDE_NO_SET_UP_REQUIRED}
 					screenName={SET_UP_GUIDE_SCREEN_NAME}
 				/>
 			</p>;
@@ -134,6 +153,7 @@ export const SetUpGuideInstructions = ({
 			<SetUpGuidePipelineStepInstruction
 				eventType={eventType}
 				pipelineStepLabel={pipelineStepLabel}
+				searchQuery={infoSearchQuery}
 			/>
 		);
 	}
@@ -163,16 +183,11 @@ const SetUpGuide = ({
 						Developers in your project teams
 					</strong>
 					<p id="setup-step-one-instruction">Must enter their Jira issue keys
-						(e.g. <InProductHelpAction
-						label="JIRA-1234"
-						type={InProductHelpActionType.HelpLink}
-						screenName={SET_UP_GUIDE_SCREEN_NAME}
-					/>)
-						into their branch names and commit message.
+						(e.g. <Code>JIRA-1234</Code>) into their branch names and commit message.
 					</p>
 				</li>
 
-				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile</strong>
+				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile(s)</strong>
 					<ol className={cx(nestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
 							eventType={PipelineEventType.BUILD}
@@ -189,10 +204,11 @@ const SetUpGuide = ({
 			</ol>
 
 			<InfoPanel
-				content="Not sure who should use this guide? It depends how your teams use Jenkins."
+				content="Not sure who should use this guide?"
 				iphLabel="Here's what you need to know."
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}
+				searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
 			/>
 		</>
 	);

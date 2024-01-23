@@ -29,7 +29,8 @@ import {
 	jenkinsSetupListItem,
 	jenkinsSetupOrderedList,
 	jenkinsSetUpCopyHiddenContent,
-	loadingContainer
+	loadingContainer,
+	jenkinsSetupViewButton
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -48,6 +49,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -92,7 +94,7 @@ const CopyButton = ({
 				Copy
 			</Button>
 
-			{isCopied && <CopiedToClipboard leftPositionPercent="115%" />}
+			{isCopied && <CopiedToClipboard leftPositionPercent="110%" />}
 		</div>
 	);
 };
@@ -133,6 +135,7 @@ const MyJenkinsAdmin = ({
 				iphLabel="How to set up Jenkins servers to suit your team's needs"
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={JENKINS_SETUP_SCREEN_NAME}
+				searchQuery={InProductHelpIds.JENKINS_SET_UP_NON_ADMIN_HOW_TO}
 			/>
 		</div>
 	);
@@ -174,6 +177,7 @@ const IAmTheJenkinsAdmin = ({
 						<Button
 							iconBefore={<OpenIcon label="Open" size="medium" />}
 							onClick={(e) => handleFollowLink(e)}
+							className={cx(jenkinsSetupViewButton)}
 						>
 							View
 						</Button>
@@ -300,7 +304,7 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
 				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
-				action: 'clicked I am (I\'m a Jenkins admin)',
+				action: 'clicked I\'m logging into Jenkins myself',
 				actionSubject: 'button'
 			}
 		);
@@ -342,8 +346,8 @@ const JenkinsSetup = (): JSX.Element => {
 								<h3 className={cx(jenkinsSetupHeader)}>Set up Jenkins</h3>
 								<p className={cx(jenkinsSetupContent)}>
 									A Jenkins admin needs to set up your server to complete this connection.
+									Select the appropriate option:
 								</p>
-								<p className={cx(jenkinsSetupContent)}>Who's logging into Jenkins?</p>
 
 								<ButtonGroup>
 									<Button
@@ -351,14 +355,14 @@ const JenkinsSetup = (): JSX.Element => {
 										appearance={showMyJenkinsAdmin ? 'primary' : 'default'}
 										testId="my-jenkins-admin"
 									>
-										My Jenkins admin
+										A Jenkins admin is helping me
 									</Button>
 									<Button
 										onClick={(e) => handleIAmTheJenkinsAdminClick(e)}
 										appearance={showIAmTheJenkinsAdmin ? 'primary' : 'default'}
 										testId="i-am-the-jenkins-admin"
 									>
-										I am (I'm a Jenkins admin)
+										I'm logging into Jenkins myself
 									</Button>
 								</ButtonGroup>
 

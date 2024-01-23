@@ -2,14 +2,15 @@ import React from 'react';
 import { cx } from '@emotion/css';
 import { JenkinsSyncJiraIcon } from '../icons/JenkinsSyncJiraIcon';
 import { connectionWizardHeader } from './ConnectionWizard.styles';
-import { jenkinsSetupServerName } from '../JenkinsSetup/JenkinsSetup.styles';
+import { jenkinsSetupServerName, jenkinsSetupServerNameContainer } from '../JenkinsSetup/JenkinsSetup.styles';
+import { connectionFlowHeaderContainer } from '../../GlobalStyles.styles';
 
 const ConnectionFlowHeader = (): JSX.Element => {
 	return (
-		<>
+		<div className={cx(connectionFlowHeaderContainer)}>
 			<JenkinsSyncJiraIcon />
 			<h3 className={cx(connectionWizardHeader)}>Connect Jenkins to Jira</h3>
-		</>
+		</div>
 	);
 };
 
@@ -19,7 +20,10 @@ type ConnectionFlowServerNameSubHeaderProps = {
 
 const ConnectionFlowServerNameSubHeader = ({ serverName }: ConnectionFlowServerNameSubHeaderProps): JSX.Element => {
 	return (
-		<p className={cx(jenkinsSetupServerName)}>Server name: {serverName}</p>
+		<p className={cx(jenkinsSetupServerNameContainer)}>
+			Server name:&nbsp;
+			<span className={cx(jenkinsSetupServerName)}>{serverName}</span>
+		</p>
 	);
 };
 

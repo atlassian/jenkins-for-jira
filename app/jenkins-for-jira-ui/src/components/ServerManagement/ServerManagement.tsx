@@ -62,7 +62,7 @@ export const contentToRenderServerManagementScreen = (
 					<>
 						<div className={serverManagementContainer}>
 							<div className={headerContainer}>
-								<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
+								<PageHeader actions={pageHeaderActions}>Jenkins server management</PageHeader>
 							</div>
 
 							<TopPanel />
@@ -243,7 +243,7 @@ const ServerManagement = (): JSX.Element => {
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		history.push('/create-server');
+		history.push('/connection-info');
 	};
 
 	// Refresh for PENDING and UPDATE AVAILABLE servers

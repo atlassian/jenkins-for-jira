@@ -11,19 +11,19 @@ export const WebhookGuideContent = ({ divRef, webhookUrl, siteName }: WebhookGui
 	return (
 		<div ref={divRef} data-testid="copy-webhook-guide">
 			<p>
-				Here's (almost) everything you need to set up Jenkins for Jira (official) for my Jenkins site.
+				Here's everything you need to set up the Atlassian Jira Software Cloud plugin on Jenkins.
 			</p>
 			<br />
 
 			<p>
-				Step-by-step guide (this will explain how to use the subsequent items):&nbsp;
+				Step-by-step guide:&nbsp;
 				<a href={HELP_LINK}>{HELP_LINK}</a>
 			</p>
 			<p></p>
 			<br />
 
 			<p>Site name:</p>
-			<p >{siteName}</p>
+			<p>{siteName}</p>
 			<br />
 
 			<p>Webhook URL:</p>
@@ -31,7 +31,7 @@ export const WebhookGuideContent = ({ divRef, webhookUrl, siteName }: WebhookGui
 			<br />
 
 			<p>Secret:</p>
-			<p>Secret: Your Jira admin will give this to you separately.</p>
+			<p>I'll send this shortly in a seperate channel.</p>
 		</div>
 	);
 };

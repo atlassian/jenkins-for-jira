@@ -34,6 +34,7 @@ export const copyToClipboardContainer = css`
 `;
 
 export const copyToClipboard = css`
+	font-weight: normal;
 	margin-left: ${token('space.075')};
 `;
 
@@ -44,17 +45,12 @@ export const topPanelContainer = css`
 	box-shadow: 0px 2px 4px 0px #091E4240;
 	display: flex;
 	max-height: 164px;
-	padding: ${token('space.300')};
+	padding: ${token('space.0')} ${token('space.300')};
 	margin: ${token('space.400')} auto ${token('space.400')} ${token('space.025')};
 `;
 
 export const topPanelContentHeaderContainer = css`
 	flex-direction: column;
-`;
-
-export const topPanelContentHeader = css`
-	font-size: 20px;
-	line-height: 24px;
 `;
 
 export const topPanelContent = css`
