@@ -154,6 +154,16 @@ describe('InProductHelpAction Suite', () => {
 });
 
 describe('InProductHelpDrawer Suite', () => {
+	const setHasError = jest.fn();
+
+	test('renders InProductHelpAction with label', () => {
+		const { getByText } = render(
+			<InProductHelpAction label="build" type={InProductHelpActionType.HelpButton} searchQuery="iphActionTest" />
+		);
+
+		expect(getByText('build')).toBeInTheDocument();
+	});
+
 	test('should render with loading spinner when isLoading is true', () => {
 		render(
 			<InProductHelpDrawer
@@ -165,6 +175,8 @@ describe('InProductHelpDrawer Suite', () => {
 				setIsLoading={() => {}}
 				setSearchResults={() => {}}
 				index={{ search: () => Promise.resolve({ hits: [] }) }}
+				hasError={false}
+				setHasError={setHasError}
 			/>
 		);
 
@@ -184,6 +196,8 @@ describe('InProductHelpDrawer Suite', () => {
 				setIsLoading={() => {}}
 				setSearchResults={() => {}}
 				index={{ search: () => Promise.resolve({ hits: [] }) }}
+				hasError={false}
+				setHasError={setHasError}
 			/>
 		);
 

@@ -4,6 +4,7 @@ import Drawer from '@atlaskit/drawer';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import { router } from '@forge/bridge';
+import Button from '@atlaskit/button/standard-button';
 import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
 import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
 import { getIdForLinkInIphDrawer } from './InProductHelpIds';
@@ -46,6 +47,17 @@ const replaceAnchorsWithSpanElement = (content: string) => {
 	return { tempDiv, anchorMap };
 };
 
+const InProductHelpDrawerError = () => {
+	return (
+		<>
+			<InProductHelpDrawerError />
+			<h4>Content not found</h4>
+			<p>Something went wrong, the content that you’re looking for isn’t here. </p>
+			<Button appearance="primary">Try again</Button>
+		</>
+	);
+};
+
 export type Hit = {
 	id: string,
 	body?: string,
@@ -64,7 +76,9 @@ export type InProductHelpDrawerProps = {
 	setSearchResults(hits: Hit[]): void,
 	index: {
 		search<T>(query: string): Promise<{ hits: T[] }>
-	}
+	},
+	hasError: boolean,
+	setHasError(hasError: boolean): void
 };
 
 export const InProductHelpDrawer = ({
@@ -75,7 +89,9 @@ export const InProductHelpDrawer = ({
 	searchQuery,
 	setIsLoading,
 	setSearchResults,
-	index
+	index,
+	hasError,
+	setHasError
 }: InProductHelpDrawerProps): JSX.Element => {
 	const [innerSearchQuery, setInnerSearchQuery] = useState<string>('');
 	const closeDrawer = (e: React.SyntheticEvent<HTMLElement, Event>) => {
@@ -106,6 +122,7 @@ export const InProductHelpDrawer = ({
 
 	const search = useCallback(async (searchId: string) => {
 		setIsLoading(true);
+		setHasError(false);
 
 		if (innerSearchQuery && innerSearchQuery.trim() === '') {
 			setSearchResults([]);
@@ -124,11 +141,12 @@ export const InProductHelpDrawer = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
+			setHasError(true);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 		}
-	}, [index, setSearchResults, innerSearchQuery, setIsLoading]);
+	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError]);
 
 	useEffect(() => {
 		const containers = document.getElementsByClassName('iph-link');
@@ -158,28 +176,42 @@ export const InProductHelpDrawer = ({
 		});
 	}, [search, setIsDrawerOpen]);
 
+	let iphContentToRender;
+
+	if (isLoading) {
+		iphContentToRender = (
+			<div className={cx(loadingContainer)} data-testid="loading-spinner">
+				<Spinner size="large" />
+			</div>
+		);
+	} else if (hasError) {
+		iphContentToRender = (
+			<div className={cx(inProductHelpDrawerContainer)}>
+				<InProductHelpDrawerError />
+			</div>
+		);
+	} else {
+		iphContentToRender = (
+			<div className={cx(inProductHelpDrawerContainer)}>
+				{results.length ? (
+					<>
+						<h3 className={cx(inProductHelpDrawerTitle)}>{results[0].title}</h3>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: tempDivBody.innerHTML || tempDivBodyText.innerHTML || ''
+							}}
+						/>
+					</>
+				) : (
+					<></>
+				)}
+			</div>
+		);
+	}
+
 	return (
 		<Drawer onClose={closeDrawer} isOpen={isDrawerOpen} width="wide" label="Basic drawer">
-			{isLoading ? (
-				<div className={cx(loadingContainer)} data-testid="loading-spinner">
-					<Spinner size="large" />
-				</div>
-			) : (
-				<div className={cx(inProductHelpDrawerContainer)}>
-					{results.length ? (
-						<>
-							<h3 className={cx(inProductHelpDrawerTitle)}>{results[0].title}</h3>
-							<div
-								dangerouslySetInnerHTML={{
-									__html: tempDivBody.innerHTML || tempDivBodyText.innerHTML || ''
-								}}
-							/>
-						</>
-					) : (
-						<></>
-					)}
-				</div>
-			)}
+			{iphContentToRender}
 		</Drawer>
 	);
 };

@@ -111,7 +111,7 @@ const ConnectionPanelTop = ({
 	const modalTitleMessage =
 		disconnectError ? 'An error occurred while deleting your server' : 'Disconnect this Jenkins server?';
 	const modalBodyMessage = disconnectError ? [
-		'Something went wrong while deleting ',
+		'Something went wrong while disconnecting ',
 		<strong key={server.name}>{serverToDisconnect?.name}</strong>,
 		', please try again.'
 	] : [
@@ -156,21 +156,22 @@ const ConnectionPanelTop = ({
 					</DropdownItemGroup>
 				</DropdownMenu>
 			}
-			<JenkinsModal
-				dataTestId={DISCONNECT_MODAL_TEST_ID}
-				server={serverToDisconnect}
-				show={showConfirmServerDisconnect}
-				modalAppearance={buttonAndIconAppearance}
-				title={modalTitleMessage}
-				body={modalBodyMessage}
-				onClose={closeConfirmServerDisconnect}
-				primaryButtonAppearance='subtle'
-				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance={buttonAndIconAppearance}
-				secondaryButtonLabel={secondaryButtonLabel}
-				secondaryButtonOnClick={disconnectJenkinsServerHandler}
-				isLoading={isLoading}
-			/>
+			{
+				showConfirmServerDisconnect && <JenkinsModal
+					dataTestId={DISCONNECT_MODAL_TEST_ID}
+					server={serverToDisconnect}
+					modalAppearance={buttonAndIconAppearance}
+					title={modalTitleMessage}
+					body={modalBodyMessage}
+					onClose={closeConfirmServerDisconnect}
+					primaryButtonAppearance='subtle'
+					primaryButtonLabel='Cancel'
+					secondaryButtonAppearance={buttonAndIconAppearance}
+					secondaryButtonLabel={secondaryButtonLabel}
+					secondaryButtonOnClick={disconnectJenkinsServerHandler}
+					isLoading={isLoading}
+				/>
+			}
 		</div>
 	);
 };

@@ -31,17 +31,16 @@ const NotConnectedState = ({
 	isUpdatingServer,
 	moduleKey
 }: NotConnectedStateProps): JSX.Element => {
-	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
+	const [serverToDeleteUuid, setServerToDeleteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
-	const [showRetryServerDelete, setShowRetryServerDelete] = useState<boolean>(true);
+	const [showRetryServerDelete, setShowRetryServerDelete] = useState<boolean>(false);
 
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
-		setServerToDelteUuid(serverToDelete.uuid);
+		setServerToDeleteUuid(serverToDelete.uuid);
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
-			// setShowRetryServerDelete(false);
 		} catch (e) {
 			setShowRetryServerDelete(true);
 			setIsDeletingServer(false);
@@ -49,8 +48,6 @@ const NotConnectedState = ({
 		}
 		refreshServersAfterDelete(serverToDelete);
 	};
-
-	console.log('showRetryServerDelete', showRetryServerDelete);
 
 	const deleteServerWrapper = async () => {
 		await deleteServer(jenkinsServer);
@@ -70,6 +67,7 @@ const NotConnectedState = ({
 
 	const closeRetryServerDelete = async () => {
 		setIsDeletingServer(false);
+		setShowRetryServerDelete(false);
 	};
 
 	return (
@@ -105,25 +103,28 @@ const NotConnectedState = ({
 						</>
 					)}
 
-			<JenkinsModal
-				dataTestId={DELETE_MODAL_TEST_ID}
-				server={jenkinsServer}
-				show={showRetryServerDelete}
-				modalAppearance='danger'
-				title='An error occurred while deleting your server'
-				body={[
-					'Something went wrong while deleting ',
-					<strong key={jenkinsServer.name}>{jenkinsServer?.name}</strong>,
-					', please try again.'
-				]}
-				onClose={closeRetryServerDelete}
-				primaryButtonAppearance='subtle'
-				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance='danger'
-				secondaryButtonLabel='Try again'
-				secondaryButtonOnClick={deleteServerWrapper}
-				isLoading={isDeletingServer}
-			/>
+			{
+				showRetryServerDelete &&
+				(isDeletingServer && jenkinsServer.uuid === serverToDeleteUuid) &&
+					<JenkinsModal
+						dataTestId={DELETE_MODAL_TEST_ID}
+						server={jenkinsServer}
+						modalAppearance='danger'
+						title={`An error occurred while deleting your connection to ${jenkinsServer?.name}`}
+						body={[
+							'Something went wrong while deleting ',
+							<strong key={jenkinsServer.name}>{jenkinsServer?.name}</strong>,
+							', please try again.'
+						]}
+						onClose={closeRetryServerDelete}
+						primaryButtonAppearance='subtle'
+						primaryButtonLabel='Cancel'
+						secondaryButtonAppearance='danger'
+						secondaryButtonLabel='Try again'
+						secondaryButtonOnClick={deleteServerWrapper}
+						isLoading={isDeletingServer}
+					/>
+			}
 		</div>
 	);
 };
