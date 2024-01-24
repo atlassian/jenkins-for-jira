@@ -9,7 +9,7 @@ import {
 import { JenkinsServer } from '../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
-import { DELETE_MODAL_TEST_ID, GLOBAL_PAGE} from '../../common/constants';
+import { DELETE_MODAL_TEST_ID, GLOBAL_PAGE } from '../../common/constants';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 
 type NotConnectedStateProps = {
@@ -33,25 +33,24 @@ const NotConnectedState = ({
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDelteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
-	const [disconnectError, setDisconnectError] = useState(false);
-	const [showRetryServerDelete, setShowRetryServerDelete] = useState(false);
+	const [showRetryServerDelete, setShowRetryServerDelete] = useState<boolean>(true);
 
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
-		setDisconnectError(false);
 		setServerToDelteUuid(serverToDelete.uuid);
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
+			// setShowRetryServerDelete(false);
 		} catch (e) {
-			console.log('Failed to disconnect server', e);
-			setDisconnectError(true);
-		} finally {
+			setShowRetryServerDelete(true);
 			setIsDeletingServer(false);
+			console.log('Failed to disconnect server', e);
 		}
-
 		refreshServersAfterDelete(serverToDelete);
 	};
+
+	console.log('showRetryServerDelete', showRetryServerDelete);
 
 	const deleteServerWrapper = async () => {
 		await deleteServer(jenkinsServer);
@@ -68,6 +67,10 @@ const NotConnectedState = ({
 	} else {
 		firstButtonLabel = 'Refresh';
 	}
+
+	const closeRetryServerDelete = async () => {
+		setIsDeletingServer(false);
+	};
 
 	return (
 		<div className={cx(notConnectedStateContainer)}>
@@ -105,17 +108,21 @@ const NotConnectedState = ({
 			<JenkinsModal
 				dataTestId={DELETE_MODAL_TEST_ID}
 				server={jenkinsServer}
-				show={showConfirmServerDisconnect}
-				modalAppearance={buttonAndIconAppearance}
-				title={modalTitleMessage}
-				body={modalBodyMessage}
-				onClose={closeConfirmServerDisconnect}
+				show={showRetryServerDelete}
+				modalAppearance='danger'
+				title='An error occurred while deleting your server'
+				body={[
+					'Something went wrong while deleting ',
+					<strong key={jenkinsServer.name}>{jenkinsServer?.name}</strong>,
+					', please try again.'
+				]}
+				onClose={closeRetryServerDelete}
 				primaryButtonAppearance='subtle'
 				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance={buttonAndIconAppearance}
-				secondaryButtonLabel={secondaryButtonLabel}
-				secondaryButtonOnClick={disconnectJenkinsServerHandler}
-				isLoading={isLoading}
+				secondaryButtonAppearance='danger'
+				secondaryButtonLabel='Try again'
+				secondaryButtonOnClick={deleteServerWrapper}
+				isLoading={isDeletingServer}
 			/>
 		</div>
 	);

@@ -50,6 +50,7 @@ const JenkinsModal: React.FC<ModalProps> = ({
 	isLoading,
 	isCopiedToClipboard
 }: ModalProps): JSX.Element => {
+	console.log('MODAL??', show);
 	return (
 		<ModalTransition>
 			{show && (

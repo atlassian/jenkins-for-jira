@@ -46,7 +46,7 @@ const ConnectionPanelTop = ({
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [disconnectError, setDisconnectError] = useState(false);
+	const [disconnectError, setDisconnectError] = useState<boolean>(false);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
@@ -109,9 +109,9 @@ const ConnectionPanelTop = ({
 
 	const buttonAndIconAppearance = disconnectError ? 'danger' : 'warning';
 	const modalTitleMessage =
-		disconnectError ? 'An error occurred while disconnecting' : 'Disconnect this Jenkins server?';
+		disconnectError ? 'An error occurred while deleting your server' : 'Disconnect this Jenkins server?';
 	const modalBodyMessage = disconnectError ? [
-		'Something went wrong while disconnecting ',
+		'Something went wrong while deleting ',
 		<strong key={server.name}>{serverToDisconnect?.name}</strong>,
 		', please try again.'
 	] : [
