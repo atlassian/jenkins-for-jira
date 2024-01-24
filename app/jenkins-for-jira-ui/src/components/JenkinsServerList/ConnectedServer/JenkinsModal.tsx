@@ -49,7 +49,6 @@ const JenkinsModal: React.FC<ModalProps> = ({
 	isLoading,
 	isCopiedToClipboard
 }: ModalProps): JSX.Element => {
-	console.log('hello?? ', dataTestId);
 	const loadingButtonWidthClassName = dataTestId === DELETE_MODAL_TEST_ID ? deleteLoadingIcon : loadingIcon;
 
 	return (

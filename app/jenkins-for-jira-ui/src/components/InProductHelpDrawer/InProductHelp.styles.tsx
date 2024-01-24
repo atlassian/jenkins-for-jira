@@ -80,7 +80,7 @@ export const inProductHelpDrawerTitle = css`
 
 export const iphLoadingContainer = css`
 	height: 300px;
-	padding-top: 100px;
+	padding-top: ${token('space.1000')};
 	text-align: center;
 	width: 580px;
 
