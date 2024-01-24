@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { cx } from '@emotion/css';
+import algoliasearch from 'algoliasearch';
 import {
 	inProductHelpActionButton, inProductHelpActionButtonDefault,
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import { InProductHelpDrawer } from './InProductHelpDrawer';
+import { Hit, InProductHelpDrawer } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
@@ -17,6 +18,7 @@ import {
 	JENKINS_SETUP_SCREEN_NAME,
 	SET_UP_GUIDE_SCREEN_NAME
 } from '../../common/constants';
+import envVars from '../../common/env';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
@@ -32,6 +34,7 @@ type InProductHelpActionProps = {
 	label: string,
 	type: InProductHelpActionType,
 	appearance?: InProductHelpActionButtonAppearance,
+	searchQuery: string
 	screenName?: string
 };
 
@@ -50,13 +53,39 @@ const iphClickSource = (screenName?: string): string => {
 	}
 };
 
+const ALGOLIA_APP_ID = '8K6J5OJIQW';
+const { ALGOLIA_API_KEY, ENVIRONMENT } = envVars;
+
+enum AlgoliaEnvironmentIndicies {
+	Development = 'product_help_dev',
+	Staging = 'product_help_stg',
+	Production = 'product_help_prod'
+}
+
+const getIndexNameForEnvironment = (): string => {
+	if (ENVIRONMENT === 'staging') {
+		return AlgoliaEnvironmentIndicies.Staging;
+	}
+
+	if (ENVIRONMENT === 'production') {
+		return AlgoliaEnvironmentIndicies.Production;
+	}
+
+	return AlgoliaEnvironmentIndicies.Development;
+};
+
 export const InProductHelpAction = ({
 	label,
 	type,
 	appearance,
+	searchQuery,
 	screenName
 }: InProductHelpActionProps): JSX.Element => {
+	const [isLoading, setIsLoading] = useState(false);
+	const [searchResults, setSearchResults] = useState<Hit[]>([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [hasError, setHasError] = useState(false);
+
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink
 			? inProductHelpActionLink
@@ -69,16 +98,51 @@ export const InProductHelpAction = ({
 
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
+		await search();
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
 			{
 				source: iphClickSource(screenName) || '',
+				action: `clicked - ${AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName}`,
+				actionSubject: actionRole,
 				elementName: label
 			}
 		);
 	};
+
+	const indexName = getIndexNameForEnvironment();
+	const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+	const index = algoliaClient.initIndex(indexName);
+
+	const search = useCallback(async () => {
+		setIsLoading(true);
+		setHasError(false);
+
+		if (searchQuery && searchQuery.trim() === '') {
+			setSearchResults([]);
+			return;
+		}
+
+		try {
+			const results = await index.search<Hit>(searchQuery);
+			const hitsData: Hit[] = results.hits.map((hit) => ({
+				id: hit.objectID,
+				objectID: hit.objectID,
+				title: hit.title,
+				body: hit.body || '',
+				bodyText: hit.bodyText || ''
+			}));
+
+			setSearchResults(hitsData);
+			setIsLoading(false);
+		} catch (e) {
+			console.error('Error searching Algolia index:', e);
+			setIsLoading(false);
+			setHasError(true);
+		}
+	}, [index, setSearchResults, searchQuery]);
 
 	return (
 		<>
@@ -99,10 +163,21 @@ export const InProductHelpAction = ({
 			>
 				{label}
 			</span>
-			<InProductHelpDrawer
-				isDrawerOpen={isDrawerOpen}
-				setIsDrawerOpen={setIsDrawerOpen}
-			/>
+			{
+				isDrawerOpen &&
+					<InProductHelpDrawer
+						isDrawerOpen={isDrawerOpen}
+						setIsDrawerOpen={setIsDrawerOpen}
+						searchResults={searchResults}
+						isLoading={isLoading}
+						searchQuery={searchQuery}
+						setIsLoading={setIsLoading}
+						setSearchResults={setSearchResults}
+						index={index}
+						hasError={hasError}
+						setHasError={setHasError}
+					/>
+			}
 		</>
 	);
 };

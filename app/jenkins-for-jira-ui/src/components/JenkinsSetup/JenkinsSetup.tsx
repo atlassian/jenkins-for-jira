@@ -49,6 +49,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -134,6 +135,7 @@ const MyJenkinsAdmin = ({
 				iphLabel="How to set up Jenkins servers to suit your team's needs"
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={JENKINS_SETUP_SCREEN_NAME}
+				searchQuery={InProductHelpIds.JENKINS_SET_UP_NON_ADMIN_HOW_TO}
 			/>
 		</div>
 	);
@@ -156,7 +158,11 @@ const IAmTheJenkinsAdmin = ({
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.ViewStepByStepGuideName
+			AnalyticsUiEventsEnum.ViewStepByStepGuideName,
+			{
+				action: `clicked - ${AnalyticsUiEventsEnum.ViewStepByStepGuideName}`,
+				actionSubject: 'button'
+			}
 		);
 
 		router.open(HELP_LINK);
@@ -271,6 +277,8 @@ const JenkinsSetup = (): JSX.Element => {
 				AnalyticsUiEventsEnum.CopiedToClipboardName,
 				{
 					source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+					action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
+					actionSubject: 'button',
 					buttonClicked: elementName || 'Copy button'
 				}
 			);
@@ -286,7 +294,9 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.MyJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.MyJenkinsAdminTabName}`,
+				actionSubject: 'button'
 			}
 		);
 	};
@@ -301,7 +311,9 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName}`,
+				actionSubject: 'button'
 			}
 		);
 	};

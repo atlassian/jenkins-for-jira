@@ -7,6 +7,7 @@ import { connectionPanelContainer } from './ConnectionPanel.styles';
 import { JenkinsServer } from '../../../../src/common/types';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -51,7 +52,7 @@ export const addConnectedState = (servers: JenkinsServer[]): JenkinsServer[] => 
 const connectedStateCount = (jenkinsServers: JenkinsServer[], connectedState: ConnectedState): number => {
 	const stateCount =
 		jenkinsServers.filter((server: JenkinsServer) => server.connectedState === connectedState);
-	return stateCount.length;
+	return stateCount.length || 0;
 };
 
 type ConnectionPanelProps = {
@@ -60,7 +61,8 @@ type ConnectionPanelProps = {
 	updatedServer: JenkinsServer | undefined,
 	isUpdatingServer: boolean,
 	uuidOfRefreshServer: string,
-	handleRefreshUpdateServer(uuid: string): void
+	handleRefreshUpdateServer(uuid: string): void,
+	moduleKey: string
 };
 
 const ConnectionPanel = ({
@@ -69,19 +71,27 @@ const ConnectionPanel = ({
 	updatedServer,
 	isUpdatingServer,
 	uuidOfRefreshServer,
-	handleRefreshUpdateServer
+	handleRefreshUpdateServer,
+	moduleKey
 }: ConnectionPanelProps): JSX.Element => {
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid
 		);
-		setJenkinsServers(refreshedServers);
+
+		if (setJenkinsServers) {
+			setJenkinsServers(refreshedServers);
+		}
 	};
+
+	const screenEvent =
+		moduleKey ===
+		CONFIG_PAGE ? AnalyticsScreenEventsEnum.ServerNameScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ServerNameScreenName,
+			screenEvent,
 			{
 				numberOfServers: jenkinsServers.length,
 				numberOfPendingServers: connectedStateCount(jenkinsServers, ConnectedState.PENDING),
@@ -90,7 +100,7 @@ const ConnectionPanel = ({
 				numberOfDuplicateServers: connectedStateCount(jenkinsServers, ConnectedState.DUPLICATE)
 			}
 		);
-	}, [jenkinsServers]);
+	}, [jenkinsServers, screenEvent]);
 
 	return (
 		<>
@@ -103,6 +113,7 @@ const ConnectionPanel = ({
 								refreshServers={handleServerRefresh}
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
+								moduleKey={moduleKey}
 							/>
 							<ConnectionPanelMain
 								jenkinsServer={server}
@@ -111,6 +122,7 @@ const ConnectionPanel = ({
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
+								moduleKey={moduleKey}
 							/>
 						</div>
 					);

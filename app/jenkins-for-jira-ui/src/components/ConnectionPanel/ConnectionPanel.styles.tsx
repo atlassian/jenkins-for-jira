@@ -174,6 +174,10 @@ export const connectedStateCellIcon = css`
 
 export const connectedStateCellEvent = css`
 	margin-left: ${token('space.100')};
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 	&:first-letter {
 		text-transform: capitalize;
@@ -195,6 +199,11 @@ export const setUpGuideParagraph = css`
 `;
 
 export const setUpGuideOrderListItemHeader = css`
+	font-weight: bold;
+	margin-bottom: ${token('space.200')};
+`;
+
+export const setUpGuideCode = css`
 	font-weight: bold;
 	margin-bottom: ${token('space.200')};
 `;

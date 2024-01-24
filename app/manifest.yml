@@ -1,4 +1,13 @@
 modules:
+  jira:globalPage:
+    - key: jenkins-for-jira-global-page
+      resource: main
+      resolver:
+        function: resolver
+      title: Jenkins for Jira - non-admin page
+      layout: blank
+      icon: https://marketplace-cdn.atlassian.com/files/0c45cd96-ccf1-4490-9df4-307dded2f6e0?fileType=image&mode=full-fit
+
   jira:adminPage:
     - key: jenkins-for-jira-ui-admin-page
       resource: main
@@ -63,6 +72,8 @@ permissions:
         - https://app.launchdarkly.com
         - https://events.launchdarkly.com
         - https://clientstream.launchdarkly.com
+        - https://8k6j5ojiqw-dsn.algolia.net
+        - https://support.atlassian.com
       backend:
         - https://app.launchdarkly.com/api/v2/flags/Jenkins
   content:

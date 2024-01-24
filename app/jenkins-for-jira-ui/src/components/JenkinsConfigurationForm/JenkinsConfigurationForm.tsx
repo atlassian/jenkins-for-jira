@@ -128,23 +128,24 @@ const JenkinsConfigurationForm = ({
 				)}
 			</Form>
 
-			<JenkinsModal
-				dataTestId={REFRESH_MODAL_TEST_ID}
-				show={showConfirmRefreshSecret}
-				modalAppearance='warning'
-				title='Refresh your server secret?'
-				body={[
-					'Are you sure that you want to refresh your Jenkins server secret? This means that you will need to configure your new secret with Jenkins to connect to your server.'
-				]}
-				onClose={closeConfirmRefreshSecret}
-				primaryButtonAppearance='subtle'
-				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance='warning'
-				secondaryButtonLabel='Refresh secret'
-				secondaryButtonOnClick={(event: React.MouseEvent<HTMLElement>) =>
-					refreshSecret(event)
-				}
-			/>
+			{
+				showConfirmRefreshSecret && <JenkinsModal
+					dataTestId={REFRESH_MODAL_TEST_ID}
+					modalAppearance='warning'
+					title='Refresh your server secret?'
+					body={[
+						'Are you sure that you want to refresh your Jenkins server secret? This means that you will need to configure your new secret with Jenkins to connect to your server.'
+					]}
+					onClose={closeConfirmRefreshSecret}
+					primaryButtonAppearance='subtle'
+					primaryButtonLabel='Cancel'
+					secondaryButtonAppearance='warning'
+					secondaryButtonLabel='Refresh secret'
+					secondaryButtonOnClick={(event: React.MouseEvent<HTMLElement>) =>
+						refreshSecret(event)
+					}
+				/>
+			}
 		</Fragment>
 	);
 };

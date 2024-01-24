@@ -11,6 +11,7 @@ import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState;
@@ -18,7 +19,7 @@ type NotConnectedStateProps = {
 	contentInstructionOne: string,
 	contentInstructionTwo?: string,
 	buttonAppearance: Appearance,
-	firstButtonLabel: string,
+	firstButtonLabel?: string,
 	secondButtonLabel?: string,
 	buttonOneOnClick(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
@@ -58,6 +59,7 @@ const ConnectionPanelContent = ({
 			<InProductHelpAction
 				label="Learn more"
 				type={InProductHelpActionType.HelpButton}
+				searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}
 			/>;
 	} else {
 		secondaryButton =
@@ -72,13 +74,16 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionOne}</p>
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			<ButtonGroup>
-				<Button
-					appearance={buttonAppearance}
-					onClick={buttonOneOnClick}
-					testId={testId}
-				>
-					{firstButtonLabel}
-				</Button>
+				{
+					firstButtonLabel &&
+					<Button
+						appearance={buttonAppearance}
+						onClick={buttonOneOnClick}
+						testId={testId}
+					>
+						{firstButtonLabel}
+					</Button>
+				}
 				{
 					secondButtonLabel
 						? <>{secondaryButton}</>

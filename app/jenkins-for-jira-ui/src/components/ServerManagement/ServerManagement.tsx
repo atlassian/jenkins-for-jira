@@ -74,6 +74,7 @@ export const contentToRenderServerManagementScreen = (
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
 								handleRefreshUpdateServer={handleRefreshUpdateServer}
+								moduleKey={moduleKey}
 							/>
 						</div>
 					</>
@@ -106,7 +107,7 @@ export const contentToRenderServerManagementScreen = (
 	return contentToRender;
 };
 
-const addConnectedStateToServer =
+export const addConnectedStateToServer =
 	(allServers: JenkinsServer[], singleServer: JenkinsServer, ipAddress?: string): JenkinsServer => {
 		const isDuplicate =
 		ipAddress &&
@@ -128,7 +129,7 @@ const addConnectedStateToServer =
 		return updatedServer;
 	};
 
-const updateServerOnRefresh =
+export const updateServerOnRefresh =
 	async (server: JenkinsServer, allServers: JenkinsServer[]): Promise<JenkinsServer> => {
 		const ipAddress = server.pluginConfig?.ipAddress;
 		const updatedServer = addConnectedStateToServer(allServers, server, ipAddress);
@@ -139,6 +140,16 @@ const updateServerOnRefresh =
 
 		return updatedServer;
 	};
+
+export const getSharePageMessage = (globalPageUrl: string): string => {
+	return `Hi there,
+Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+
+To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
+${globalPageUrl}
+
+You'll need to follow the set up guide for each server connected.`;
+};
 
 const ServerManagement = (): JSX.Element => {
 	const history = useHistory();
@@ -175,7 +186,9 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.SharePageName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
+				actionSubject: 'button'
 			}
 		);
 
@@ -191,7 +204,9 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName // TODO ARC-2648 set this with moduleKey
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
+				actionSubject: 'button'
 			}
 		);
 
@@ -223,6 +238,7 @@ const ServerManagement = (): JSX.Element => {
 		};
 
 		fetchData();
+
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
@@ -275,13 +291,7 @@ const ServerManagement = (): JSX.Element => {
 		</ButtonGroup>
 	);
 
-	const sharePageMessage =
-		`Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
-
-To set up what data Jenkins sends to Jira, follow this link:
-${globalPageUrl}
-
-Follow the set up guide(s) for each server on this page to receive build and deployment data from Jenkins.`;
+	const sharePageMessage = getSharePageMessage(globalPageUrl);
 
 	const contentToRender =
 		contentToRenderServerManagementScreen(
@@ -299,31 +309,32 @@ Follow the set up guide(s) for each server on this page to receive build and dep
 		<>
 			{contentToRender}
 
-			<JenkinsModal
-				dataTestId="share-page-modal"
-				show={showSharePage}
-				title="Share page"
-				body={[
-					<p key="share-message" className={cx(shareModalInstruction)}>
-						Share this link with your project teams to help them set up what
-						data they receive from Jenkins.
-					</p>,
-					<TextArea
-						key="text-area"
-						ref={textAreaRef}
-						value={sharePageMessage}
-						isReadOnly
-						minimumRows={5}
-					/>
-				]}
-				onClose={handleCloseShowSharePageModal}
-				primaryButtonAppearance="subtle"
-				primaryButtonLabel="Close"
-				secondaryButtonAppearance="primary"
-				secondaryButtonLabel="Copy to clipboard"
-				secondaryButtonOnClick={handleCopyToClipboard}
-				isCopiedToClipboard={isCopiedToClipboard}
-			/>
+			{
+				showSharePage && <JenkinsModal
+					dataTestId="share-page-modal"
+					title="Share page"
+					body={[
+						<p key="share-message" className={cx(shareModalInstruction)}>
+							Share this link with your project teams to help them set up what
+							data they receive from Jenkins.
+						</p>,
+						<TextArea
+							key="text-area"
+							ref={textAreaRef}
+							value={sharePageMessage}
+							isReadOnly
+							minimumRows={5}
+						/>
+					]}
+					onClose={handleCloseShowSharePageModal}
+					primaryButtonAppearance="subtle"
+					primaryButtonLabel="Close"
+					secondaryButtonAppearance="primary"
+					secondaryButtonLabel="Copy to clipboard"
+					secondaryButtonOnClick={handleCopyToClipboard}
+					isCopiedToClipboard={isCopiedToClipboard}
+				/>
+			}
 		</>
 	);
 };

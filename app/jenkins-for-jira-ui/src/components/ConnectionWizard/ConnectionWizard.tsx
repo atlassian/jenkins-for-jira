@@ -20,6 +20,7 @@ import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { CONNECTION_WIZARD_SCREEN_NAME } from '../../common/constants';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -68,6 +69,7 @@ const ConnectionWizard = (): JSX.Element => {
 				iphLabel="What to discuss with your team before connecting Jenkins"
 				iphType={InProductHelpActionType.HelpLink}
 				screenName={CONNECTION_WIZARD_SCREEN_NAME}
+				searchQuery={InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM}
 			/>
 
 			<Button

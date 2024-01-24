@@ -9,8 +9,6 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const logger = Logger.getInstance('getAllJenkinsServers');
 
 	try {
-		logger.debug('Getting Jenkins servers.');
-
 		let results: Result[] = [];
 		let response = await fetchInitialResult();
 		results = response.results;
@@ -22,7 +20,6 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 		}
 
 		const jenkinsServers = transformToJenkinsServers(results);
-
 		return jenkinsServers;
 	} catch (error) {
 		logger.error('Failed to fetch Jenkins server list', { error });
