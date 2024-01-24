@@ -206,4 +206,25 @@ describe('InProductHelpDrawer Suite', () => {
 			expect(screen.getByText('Body 1')).toBeInTheDocument();
 		});
 	});
+
+	test('should render error component when there is an error', async () => {
+		render(
+			<InProductHelpDrawer
+				isDrawerOpen
+				setIsDrawerOpen={() => {}}
+				searchResults={[]}
+				isLoading={false}
+				searchQuery=""
+				setIsLoading={() => {}}
+				setSearchResults={() => {}}
+				index={{ search: () => Promise.resolve({ hits: [] }) }}
+				hasError={true}
+				setHasError={setHasError}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Content not found')).toBeInTheDocument();
+		});
+	});
 });

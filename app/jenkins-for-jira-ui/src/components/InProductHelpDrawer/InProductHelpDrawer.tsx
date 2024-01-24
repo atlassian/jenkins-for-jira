@@ -5,8 +5,15 @@ import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import { router } from '@forge/bridge';
 import Button from '@atlaskit/button/standard-button';
-import { loadingContainer } from '../JenkinsSetup/JenkinsSetup.styles';
-import { inProductHelpDrawerContainer, inProductHelpDrawerTitle } from './InProductHelp.styles';
+import {
+	inProductHelpDrawerContainer,
+	inProductHelpDrawerErrorContainer,
+	inProductHelpDrawerErrorContent,
+	inProductHelpDrawerErrorIcon,
+	inProductHelpDrawerErrorTitle,
+	inProductHelpDrawerTitle,
+	iphLoadingContainer
+} from './InProductHelp.styles';
 import { getIdForLinkInIphDrawer } from './InProductHelpIds';
 import {
 	HELP_LINK,
@@ -14,6 +21,7 @@ import {
 	HERE,
 	SHARE_GUIDE_WITH_PROJECT_TEAMS, HOW_TO_FIND_OUT
 } from '../../common/constants';
+import { InProductHelpDrawerErrorIcon } from '../icons/InProductHelpDrawerErrorIcon';
 
 const openUrlInNewTab = () => {
 	const url = HELP_LINK;
@@ -47,14 +55,20 @@ const replaceAnchorsWithSpanElement = (content: string) => {
 	return { tempDiv, anchorMap };
 };
 
-const InProductHelpDrawerError = () => {
+type InProductHelpDrawerErrorProps = {
+	onClick(): void
+};
+
+const InProductHelpDrawerError = ({ onClick }: InProductHelpDrawerErrorProps) => {
 	return (
-		<>
-			<InProductHelpDrawerError />
-			<h4>Content not found</h4>
-			<p>Something went wrong, the content that you’re looking for isn’t here. </p>
-			<Button appearance="primary">Try again</Button>
-		</>
+		<div className={cx(inProductHelpDrawerErrorContainer)}>
+			<InProductHelpDrawerErrorIcon className={inProductHelpDrawerErrorIcon} />
+			<h4 className={cx(inProductHelpDrawerErrorTitle)}>Content not found</h4>
+			<p className={cx(inProductHelpDrawerErrorContent)}>
+				Something went wrong, the content that you’re looking for isn’t here.
+			</p>
+			<Button appearance="primary" onClick={onClick}>Try again</Button>
+		</div>
 	);
 };
 
@@ -110,13 +124,13 @@ export const InProductHelpDrawer = ({
 
 	const {
 		tempDiv: tempDivBody
-	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].body)) as {
+	} = (!isLoading && !hasError && replaceAnchorsWithSpanElement(results[0]?.body)) as {
 		tempDiv: HTMLDivElement;
 	};
 
 	const {
 		tempDiv: tempDivBodyText
-	} = (!isLoading && replaceAnchorsWithSpanElement(results[0].bodyText)) as {
+	} = (!isLoading && !hasError && replaceAnchorsWithSpanElement(results[0]?.bodyText)) as {
 		tempDiv: HTMLDivElement;
 	};
 
@@ -141,10 +155,10 @@ export const InProductHelpDrawer = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
-			setHasError(true);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
+			setHasError(true);
 		}
 	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError]);
 
@@ -176,42 +190,32 @@ export const InProductHelpDrawer = ({
 		});
 	}, [search, setIsDrawerOpen]);
 
-	let iphContentToRender;
-
 	if (isLoading) {
-		iphContentToRender = (
-			<div className={cx(loadingContainer)} data-testid="loading-spinner">
-				<Spinner size="large" />
-			</div>
-		);
-	} else if (hasError) {
-		iphContentToRender = (
-			<div className={cx(inProductHelpDrawerContainer)}>
-				<InProductHelpDrawerError />
-			</div>
-		);
-	} else {
-		iphContentToRender = (
-			<div className={cx(inProductHelpDrawerContainer)}>
-				{results.length ? (
-					<>
-						<h3 className={cx(inProductHelpDrawerTitle)}>{results[0].title}</h3>
-						<div
-							dangerouslySetInnerHTML={{
-								__html: tempDivBody.innerHTML || tempDivBodyText.innerHTML || ''
-							}}
-						/>
-					</>
-				) : (
-					<></>
-				)}
-			</div>
+		return (
+			<Drawer onClose={closeDrawer} isOpen={isDrawerOpen} width="wide" label="Basic drawer">
+				<div className={cx(iphLoadingContainer)} data-testid="loading-spinner">
+					<Spinner size="large" />
+				</div>
+			</Drawer>
 		);
 	}
 
 	return (
-		<Drawer onClose={closeDrawer} isOpen={isDrawerOpen} width="wide" label="Basic drawer">
-			{iphContentToRender}
-		</Drawer>
+		<>
+			<Drawer onClose={closeDrawer} isOpen={isDrawerOpen} width="wide" label="Basic drawer">
+				{
+					hasError
+						? <InProductHelpDrawerError onClick={() => search(searchQuery || innerSearchQuery)} />
+						: <div className={cx(inProductHelpDrawerContainer)}>
+							<h3 className={cx(inProductHelpDrawerTitle)}>{results[0]?.title}</h3>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: tempDivBody.innerHTML || tempDivBodyText.innerHTML || ''
+								}}
+							/>
+						</div>
+				}
+			</Drawer>
+		</>
 	);
 };

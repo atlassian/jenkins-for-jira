@@ -1,9 +1,13 @@
 import React from 'react';
 
-export function InProductHelpDrawerErrorIcon(): JSX.Element {
+type InProductHelpDrawerErrorIconProps = {
+	className: string
+};
+
+export function InProductHelpDrawerErrorIcon({ className }: InProductHelpDrawerErrorIconProps): JSX.Element {
 	return (
 		<div data-testid="inProductHelpDrawerErrorIcon">
-			<svg width="164" height="212" viewBox="0 0 164 212" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg width="164" height="212" viewBox="0 0 164 212" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
 				<g clipPath="url(#clip0_1647_20393)">
 					<rect width="163.28" height="212" fill="white" fillOpacity="0.01"/>
 					<path d="M94.7803 74.16L161.22 189.24C167.06 199.36 159.76 212 148.08 212H15.2003C3.52028 212 -3.77972 199.35 2.06028 189.24L68.5003 74.16C74.3403 64.04 88.9403 64.04 94.7803 74.16ZM87.2203 157.71L90.1003 113.36C90.4403 108.07 86.2403 103.58 80.9403 103.58C75.6303 103.58 71.4303 108.06 71.7803 113.36L74.6603 157.71C74.8803 161.02 77.6203 163.6 80.9403 163.6C84.2503 163.6 87.0003 161.02 87.2203 157.71ZM71.3803 181.25C71.3803 186.91 76.1403 191.35 81.7703 190.83C86.6203 190.38 90.5003 186.33 90.6003 181.46C90.7103 176.01 86.2903 171.52 80.8703 171.52C75.6403 171.51 71.3803 175.89 71.3803 181.25Z" fill="url(#paint0_linear_1647_20393)"/>

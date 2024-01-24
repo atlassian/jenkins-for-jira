@@ -84,7 +84,7 @@ export const InProductHelpAction = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [searchResults, setSearchResults] = useState<Hit[]>([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [hasError, setHasError] = useState(true);
+	const [hasError, setHasError] = useState(false);
 
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink
@@ -118,7 +118,7 @@ export const InProductHelpAction = ({
 
 	const search = useCallback(async () => {
 		setIsLoading(true);
-		// setHasError(false);
+		setHasError(false);
 
 		if (searchQuery && searchQuery.trim() === '') {
 			setSearchResults([]);
