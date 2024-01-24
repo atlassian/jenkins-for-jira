@@ -24,7 +24,7 @@ describe('NotConnectedState', () => {
 	const refreshServers = jest.fn();
 	const handleRefreshAfterUpdate = jest.fn();
 
-	test('renders with connected state DUPLICATE', () => {
+	test('should render with connected state DUPLICATE', () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.DUPLICATE}
 			jenkinsServer={mockServer}
@@ -36,7 +36,7 @@ describe('NotConnectedState', () => {
 		expect(screen.getByText('Delete')).toBeInTheDocument();
 	});
 
-	test('renders with connected state PENDING', () => {
+	test('should render with connected state PENDING', () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.PENDING}
 			jenkinsServer={mockServer}
@@ -49,8 +49,7 @@ describe('NotConnectedState', () => {
 		expect(screen.getByText('Learn more')).toBeInTheDocument();
 	});
 
-	test('clicking delete button removes the server', async () => {
-		// Render component
+	test('should remove server when Delete button is clicked', async () => {
 		render(<NotConnectedState
 			connectedState={ConnectedState.DUPLICATE}
 			jenkinsServer={mockServer}

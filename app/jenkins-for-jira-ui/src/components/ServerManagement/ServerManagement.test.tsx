@@ -324,14 +324,9 @@ describe('ServerManagement Component', () => {
 	});
 
 	describe('Dropdown menu items', () => {
-		// TODO - add test for Rename - will be done when I build the new server name screen
-
-		// TODO - add test for Connection settings -  will be done when I build the new set up Jenkins screen
-
 		test('should handle server disconnection and refreshing servers correctly', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
-			// jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));

@@ -25,18 +25,6 @@ export const connectionWizardNestedOrderedListItem = css`
 	margin: ${token('space.0')} ${token('space.0')} ${token('space.250')} ${token('space.400')};
 `;
 
-export const connectionWizardInfoPanel = css`
-	width: 360px;
-`;
-
-export const connectionWizardIphContainerClassName = css`
-	max-width: 330px;
-`;
-
-export const connectionWizardInfoPanelContent = css`
-	display: flex;
-`;
-
 export const connectionWizardButton = css`
 	margin-top: ${token('space.300')};
 
