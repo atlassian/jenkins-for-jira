@@ -16,7 +16,11 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE, DISCONNECT_MODAL_TEST_ID } from '../../common/constants';
-import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
 const analyticsClient = new AnalyticsClient();
@@ -100,16 +104,25 @@ const ConnectionPanelTop = ({
 			closeConfirmServerDisconnect();
 
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.UiEvent,
-				AnalyticsUiEventsEnum.ConfirmDisconnectServerName,
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerSuccessName,
 				{
-					action: `clicked - ${AnalyticsUiEventsEnum.ConfirmDisconnectServerName}`,
-					actionSubject: 'button'
+					action: `submitted ${AnalyticsTrackEventsEnum.DisconnectServerSuccessName}`,
+					actionSubject: 'form'
 				}
 			);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
 			setDisconnectError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.DisconnectServerFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		} finally {
 			setIsLoading(false);
 		}

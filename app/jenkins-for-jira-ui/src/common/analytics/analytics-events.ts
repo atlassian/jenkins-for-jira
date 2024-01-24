@@ -74,7 +74,17 @@ export enum AnalyticsTrackEventsEnum {
 	TotalNumberJenkinsServersName = 'totalNumberJenkinsServers',
 	TotalNumberOfServersWithPipelines = 'totalNumberOfServersWithPipelines',
 	TotalNumberOfServersWithoutPipelines = 'totalNumberOfServersWithoutPipelines',
-	GenerateNewSecretErrorConnectJenkinsServerName = 'generateNewSecretErrorConnectJenkinsServer'
+	GenerateNewSecretErrorConnectJenkinsServerName = 'generateNewSecretErrorConnectJenkinsServer',
+	CreatedNewServerSuccessName = 'createdNewServerSuccess',
+	CreatedNewServerFailureName = 'createdNewServerFailure',
+	UpdatedServerNameSuccessName = 'updatedServerNameSuccess',
+	UpdatedServerNameFailureName = 'updatedServerNameFailure',
+	DisconnectServerSuccessName = 'disconnectServerSuccess',
+	DisconnectServerFailureName = 'disconnectServerFailure',
+	DeleteServerSuccessName = 'deleteServerSuccess',
+	DeleteServerFailureName = 'deleteServerFailure',
+	InProductHelpRequestSuccessName = 'inProductHelpRequestSuccess',
+	InProductHelpRequestFailureName = 'inProductHelpRequestFailure'
 }
 
 export enum AnalyticsOperationalEventsEnum {}

@@ -22,6 +22,15 @@ import {
 	SHARE_GUIDE_WITH_PROJECT_TEAMS, HOW_TO_FIND_OUT
 } from '../../common/constants';
 import { InProductHelpDrawerErrorIcon } from '../icons/InProductHelpDrawerErrorIcon';
+import {
+	AnalyticsEventTypes,
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import {iphClickSource} from "./InProductHelpAction";
+
+const analyticsClient = new AnalyticsClient();
 
 const openUrlInNewTab = () => {
 	const url = HELP_LINK;
@@ -92,7 +101,9 @@ export type InProductHelpDrawerProps = {
 		search<T>(query: string): Promise<{ hits: T[] }>
 	},
 	hasError: boolean,
-	setHasError(hasError: boolean): void
+	setHasError(hasError: boolean): void,
+	screenName?: string,
+	label?: string
 };
 
 export const InProductHelpDrawer = ({
@@ -105,7 +116,9 @@ export const InProductHelpDrawer = ({
 	setSearchResults,
 	index,
 	hasError,
-	setHasError
+	setHasError,
+	screenName,
+	label
 }: InProductHelpDrawerProps): JSX.Element => {
 	const [innerSearchQuery, setInnerSearchQuery] = useState<string>('');
 	const closeDrawer = (e: React.SyntheticEvent<HTMLElement, Event>) => {
@@ -138,6 +151,18 @@ export const InProductHelpDrawer = ({
 		setIsLoading(true);
 		setHasError(false);
 
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
+			{
+				source: iphClickSource(screenName) || '',
+				action: `clicked - ${AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName}`,
+				actionSubject: 'link',
+				elementName: label,
+				iphLocation: 'drawer'
+			}
+		);
+
 		if (innerSearchQuery && innerSearchQuery.trim() === '') {
 			setSearchResults([]);
 			return;
@@ -155,10 +180,28 @@ export const InProductHelpDrawer = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 			setHasError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError]);
 

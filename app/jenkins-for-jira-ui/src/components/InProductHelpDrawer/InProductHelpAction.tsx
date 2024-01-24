@@ -9,7 +9,7 @@ import {
 import { Hit, InProductHelpDrawer } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum,
+	AnalyticsScreenEventsEnum, AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
@@ -40,7 +40,7 @@ type InProductHelpActionProps = {
 
 const analyticsClient = new AnalyticsClient();
 
-const iphClickSource = (screenName?: string): string => {
+export const iphClickSource = (screenName?: string): string => {
 	switch (screenName) {
 		case SET_UP_GUIDE_SCREEN_NAME:
 			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
@@ -107,7 +107,8 @@ export const InProductHelpAction = ({
 				source: iphClickSource(screenName) || '',
 				action: `clicked - ${AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName}`,
 				actionSubject: actionRole,
-				elementName: label
+				elementName: label,
+				iphLocation: 'page'
 			}
 		);
 	};
@@ -137,10 +138,28 @@ export const InProductHelpAction = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 			setHasError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 	}, [index, setSearchResults, searchQuery]);
 
@@ -176,6 +195,8 @@ export const InProductHelpAction = ({
 						index={index}
 						hasError={hasError}
 						setHasError={setHasError}
+						screenName={screenName}
+						label={label}
 					/>
 			}
 		</>
