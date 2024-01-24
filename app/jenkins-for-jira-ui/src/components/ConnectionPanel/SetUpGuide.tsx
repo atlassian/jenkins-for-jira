@@ -123,11 +123,7 @@ export const SetUpGuideInstructions = ({
 					pipelineStepLabel={pipelineStepLabel}
 					searchQuery={infoSearchQuery}
 				/>
-				<p>
-					<strong>OR</strong>
-				</p>
-				<p>
-					Name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
+				<p><strong>OR</strong> name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
 					&nbsp;stages to match this regex:&nbsp;
 					<InProductHelpAction
 						label={regex || '<regex>'}
@@ -160,7 +156,7 @@ export const SetUpGuideInstructions = ({
 
 	return (
 		<li className={cx(nestedOrderedListItem)}>
-			Set up what {eventType} events are sent to Jira: {pipelineStepLabel}
+			Must choose what <strong>{eventType} events</strong> are sent to Jira. To do this:
 			{contentToRender}
 		</li>
 	);

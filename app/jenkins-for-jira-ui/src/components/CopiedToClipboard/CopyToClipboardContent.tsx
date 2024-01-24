@@ -15,10 +15,8 @@ export const WebhookGuideContent = ({ divRef, webhookUrl, siteName }: WebhookGui
 			</p>
 			<br />
 
-			<p>
-				Step-by-step guide:&nbsp;
-				<a href={HELP_LINK}>{HELP_LINK}</a>
-			</p>
+			<p>Step-by-step guide:&nbsp;</p>
+			<p><a href={HELP_LINK}>{HELP_LINK}</a></p>
 			<p></p>
 			<br />
 
