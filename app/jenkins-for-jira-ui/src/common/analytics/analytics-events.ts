@@ -46,7 +46,7 @@ export enum AnalyticsUiEventsEnum {
 	ManageConnectionPendingStateName = 'manageConnectionPendingState',
 	NavigateBackPendingDeploymentStateName = 'navigateBackPendingDeploymentState',
 	OpenInProductionHelpDrawerName = 'openInProductHelpDrawer',
-	MyJenkinsAdminTabName = 'myJenkinsTabAdmin',
+	MyJenkinsAdminTabName = 'myJenkinsAdminTab',
 	IAmAJenkinsAdminTabName = 'iAmAJenkinsAdminTab',
 	CopiedToClipboardName = 'copiedToClipboard',
 	ViewStepByStepGuideName = 'viewStepByStepGuide',
