@@ -124,7 +124,7 @@ const App: React.FC = () => {
 		dark: 'dark',
 		colorMode: 'auto',
 		spacing: 'spacing',
-		typography: 'typography'
+		typography: 'typography-adg3'
 	});
 
 	return (
