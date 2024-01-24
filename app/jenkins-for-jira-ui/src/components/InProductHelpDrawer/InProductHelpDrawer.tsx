@@ -19,22 +19,38 @@ import {
 	HELP_LINK,
 	SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT,
 	HERE,
-	SHARE_GUIDE_WITH_PROJECT_TEAMS, HOW_TO_FIND_OUT
+	SHARE_GUIDE_WITH_PROJECT_TEAMS,
+	HOW_TO_FIND_OUT,
+	SET_UP_GUIDE_SCREEN_NAME,
+	CONNECTION_WIZARD_SCREEN_NAME,
+	JENKINS_SETUP_SCREEN_NAME
 } from '../../common/constants';
 import { InProductHelpDrawerErrorIcon } from '../icons/InProductHelpDrawerErrorIcon';
 import {
-	AnalyticsEventTypes,
+	AnalyticsEventTypes, AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import {iphClickSource} from "./InProductHelpAction";
 
 const analyticsClient = new AnalyticsClient();
 
 const openUrlInNewTab = () => {
 	const url = HELP_LINK;
 	router.open(url);
+};
+
+export const iphClickSource = (screenName?: string): string => {
+	switch (screenName) {
+		case SET_UP_GUIDE_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
+		case CONNECTION_WIZARD_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
+		case JENKINS_SETUP_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
+		default:
+			return '';
+	}
 };
 
 const addAttributesToSpanElement =
@@ -203,7 +219,7 @@ export const InProductHelpDrawer = ({
 				}
 			);
 		}
-	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError]);
+	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError, label, screenName]);
 
 	useEffect(() => {
 		const containers = document.getElementsByClassName('iph-link');

@@ -6,18 +6,13 @@ import {
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import { Hit, InProductHelpDrawer } from './InProductHelpDrawer';
+import { Hit, InProductHelpDrawer, iphClickSource } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum, AnalyticsTrackEventsEnum,
+	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import {
-	CONNECTION_WIZARD_SCREEN_NAME,
-	JENKINS_SETUP_SCREEN_NAME,
-	SET_UP_GUIDE_SCREEN_NAME
-} from '../../common/constants';
 import envVars from '../../common/env';
 
 export enum InProductHelpActionButtonAppearance {
@@ -39,19 +34,6 @@ type InProductHelpActionProps = {
 };
 
 const analyticsClient = new AnalyticsClient();
-
-export const iphClickSource = (screenName?: string): string => {
-	switch (screenName) {
-		case SET_UP_GUIDE_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
-		case CONNECTION_WIZARD_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
-		case JENKINS_SETUP_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
-		default:
-			return '';
-	}
-};
 
 const ALGOLIA_APP_ID = '8K6J5OJIQW';
 const { ALGOLIA_API_KEY, ENVIRONMENT } = envVars;
