@@ -141,11 +141,11 @@ const ConnectionPanelTop = ({
 		disconnectError ? 'An error occurred while deleting your server' : 'Disconnect this Jenkins server?';
 	const modalBodyMessage = disconnectError ? [
 		'Something went wrong while disconnecting ',
-		<strong key={server.name}>{serverToDisconnect?.name}</strong>,
+		<strong>{serverToDisconnect?.name}</strong>,
 		', please try again.'
 	] : [
 		'Are you sure that you want to disconnect your Jenkins server, ',
-		<strong key={server.name}>{serverToDisconnect?.name}</strong>,
+		<strong>{serverToDisconnect?.name}</strong>,
 		'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
 	];
 	const secondaryButtonLabel = disconnectError ? 'Try again' : 'Disconnect';
