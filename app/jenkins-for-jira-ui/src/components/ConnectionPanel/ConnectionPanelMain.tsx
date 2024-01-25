@@ -110,9 +110,10 @@ const ConnectionPanelMain = ({
 		try {
 			const refreshedServer = await getJenkinsServerWithSecret(uuid);
 			setServerWithUpdatedPipelines(refreshedServer);
-			setIsCheckingPipelineData(false);
 		} catch (e) {
 			console.error('No Jenkins server found.');
+		} finally {
+			setIsCheckingPipelineData(false);
 		}
 	};
 
