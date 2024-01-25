@@ -172,31 +172,32 @@ export const GlobalPage = (): JSX.Element => {
 				</>
 			}
 
-			<JenkinsModal
-				dataTestId="share-page-modal"
-				show={showSharePage}
-				title="Share page"
-				body={[
-					<p key="share-message" className={cx(shareModalInstruction)}>
-						Share this link with your project teams to help them set up what
-						data they receive from Jenkins.
-					</p>,
-					<TextArea
-						key="text-area"
-						ref={textAreaRef}
-						value={sharePageMessage}
-						isReadOnly
-						minimumRows={5}
-					/>
-				]}
-				onClose={handleCloseShowSharePageModal}
-				primaryButtonAppearance="subtle"
-				primaryButtonLabel="Close"
-				secondaryButtonAppearance="primary"
-				secondaryButtonLabel="Copy to clipboard"
-				secondaryButtonOnClick={handleCopyToClipboard}
-				isCopiedToClipboard={isCopiedToClipboard}
-			/>
+			{
+				showSharePage && <JenkinsModal
+					dataTestId="share-page-modal"
+					title="Share page"
+					body={[
+						<p key="share-message" className={cx(shareModalInstruction)}>
+							Share this link with your project teams to help them set up what
+							data they receive from Jenkins.
+						</p>,
+						<TextArea
+							key="text-area"
+							ref={textAreaRef}
+							value={sharePageMessage}
+							isReadOnly
+							minimumRows={5}
+						/>
+					]}
+					onClose={handleCloseShowSharePageModal}
+					primaryButtonAppearance="subtle"
+					primaryButtonLabel="Close"
+					secondaryButtonAppearance="primary"
+					secondaryButtonLabel="Copy to clipboard"
+					secondaryButtonOnClick={handleCopyToClipboard}
+					isCopiedToClipboard={isCopiedToClipboard}
+				/>
+			}
 		</div>
 	);
 };

@@ -14,9 +14,8 @@ import {
 import { ConnectedState, StatusLabel } from '../StatusLabel/StatusLabel';
 import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
-import { DISCONNECT_MODAL_TEST_ID } from '../JenkinsServerList/ConnectedServer/ConnectedServers';
 import { JenkinsServer } from '../../../../src/common/types';
-import { CONFIG_PAGE } from '../../common/constants';
+import { CONFIG_PAGE, DISCONNECT_MODAL_TEST_ID } from '../../common/constants';
 import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
@@ -47,6 +46,7 @@ const ConnectionPanelTop = ({
 	const [serverToDisconnect, setServerToDisconnect] = useState<JenkinsServer>();
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [disconnectError, setDisconnectError] = useState<boolean>(false);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
@@ -79,20 +79,21 @@ const ConnectionPanelTop = ({
 	const disconnectJenkinsServerHandler = async (
 		serverToDelete: JenkinsServer
 	) => {
-		await analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.ConfirmDisconnectServerName
-		);
-
+		setDisconnectError(false);
 		setIsLoading(true);
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
 			refreshServers(serverToDelete);
 			closeConfirmServerDisconnect();
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.UiEvent,
+				AnalyticsUiEventsEnum.ConfirmDisconnectServerName
+			);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
-			// TODO - add error state ARC-2722
+			setDisconnectError(true);
 		} finally {
 			setIsLoading(false);
 		}
@@ -105,6 +106,20 @@ const ConnectionPanelTop = ({
 
 	const serverIsNotDuplicate = server.connectedState !== ConnectedState.DUPLICATE;
 	const isConfigPage = moduleKey && moduleKey === CONFIG_PAGE;
+
+	const buttonAndIconAppearance = disconnectError ? 'danger' : 'warning';
+	const modalTitleMessage =
+		disconnectError ? 'An error occurred while deleting your server' : 'Disconnect this Jenkins server?';
+	const modalBodyMessage = disconnectError ? [
+		'Something went wrong while disconnecting ',
+		<strong>{serverToDisconnect?.name}</strong>,
+		', please try again.'
+	] : [
+		'Are you sure that you want to disconnect your Jenkins server, ',
+		<strong>{serverToDisconnect?.name}</strong>,
+		'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
+	];
+	const secondaryButtonLabel = disconnectError ? 'Try again' : 'Disconnect';
 
 	return (
 		<div className={cx(connectionPanelTopContainer)}>
@@ -141,25 +156,22 @@ const ConnectionPanelTop = ({
 					</DropdownItemGroup>
 				</DropdownMenu>
 			}
-			<JenkinsModal
-				dataTestId={DISCONNECT_MODAL_TEST_ID}
-				server={serverToDisconnect}
-				show={showConfirmServerDisconnect}
-				modalAppearance='warning'
-				title='Disconnect this Jenkins server?'
-				body={[
-					'Are you sure that you want to disconnect your Jenkins server, ',
-					<strong key={server.name}>{serverToDisconnect?.name}</strong>,
-					'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
-				]}
-				onClose={closeConfirmServerDisconnect}
-				primaryButtonAppearance='subtle'
-				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance='warning'
-				secondaryButtonLabel='Disconnect'
-				secondaryButtonOnClick={disconnectJenkinsServerHandler}
-				isLoading={isLoading}
-			/>
+			{
+				showConfirmServerDisconnect && <JenkinsModal
+					dataTestId={DISCONNECT_MODAL_TEST_ID}
+					server={serverToDisconnect}
+					modalAppearance={buttonAndIconAppearance}
+					title={modalTitleMessage}
+					body={modalBodyMessage}
+					onClose={closeConfirmServerDisconnect}
+					primaryButtonAppearance='subtle'
+					primaryButtonLabel='Cancel'
+					secondaryButtonAppearance={buttonAndIconAppearance}
+					secondaryButtonLabel={secondaryButtonLabel}
+					secondaryButtonOnClick={disconnectJenkinsServerHandler}
+					isLoading={isLoading}
+				/>
+			}
 		</div>
 	);
 };

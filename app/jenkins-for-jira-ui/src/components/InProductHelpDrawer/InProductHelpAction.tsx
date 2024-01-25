@@ -84,6 +84,8 @@ export const InProductHelpAction = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [searchResults, setSearchResults] = useState<Hit[]>([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [hasError, setHasError] = useState(false);
+
 	const inProductHelpTypeClassName =
 		type === InProductHelpActionType.HelpLink
 			? inProductHelpActionLink
@@ -116,6 +118,7 @@ export const InProductHelpAction = ({
 
 	const search = useCallback(async () => {
 		setIsLoading(true);
+		setHasError(false);
 
 		if (searchQuery && searchQuery.trim() === '') {
 			setSearchResults([]);
@@ -137,6 +140,7 @@ export const InProductHelpAction = ({
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
+			setHasError(true);
 		}
 	}, [index, setSearchResults, searchQuery]);
 
@@ -170,6 +174,8 @@ export const InProductHelpAction = ({
 						setIsLoading={setIsLoading}
 						setSearchResults={setSearchResults}
 						index={index}
+						hasError={hasError}
+						setHasError={setHasError}
 					/>
 			}
 		</>

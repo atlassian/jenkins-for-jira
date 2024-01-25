@@ -11,13 +11,13 @@ import Modal, {
 } from '@atlaskit/modal-dialog';
 import { cx } from '@emotion/css';
 import { JenkinsServer } from '../../../../../src/common/types';
-import { loadingIcon } from './JenkinsModal.styles';
+import { deleteLoadingIcon, loadingIcon } from './JenkinsModal.styles';
 import { secondaryButtonContainer } from '../../ServerManagement/ServerManagement.styles';
 import { CopiedToClipboard } from '../../CopiedToClipboard/CopiedToClipboard';
+import { DELETE_MODAL_TEST_ID, DISCONNECT_MODAL_TEST_ID } from '../../../common/constants';
 
 type ModalProps = {
 	server?: JenkinsServer;
-	show: boolean;
 	modalAppearance?: ModalAppearance;
 	title: string;
 	body: (string | React.ReactElement<any>)[];
@@ -37,7 +37,6 @@ type ModalProps = {
 const JenkinsModal: React.FC<ModalProps> = ({
 	dataTestId,
 	server,
-	show,
 	modalAppearance,
 	title,
 	body,
@@ -50,52 +49,58 @@ const JenkinsModal: React.FC<ModalProps> = ({
 	isLoading,
 	isCopiedToClipboard
 }: ModalProps): JSX.Element => {
+	const loadingButtonWidthClassName = dataTestId === DELETE_MODAL_TEST_ID ? deleteLoadingIcon : loadingIcon;
+
 	return (
 		<ModalTransition>
-			{show && (
-				<Modal onClose={onClose} testId={dataTestId}>
-					<ModalHeader>
-						{
-							modalAppearance
-								? (
-									<ModalTitle appearance={modalAppearance}>{title}</ModalTitle>
-								)
-								: (
-									<ModalTitle>{title}</ModalTitle>
-								)
-						}
-					</ModalHeader>
-					<ModalBody>{body}</ModalBody>
-					<ModalFooter>
-						<Button appearance={primaryButtonAppearance} onClick={onClose} testId='closeButton'>
-							{primaryButtonLabel}
-						</Button>
+			<Modal onClose={onClose} testId={dataTestId}>
+				<ModalHeader>
+					{
+						modalAppearance
+							? (
+								<ModalTitle appearance={modalAppearance}>{title}</ModalTitle>
+							)
+							: (
+								<ModalTitle>{title}</ModalTitle>
+							)
+					}
+				</ModalHeader>
+				<ModalBody>{body}</ModalBody>
+				<ModalFooter>
+					<Button appearance={primaryButtonAppearance} onClick={onClose} testId='closeButton'>
+						{primaryButtonLabel}
+					</Button>
 
-						{
-							isLoading
-								? (
-									<LoadingButton appearance='warning' isLoading className={loadingIcon} />
-								) : (
-									<div className={cx(secondaryButtonContainer)}>
-										<Button
-											appearance={secondaryButtonAppearance}
-											onClick={(event: JenkinsServer | KeyboardOrMouseEvent) =>
-												(dataTestId === 'disconnectModal'
+					{
+						isLoading
+							? (
+								<LoadingButton
+									appearance={modalAppearance}
+									isLoading
+									className={loadingButtonWidthClassName}
+								/>
+							) : (
+								<div className={cx(secondaryButtonContainer)}>
+									<Button
+										appearance={secondaryButtonAppearance}
+										onClick={(event: JenkinsServer | KeyboardOrMouseEvent) =>
+											(
+												dataTestId === DISCONNECT_MODAL_TEST_ID ||
+												dataTestId === DELETE_MODAL_TEST_ID
 													? secondaryButtonOnClick(server)
 													: secondaryButtonOnClick(event))
-											}
-											testId='secondaryButton'
-										>
-											{secondaryButtonLabel}
-										</Button>
+										}
+										testId='secondaryButton'
+									>
+										{secondaryButtonLabel}
+									</Button>
 
-										{isCopiedToClipboard && <CopiedToClipboard leftPositionPercent="70%" />}
-									</div>
-								)}
+									{isCopiedToClipboard && <CopiedToClipboard leftPositionPercent="70%" />}
+								</div>
+							)}
 
-					</ModalFooter>
-				</Modal>
-			)}
+				</ModalFooter>
+			</Modal>
 		</ModalTransition>
 	);
 };

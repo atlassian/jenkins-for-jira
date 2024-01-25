@@ -41,6 +41,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../../common/analytics/analytics-client';
+import { DISCONNECT_MODAL_TEST_ID } from '../../../common/constants';
 
 export const mapLastEventStatus = (
 	lastEventStatus: string
@@ -361,25 +362,26 @@ const ConnectedServersTable = ({ jenkinsServerList, refreshServers }: ConnectedS
 					</StyledConnectedServerTableContainer>
 				)
 			)}
-			<JenkinsModal
-				dataTestId={DISCONNECT_MODAL_TEST_ID}
-				server={serverToDisconnect}
-				show={showConfirmServerDisconnect}
-				modalAppearance='warning'
-				title='Disconnect this Jenkins server?'
-				body={[
-					'Are you sure that you want to disconnect your Jenkins server, ',
-					<strong>{serverToDisconnect?.name}</strong>,
-					'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
-				]}
-				onClose={closeConfirmServerDisconnect}
-				primaryButtonAppearance='subtle'
-				primaryButtonLabel='Cancel'
-				secondaryButtonAppearance='warning'
-				secondaryButtonLabel='Disconnect'
-				secondaryButtonOnClick={disconnectJenkinsServerHandler}
-				isLoading={isLoading}
-			/>
+			{
+				showConfirmServerDisconnect && <JenkinsModal
+					dataTestId={DISCONNECT_MODAL_TEST_ID}
+					server={serverToDisconnect}
+					modalAppearance='warning'
+					title='Disconnect this Jenkins server?'
+					body={[
+						'Are you sure that you want to disconnect your Jenkins server, ',
+						<strong>{serverToDisconnect?.name}</strong>,
+						'? This means that you disconnect all associated Jenkins jobs, and will have to add a new server in Jira if you ever want to reconnect.'
+					]}
+					onClose={closeConfirmServerDisconnect}
+					primaryButtonAppearance='subtle'
+					primaryButtonLabel='Cancel'
+					secondaryButtonAppearance='warning'
+					secondaryButtonLabel='Disconnect'
+					secondaryButtonOnClick={disconnectJenkinsServerHandler}
+					isLoading={isLoading}
+				/>
+			}
 		</>
 	);
 };
@@ -393,8 +395,6 @@ const ConnectedServers = ({ jenkinsServerList, refreshServers }: ConnectedServer
 		</StyledConnectedServerContainer>
 	);
 };
-
-export const DISCONNECT_MODAL_TEST_ID = 'disconnectModal';
 
 export {
 	ConnectedServers
