@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { PipelineEventType, SetUpGuideInstructions } from './SetUpGuide';
 
 describe('SetUpGuideInstructions', () => {
-	test('renders SetUpGuideInstructions with BUILD eventType, globalSettings, and regex', () => {
+	test('should render SetUpGuideInstructions with BUILD eventType, globalSettings, and regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
 				eventType={PipelineEventType?.BUILD}
@@ -17,7 +17,7 @@ describe('SetUpGuideInstructions', () => {
 		expect(getByText('^build$')).toBeInTheDocument();
 	});
 
-	test('renders SetUpGuideInstructions with BUILD eventType, globalSettings, and no regex', () => {
+	test('should render SetUpGuideInstructions with BUILD eventType, globalSettings, and no regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
 				eventType={PipelineEventType?.BUILD}
@@ -28,7 +28,7 @@ describe('SetUpGuideInstructions', () => {
 		expect(getByText('No setup required')).toBeInTheDocument();
 	});
 
-	test('renders SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings, and regex', () => {
+	test('should render SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings, and regex', () => {
 		const { getByText } = render(
 			<SetUpGuideInstructions
 				eventType={PipelineEventType?.DEPLOYMENT}
@@ -42,7 +42,7 @@ describe('SetUpGuideInstructions', () => {
 		expect(getByText('^deploy to (?<envName>.*)$')).toBeInTheDocument();
 	});
 
-	test('renders SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings set to false', () => {
+	test('should render SetUpGuideInstructions with DEPLOYMENT eventType, globalSettings set to false', () => {
 		const { getByText, queryByText } = render(
 			<SetUpGuideInstructions
 				eventType={PipelineEventType?.DEPLOYMENT}

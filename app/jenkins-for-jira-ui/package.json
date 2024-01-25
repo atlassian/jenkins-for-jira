@@ -34,6 +34,7 @@
     "@emotion/styled": "11.6.0",
     "@forge/bridge": "2.6.0",
     "@forge/ui": "0.16.0",
+    "@types/history": "^5.0.0",
     "@types/lodash": "^4.14.202",
     "@types/react": "17.0.65",
     "@types/react-dom": "17.0.20",
