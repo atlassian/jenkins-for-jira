@@ -1,10 +1,6 @@
 import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
 
-export const iphActionContainer = css`
-	margin-left: 16px;
-`;
-
 export const inProductHelpActionLink = css`
 	background-color: inherit;
 	border: none;

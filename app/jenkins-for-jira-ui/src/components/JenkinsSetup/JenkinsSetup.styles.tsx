@@ -65,27 +65,6 @@ export const jenkinsSetupViewButton = css`
 	width: 400px;
 `;
 
-export const jenkinsSetupInfoPanelContentContainer = css`
-	max-width: 350px;
-`;
-
-export const jenkinsSetUpInfoPanelHelpLink = css`
-	white-space: normal;
-	[type=button] {
-		margin-right: ${token('space.200')};
-		white-space: normal;
-		span {
-			color: red !important;
-		}
-	}
-	button {
-		white-space: normal;
-		span {
-			white-space: normal;
-		}
-	}
-`;
-
 export const jenkinsSetUpCopyHiddenContent = css`
 	border: 0;
 	clip: rect(0, 0, 0, 0);

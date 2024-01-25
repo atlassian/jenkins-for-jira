@@ -111,7 +111,7 @@ const servers: JenkinsServer[] = [
 ];
 
 describe('Connection Panel Suite', () => {
-	test('fetches and displays servers on mount', async () => {
+	test('should fetch and displays servers on mount', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 
 		render(<ConnectionPanel

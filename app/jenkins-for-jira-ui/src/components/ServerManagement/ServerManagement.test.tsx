@@ -2,6 +2,8 @@ import React from 'react';
 import {
 	act, fireEvent, render, screen, waitFor
 } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
+import * as ReactRouter from 'react-router';
 import { invoke } from '@forge/bridge';
 import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
@@ -117,6 +119,10 @@ document.execCommand = jest.fn();
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
 jest.mock('../../api/fetchModuleKey');
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
+	useHistory: jest.fn()
+}));
 
 describe('getSiteNameFromUrlt', () => {
 	test('correctly extracts site name from URL', async () => {
@@ -324,14 +330,61 @@ describe('ServerManagement Component', () => {
 	});
 
 	describe('Dropdown menu items', () => {
-		// TODO - add test for Rename - will be done when I build the new server name screen
+		test('should call useHistory when Rename is clicked', async () => {
+			const historyMock = createMemoryHistory() as any;
+			const mockUseHistory = jest.spyOn(ReactRouter, 'useHistory').mockReturnValue(historyMock);
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
-		// TODO - add test for Connection settings -  will be done when I build the new set up Jenkins screen
+			await waitFor(() => render(<ServerManagement />));
+
+			await waitFor(() => {
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
+			});
+
+			const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
+			fireEvent.click(dropdownButton);
+
+			await waitFor(() => {
+				expect(screen.getByText('Rename')).toBeInTheDocument();
+				fireEvent.click(screen.getByText('Rename'));
+			});
+
+			expect(mockUseHistory).toHaveBeenCalled();
+			mockUseHistory.mockRestore();
+		});
+
+		test('should call useHistory when Connection settings is clicked', async () => {
+			const historyMock = createMemoryHistory() as any;
+			const mockUseHistory = jest.spyOn(ReactRouter, 'useHistory').mockReturnValue(historyMock);
+			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+
+			await waitFor(() => render(<ServerManagement />));
+
+			await waitFor(() => {
+				expect(screen.getByText(servers[0].name)).toBeInTheDocument();
+				expect(screen.getByText(servers[1].name)).toBeInTheDocument();
+			});
+
+			const dropdownButton = screen.getByTestId(`dropdown-menu-${servers[1].name}`);
+			fireEvent.click(dropdownButton);
+
+			await waitFor(() => {
+				expect(screen.getByText('Connection settings')).toBeInTheDocument();
+				fireEvent.click(screen.getByText('Connection settings'));
+			});
+
+			expect(mockUseHistory).toHaveBeenCalled();
+			mockUseHistory.mockRestore();
+		});
 
 		test('should handle server disconnection and refreshing servers correctly', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
-			// jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
 			await waitFor(() => render(<ServerManagement />));

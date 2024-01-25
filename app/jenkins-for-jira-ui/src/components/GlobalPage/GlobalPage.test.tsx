@@ -122,7 +122,7 @@ describe('GlobalPage Component', () => {
 		jest.clearAllMocks();
 	});
 
-	it('should loading spinner while fetching data', async () => {
+	it('should render loading spinner while fetching data', async () => {
 		render(<GlobalPage />);
 		expect(await screen.findByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
