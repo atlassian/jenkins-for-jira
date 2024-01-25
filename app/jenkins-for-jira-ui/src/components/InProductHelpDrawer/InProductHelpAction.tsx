@@ -6,18 +6,13 @@ import {
 	inProductHelpActionButtonPrimary,
 	inProductHelpActionLink
 } from './InProductHelp.styles';
-import { Hit, InProductHelpDrawer } from './InProductHelpDrawer';
+import { Hit, InProductHelpDrawer, iphClickSource } from './InProductHelpDrawer';
 import {
 	AnalyticsEventTypes,
-	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import {
-	CONNECTION_WIZARD_SCREEN_NAME,
-	JENKINS_SETUP_SCREEN_NAME,
-	SET_UP_GUIDE_SCREEN_NAME
-} from '../../common/constants';
 import envVars from '../../common/env';
 
 export enum InProductHelpActionButtonAppearance {
@@ -39,19 +34,6 @@ type InProductHelpActionProps = {
 };
 
 const analyticsClient = new AnalyticsClient();
-
-const iphClickSource = (screenName?: string): string => {
-	switch (screenName) {
-		case SET_UP_GUIDE_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
-		case CONNECTION_WIZARD_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
-		case JENKINS_SETUP_SCREEN_NAME:
-			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
-		default:
-			return '';
-	}
-};
 
 const ALGOLIA_APP_ID = '8K6J5OJIQW';
 const { ALGOLIA_API_KEY, ENVIRONMENT } = envVars;
@@ -96,7 +78,6 @@ export const InProductHelpAction = ({
 			? inProductHelpActionButtonPrimary
 			: inProductHelpActionButtonDefault;
 
-	const actionSubject = type === InProductHelpActionType.HelpButton ? 'button' : 'link';
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
 		await search();
@@ -106,8 +87,10 @@ export const InProductHelpAction = ({
 			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
 			{
 				source: iphClickSource(screenName) || '',
-				actionSubject,
-				elementName: label
+				action: `clicked - ${AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName}`,
+				actionSubject: actionRole,
+				elementName: label,
+				iphLocation: 'page'
 			}
 		);
 	};
@@ -137,10 +120,28 @@ export const InProductHelpAction = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 			setHasError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 	}, [index, setSearchResults, searchQuery]);
 
@@ -176,6 +177,8 @@ export const InProductHelpAction = ({
 						index={index}
 						hasError={hasError}
 						setHasError={setHasError}
+						screenName={screenName}
+						label={label}
 					/>
 			}
 		</>

@@ -11,6 +11,10 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 import { DELETE_MODAL_TEST_ID, GLOBAL_PAGE } from '../../common/constants';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
+import { AnalyticsEventTypes, AnalyticsTrackEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 type NotConnectedStateProps = {
 	connectedState: ConnectedState,
@@ -41,10 +45,28 @@ const NotConnectedState = ({
 
 		try {
 			await disconnectJenkinsServer(serverToDelete.uuid);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DeleteServerSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.DeleteServerSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
 		} catch (e) {
 			setShowRetryServerDelete(true);
 			setIsDeletingServer(false);
-			console.log('Failed to disconnect server', e);
+			console.log('Failed to delete server', e);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DeleteServerFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.DeleteServerFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 		refreshServersAfterDelete(serverToDelete);
 	};

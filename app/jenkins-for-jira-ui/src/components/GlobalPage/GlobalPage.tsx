@@ -78,7 +78,9 @@ export const GlobalPage = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.SharePageName,
 			{
-				source: AnalyticsScreenEventsEnum.GlobalPageScreenName
+				source: AnalyticsScreenEventsEnum.GlobalPageScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
+				actionSubject: 'button'
 			}
 		);
 
@@ -90,7 +92,9 @@ export const GlobalPage = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: AnalyticsScreenEventsEnum.GlobalPageScreenName
+				source: AnalyticsScreenEventsEnum.GlobalPageScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
+				actionSubject: 'button'
 			}
 		);
 

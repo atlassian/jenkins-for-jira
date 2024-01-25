@@ -19,13 +19,38 @@ import {
 	HELP_LINK,
 	SET_UP_JENKINS_CONNECT_TO_JIRA_TEXT,
 	HERE,
-	SHARE_GUIDE_WITH_PROJECT_TEAMS, HOW_TO_FIND_OUT
+	SHARE_GUIDE_WITH_PROJECT_TEAMS,
+	HOW_TO_FIND_OUT,
+	SET_UP_GUIDE_SCREEN_NAME,
+	CONNECTION_WIZARD_SCREEN_NAME,
+	JENKINS_SETUP_SCREEN_NAME
 } from '../../common/constants';
 import { InProductHelpDrawerErrorIcon } from '../icons/InProductHelpDrawerErrorIcon';
+import {
+	AnalyticsEventTypes, AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
+import { AnalyticsClient } from '../../common/analytics/analytics-client';
+
+const analyticsClient = new AnalyticsClient();
 
 const openUrlInNewTab = () => {
 	const url = HELP_LINK;
 	router.open(url);
+};
+
+export const iphClickSource = (screenName?: string): string => {
+	switch (screenName) {
+		case SET_UP_GUIDE_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ServerManagementScreenName;
+		case CONNECTION_WIZARD_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.ConnectionWizardScreenName;
+		case JENKINS_SETUP_SCREEN_NAME:
+			return AnalyticsScreenEventsEnum.JenkinsSetupScreenName;
+		default:
+			return '';
+	}
 };
 
 const addAttributesToSpanElement =
@@ -92,7 +117,9 @@ export type InProductHelpDrawerProps = {
 		search<T>(query: string): Promise<{ hits: T[] }>
 	},
 	hasError: boolean,
-	setHasError(hasError: boolean): void
+	setHasError(hasError: boolean): void,
+	screenName?: string,
+	label?: string
 };
 
 export const InProductHelpDrawer = ({
@@ -105,7 +132,9 @@ export const InProductHelpDrawer = ({
 	setSearchResults,
 	index,
 	hasError,
-	setHasError
+	setHasError,
+	screenName,
+	label
 }: InProductHelpDrawerProps): JSX.Element => {
 	const [innerSearchQuery, setInnerSearchQuery] = useState<string>('');
 	const closeDrawer = (e: React.SyntheticEvent<HTMLElement, Event>) => {
@@ -138,6 +167,18 @@ export const InProductHelpDrawer = ({
 		setIsLoading(true);
 		setHasError(false);
 
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName,
+			{
+				source: iphClickSource(screenName) || '',
+				action: `clicked - ${AnalyticsUiEventsEnum.OpenInProductionHelpDrawerName}`,
+				actionSubject: 'link',
+				elementName: label,
+				iphLocation: 'drawer'
+			}
+		);
+
 		if (innerSearchQuery && innerSearchQuery.trim() === '') {
 			setSearchResults([]);
 			return;
@@ -155,12 +196,30 @@ export const InProductHelpDrawer = ({
 
 			setSearchResults(hitsData);
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
 		} catch (e) {
 			console.error('Error searching Algolia index:', e);
 			setIsLoading(false);
 			setHasError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.InProductHelpRequestFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.InProductHelpRequestFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
-	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError]);
+	}, [index, setSearchResults, innerSearchQuery, setIsLoading, setHasError, label, screenName]);
 
 	useEffect(() => {
 		const containers = document.getElementsByClassName('iph-link');

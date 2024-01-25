@@ -186,7 +186,9 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.SharePageName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
+				actionSubject: 'button'
 			}
 		);
 
@@ -202,7 +204,9 @@ const ServerManagement = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: AnalyticsScreenEventsEnum.ServerManagementScreenName
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
+				actionSubject: 'button'
 			}
 		);
 

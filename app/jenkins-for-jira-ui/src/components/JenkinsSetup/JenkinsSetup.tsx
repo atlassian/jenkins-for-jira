@@ -158,7 +158,11 @@ const IAmTheJenkinsAdmin = ({
 
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.ViewStepByStepGuideName
+			AnalyticsUiEventsEnum.ViewStepByStepGuideName,
+			{
+				action: `clicked - ${AnalyticsUiEventsEnum.ViewStepByStepGuideName}`,
+				actionSubject: 'button'
+			}
 		);
 
 		router.open(HELP_LINK);
@@ -273,6 +277,8 @@ const JenkinsSetup = (): JSX.Element => {
 				AnalyticsUiEventsEnum.CopiedToClipboardName,
 				{
 					source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+					action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
+					actionSubject: 'button',
 					buttonClicked: elementName || 'Copy button'
 				}
 			);
@@ -288,7 +294,9 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.MyJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.MyJenkinsAdminTabName}`,
+				actionSubject: 'button'
 			}
 		);
 	};
@@ -304,7 +312,7 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
 				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
-				action: 'clicked I\'m logging into Jenkins myself',
+				action: `clicked - ${AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName}`,
 				actionSubject: 'button'
 			}
 		);

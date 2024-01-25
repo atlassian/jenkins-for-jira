@@ -16,7 +16,11 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE, DISCONNECT_MODAL_TEST_ID } from '../../common/constants';
-import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsTrackEventsEnum,
+	AnalyticsUiEventsEnum
+} from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
 const analyticsClient = new AnalyticsClient();
@@ -51,7 +55,11 @@ const ConnectionPanelTop = ({
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.DisconnectServerName
+			AnalyticsUiEventsEnum.DisconnectServerName,
+			{
+				action: `clicked - ${AnalyticsUiEventsEnum.DisconnectServerName}`,
+				actionSubject: 'button'
+			}
 		);
 
 		setServerToDisconnect(serverToDelete);
@@ -61,7 +69,11 @@ const ConnectionPanelTop = ({
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.ConnectionSettingsName
+			AnalyticsUiEventsEnum.ConnectionSettingsName,
+			{
+				action: `clicked - ${AnalyticsUiEventsEnum.ConnectionSettingsName}`,
+				actionSubject: 'button'
+			}
 		);
 
 		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
@@ -70,7 +82,11 @@ const ConnectionPanelTop = ({
 	const onClickRename = async (serverToRename: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.RenameServerName
+			AnalyticsUiEventsEnum.RenameServerName,
+			{
+				action: `clicked - ${AnalyticsUiEventsEnum.RenameServerName}`,
+				actionSubject: 'button'
+			}
 		);
 
 		history.push(`/update-server-name/${serverToRename.uuid}`);
@@ -88,12 +104,25 @@ const ConnectionPanelTop = ({
 			closeConfirmServerDisconnect();
 
 			await analyticsClient.sendAnalytics(
-				AnalyticsEventTypes.UiEvent,
-				AnalyticsUiEventsEnum.ConfirmDisconnectServerName
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.DisconnectServerSuccessName}`,
+					actionSubject: 'form'
+				}
 			);
 		} catch (e) {
 			console.log('Failed to disconnect server', e);
 			setDisconnectError(true);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.DisconnectServerFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.DisconnectServerFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		} finally {
 			setIsLoading(false);
 		}

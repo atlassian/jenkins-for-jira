@@ -24,7 +24,11 @@ import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum
+} from '../../common/analytics/analytics-events';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -137,10 +141,30 @@ const ServerNameForm = (): JSX.Element => {
 				...jenkinsServerToUpdate,
 				name: serverName
 			});
+
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.UpdatedServerNameSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.UpdatedServerNameSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
+
 			history.push(`/`);
 		} catch (e) {
 			console.error('Error: ', e);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.UpdatedServerNameFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.UpdatedServerNameFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 	};
 
@@ -154,10 +178,30 @@ const ServerNameForm = (): JSX.Element => {
 				secret: await generateNewSecret(),
 				pipelines: []
 			});
+
 			setIsLoading(false);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.CreatedNewServerSuccessName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.CreatedNewServerSuccessName}`,
+					actionSubject: 'form'
+				}
+			);
+
 			history.push(`/setup/${uuid}/new-connection`);
 		} catch (e) {
 			console.error('Error: ', e);
+
+			await analyticsClient.sendAnalytics(
+				AnalyticsEventTypes.TrackEvent,
+				AnalyticsTrackEventsEnum.CreatedNewServerFailureName,
+				{
+					action: `submitted ${AnalyticsTrackEventsEnum.CreatedNewServerFailureName}`,
+					actionSubject: 'form'
+				}
+			);
 		}
 	};
 
