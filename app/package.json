@@ -18,6 +18,7 @@
     "@forge/resolver": "1.5.14",
     "atlassian-jwt": "^2.0.2",
     "crypto": "^1.0.1",
+    "history": "^5.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
