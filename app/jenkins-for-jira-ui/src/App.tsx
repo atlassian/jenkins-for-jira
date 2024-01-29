@@ -18,7 +18,6 @@ import { PendingDeploymentState } from './components/JenkinsServerList/PendingDe
 import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
 import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
-import { FeatureFlags } from './hooks/useFeatureFlag';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
 import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
@@ -26,6 +25,10 @@ import { ConnectionComplete } from './components/ConnectionComplete/ConnectionCo
 import { GlobalPage } from './components/GlobalPage/GlobalPage';
 import { fetchModuleKey } from './api/fetchModuleKey';
 import { ConnectionWizard } from './components/ConnectionWizard/ConnectionWizard';
+
+export enum FeatureFlags {
+	RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW = 'renovated_jenkins_for_jira_config_flow'
+}
 
 const {
 	LAUNCHDARKLY_TEST_CLIENT_ID,
