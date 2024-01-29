@@ -2,6 +2,9 @@ import { fetch } from '@forge/api';
 import { Logger } from './logger';
 import envVars, { Environment } from './env';
 
+const FEATURE_FLAG_ON_VARIATION = 0;
+const FEATURE_FLAG_OFF_VARIATION = 1;
+
 interface Variation {
     _id: string;
     value: boolean;
@@ -39,7 +42,7 @@ interface FeatureFlag {
         usingMobileKey: boolean;
         usingEnvironmentId: boolean;
     };
-    variations: Variation[];
+    variations?: Variation[];
     variationJsonSchema: null | any;
     temporary: boolean;
     tags: string[];
@@ -118,26 +121,59 @@ export const launchDarklyService = {
         `${LAUNCH_DARKLY_URL}/${envVars.LAUNCHDARKLY_APP_NAME}/${environment}/features/${featureFlagKey}`
 };
 
+async function evaluateFeatureFlagDefault(
+	featureFlagKey: string,
+	{ fallthrough: { rollout: { variations }} }: EnvironmentData,
+	cloudId?: string
+): Promise<boolean> {
+	try {
+		const totalWeight = variations?.reduce((sum: any, variation: { weight: any }) => sum + variation.weight, 0);
+
+		const hash = Array.from(cloudId || '').reduce((acc, char) => acc - char.charCodeAt(0) ** 5, 0);
+		const normalizedHash = (Math.abs(hash) % totalWeight) + 1;
+
+		let currentWeight = 0;
+
+		const isVariationOn = variations.some((variation: { weight: number; variation: number }) => {
+			currentWeight += variation.weight;
+			return normalizedHash <= currentWeight && variation.variation === 0;
+		});
+
+		return isVariationOn;
+	} catch (error) {
+		console.error('Failed to evaluate feature flag manually:', error);
+		return false;
+	}
+}
+
 export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string): Promise<boolean | null> => {
-    try {
-        // custom env var as Forge overrides NODE_ENV in every environment with production
-        // left NODE_ENV as a fallback as it's needed for tests and pipelines
-        const environment: Environment = envVars.JENKINS_ENV as Environment || process.env.NODE_ENV;
-        const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
-        const envData = featureFlag.environments[environment];
+	try {
+		// custom env var as Forge overrides NODE_ENV in every environment with production
+		// left NODE_ENV as a fallback as it's needed for tests and pipelines
+		const environment: Environment = envVars.JENKINS_ENV as Environment || process.env.NODE_ENV;
+		const featureFlag = await launchDarklyService.getFeatureFlag(featureFlagKey);
+		const envData = featureFlag.environments[environment];
 
-        if (cloudId && envData.targets) {
-            const values = envData.targets.flatMap((target) => target.values);
-            if (values.includes(cloudId)) {
-                // If the cloudId is in any of the values within the targets, set the value to true
-                return true;
-            }
-        }
+		if (cloudId && envData.targets) {
+			const { targets } = envData;
+			// Values for individual user targeting is true for Cloud ID
+			const individualTargetIsOn = targets[FEATURE_FLAG_ON_VARIATION].values || [];
+			// Values for individual user targeting is false for Cloud ID
+			const individualTargetIsOff = targets[FEATURE_FLAG_OFF_VARIATION]?.values || [];
 
-        // If the cloudId is not in the targets or no cloudId is provided, use the "on" value
-        return envData.on || false;
-    } catch (error) {
-        logger.error('Fetch feature flag error', { error });
-        throw new Error(`Failed to retrieve feature flag: ${error}`);
-    }
+			if (individualTargetIsOn.includes(cloudId)) return true;
+			if (individualTargetIsOff.includes(cloudId)) return false;
+		}
+
+		const { variation: fallThroughVariation } = envData.fallthrough;
+
+		if (fallThroughVariation === FEATURE_FLAG_ON_VARIATION) return true;
+		if (fallThroughVariation === FEATURE_FLAG_OFF_VARIATION) return false;
+
+		const targetedInRollout = await evaluateFeatureFlagDefault(featureFlagKey, envData, cloudId);
+		return targetedInRollout || false;
+	} catch (error) {
+		logger.error('Fetch feature flag error', { error });
+		throw new Error(`Failed to retrieve feature flag: ${error}`);
+	}
 };
