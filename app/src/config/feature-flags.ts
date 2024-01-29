@@ -2,8 +2,8 @@ import { fetch } from '@forge/api';
 import { Logger } from './logger';
 import envVars, { Environment } from './env';
 
-const FEATURE_FLAG_ON_VARIATION = 0;
-const FEATURE_FLAG_OFF_VARIATION = 1;
+export const FEATURE_FLAG_ON_VARIATION = 0;
+export const FEATURE_FLAG_OFF_VARIATION = 1;
 
 interface Variation {
     _id: string;
@@ -128,10 +128,8 @@ async function evaluateFeatureFlagDefault(
 ): Promise<boolean> {
 	try {
 		const totalWeight = variations?.reduce((sum: any, variation: { weight: any }) => sum + variation.weight, 0);
-
 		const hash = Array.from(cloudId || '').reduce((acc, char) => acc - char.charCodeAt(0) ** 5, 0);
 		const normalizedHash = (Math.abs(hash) % totalWeight) + 1;
-
 		let currentWeight = 0;
 
 		const isVariationOn = variations.some((variation: { weight: number; variation: number }) => {
