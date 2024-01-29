@@ -30,6 +30,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { CONFIG_PAGE } from '../../common/constants';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -141,14 +142,24 @@ export const updateServerOnRefresh =
 		return updatedServer;
 	};
 
-export const getSharePageMessage = (globalPageUrl: string): string => {
-	return `Hi there,
-Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
+export const getSharePageMessage = (globalPageUrl: string, moduleKey?: string): string => {
+	const versionRequirementMessage = moduleKey === CONFIG_PAGE
+		? `
+Can’t see a page when you follow this link? Ask your Jira admin to update Jenkins for Jira at:
 
-To set up what build and deployment events Jenkins sends to Jira, follow the set up guide(s) on this page:
+Apps > Manage your apps > Jenkins for Jira (Official)` : '';
+
+	return `Hi there,
+Jenkins for Jira is now installed and connected on
+
+${getSiteNameFromUrl(globalPageUrl)}.
+
+To get data flowing from Jenkins to Jira, follow the set up guide(s) on this page:
+
 ${globalPageUrl}
 
-You'll need to follow the set up guide for each server connected.`;
+You'll need to follow the guide for each server connected.
+${versionRequirementMessage}`;
 };
 
 const ServerManagement = (): JSX.Element => {
@@ -291,7 +302,7 @@ const ServerManagement = (): JSX.Element => {
 		</ButtonGroup>
 	);
 
-	const sharePageMessage = getSharePageMessage(globalPageUrl);
+	const sharePageMessage = getSharePageMessage(globalPageUrl, moduleKey);
 
 	const contentToRender =
 		contentToRenderServerManagementScreen(
