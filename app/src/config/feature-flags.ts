@@ -123,7 +123,7 @@ export const launchDarklyService = {
 
 async function evaluateFeatureFlagDefault(
 	featureFlagKey: string,
-	{ fallthrough: { rollout: { variations }} }: EnvironmentData,
+	{ fallthrough: { rollout: { variations } } }: EnvironmentData,
 	cloudId?: string
 ): Promise<boolean> {
 	try {
