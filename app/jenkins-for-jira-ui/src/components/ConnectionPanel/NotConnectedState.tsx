@@ -23,7 +23,8 @@ type NotConnectedStateProps = {
 	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	uuidOfRefreshServer?: string,
 	isUpdatingServer?: boolean,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
 
 const NotConnectedState = ({
@@ -33,7 +34,8 @@ const NotConnectedState = ({
 	refreshServersAfterUpdate,
 	uuidOfRefreshServer,
 	isUpdatingServer,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDeleteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
@@ -79,9 +81,9 @@ const NotConnectedState = ({
 
 	let firstButtonLabel;
 
-	if (connectedState === ConnectedState.DUPLICATE && moduleKey !== GLOBAL_PAGE) {
+	if (connectedState === ConnectedState.DUPLICATE && (userIsAdmin || moduleKey !== GLOBAL_PAGE)) {
 		firstButtonLabel = 'Delete';
-	} else if (connectedState === ConnectedState.DUPLICATE && moduleKey === GLOBAL_PAGE) {
+	} else if (connectedState === ConnectedState.DUPLICATE && (!userIsAdmin || moduleKey === GLOBAL_PAGE)) {
 		firstButtonLabel = undefined;
 	} else {
 		firstButtonLabel = 'Refresh';

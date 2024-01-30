@@ -37,12 +37,14 @@ type ConnectionPanelTopProps = {
 	refreshServers(serverToRemove: JenkinsServer): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
 const ConnectionPanelTop = ({
 	server,
 	refreshServers,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: ConnectionPanelTopProps): JSX.Element => {
 	const history = useHistory();
 	const connectedState = server.connectedState || ConnectedState.PENDING;
@@ -134,7 +136,7 @@ const ConnectionPanelTop = ({
 	};
 
 	const serverIsNotDuplicate = server.connectedState !== ConnectedState.DUPLICATE;
-	const isConfigPage = moduleKey && moduleKey === CONFIG_PAGE;
+	const isConfigPage = userIsAdmin || (moduleKey && moduleKey === CONFIG_PAGE);
 
 	const buttonAndIconAppearance = disconnectError ? 'danger' : 'warning';
 	const modalTitleMessage =

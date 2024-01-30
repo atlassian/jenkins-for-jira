@@ -25,6 +25,8 @@ import { fetchModuleKey } from '../../api/fetchModuleKey';
 import { GlobalPageEmptyState } from './GlobalPageEmptyState';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { fetchUserPerms } from '../../api/fetchUserPerms';
+import { fetchFeatureFlagFromBackend } from '../../api/fetchFeatureFlagFromBackend';
+import { FeatureFlags } from '../../common/featureFlags';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -40,6 +42,8 @@ export const GlobalPage = (): JSX.Element => {
 	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
 	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
 	const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false);
+	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
+	const [checkUserPermissionsFlag, setCheckUserPermissionsFlag] = useState<boolean>(false);
 
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
@@ -58,30 +62,44 @@ export const GlobalPage = (): JSX.Element => {
 	};
 
 	useEffect(() => {
+		let isMounted = true;
 		const fetchData = async () => {
+			setIsFetchingFlag(true);
 			try {
+				const checkUserPermissions = await fetchFeatureFlagFromBackend(
+					FeatureFlags.CHECK_USER_PERMISSIONS
+				);
+
 				const url = await fetchGlobalPageUrl();
 				setGlobalPageUrl(url);
 				await fetchAllJenkinsServers();
 				await getModuleKey();
-				await fetchUserPermissions();
+
+				if (checkUserPermissionsFlag) {
+					await fetchUserPermissions();
+				}
+
+				if (isMounted) {
+					setCheckUserPermissionsFlag(checkUserPermissions);
+					setIsFetchingFlag(false);
+				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
+				setIsFetchingFlag(false);
 			}
 		};
 
 		fetchData();
 		return () => {
+			isMounted = false;
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
 		};
-	}, []);
+	}, [checkUserPermissionsFlag]);
 
-	if (!jenkinsServers || !moduleKey || !userIsAdmin) {
+	if (!jenkinsServers || !moduleKey || !isFetchingFlag) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
-
-	console.log('userIsAdmin', userIsAdmin);
 
 	const handleShowSharePageModal = async () => {
 		await analyticsClient.sendAnalytics(
@@ -178,6 +196,7 @@ export const GlobalPage = (): JSX.Element => {
 						uuidOfRefreshServer={uuidOfRefreshServer}
 						handleRefreshUpdateServer={handleRefreshUpdateServer}
 						moduleKey={moduleKey}
+						userIsAdmin={userIsAdmin}
 					/>
 				</>
 				: <>
