@@ -155,7 +155,7 @@ export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string)
 		if (cloudId && envData.targets) {
 			const { targets } = envData;
 			// Values for individual user targeting is true for Cloud ID
-			const individualTargetIsOn = targets[FEATURE_FLAG_ON_VARIATION].values || [];
+			const individualTargetIsOn = targets[FEATURE_FLAG_ON_VARIATION]?.values || [];
 			// Values for individual user targeting is false for Cloud ID
 			const individualTargetIsOff = targets[FEATURE_FLAG_OFF_VARIATION]?.values || [];
 

@@ -7,7 +7,6 @@ import {
 import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
 import { token, setGlobalTheme } from '@atlaskit/tokens';
-import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
 import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
@@ -16,7 +15,6 @@ import { spinnerHeight } from './common/styles/spinner.styles';
 import { JenkinsSpinner } from './components/JenkinsSpinner/JenkinsSpinner';
 import { PendingDeploymentState } from './components/JenkinsServerList/PendingDeploymentState/PendingDeploymentState';
 import { CreateServer } from './components/ConnectJenkins/CreateServer/CreateServer';
-import envVars, { Environment } from './common/env';
 import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
@@ -29,36 +27,6 @@ import { ConnectionWizard } from './components/ConnectionWizard/ConnectionWizard
 export enum FeatureFlags {
 	RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW = 'renovated_jenkins_for_jira_config_flow'
 }
-
-const {
-	LAUNCHDARKLY_TEST_CLIENT_ID,
-	LAUNCHDARKLY_TEST_USER_KEY,
-	LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
-	LAUNCHDARKLY_DEVELOPMENT_USER_KEY,
-	LAUNCHDARKLY_STAGING_CLIENT_ID,
-	LAUNCHDARKLY_STAGING_USER_KEY,
-	LAUNCHDARKLY_PRODUCTION_CLIENT_ID,
-	LAUNCHDARKLY_PRODUCTION_USER_KEY
-} = envVars;
-
-export const environmentSettings = {
-	test: {
-		clientSideID: LAUNCHDARKLY_TEST_CLIENT_ID,
-		user: { key: LAUNCHDARKLY_TEST_USER_KEY }
-	},
-	development: {
-		clientSideID: LAUNCHDARKLY_DEVELOPMENT_CLIENT_ID,
-		user: { key: LAUNCHDARKLY_DEVELOPMENT_USER_KEY }
-	},
-	staging: {
-		clientSideID: LAUNCHDARKLY_STAGING_CLIENT_ID,
-		user: { key: LAUNCHDARKLY_STAGING_USER_KEY }
-	},
-	production: {
-		clientSideID: LAUNCHDARKLY_PRODUCTION_CLIENT_ID,
-		user: { key: LAUNCHDARKLY_PRODUCTION_USER_KEY }
-	}
-};
 
 const AppContainer = styled.div`
 	color: #172B4D;
@@ -192,21 +160,4 @@ const App: React.FC = () => {
 	);
 };
 
-const getLDProviderConfig = (environment: Environment) => {
-	const config = environmentSettings[environment] || environmentSettings.development;
-
-	return {
-		clientSideID: config.clientSideID || '',
-		user: {
-			key: config.user.key || ''
-		},
-		reactOptions: {
-			useCamelCaseFlagKeys: false
-		},
-		options: { disableSyncEventPost: true }
-	};
-};
-
-const AppWithLDProvider = withLDProvider(getLDProviderConfig(process.env.NODE_ENV))(App);
-
-export default AppWithLDProvider;
+export default App;
