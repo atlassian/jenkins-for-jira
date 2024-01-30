@@ -57,6 +57,7 @@ export const GlobalPage = (): JSX.Element => {
 	};
 
 	const fetchUserPermissions = async () => {
+		console.log('fetching user perms...');
 		const isAdmin = await fetchUserPerms();
 		setUserIsAdmin(isAdmin);
 	};
@@ -96,6 +97,9 @@ export const GlobalPage = (): JSX.Element => {
 			isMountedRef.current = false;
 		};
 	}, [checkUserPermissionsFlag]);
+
+	console.log('isFetchingFlag', isFetchingFlag, checkUserPermissionsFlag);
+	console.log('userIsAdmin', userIsAdmin);
 
 	if (!jenkinsServers || !moduleKey || !isFetchingFlag) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;

@@ -53,6 +53,7 @@ const ConnectionPanelTop = ({
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [disconnectError, setDisconnectError] = useState<boolean>(false);
+	console.log('HERE: ', userIsAdmin);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
