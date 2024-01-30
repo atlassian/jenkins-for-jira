@@ -24,6 +24,7 @@ import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { fetchModuleKey } from '../../api/fetchModuleKey';
 import { GlobalPageEmptyState } from './GlobalPageEmptyState';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { fetchUserPerms } from '../../api/fetchUserPerms';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -38,6 +39,7 @@ export const GlobalPage = (): JSX.Element => {
 	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
 	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
+	const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false);
 
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
@@ -50,6 +52,11 @@ export const GlobalPage = (): JSX.Element => {
 		setJenkinsServers(serversWithConnectedState);
 	};
 
+	const fetchUserPermissions = async () => {
+		const isAdmin = await fetchUserPerms();
+		setUserIsAdmin(isAdmin);
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -57,6 +64,7 @@ export const GlobalPage = (): JSX.Element => {
 				setGlobalPageUrl(url);
 				await fetchAllJenkinsServers();
 				await getModuleKey();
+				await fetchUserPermissions();
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -69,9 +77,11 @@ export const GlobalPage = (): JSX.Element => {
 		};
 	}, []);
 
-	if (!jenkinsServers || !moduleKey) {
+	if (!jenkinsServers || !moduleKey || !userIsAdmin) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
+
+	console.log('userIsAdmin', userIsAdmin);
 
 	const handleShowSharePageModal = async () => {
 		await analyticsClient.sendAnalytics(
