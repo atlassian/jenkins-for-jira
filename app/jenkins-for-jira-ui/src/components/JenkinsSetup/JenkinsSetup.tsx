@@ -206,6 +206,7 @@ const IAmTheJenkinsAdmin = ({
 
 const JenkinsSetup = (): JSX.Element => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 	const webhookGuideRef = useRef<HTMLDivElement>(null);
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
@@ -329,9 +330,14 @@ const JenkinsSetup = (): JSX.Element => {
 		}
 
 		if (connectionSettings) {
-			history.push('/');
+			console.log('in here', path);
+			if (path === 'admin') {
+				history.push('/');
+			} else {
+				router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+			}
 		} else {
-			history.push(`/connection-complete/${uuid}/${pathParam}`);
+			history.push(`/connection-complete/${uuid}/${pathParam}/${path}`);
 		}
 	};
 

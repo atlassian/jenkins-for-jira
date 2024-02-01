@@ -4,6 +4,7 @@ import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
+import { router } from '@forge/bridge';
 import {
 	connectionPanelHeaderContainer,
 	connectionPanelHeaderContentContainer,
@@ -53,7 +54,9 @@ const ConnectionPanelTop = ({
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [disconnectError, setDisconnectError] = useState<boolean>(false);
-	console.log('HERE: ', userIsAdmin);
+	console.log('moduleKey', moduleKey);
+	console.log('CONFIG_PAGE', CONFIG_PAGE);
+	const isAdminPage = moduleKey === CONFIG_PAGE;
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
@@ -70,6 +73,7 @@ const ConnectionPanelTop = ({
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
+		console.log('clicking....', serverToOpen);
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ConnectionSettingsName,
@@ -78,8 +82,18 @@ const ConnectionPanelTop = ({
 				actionSubject: 'button'
 			}
 		);
+		console.log('here???', isAdminPage);
 
-		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
+		if (isAdminPage) {
+			history.push(`/setup/${serverToOpen.uuid}/connection-settings/admin`);
+		} else {
+			console.log('in here???');
+			router.navigate(
+				`https://rachelletestjira.atlassian.net/jira/settings/apps/
+				df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c/
+				setup/${serverToOpen.uuid}/connection-settings/global`
+			);
+		}
 	};
 
 	const onClickRename = async (serverToRename: JenkinsServer) => {
@@ -92,7 +106,16 @@ const ConnectionPanelTop = ({
 			}
 		);
 
-		history.push(`/update-server-name/${serverToRename.uuid}`);
+		console.log('renaming...', isAdminPage);
+		if (isAdminPage) {
+			history.push(`/update-server-name/${serverToRename.uuid}/admin`);
+		} else {
+			router.navigate(
+				`https://rachelletestjira.atlassian.net/
+				jira/settings/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/
+				2113b3a2-5043-4d97-8db0-31d7e2379e3c/update-server-name/392c50b2-bb07-4e0e-b3f3-9e20e467addf/global`
+			);
+		}
 	};
 
 	const disconnectJenkinsServerHandler = async (

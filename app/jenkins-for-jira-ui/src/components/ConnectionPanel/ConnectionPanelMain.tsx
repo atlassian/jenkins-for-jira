@@ -185,6 +185,7 @@ const ConnectionPanelMain = ({
 						refreshServersAfterDelete={refreshServers}
 						refreshServersAfterUpdate={handleRefreshUpdateServer}
 						moduleKey={moduleKey}
+						userIsAdmin={userIsAdmin}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>

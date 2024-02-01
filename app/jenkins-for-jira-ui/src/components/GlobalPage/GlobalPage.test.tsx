@@ -123,7 +123,7 @@ describe('GlobalPage Component', () => {
 	});
 
 	it('should render loading spinner while fetching data', async () => {
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		expect(await screen.findByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
@@ -132,7 +132,7 @@ describe('GlobalPage Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
 
 		expect(screen.getByText('No servers connected')).toBeInTheDocument();
@@ -143,7 +143,7 @@ describe('GlobalPage Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
 
 		expect(screen.getByText(servers[4].name)).toBeInTheDocument();
@@ -154,7 +154,7 @@ describe('GlobalPage Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
 		expect(screen.getByText('Share page')).toBeInTheDocument();
 		expect(screen.queryByText('Connect a new Jenkins server button')).not.toBeInTheDocument();

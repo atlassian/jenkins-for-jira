@@ -8,6 +8,7 @@ import Form, {
 } from '@atlaskit/form';
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
+import { router } from '@forge/bridge';
 import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
@@ -87,6 +88,7 @@ const ServerNameFormField = ({
 
 const ServerNameForm = (): JSX.Element => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -153,7 +155,11 @@ const ServerNameForm = (): JSX.Element => {
 				}
 			);
 
-			history.push(`/`);
+			if (path === 'admin') {
+				history.push(`/`);
+			} else {
+				router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+			}
 		} catch (e) {
 			console.error('Error: ', e);
 
@@ -190,7 +196,7 @@ const ServerNameForm = (): JSX.Element => {
 				}
 			);
 
-			history.push(`/setup/${uuid}/new-connection`);
+			history.push(`/setup/${uuid}/new-connection/${path}`);
 		} catch (e) {
 			console.error('Error: ', e);
 

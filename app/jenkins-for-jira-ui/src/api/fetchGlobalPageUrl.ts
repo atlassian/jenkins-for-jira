@@ -23,7 +23,15 @@ const fetchGlobalPageUrl = async (): Promise<string> => {
 	return `${siteUrl}/jira/apps/${appId}/${environmentId}`;
 };
 
+const fetchAdminPath = async (): Promise<string> => {
+	const context: FetchGlobalPageUrlContext = await invoke('fetchAppData');
+	const { appId, environmentId } = context;
+
+	return `/jira/settings/apps/${appId}/${environmentId}`;
+};
+
 export {
 	fetchGlobalPageUrl,
-	fetchSiteName
+	fetchSiteName,
+	fetchAdminPath
 };

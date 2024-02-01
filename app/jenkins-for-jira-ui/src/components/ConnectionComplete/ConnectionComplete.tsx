@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
+import { router } from '@forge/bridge';
 import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
@@ -17,6 +18,7 @@ const analyticsClient = new AnalyticsClient();
 
 const ConnectionComplete = () => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 	const { admin: isJenkinsAdmin, id: uuid } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 
@@ -48,6 +50,11 @@ const ConnectionComplete = () => {
 
 	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
+
+		if (path === 'global') {
+			router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+		}
+
 		history.push('/');
 	};
 

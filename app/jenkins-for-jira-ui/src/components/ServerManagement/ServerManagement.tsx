@@ -258,7 +258,7 @@ const ServerManagement = (): JSX.Element => {
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		history.push('/connection-info');
+		history.push('/connection-info/admin');
 	};
 
 	// Refresh for PENDING and UPDATE AVAILABLE servers

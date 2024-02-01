@@ -21,6 +21,7 @@ export interface ParamTypes {
 	id: string;
 	admin: string;
 	settings: string;
+	path: string;
 }
 
 const analyticsClient = new AnalyticsClient();
