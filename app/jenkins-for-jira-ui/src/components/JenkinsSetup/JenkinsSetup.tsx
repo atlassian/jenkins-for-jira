@@ -294,7 +294,6 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.MyJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
 				action: `clicked - ${AnalyticsUiEventsEnum.MyJenkinsAdminTabName}`,
 				actionSubject: 'button'
 			}
@@ -311,7 +310,6 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
 				action: `clicked - ${AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName}`,
 				actionSubject: 'button'
 			}
