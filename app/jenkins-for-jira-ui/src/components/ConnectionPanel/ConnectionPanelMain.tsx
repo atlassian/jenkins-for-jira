@@ -96,7 +96,9 @@ const ConnectionPanelMain = ({
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.SetUpGuideName,
 				{
-					source: pageSource
+					source: pageSource,
+					action: `clicked - ${AnalyticsUiEventsEnum.SetUpGuideName}`,
+					actionSubject: 'tab'
 				}
 			);
 		}

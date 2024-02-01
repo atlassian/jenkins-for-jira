@@ -230,17 +230,17 @@ const JenkinsSetup = (): JSX.Element => {
 	}, [uuid]);
 
 	useEffect(() => {
-		analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.JenkinsSetupScreenName
-		);
-
 		const fetchData = async () => {
 			try {
 				const url = await fetchSiteName();
 				setSiteName(url);
 				getServer();
 				getWebhookUrl(setWebhookUrl, uuid);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.ScreenEvent,
+					AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+				);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -294,7 +294,6 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.MyJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
 				action: `clicked - ${AnalyticsUiEventsEnum.MyJenkinsAdminTabName}`,
 				actionSubject: 'button'
 			}
@@ -311,7 +310,6 @@ const JenkinsSetup = (): JSX.Element => {
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName,
 			{
-				source: AnalyticsScreenEventsEnum.JenkinsSetupScreenName,
 				action: `clicked - ${AnalyticsUiEventsEnum.IAmAJenkinsAdminTabName}`,
 				actionSubject: 'button'
 			}
