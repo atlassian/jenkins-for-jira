@@ -245,6 +245,11 @@ const ServerManagement = (): JSX.Element => {
 				setGlobalPageUrl(url);
 				await fetchAllJenkinsServers();
 				await redirectToAdminPage();
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.ScreenEvent,
+					AnalyticsScreenEventsEnum.ServerManagementScreenName
+				);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
