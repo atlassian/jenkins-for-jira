@@ -102,6 +102,8 @@ const App: React.FC = () => {
 		typography: 'typography-adg3'
 	});
 
+	console.log('in here???', renovateConfigFlag);
+
 	return (
 		<>
 			{moduleKey === 'jenkins-for-jira-global-page' ? (

@@ -55,6 +55,7 @@ export const contentToRenderServerManagementScreen = (
 	handleRefreshUpdateServer: (uuid: string) => void
 ) => {
 	let contentToRender;
+	console.log('contentToRenderServerManagementScreen', moduleKey, servers);
 
 	switch (moduleKey) {
 		case 'jenkins-for-jira-ui-admin-page':
@@ -163,6 +164,7 @@ ${versionRequirementMessage}`;
 };
 
 const ServerManagement = (): JSX.Element => {
+	console.log('in server management...');
 	const history = useHistory();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();

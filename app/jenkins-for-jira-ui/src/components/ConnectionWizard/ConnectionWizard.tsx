@@ -26,6 +26,7 @@ import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 const analyticsClient = new AnalyticsClient();
 
 const ConnectionWizard = (): JSX.Element => {
+	console.log('CONNECTION WIZARD');
 	const history = useHistory();
 	const { path } = useParams<ParamTypes>();
 

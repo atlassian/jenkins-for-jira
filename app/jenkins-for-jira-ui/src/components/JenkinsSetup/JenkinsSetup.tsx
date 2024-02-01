@@ -40,7 +40,7 @@ import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
-import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
+import { fetchGlobalPageUrl, fetchSiteName } from '../../api/fetchGlobalPageUrl';
 import { HELP_LINK, JENKINS_SETUP_SCREEN_NAME } from '../../common/constants';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
 import {
@@ -218,6 +218,7 @@ const JenkinsSetup = (): JSX.Element => {
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const connectionSettings = settings === 'connection-settings';
 
 	const getServer = useCallback(async () => {
@@ -238,8 +239,10 @@ const JenkinsSetup = (): JSX.Element => {
 
 		const fetchData = async () => {
 			try {
-				const url = await fetchSiteName();
-				setSiteName(url);
+				const site = await fetchSiteName();
+				setSiteName(site);
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
 				getServer();
 				getWebhookUrl(setWebhookUrl, uuid);
 			} catch (error) {
@@ -330,11 +333,10 @@ const JenkinsSetup = (): JSX.Element => {
 		}
 
 		if (connectionSettings) {
-			console.log('in here', path);
 			if (path === 'admin') {
 				history.push('/');
 			} else {
-				router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+				router.navigate(globalPageUrl);
 			}
 		} else {
 			history.push(`/connection-complete/${uuid}/${pathParam}/${path}`);

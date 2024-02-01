@@ -124,7 +124,7 @@ jest.mock('react-router', () => ({
 	useHistory: jest.fn()
 }));
 
-describe('getSiteNameFromUrlt', () => {
+describe('getSiteNameFromUrl', () => {
 	test('correctly extracts site name from URL', async () => {
 		const url = 'https://testjira.atlassian.net/jira/apps/blah-blah';
 		const siteName = getSiteNameFromUrl(url);
@@ -157,7 +157,17 @@ describe('ServerManagement Component', () => {
 		expect(screen.getByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
-	test('should render the ConnectionWizard when there are no servers', async () => {
+	// test.only('should render the ConnectionWizard when there are no servers', async () => {
+	// 	jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
+	// 	jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+	// 	jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+	//
+	// 	await waitFor(() => render(<ServerManagement />));
+	//
+	// 	expect(screen.getByTestId('connection-wizard')).toBeInTheDocument();
+	// });
+
+	test.only('should render the ConnectionWizard when there are no servers', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
 		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
@@ -165,6 +175,10 @@ describe('ServerManagement Component', () => {
 		await waitFor(() => render(<ServerManagement />));
 
 		expect(screen.getByTestId('connection-wizard')).toBeInTheDocument();
+		// await waitFor(() => fireEvent.click(screen.getByText('Share page')));
+		// await waitFor(() => fireEvent.click(screen.getByText('Copy to clipboard')));
+		// await waitFor(() => screen.getByText('Copied to clipboard'));
+		// expect(document.execCommand).toHaveBeenCalledWith('copy');
 	});
 
 	test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {

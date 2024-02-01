@@ -30,6 +30,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum
 } from '../../common/analytics/analytics-events';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -93,15 +94,28 @@ const ServerNameForm = (): JSX.Element => {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const params = useParams<ParamTypes>();
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const editingServerUuid = params ? params.id : undefined;
 
 	useEffect(() => {
 		const viewType = editingServerUuid ? 'editing server name' : 'creating server name';
-		analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.ScreenEvent,
-			AnalyticsScreenEventsEnum.ServerNameScreenName,
-			{ viewType }
-		);
+
+		const fetchData = async () => {
+			try {
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.ScreenEvent,
+					AnalyticsScreenEventsEnum.ServerNameScreenName,
+					{ viewType }
+				);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
 	}, [editingServerUuid]);
 
 	const setServerNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,7 +172,7 @@ const ServerNameForm = (): JSX.Element => {
 			if (path === 'admin') {
 				history.push(`/`);
 			} else {
-				router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+				router.navigate(globalPageUrl);
 			}
 		} catch (e) {
 			console.error('Error: ', e);

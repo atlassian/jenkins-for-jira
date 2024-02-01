@@ -13,6 +13,7 @@ import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.s
 import { connectionCompleteConfirmation, connectionCompleteContent } from './ConnectionComplete.styles';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -21,6 +22,7 @@ const ConnectionComplete = () => {
 	const { path } = useParams<ParamTypes>();
 	const { admin: isJenkinsAdmin, id: uuid } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 
 	const getServer = useCallback(async () => {
 		try {
@@ -39,6 +41,8 @@ const ConnectionComplete = () => {
 
 		const fetchData = async () => {
 			try {
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
 				getServer();
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -52,7 +56,7 @@ const ConnectionComplete = () => {
 		e.preventDefault();
 
 		if (path === 'global') {
-			router.navigate('https://rachelletestjira.atlassian.net/jira/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c');
+			router.navigate(globalPageUrl);
 		}
 
 		history.push('/');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
@@ -23,6 +23,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -54,9 +55,21 @@ const ConnectionPanelTop = ({
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [disconnectError, setDisconnectError] = useState<boolean>(false);
-	console.log('moduleKey', moduleKey);
-	console.log('CONFIG_PAGE', CONFIG_PAGE);
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const isAdminPage = moduleKey === CONFIG_PAGE;
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
 		await analyticsClient.sendAnalytics(
@@ -73,7 +86,6 @@ const ConnectionPanelTop = ({
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
-		console.log('clicking....', serverToOpen);
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ConnectionSettingsName,
@@ -82,17 +94,13 @@ const ConnectionPanelTop = ({
 				actionSubject: 'button'
 			}
 		);
-		console.log('here???', isAdminPage);
+
+		const connectionSettingsPath = `/setup/${serverToOpen.uuid}/connection-settings/admin`;
 
 		if (isAdminPage) {
-			history.push(`/setup/${serverToOpen.uuid}/connection-settings/admin`);
+			history.push(connectionSettingsPath);
 		} else {
-			console.log('in here???');
-			router.navigate(
-				`https://rachelletestjira.atlassian.net/jira/settings/apps/
-				df76f661-4cbe-4768-a119-13992dc4ce2d/2113b3a2-5043-4d97-8db0-31d7e2379e3c/
-				setup/${serverToOpen.uuid}/connection-settings/global`
-			);
+			router.navigate(`${globalPageUrl}${connectionSettingsPath}`);
 		}
 	};
 
@@ -106,15 +114,12 @@ const ConnectionPanelTop = ({
 			}
 		);
 
-		console.log('renaming...', isAdminPage);
+		const updateServerNamePath = `/update-server-name/${serverToRename.uuid}/admin`;
+
 		if (isAdminPage) {
-			history.push(`/update-server-name/${serverToRename.uuid}/admin`);
+			history.push(updateServerNamePath);
 		} else {
-			router.navigate(
-				`https://rachelletestjira.atlassian.net/
-				jira/settings/apps/df76f661-4cbe-4768-a119-13992dc4ce2d/
-				2113b3a2-5043-4d97-8db0-31d7e2379e3c/update-server-name/392c50b2-bb07-4e0e-b3f3-9e20e467addf/global`
-			);
+			router.navigate(`${globalPageUrl}${updateServerNamePath}`);
 		}
 	};
 
