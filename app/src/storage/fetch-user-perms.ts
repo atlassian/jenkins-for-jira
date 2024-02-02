@@ -4,7 +4,6 @@ import { Logger } from '../config/logger';
 const fetchUserPerms = async (req: any): Promise<boolean> => {
     const logger = Logger.getInstance('blah');
     const { accountId } = req.context;
-    logger.info('accountId', { accountId });
 
     const permissionRequestBody = `{
 		"globalPermissions": [
