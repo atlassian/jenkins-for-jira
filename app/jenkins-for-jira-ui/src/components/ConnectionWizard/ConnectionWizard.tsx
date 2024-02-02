@@ -4,15 +4,15 @@ import Button from '@atlaskit/button';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { useHistory } from 'react-router';
 import {
-	connectionWizardNestedOrderedListItem,
-	connectionWizardOrderedListItem,
-	connectionWizardContentContainer,
+	// connectionWizardNestedOrderedListItem,
+	// connectionWizardOrderedListItem,
+	// connectionWizardContentContainer,
 	connectionWizardButton
 } from './ConnectionWizard.styles';
 import {
-	connectionFlowContainer,
-	orderedList,
-	orderedListItem
+	connectionFlowContainer
+	// orderedList,
+	// orderedListItem
 } from '../../GlobalStyles.styles';
 import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { ConnectionFlowHeader } from './ConnectionFlowHeader';
@@ -43,26 +43,6 @@ const ConnectionWizard = (): JSX.Element => {
 		<div className={cx(connectionFlowContainer)} data-testid="connection-wizard">
 			<ConnectionFlowHeader />
 
-			<div className={cx(connectionWizardContentContainer)}>
-				<p id="connection-wizard-instruction">To complete this connection you'll need:</p>
-
-				<ol className={cx(orderedList)}>
-					<li className={cx(orderedListItem, connectionWizardOrderedListItem)}>An active Jenkins server</li>
-					<li className={cx(orderedListItem, connectionWizardOrderedListItem)}>Team knowledge</li>
-					<p className={cx(connectionWizardNestedOrderedListItem)}>
-						How your teams use Jenkins
-					</p>
-					<li
-						className={cx(orderedListItem, connectionWizardOrderedListItem)}
-					>
-						The help of your Jenkins admin
-					</li>
-					<p className={cx(connectionWizardNestedOrderedListItem)}>
-						Unless you're an admin yourself
-					</p>
-				</ol>
-			</div>
-
 			<InfoPanel
 				content="If this is your first time connecting a Jenkins server, take a few minutes to talk to your team."
 				iphContainerWidth="340px"
@@ -76,6 +56,7 @@ const ConnectionWizard = (): JSX.Element => {
 				appearance="primary"
 				className={cx(connectionWizardButton)}
 				onClick={(e) => handleNavigateToServerNameScreen(e)}
+				testId="team-gathered"
 			>
 				I've gathered my team
 				<ArrowRightIcon label="Continue to next screen" />
