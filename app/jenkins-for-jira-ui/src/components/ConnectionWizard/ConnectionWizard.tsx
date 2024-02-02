@@ -29,6 +29,7 @@ const ConnectionWizard = (): JSX.Element => {
 	const history = useHistory();
 	const { path } = useParams<ParamTypes>();
 
+	console.log('screen connect 1');
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
@@ -36,11 +37,14 @@ const ConnectionWizard = (): JSX.Element => {
 		);
 	}, []);
 
+	console.log('screen connect 2');
+
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
 		history.push(`/create-server/${path}`);
 	};
 
+	console.log('screen connect');
 	return (
 		<div className={cx(connectionFlowContainer)} data-testid="connection-wizard">
 			<ConnectionFlowHeader />

@@ -81,6 +81,7 @@ export const contentToRenderServerManagementScreen = (
 					</>
 				);
 			} else {
+				console.log('rendering wizard.');
 				contentToRender = (
 					<div className={serverManagementContainer}>
 						<ConnectionWizard />
