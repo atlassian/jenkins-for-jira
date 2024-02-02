@@ -16,6 +16,7 @@ import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 import { fetchModuleKey } from './utils/fetch-module-key';
 import { GLOBAL_PAGE } from '../jenkins-for-jira-ui/src/common/constants';
+import { fetchUserPerms } from './storage/fetch-user-perms';
 
 const resolver = new Resolver();
 
@@ -104,6 +105,10 @@ resolver.define('fetchAppData', async (req): Promise<FetchAppDataProps> => {
 
 resolver.define('fetchModuleKey', async (req): Promise<string> => {
 	return fetchModuleKey(req);
+});
+
+resolver.define('fetchUserPerms', async (req): Promise<boolean> => {
+	return fetchUserPerms(req);
 });
 
 export default resolver.getDefinitions();
