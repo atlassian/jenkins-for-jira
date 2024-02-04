@@ -29,6 +29,7 @@
     "@atlaskit/tokens": "^1.28.1",
     "@atlaskit/tooltip": "17.8.4",
     "@atlassiansox/analytics-web-client": "^4.14.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/css": "11.7.1",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
