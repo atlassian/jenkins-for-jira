@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
-import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
@@ -12,6 +11,7 @@ import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.s
 import { connectionCompleteConfirmation, connectionCompleteContent } from './ConnectionComplete.styles';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 

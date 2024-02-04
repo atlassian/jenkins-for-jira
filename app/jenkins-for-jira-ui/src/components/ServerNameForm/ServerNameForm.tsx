@@ -22,13 +22,13 @@ import {
 import { serverNameForm, serverNameFormButton, serverNameFormOuterContainer } from './ServerNameForm.styles';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsServer } from '../../../../src/common/types';
-import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum
 } from '../../common/analytics/analytics-events';
+import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 
