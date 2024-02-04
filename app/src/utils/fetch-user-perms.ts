@@ -1,10 +1,7 @@
 import api, { route } from '@forge/api';
-import { Logger } from '../config/logger';
 
 const fetchUserPerms = async (req: any): Promise<boolean> => {
-    const logger = Logger.getInstance('blah');
     const { accountId } = req.context;
-    logger.info('accountId', { accountId });
 
     const permissionRequestBody = `{
 		"globalPermissions": [
@@ -26,4 +23,8 @@ const fetchUserPerms = async (req: any): Promise<boolean> => {
     return !!permissionDetails?.globalPermissions?.includes('ADMINISTER');
 };
 
+<<<<<<< HEAD
 export { fetchUserPerms };
+=======
+export { fetchUserPerms };
+>>>>>>> ARC-2807-admin-check-part-1
