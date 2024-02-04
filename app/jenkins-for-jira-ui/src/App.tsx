@@ -23,10 +23,7 @@ import { ConnectionComplete } from './components/ConnectionComplete/ConnectionCo
 import { GlobalPage } from './components/GlobalPage/GlobalPage';
 import { fetchModuleKey } from './api/fetchModuleKey';
 import { ConnectionWizard } from './components/ConnectionWizard/ConnectionWizard';
-
-export enum FeatureFlags {
-	RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW = 'renovated_jenkins_for_jira_config_flow'
-}
+import { FeatureFlags } from './common/featureFlags';
 
 const AppContainer = styled.div`
 	color: #172B4D;

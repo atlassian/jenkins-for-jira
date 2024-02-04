@@ -33,7 +33,6 @@ import {
 	jenkinsSetupViewButton
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
-import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
 import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
@@ -50,6 +49,7 @@ import {
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
+import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 
