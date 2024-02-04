@@ -23,8 +23,4 @@ const fetchUserPerms = async (req: any): Promise<boolean> => {
     return !!permissionDetails?.globalPermissions?.includes('ADMINISTER');
 };
 
-<<<<<<< HEAD
 export { fetchUserPerms };
-=======
-export { fetchUserPerms };
->>>>>>> ARC-2807-admin-check-part-1
