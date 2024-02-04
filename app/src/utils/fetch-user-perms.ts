@@ -1,8 +1,6 @@
 import api, { route } from '@forge/api';
-import { Logger } from '../config/logger';
 
 const fetchUserPerms = async (req: any): Promise<boolean> => {
-    const logger = Logger.getInstance('blah');
     const { accountId } = req.context;
 
     const permissionRequestBody = `{

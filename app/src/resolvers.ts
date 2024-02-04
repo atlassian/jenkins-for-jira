@@ -16,7 +16,7 @@ import { FetchAppDataProps, fetchAppData } from './utils/fetch-app-data';
 import { fetchFeatureFlag } from './config/feature-flags';
 import { fetchModuleKey } from './utils/fetch-module-key';
 import { GLOBAL_PAGE } from '../jenkins-for-jira-ui/src/common/constants';
-import { fetchUserPerms } from './storage/fetch-user-perms';
+import { fetchUserPerms } from './utils/fetch-user-perms';
 
 const resolver = new Resolver();
 
