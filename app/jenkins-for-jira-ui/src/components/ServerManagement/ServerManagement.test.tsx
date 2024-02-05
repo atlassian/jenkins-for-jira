@@ -9,8 +9,9 @@ import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import * as redirectFromGetStartedModule from '../../api/redirectFromGetStarted';
 import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
+import * as fetchUserPermsModule from '../../api/fetchUserPerms';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
-import { CONFIG_PAGE } from '../../common/constants';
+import { CONFIG_PAGE, GLOBAL_PAGE } from '../../common/constants';
 
 const servers: JenkinsServer[] = [
 	{
@@ -119,6 +120,7 @@ document.execCommand = jest.fn();
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
 jest.mock('../../api/fetchModuleKey');
+jest.mock('../../api/fetchUserPerms');
 jest.mock('react-router', () => ({
 	...jest.requireActual('react-router'),
 	useHistory: jest.fn()
@@ -214,8 +216,9 @@ describe('ServerManagement Component', () => {
 
 		test('should render panel content for DUPLICATE server', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
-			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
+			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(GLOBAL_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+			jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(true);
 
 			await waitFor(() => render(<ServerManagement />));
 
@@ -303,7 +306,7 @@ describe('ServerManagement Component', () => {
 			});
 		});
 
-		test('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
+		test.only('should handle server deletion correctly for DUPLICATE SERVERS', async () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');

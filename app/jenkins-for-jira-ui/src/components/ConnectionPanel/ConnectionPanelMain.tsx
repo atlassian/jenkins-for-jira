@@ -76,7 +76,8 @@ const ConnectionPanelMain = ({
 	updatedServer,
 	isUpdatingServer,
 	uuidOfRefreshServer,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: ConnectionPanelMainProps): JSX.Element => {
 	const connectedState = jenkinsServer.connectedState || ConnectedState.PENDING;
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -186,6 +187,7 @@ const ConnectionPanelMain = ({
 						refreshServersAfterDelete={refreshServers}
 						refreshServersAfterUpdate={handleRefreshUpdateServer}
 						moduleKey={moduleKey}
+						userIsAdmin={userIsAdmin}
 					/>
 					: <Tabs id="connection-panel-tabs" selected={selectedTabIndex} onChange={handleTabSelect}>
 						<TabList>
@@ -230,6 +232,7 @@ const ConnectionPanelMain = ({
 											uuidOfRefreshServer={uuidOfRefreshServer}
 											isUpdatingServer={isUpdatingServer}
 											moduleKey={moduleKey}
+											userIsAdmin={userIsAdmin}
 										/>
 									</Panel>
 							}
