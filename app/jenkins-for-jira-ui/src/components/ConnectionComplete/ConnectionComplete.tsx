@@ -4,7 +4,6 @@ import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
 import { router } from '@forge/bridge';
-import { ParamTypes } from '../ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
@@ -14,6 +13,7 @@ import { connectionCompleteConfirmation, connectionCompleteContent } from './Con
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 
