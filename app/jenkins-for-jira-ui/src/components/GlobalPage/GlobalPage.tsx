@@ -4,6 +4,8 @@ import Button from '@atlaskit/button/standard-button';
 import { cx } from '@emotion/css';
 import TextArea from '@atlaskit/textarea';
 import { isEqual } from 'lodash';
+import { ButtonGroup } from '@atlaskit/button';
+import { router } from '@forge/bridge';
 import { getAllJenkinsServers } from '../../api/getAllJenkinsServers';
 import { JenkinsSpinner } from '../JenkinsSpinner/JenkinsSpinner';
 import { spinnerHeight } from '../../common/styles/spinner.styles';
@@ -20,14 +22,19 @@ import {
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
-import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
+import { fetchAdminPath, fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { fetchModuleKey } from '../../api/fetchModuleKey';
 import { GlobalPageEmptyState } from './GlobalPageEmptyState';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
+import { fetchUserPerms } from '../../api/fetchUserPerms';
 
 const analyticsClient = new AnalyticsClient();
 
-export const GlobalPage = (): JSX.Element => {
+type GlobalPageProps = {
+	checkUserPermissionsFlag?: boolean
+};
+
+export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
 	const [showSharePage, setshowSharePage] = useState<boolean>(false);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -38,6 +45,8 @@ export const GlobalPage = (): JSX.Element => {
 	const [updatedServer, setUpdatedServer] = useState<JenkinsServer>();
 	const [isUpdatingServer, setIsUpdatingServer] = useState<boolean>(false);
 	const [uuidOfRefreshServer, setUuidOfRefreshServer] = useState<string>('');
+	const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false);
+	const [isFetchingAdminPerms, setIsFetchingAdminPerms] = useState<boolean>(false);
 
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
@@ -57,6 +66,13 @@ export const GlobalPage = (): JSX.Element => {
 				setGlobalPageUrl(url);
 				await fetchAllJenkinsServers();
 				await getModuleKey();
+
+				if (checkUserPermissionsFlag) {
+					setIsFetchingAdminPerms(true);
+					const isAdmin = await fetchUserPerms();
+					setUserIsAdmin(isAdmin);
+					setIsFetchingAdminPerms(false);
+				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -67,9 +83,9 @@ export const GlobalPage = (): JSX.Element => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
 		};
-	}, []);
+	}, [checkUserPermissionsFlag]);
 
-	if (!jenkinsServers || !moduleKey) {
+	if (!jenkinsServers || !moduleKey || isFetchingAdminPerms) {
 		return <JenkinsSpinner secondaryClassName={spinnerHeight} />;
 	}
 
@@ -145,8 +161,24 @@ export const GlobalPage = (): JSX.Element => {
 		}
 	};
 
-	const pageHeaderAction = (
-		<Button onClick={() => handleShowSharePageModal()}>Share page</Button>
+	const handleNavigateToServerNameScreen = async (e: React.MouseEvent) => {
+		e.preventDefault();
+		const adminPath = await fetchAdminPath();
+		router.navigate(`${adminPath}/connection-info/global`);
+	};
+
+	const pageHeaderActions = (
+		<ButtonGroup>
+			{
+				userIsAdmin && <Button
+					appearance="primary"
+					onClick={(e) => handleNavigateToServerNameScreen(e)}
+				>
+					Connect a new Jenkins server
+				</Button>
+			}
+			<Button onClick={() => handleShowSharePageModal()}>Share page</Button>
+		</ButtonGroup>
 	);
 
 	const sharePageMessage = getSharePageMessage(globalPageUrl);
@@ -154,7 +186,7 @@ export const GlobalPage = (): JSX.Element => {
 	return (
 		<div>
 			<div className={headerContainer}>
-				<PageHeader actions={pageHeaderAction}>Jenkins for Jira</PageHeader>
+				<PageHeader actions={pageHeaderActions}>Jenkins for Jira</PageHeader>
 			</div>
 			{jenkinsServers?.length
 				? <>
@@ -168,6 +200,7 @@ export const GlobalPage = (): JSX.Element => {
 						uuidOfRefreshServer={uuidOfRefreshServer}
 						handleRefreshUpdateServer={handleRefreshUpdateServer}
 						moduleKey={moduleKey}
+						userIsAdmin={userIsAdmin}
 					/>
 				</>
 				: <>

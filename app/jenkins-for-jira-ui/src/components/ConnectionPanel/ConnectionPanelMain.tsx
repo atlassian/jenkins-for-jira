@@ -63,7 +63,8 @@ type ConnectionPanelMainProps = {
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
 	uuidOfRefreshServer: string,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
 
 const SET_UP_GUIDE_TAB = 1;
