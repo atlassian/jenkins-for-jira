@@ -31,12 +31,12 @@ import { fetchUserPerms } from '../../api/fetchUserPerms';
 const analyticsClient = new AnalyticsClient();
 
 type GlobalPageProps = {
-	checkUserPermissionsFlag?: boolean
+	checkUserPermissionsFlag: boolean
 };
 
 export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.Element => {
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>();
-	const [showSharePage, setshowSharePage] = useState<boolean>(false);
+	const [showSharePage, setShowSharePage] = useState<boolean>(false);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const isMountedRef = React.useRef<boolean>(true);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
@@ -100,7 +100,7 @@ export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.E
 			}
 		);
 
-		setshowSharePage(true);
+		setShowSharePage(true);
 	};
 
 	const handleCopyToClipboard = async () => {
@@ -130,7 +130,7 @@ export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.E
 	};
 
 	const handleCloseShowSharePageModal = async () => {
-		setshowSharePage(false);
+		setShowSharePage(false);
 	};
 
 	const handleRefreshUpdateServer = async (uuid: string) => {
