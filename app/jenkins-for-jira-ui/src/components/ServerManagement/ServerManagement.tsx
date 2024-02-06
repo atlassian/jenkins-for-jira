@@ -83,7 +83,7 @@ export const contentToRenderServerManagementScreen = (
 			} else {
 				contentToRender = (
 					<div className={serverManagementContainer}>
-						<ConnectionWizard moduleKey={moduleKey} />
+						<ConnectionWizard />
 					</div>
 				);
 			}

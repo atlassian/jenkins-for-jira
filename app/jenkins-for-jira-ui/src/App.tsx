@@ -154,7 +154,7 @@ const App: React.FC = () => {
 								<ConnectionComplete />
 							</Route>
 							<Route path="/connection-info/:path">
-								<ConnectionWizard moduleKey={moduleKey} />
+								<ConnectionWizard />
 							</Route>
 						</Switch>
 					</Router>

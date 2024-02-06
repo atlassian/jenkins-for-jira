@@ -14,7 +14,7 @@ const TopPanel = (): JSX.Element => {
 		<div className={cx(topPanelContainer)}>
 			<div className={cx(topPanelContentHeaderContainer)}>
 				<p className={cx(topPanelContent)}>
-					To receive build and deployment data, sdfsfsdfsdfyour teams must
+					To receive build and deployment data, your teams must
 					follow the unique setup guide for each connected server.
 				</p>
 			</div>

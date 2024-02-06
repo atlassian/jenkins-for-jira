@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import {
 	connectionWizardNestedOrderedListItem,
 	connectionWizardOrderedListItem,
@@ -19,17 +19,15 @@ import { ConnectionFlowHeader } from './ConnectionFlowHeader';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import { CONFIG_PAGE, CONNECTION_WIZARD_SCREEN_NAME } from '../../common/constants';
+import { CONNECTION_WIZARD_SCREEN_NAME } from '../../common/constants';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
+import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 
-type ConnectionWizardProps = {
-	moduleKey: string
-};
-
-const ConnectionWizard = ({ moduleKey }: ConnectionWizardProps): JSX.Element => {
+const ConnectionWizard = (): JSX.Element => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 
 	useEffect(() => {
 		analyticsClient.sendAnalytics(
@@ -40,7 +38,6 @@ const ConnectionWizard = ({ moduleKey }: ConnectionWizardProps): JSX.Element => 
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		const path = moduleKey === CONFIG_PAGE ? 'admin' : 'global';
 		history.push(`/create-server/${path}`);
 	};
 
