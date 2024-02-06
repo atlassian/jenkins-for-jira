@@ -181,7 +181,12 @@ const ConnectionPanelTop = ({
 						<DropdownItem onClick={() => onClickConnectionSettings(server)}>
 							Connection settings
 						</DropdownItem>
-						<DropdownItem onClick={() => onClickDisconnect(server)}>Disconnect</DropdownItem>
+						<DropdownItem
+							onClick={() => onClickDisconnect(server)}
+							testId={`disconnect-button-${server.name}`}
+						>
+							Disconnect
+						</DropdownItem>
 					</DropdownItemGroup>
 				</DropdownMenu>
 			}
