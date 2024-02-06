@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
+import { router } from '@forge/bridge';
 import {
 	connectionPanelHeaderContainer,
 	connectionPanelHeaderContentContainer,
@@ -22,6 +23,7 @@ import {
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { fetchAdminPath } from '../../api/fetchGlobalPageUrl';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -37,12 +39,15 @@ type ConnectionPanelTopProps = {
 	refreshServers(serverToRemove: JenkinsServer): void,
 	updatedServer?: JenkinsServer,
 	isUpdatingServer: boolean,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
+
 const ConnectionPanelTop = ({
 	server,
 	refreshServers,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: ConnectionPanelTopProps): JSX.Element => {
 	const history = useHistory();
 	const connectedState = server.connectedState || ConnectedState.PENDING;
@@ -51,8 +56,26 @@ const ConnectionPanelTop = ({
 	const [showConfirmServerDisconnect, setShowConfirmServerDisconnect] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [disconnectError, setDisconnectError] = useState<boolean>(false);
+	const [adminPageUrl, setAdminPageUrl] = useState<string>('');
+	const isAdminPage = moduleKey === CONFIG_PAGE;
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const url = await fetchAdminPath();
+				setAdminPageUrl(url);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+	}, []);
 
 	const onClickDisconnect = async (serverToDelete: JenkinsServer) => {
+		setServerToDisconnect(serverToDelete);
+		setShowConfirmServerDisconnect(true);
+
 		await analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.DisconnectServerName,
@@ -61,9 +84,6 @@ const ConnectionPanelTop = ({
 				actionSubject: 'button'
 			}
 		);
-
-		setServerToDisconnect(serverToDelete);
-		setShowConfirmServerDisconnect(true);
 	};
 
 	const onClickConnectionSettings = async (serverToOpen: JenkinsServer) => {
@@ -76,7 +96,13 @@ const ConnectionPanelTop = ({
 			}
 		);
 
-		history.push(`/setup/${serverToOpen.uuid}/connection-settings`);
+		const connectionSettingsPath = `/setup/${serverToOpen.uuid}/connection-settings`;
+
+		if (isAdminPage) {
+			history.push(`${connectionSettingsPath}/admin`);
+		} else {
+			router.navigate(`${adminPageUrl}${connectionSettingsPath}/global`);
+		}
 	};
 
 	const onClickRename = async (serverToRename: JenkinsServer) => {
@@ -89,7 +115,13 @@ const ConnectionPanelTop = ({
 			}
 		);
 
-		history.push(`/update-server-name/${serverToRename.uuid}`);
+		const updateServerNamePath = `/update-server-name/${serverToRename.uuid}`;
+
+		if (isAdminPage) {
+			history.push(`${updateServerNamePath}/admin`);
+		} else {
+			router.navigate(`${adminPageUrl}${updateServerNamePath}/global`);
+		}
 	};
 
 	const disconnectJenkinsServerHandler = async (
@@ -134,8 +166,6 @@ const ConnectionPanelTop = ({
 	};
 
 	const serverIsNotDuplicate = server.connectedState !== ConnectedState.DUPLICATE;
-	const isConfigPage = moduleKey && moduleKey === CONFIG_PAGE;
-
 	const buttonAndIconAppearance = disconnectError ? 'danger' : 'warning';
 	const modalTitleMessage =
 		disconnectError ? 'An error occurred while deleting your server' : 'Disconnect this Jenkins server?';
@@ -165,7 +195,7 @@ const ConnectionPanelTop = ({
 				</div>
 			</div>
 
-			{serverIsNotDuplicate && isConfigPage &&
+			{serverIsNotDuplicate && (userIsAdmin || CONFIG_PAGE) &&
 				<DropdownMenu
 					trigger={({ triggerRef, ...props }) => (
 						<Button

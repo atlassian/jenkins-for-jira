@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router';
 import { cx } from '@emotion/css';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button/standard-button';
+import { router } from '@forge/bridge';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
@@ -11,14 +12,17 @@ import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.s
 import { connectionCompleteConfirmation, connectionCompleteContent } from './ConnectionComplete.styles';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
 
 const ConnectionComplete = () => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 	const { admin: isJenkinsAdmin, id: uuid } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 
 	const getServer = useCallback(async () => {
 		try {
@@ -37,7 +41,9 @@ const ConnectionComplete = () => {
 
 		const fetchData = async () => {
 			try {
-				getServer();
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+				await getServer();
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -48,6 +54,11 @@ const ConnectionComplete = () => {
 
 	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
+
+		if (path === 'global') {
+			router.navigate(globalPageUrl);
+		}
+
 		history.push('/');
 	};
 
