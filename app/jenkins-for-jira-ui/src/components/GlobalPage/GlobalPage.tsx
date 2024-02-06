@@ -167,8 +167,6 @@ export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.E
 		router.navigate(`${adminPath}/connection-info/global`);
 	};
 
-	console.log('userIsAdmin', userIsAdmin);
-
 	const pageHeaderActions = (
 		<ButtonGroup>
 			{

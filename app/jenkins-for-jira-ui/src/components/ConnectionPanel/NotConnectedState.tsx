@@ -94,8 +94,6 @@ const NotConnectedState = ({
 		setShowRetryServerDelete(false);
 	};
 
-	console.log('isDeletingServer', isDeletingServer);
-	console.log('????', jenkinsServer.uuid === serverToDeleteUuid);
 	return (
 		<div className={cx(notConnectedStateContainer)}>
 			{

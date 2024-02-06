@@ -76,7 +76,6 @@ const ConnectionPanel = ({
 	moduleKey,
 	userIsAdmin
 }: ConnectionPanelProps): JSX.Element => {
-	console.log('CONNECTION PANEL');
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
 			(server) => server.uuid !== serverToRemove.uuid
