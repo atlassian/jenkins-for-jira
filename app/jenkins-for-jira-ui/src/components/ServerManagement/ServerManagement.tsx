@@ -56,9 +56,6 @@ export const contentToRenderServerManagementScreen = (
 ) => {
 	let contentToRender;
 
-	console.log('moduleKey????', moduleKey);
-	console.log('servers', servers);
-
 	switch (moduleKey) {
 		case 'jenkins-for-jira-ui-admin-page':
 			if (servers?.length) {
@@ -84,10 +81,9 @@ export const contentToRenderServerManagementScreen = (
 					</>
 				);
 			} else {
-				console.log('IN HERE???');
 				contentToRender = (
 					<div className={serverManagementContainer}>
-						<ConnectionWizard />
+						<ConnectionWizard moduleKey={moduleKey} />
 					</div>
 				);
 			}
@@ -313,7 +309,6 @@ const ServerManagement = (): JSX.Element => {
 
 	const sharePageMessage = getSharePageMessage(globalPageUrl, moduleKey);
 
-	console.log('MODULE KEY: ', moduleKey);
 	const contentToRender =
 		contentToRenderServerManagementScreen(
 			moduleKey,

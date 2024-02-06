@@ -158,7 +158,7 @@ describe('ServerManagement Component', () => {
 		expect(screen.getByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
-	test.only('should render the ConnectionWizard when there are no servers', async () => {
+	test('should render the ConnectionWizard when there are no servers', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
 		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
