@@ -81,6 +81,7 @@ const ConnectionWizard = ({ moduleKey }: ConnectionWizardProps): JSX.Element => 
 				appearance="primary"
 				className={cx(connectionWizardButton)}
 				onClick={(e) => handleNavigateToServerNameScreen(e)}
+				testId="team-gathered"
 			>
 				I've gathered my team
 				<ArrowRightIcon label="Continue to next screen" />

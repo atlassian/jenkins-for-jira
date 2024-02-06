@@ -404,6 +404,7 @@ const JenkinsSetup = (): JSX.Element => {
 									type="button"
 									appearance="primary"
 									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
+									testId="jenkins-set-up-next-btn"
 								>
 									{connectionSettings ? 'Done' : 'Next'}
 								</Button>
