@@ -1,5 +1,5 @@
 import {
- BuildEventStatus, DeploymentEventStatus, EventType, JenkinsPluginConfig
+	BuildEventStatus, DeploymentEventStatus, EventType, JenkinsPluginConfig
 } from '../common/types';
 
 export enum RequestType {
