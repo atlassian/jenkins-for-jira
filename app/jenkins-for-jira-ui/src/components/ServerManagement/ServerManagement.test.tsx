@@ -3,12 +3,14 @@ import {
 	act, fireEvent, render, screen, waitFor
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
+import { useParams } from 'react-router';
 import * as ReactRouter from 'react-router';
 import { invoke } from '@forge/bridge';
 import { getSiteNameFromUrl, ServerManagement } from './ServerManagement';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import * as redirectFromGetStartedModule from '../../api/redirectFromGetStarted';
 import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
+import * as fetchUserPermsModule from '../../api/fetchUserPerms';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE } from '../../common/constants';
 
@@ -118,10 +120,11 @@ const servers: JenkinsServer[] = [
 document.execCommand = jest.fn();
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
-jest.mock('../../api/fetchModuleKey');
+jest.mock('../../api/fetchUserPerms');
 jest.mock('react-router', () => ({
 	...jest.requireActual('react-router'),
-	useHistory: jest.fn()
+	useHistory: jest.fn(),
+	useParams: jest.fn()
 }));
 
 describe('getSiteNameFromUrlt', () => {
@@ -161,6 +164,9 @@ describe('ServerManagement Component', () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([]);
 		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+
+		const mockParams = { path: 'admin' };
+		(useParams as jest.Mock).mockReturnValue(mockParams);
 
 		await waitFor(() => render(<ServerManagement />));
 
@@ -216,6 +222,7 @@ describe('ServerManagement Component', () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+			jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(true);
 
 			await waitFor(() => render(<ServerManagement />));
 
@@ -307,6 +314,7 @@ describe('ServerManagement Component', () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[2]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+			jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(true);
 
 			await waitFor(() => render(<ServerManagement />));
 
@@ -386,6 +394,7 @@ describe('ServerManagement Component', () => {
 			jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[0], servers[1]]);
 			jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
 			jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+			jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(true);
 
 			await waitFor(() => render(<ServerManagement />));
 

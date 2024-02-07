@@ -166,7 +166,7 @@ const ServerManagement = (): JSX.Element => {
 	const history = useHistory();
 	const [jenkinsServers, setJenkinsServers] = useState<JenkinsServer[]>([]);
 	const [moduleKey, setModuleKey] = useState<string>();
-	const [showSharePage, setshowSharePage] = useState<boolean>(false);
+	const [showSharePage, setShowSharePage] = useState<boolean>(false);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -203,11 +203,11 @@ const ServerManagement = (): JSX.Element => {
 			}
 		);
 
-		setshowSharePage(true);
+		setShowSharePage(true);
 	};
 
 	const handleCloseShowSharePageModal = async () => {
-		setshowSharePage(false);
+		setShowSharePage(false);
 	};
 
 	const handleCopyToClipboard = async () => {
@@ -263,7 +263,7 @@ const ServerManagement = (): JSX.Element => {
 
 	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		history.push('/connection-info');
+		history.push('/connection-info/admin');
 	};
 
 	// Refresh for PENDING and UPDATE AVAILABLE servers

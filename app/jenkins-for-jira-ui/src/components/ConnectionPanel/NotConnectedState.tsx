@@ -9,7 +9,7 @@ import {
 import { JenkinsServer } from '../../../../src/common/types';
 import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
-import { DELETE_MODAL_TEST_ID, GLOBAL_PAGE } from '../../common/constants';
+import { CONFIG_PAGE, DELETE_MODAL_TEST_ID } from '../../common/constants';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { AnalyticsEventTypes, AnalyticsTrackEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
@@ -23,7 +23,8 @@ type NotConnectedStateProps = {
 	refreshServersAfterUpdate(serverUuidToUpdate: string): void,
 	uuidOfRefreshServer?: string,
 	isUpdatingServer?: boolean,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
 
 const NotConnectedState = ({
@@ -33,7 +34,8 @@ const NotConnectedState = ({
 	refreshServersAfterUpdate,
 	uuidOfRefreshServer,
 	isUpdatingServer,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: NotConnectedStateProps): JSX.Element => {
 	const [serverToDeleteUuid, setServerToDeleteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
@@ -79,9 +81,9 @@ const NotConnectedState = ({
 
 	let firstButtonLabel;
 
-	if (connectedState === ConnectedState.DUPLICATE && moduleKey !== GLOBAL_PAGE) {
+	if (connectedState === ConnectedState.DUPLICATE && (userIsAdmin || moduleKey === CONFIG_PAGE)) {
 		firstButtonLabel = 'Delete';
-	} else if (connectedState === ConnectedState.DUPLICATE && moduleKey === GLOBAL_PAGE) {
+	} else if (connectedState === ConnectedState.DUPLICATE && !userIsAdmin) {
 		firstButtonLabel = undefined;
 	} else {
 		firstButtonLabel = 'Refresh';

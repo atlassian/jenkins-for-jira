@@ -8,6 +8,7 @@ import Form, {
 } from '@atlaskit/form';
 import { v4 as uuidv4 } from 'uuid';
 import Textfield from '@atlaskit/textfield';
+import { router } from '@forge/bridge';
 import { isValidServerName } from '../../common/util/jenkinsConnectionsUtils';
 import { connectionFlowContainer, connectionFlowInnerContainer } from '../../GlobalStyles.styles';
 import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
@@ -28,6 +29,7 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum
 } from '../../common/analytics/analytics-events';
+import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
 import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
@@ -87,14 +89,33 @@ const ServerNameFormField = ({
 
 const ServerNameForm = (): JSX.Element => {
 	const history = useHistory();
+	const { path, id } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-	const params = useParams<ParamTypes>();
-	const editingServerUuid = params ? params.id : undefined;
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const editingServerUuid = id || undefined;
 
 	useEffect(() => {
 		const viewType = editingServerUuid ? 'editing server name' : 'creating server name';
+
+		const fetchData = async () => {
+			try {
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+
+				await analyticsClient.sendAnalytics(
+					AnalyticsEventTypes.ScreenEvent,
+					AnalyticsScreenEventsEnum.ServerNameScreenName,
+					{ viewType }
+				);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+
 		analyticsClient.sendAnalytics(
 			AnalyticsEventTypes.ScreenEvent,
 			AnalyticsScreenEventsEnum.ServerNameScreenName,
@@ -153,7 +174,11 @@ const ServerNameForm = (): JSX.Element => {
 				}
 			);
 
-			history.push(`/`);
+			if (path === 'admin') {
+				history.push(`/`);
+			} else {
+				router.navigate(globalPageUrl);
+			}
 		} catch (e) {
 			console.error('Error: ', e);
 
@@ -190,7 +215,7 @@ const ServerNameForm = (): JSX.Element => {
 				}
 			);
 
-			history.push(`/setup/${uuid}/new-connection`);
+			history.push(`/setup/${uuid}/new-connection/${path}`);
 		} catch (e) {
 			console.error('Error: ', e);
 

@@ -8,11 +8,13 @@ import { GLOBAL_PAGE } from '../../common/constants';
 import * as getAllJenkinsServersModule from '../../api/getAllJenkinsServers';
 import * as fetchModuleKeyModule from '../../api/fetchModuleKey';
 import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
+import * as fetchUserPermsModule from '../../api/fetchUserPerms';
 import { EventType, JenkinsServer } from '../../../../src/common/types';
 
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/getAllJenkinsServers');
 jest.mock('../../api/fetchGlobalPageUrl');
+jest.mock('../../api/fetchUserPerms');
 
 const servers: JenkinsServer[] = [
 	{
@@ -123,7 +125,7 @@ describe('GlobalPage Component', () => {
 	});
 
 	it('should render loading spinner while fetching data', async () => {
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		expect(await screen.findByTestId('jenkins-spinner')).toBeInTheDocument();
 	});
 
@@ -132,7 +134,7 @@ describe('GlobalPage Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
 
 		expect(screen.getByText('No servers connected')).toBeInTheDocument();
@@ -143,21 +145,50 @@ describe('GlobalPage Component', () => {
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
 
 		expect(screen.getByText(servers[4].name)).toBeInTheDocument();
 	});
 
-	it('should render only some buttons', async () => {
+	it('should render only some buttons when checkUserPermissionsFlag is off', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
 
-		render(<GlobalPage />);
+		render(<GlobalPage checkUserPermissionsFlag={false} />);
 		await waitFor(() => {});
+
 		expect(screen.getByText('Share page')).toBeInTheDocument();
 		expect(screen.queryByText('Connect a new Jenkins server button')).not.toBeInTheDocument();
+		expect(screen.getByText('Learn more')).toBeInTheDocument();
+	});
+
+	it('should render only some buttons when user is not an admin', async () => {
+		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
+		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
+		jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(false);
+
+		render(<GlobalPage checkUserPermissionsFlag={true} />);
+		await waitFor(() => {});
+
+		expect(screen.getByText('Share page')).toBeInTheDocument();
+		expect(screen.queryByText('Connect a new Jenkins server button')).not.toBeInTheDocument();
+		expect(screen.getByText('Learn more')).toBeInTheDocument();
+	});
+
+	it('should render all buttons when checkUserPermissionsFlag is on', async () => {
+		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
+		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
+		jest.spyOn(fetchModuleKeyModule, 'fetchModuleKey').mockResolvedValueOnce(GLOBAL_PAGE);
+		jest.spyOn(fetchUserPermsModule, 'fetchUserPerms').mockResolvedValueOnce(true);
+
+		render(<GlobalPage checkUserPermissionsFlag={true} />);
+		await waitFor(() => {});
+
+		expect(screen.getByText('Share page')).toBeInTheDocument();
+		expect(screen.getByText('Connect a new Jenkins server')).toBeInTheDocument();
 		expect(screen.getByText('Learn more')).toBeInTheDocument();
 	});
 });

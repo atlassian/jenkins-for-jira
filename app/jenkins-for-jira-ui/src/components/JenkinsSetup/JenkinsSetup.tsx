@@ -39,7 +39,7 @@ import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
-import { fetchSiteName } from '../../api/fetchGlobalPageUrl';
+import { fetchGlobalPageUrl, fetchSiteName } from '../../api/fetchGlobalPageUrl';
 import { HELP_LINK, JENKINS_SETUP_SCREEN_NAME } from '../../common/constants';
 import { InfoPanel } from '../InfoPanel/InfoPanel';
 import {
@@ -206,6 +206,7 @@ const IAmTheJenkinsAdmin = ({
 
 const JenkinsSetup = (): JSX.Element => {
 	const history = useHistory();
+	const { path } = useParams<ParamTypes>();
 	const webhookGuideRef = useRef<HTMLDivElement>(null);
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
@@ -217,6 +218,7 @@ const JenkinsSetup = (): JSX.Element => {
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
+	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const connectionSettings = settings === 'connection-settings';
 
 	const getServer = useCallback(async () => {
@@ -232,10 +234,12 @@ const JenkinsSetup = (): JSX.Element => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const url = await fetchSiteName();
-				setSiteName(url);
-				getServer();
-				getWebhookUrl(setWebhookUrl, uuid);
+				const site = await fetchSiteName();
+				setSiteName(site);
+				const url = await fetchGlobalPageUrl();
+				setGlobalPageUrl(url);
+				await getServer();
+				await getWebhookUrl(setWebhookUrl, uuid);
 
 				await analyticsClient.sendAnalytics(
 					AnalyticsEventTypes.ScreenEvent,
@@ -320,6 +324,7 @@ const JenkinsSetup = (): JSX.Element => {
 		e.preventDefault();
 
 		let pathParam = '';
+
 		if (showMyJenkinsAdmin) {
 			pathParam = 'requires-jenkins-admin';
 		} else {
@@ -327,9 +332,13 @@ const JenkinsSetup = (): JSX.Element => {
 		}
 
 		if (connectionSettings) {
-			history.push('/');
+			if (path === 'admin') {
+				history.push('/');
+			} else {
+				router.navigate(globalPageUrl);
+			}
 		} else {
-			history.push(`/connection-complete/${uuid}/${pathParam}`);
+			history.push(`/connection-complete/${uuid}/${pathParam}/${path}`);
 		}
 	};
 

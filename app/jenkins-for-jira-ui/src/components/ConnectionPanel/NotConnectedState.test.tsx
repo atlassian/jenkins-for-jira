@@ -31,7 +31,9 @@ describe('NotConnectedState', () => {
 			refreshServersAfterDelete={refreshServers}
 			refreshServersAfterUpdate={handleRefreshAfterUpdate}
 			moduleKey={CONFIG_PAGE}
+			userIsAdmin={true}
 		/>);
+
 		expect(screen.getByText('Duplicate server')).toBeInTheDocument();
 		expect(screen.getByText('Delete')).toBeInTheDocument();
 	});
@@ -56,6 +58,7 @@ describe('NotConnectedState', () => {
 			refreshServersAfterDelete={refreshServers}
 			refreshServersAfterUpdate={handleRefreshAfterUpdate}
 			moduleKey={CONFIG_PAGE}
+			userIsAdmin={true}
 		/>);
 
 		fireEvent.click(screen.getByText('Delete'));

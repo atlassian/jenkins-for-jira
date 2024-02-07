@@ -42,6 +42,7 @@ const App: React.FC = () => {
 	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
 	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 	const [moduleKey, setModuleKey] = useState<string>('');
+	const [checkUserPermissionsFlag, setCheckUserPermissionsFlag] = useState<boolean>(false);
 
 	const getModuleKey = async () => {
 		const currentModuleKey = await fetchModuleKey();
@@ -59,14 +60,20 @@ const App: React.FC = () => {
 					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
 				);
 
+				const checkUserPermissions = await fetchFeatureFlagFromBackend(
+					FeatureFlags.CHECK_USER_PERMISSIONS
+				);
+
 				getModuleKey();
 
 				if (isMounted) {
 					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
+					setCheckUserPermissionsFlag(checkUserPermissions);
 					setIsFetchingFlag(false);
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
+				setIsFetchingFlag(false);
 			}
 		};
 
@@ -102,7 +109,7 @@ const App: React.FC = () => {
 					<Router history={history}>
 						<Switch>
 							<Route path="/">
-								<GlobalPage />
+								<GlobalPage checkUserPermissionsFlag={checkUserPermissionsFlag} />
 							</Route>
 						</Switch>
 					</Router>
@@ -134,19 +141,19 @@ const App: React.FC = () => {
 							<Route path="/pending/:id">
 								<PendingDeploymentState />
 							</Route>
-							<Route path="/create-server">
+							<Route path="/create-server/:path">
 								<ServerNameForm />
 							</Route>
-							<Route path="/update-server-name/:id">
+							<Route path="/update-server-name/:id/:path">
 								<ServerNameForm />
 							</Route>
-							<Route path="/setup/:id/:settings">
+							<Route path="/setup/:id/:settings/:path">
 								<JenkinsSetup />
 							</Route>
-							<Route path="/connection-complete/:id/:admin">
+							<Route path="/connection-complete/:id/:admin/:path">
 								<ConnectionComplete />
 							</Route>
-							<Route path="/connection-info">
+							<Route path="/connection-info/:path">
 								<ConnectionWizard />
 							</Route>
 						</Switch>

@@ -62,7 +62,8 @@ type ConnectionPanelProps = {
 	isUpdatingServer: boolean,
 	uuidOfRefreshServer: string,
 	handleRefreshUpdateServer(uuid: string): void,
-	moduleKey: string
+	moduleKey: string,
+	userIsAdmin?: boolean
 };
 
 const ConnectionPanel = ({
@@ -72,7 +73,8 @@ const ConnectionPanel = ({
 	isUpdatingServer,
 	uuidOfRefreshServer,
 	handleRefreshUpdateServer,
-	moduleKey
+	moduleKey,
+	userIsAdmin
 }: ConnectionPanelProps): JSX.Element => {
 	const handleServerRefresh = (serverToRemove: JenkinsServer) => {
 		const refreshedServers = jenkinsServers.filter(
@@ -114,6 +116,7 @@ const ConnectionPanel = ({
 								updatedServer={updatedServer}
 								isUpdatingServer={isUpdatingServer}
 								moduleKey={moduleKey}
+								userIsAdmin={userIsAdmin}
 							/>
 							<ConnectionPanelMain
 								jenkinsServer={server}
@@ -123,6 +126,7 @@ const ConnectionPanel = ({
 								isUpdatingServer={isUpdatingServer}
 								uuidOfRefreshServer={uuidOfRefreshServer}
 								moduleKey={moduleKey}
+								userIsAdmin={userIsAdmin}
 							/>
 						</div>
 					);

@@ -5,8 +5,10 @@ import {
 import { useParams } from 'react-router';
 import { ConnectionComplete } from './ConnectionComplete';
 import * as getJenkinsServerWithSecretModule from '../../api/getJenkinsServerWithSecret';
+import * as fetchGlobalPageUrlModule from '../../api/fetchGlobalPageUrl';
 
 jest.mock('../../api/getJenkinsServerWithSecret');
+jest.mock('../../api/fetchGlobalPageUrl');
 
 jest.mock('react-router', () => ({
 	...jest.requireActual('react-router'),
@@ -55,6 +57,7 @@ describe('ConnectionComplete Component', () => {
 	});
 
 	it('should render server name and connection confirmation for non Jenkins admin', async () => {
+		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 		const mockParams = { id: '12345678', admin: 'requires-jenkins-admin' };
 		(useParams as jest.Mock).mockReturnValue(mockParams);
 
