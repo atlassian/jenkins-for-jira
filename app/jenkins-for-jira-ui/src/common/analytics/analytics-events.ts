@@ -55,7 +55,8 @@ export enum AnalyticsUiEventsEnum {
 	ConnectionSettingsName = 'connectionSettings',
 	DisconnectServerName = 'disconnectServer',
 	ConfirmDisconnectServerName = 'confirmDisconnectServer',
-	SetUpGuideName = 'setUpGuide'
+	SetUpGuideName = 'setUpGuide',
+	ConnectANewJenkinsServerName = 'ConnectANewJenkinsServer'
 }
 
 export enum AnalyticsTrackEventsEnum {

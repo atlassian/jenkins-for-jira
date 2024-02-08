@@ -11,7 +11,11 @@ import { disconnectJenkinsServer } from '../../api/disconnectJenkinsServer';
 import { ConnectionPanelContent } from './ConnectionPanelContent';
 import { CONFIG_PAGE, DELETE_MODAL_TEST_ID } from '../../common/constants';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
-import { AnalyticsEventTypes, AnalyticsTrackEventsEnum } from '../../common/analytics/analytics-events';
+import {
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
+	AnalyticsTrackEventsEnum
+} from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 
 const analyticsClient = new AnalyticsClient();
@@ -40,6 +44,8 @@ const NotConnectedState = ({
 	const [serverToDeleteUuid, setServerToDeleteUuid] = useState<string>('');
 	const [isDeletingServer, setIsDeletingServer] = useState<boolean>(false);
 	const [showRetryServerDelete, setShowRetryServerDelete] = useState<boolean>(false);
+	const pageSource = moduleKey === CONFIG_PAGE
+		? AnalyticsScreenEventsEnum.ServerManagementScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
 	const deleteServer = async (serverToDelete: JenkinsServer) => {
 		setIsDeletingServer(true);
@@ -52,6 +58,7 @@ const NotConnectedState = ({
 				AnalyticsEventTypes.TrackEvent,
 				AnalyticsTrackEventsEnum.DeleteServerSuccessName,
 				{
+					source: pageSource,
 					action: `submitted ${AnalyticsTrackEventsEnum.DeleteServerSuccessName}`,
 					actionSubject: 'form'
 				}
@@ -65,6 +72,7 @@ const NotConnectedState = ({
 				AnalyticsEventTypes.TrackEvent,
 				AnalyticsTrackEventsEnum.DeleteServerFailureName,
 				{
+					source: pageSource,
 					action: `submitted ${AnalyticsTrackEventsEnum.DeleteServerFailureName}`,
 					actionSubject: 'form'
 				}

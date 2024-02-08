@@ -261,8 +261,19 @@ const ServerManagement = (): JSX.Element => {
 		};
 	}, [redirectToAdminPage]);
 
-	const handleNavigateToServerNameScreen = (e: React.MouseEvent) => {
+	const handleNavigateToServerNameScreen = async (e: React.MouseEvent) => {
 		e.preventDefault();
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectANewJenkinsServerName,
+			{
+				source: AnalyticsScreenEventsEnum.ServerManagementScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.ConnectANewJenkinsServerName}`,
+				actionSubject: 'button'
+			}
+		);
+
 		history.push('/connection-info/admin');
 	};
 
