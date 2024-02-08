@@ -18,7 +18,8 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE, DISCONNECT_MODAL_TEST_ID } from '../../common/constants';
 import {
-	AnalyticsEventTypes, AnalyticsScreenEventsEnum,
+	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
