@@ -19,6 +19,7 @@ import { JenkinsServer } from '../../../../src/common/types';
 import { CONFIG_PAGE, DISCONNECT_MODAL_TEST_ID } from '../../common/constants';
 import {
 	AnalyticsEventTypes,
+	AnalyticsScreenEventsEnum,
 	AnalyticsTrackEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
@@ -58,6 +59,8 @@ const ConnectionPanelTop = ({
 	const [disconnectError, setDisconnectError] = useState<boolean>(false);
 	const [adminPageUrl, setAdminPageUrl] = useState<string>('');
 	const isAdminPage = moduleKey === CONFIG_PAGE;
+	const pageSource = isAdminPage
+		? AnalyticsScreenEventsEnum.ServerManagementScreenName : AnalyticsScreenEventsEnum.GlobalPageScreenName;
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -80,6 +83,7 @@ const ConnectionPanelTop = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.DisconnectServerName,
 			{
+				source: pageSource,
 				action: `clicked - ${AnalyticsUiEventsEnum.DisconnectServerName}`,
 				actionSubject: 'button'
 			}
@@ -91,6 +95,7 @@ const ConnectionPanelTop = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.ConnectionSettingsName,
 			{
+				source: pageSource,
 				action: `clicked - ${AnalyticsUiEventsEnum.ConnectionSettingsName}`,
 				actionSubject: 'button'
 			}
@@ -110,6 +115,7 @@ const ConnectionPanelTop = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.RenameServerName,
 			{
+				source: pageSource,
 				action: `clicked - ${AnalyticsUiEventsEnum.RenameServerName}`,
 				actionSubject: 'button'
 			}

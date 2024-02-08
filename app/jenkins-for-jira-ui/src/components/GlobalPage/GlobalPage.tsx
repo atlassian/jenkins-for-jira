@@ -164,6 +164,17 @@ export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.E
 	const handleNavigateToServerNameScreen = async (e: React.MouseEvent) => {
 		e.preventDefault();
 		const adminPath = await fetchAdminPath();
+
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.ConnectANewJenkinsServerName,
+			{
+				source: AnalyticsScreenEventsEnum.GlobalPageScreenName,
+				action: `clicked - ${AnalyticsUiEventsEnum.ConnectANewJenkinsServerName}`,
+				actionSubject: 'button'
+			}
+		);
+
 		router.navigate(`${adminPath}/connection-info/global`);
 	};
 
