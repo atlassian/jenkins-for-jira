@@ -78,7 +78,7 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 			autoDeploymentsRegex: ''
 		} as unknown as JenkinsPluginConfigEvent;
 
-		await updateJenkinsPluginConfigState('unique-uid', jenkinsEvent, mockLogger);
+		await updateJenkinsPluginConfigState('unique-uid', jenkinsEvent, 'cloudId', mockLogger);
 
 		expect(storage.set).toBeCalledWith(
 			`jenkinsServer-unique-uid`,
@@ -101,7 +101,7 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 		} as unknown as JenkinsPluginConfigEvent;
 
 		await expect(
-			updateJenkinsPluginConfigState('error-uuid', jenkinsEvent, mockLogger)
+			updateJenkinsPluginConfigState('error-uuid', jenkinsEvent, 'cloudId', mockLogger)
 		).rejects.toThrowError();
 
 		expect(mockLogger.error).toBeCalledWith(
