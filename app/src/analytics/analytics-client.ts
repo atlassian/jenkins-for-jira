@@ -80,7 +80,7 @@ export const getAnalyticsClient = async (): Promise<any> => {
         const { analyticsClient } = await import('@atlassiansox/analytics-node-client');
 
         const analyticsNodeClient = analyticsClient({
-            env: 'dev', //EnvType.PROD,
+            env: EnvType.PROD,
             product: 'jenkinsForJira'
         });
 

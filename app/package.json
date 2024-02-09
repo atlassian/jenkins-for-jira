@@ -13,6 +13,7 @@
     "prepare": "cd ../ && husky install"
   },
   "dependencies": {
+    "@atlassiansox/analytics-node-client": "^4.1.1",
     "@forge/api": "3.0.0",
     "@forge/metrics": "0.2.0",
     "@forge/resolver": "1.5.14",
