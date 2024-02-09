@@ -2,8 +2,8 @@ import { storage } from '@forge/api';
 import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { JenkinsServerStorageError } from '../common/error';
 import { Logger } from '../config/logger';
-import { sendAnalytics } from "../analytics/analytics-client";
-import { AnalyticsTrackEventsEnum } from "../analytics/analytics-events";
+import { sendAnalytics } from '../analytics/analytics-client';
+import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
 
 export const disconnectJenkinsServer = async (uuid: string, cloudId: string, accountId: string): Promise<boolean> => {
 	const logger = Logger.getInstance('disconnectJenkinsServer');

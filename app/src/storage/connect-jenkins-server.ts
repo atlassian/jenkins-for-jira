@@ -6,6 +6,7 @@ import { Logger } from '../config/logger';
 import { sendAnalytics } from '../analytics/analytics-client';
 import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
 
+// eslint-disable-next-line max-len
 const connectJenkinsServer = async (jenkinsServer: JenkinsServer, cloudId: string, accountId: string): Promise<boolean> => {
 	const logger = Logger.getInstance('connectJenkinsServer');
 

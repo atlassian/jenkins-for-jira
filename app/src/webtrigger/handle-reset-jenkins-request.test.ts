@@ -13,7 +13,6 @@ import {
 	UnsupportedRequestTypeError
 } from '../common/error';
 import { Errors } from '../common/error-messages';
-import any = jasmine.any;
 
 jest.mock('../storage/get-all-jenkins-servers');
 jest.mock('../storage/disconnect-jenkins-server');
