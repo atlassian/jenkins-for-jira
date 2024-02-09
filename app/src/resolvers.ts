@@ -31,7 +31,6 @@ resolver.define('connectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const { cloudId, accountId } = req.context;
 	const payload = req.payload as JenkinsServer;
-	// TODO CAN PASS CLOUDID AND ACCOUNT AND URL HERE
 	internalMetrics.counter(metricResolverEmitter.connectJenkinsServer).incr();
 	return connectJenkinsServer(payload, cloudId, accountId);
 });
@@ -50,7 +49,6 @@ resolver.define('getAllJenkinsServers', async (req) => {
 	if (req.context.moduleKey !== GLOBAL_PAGE) {
 		await adminPermissionCheck(req);
 	}
-	console.log(req);
 
 	internalMetrics.counter(metricResolverEmitter.getAllJenkinsServers).incr();
 	return getAllJenkinsServers();

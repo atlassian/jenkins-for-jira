@@ -89,7 +89,6 @@ export class AnalyticsClient {
 				attributes
 			)
 		);
-
 	}
 
 	private static async checkIfAnalyticsPackageInstalled(): Promise<any> {

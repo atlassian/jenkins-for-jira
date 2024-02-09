@@ -57,9 +57,6 @@ export default async function handleJenkinsRequest(
 				break;
 			}
 			case RequestType.PLUGIN_CONFIG: {
-				console.log('plugin configggg');
-				console.log('plugin configggg');
-				console.log('plugin configggg');
 				response = await handlePluginConfigEvent(
 					jenkinsRequest as JenkinsPluginConfigEvent, jenkinsServerUuid, cloudId, logger
 				);

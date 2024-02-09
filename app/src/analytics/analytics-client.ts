@@ -21,30 +21,22 @@ enum EnvType {
 // eslint-disable-next-line max-len
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
     sendEvent(cloudId, eventPayload, accountId, anonymousId)
-        .then(() => console.log('Analytics event successful'))
+        .then(() => console.log('Analytics event processed'))
         .catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
 // eslint-disable-next-line max-len
 const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
     const analyticsClient = await getAnalyticsClient();
-    console.log('Analytics event successful');
     const {
         eventName, attributes, actionSubject, action
     } = eventPayload;
 
     if (!analyticsClient || !isProductionEnv()) {
-        console.warn('Analytics Web Client module not found or not prod. Ignoring the dependency.');
-      // return;
+        console.warn('Analytics Node Client module not found or not prod. Ignoring the dependency.');
+        return;
     }
 
-    console.log('analyticsClient');
-    console.log('analyticsClient');
-    console.log('analyticsClient');
-    console.log('analyticsClient');
-    console.log('analyticsClient');
-    console.log('analyticsClient');
-    console.log(analyticsClient);
     const accountDetails = getAccountDetails(accountId, anonymousId);
 
     await analyticsClient.sendTrackEvent({
@@ -60,7 +52,6 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
                 }
         }
     });
-    console.log('Analytics event successful43');
 };
 
 export const isProductionEnv = (): boolean => {
@@ -89,7 +80,7 @@ export const getAnalyticsClient = async (): Promise<any> => {
         const { analyticsClient } = await import('@atlassiansox/analytics-node-client');
 
         const analyticsNodeClient = analyticsClient({
-            env: EnvType.PROD,
+            env: 'dev', //EnvType.PROD,
             product: 'jenkinsForJira'
         });
 

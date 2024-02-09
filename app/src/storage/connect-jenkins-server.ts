@@ -18,8 +18,6 @@ const connectJenkinsServer = async (jenkinsServer: JenkinsServer, cloudId: strin
 		await storage.setSecret(`${SECRET_STORAGE_KEY_PREFIX}${uuid}`, secret);
 
 		logger.info('Jenkins server configuration saved successfully!', { uuid });
-		// TODO ANALYTICS HERE
-		console.log('CONNECT ANALYTICS HERE!!!!');
 		await sendConnectAnalytics(cloudId, accountId);
 		return true;
 	} catch (error) {

@@ -87,8 +87,8 @@ async function updateJenkinsServerState(
 
 function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer): void {
 	const hasConfigData = !!jenkinsServer.pluginConfig?.ipAddress;
-	if (!hasConfigData) {
-		// return;
+	if (hasConfigData) {
+		return;
 	}
 
 	const eventPayload = {
