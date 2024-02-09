@@ -68,7 +68,6 @@ resolver.define('disconnectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const { cloudId, accountId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
-	// TODO CAN PASS CLOUDID AND ACCOUNT AND URL HERE
 	internalMetrics.counter(metricResolverEmitter.disconnectJenkinsServer).incr();
 	return Promise.all([
 		disconnectJenkinsServer(jenkinsServerUuid, cloudId, accountId),

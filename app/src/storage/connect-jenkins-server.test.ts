@@ -9,7 +9,7 @@ describe('Connect Jenkins Server Suite', () => {
 			secret: 'secret!!!',
 			pipelines: []
 		};
-		const result = await connectJenkinsServer(jenkinsServer, 'cloudId', '');
+		const result = await connectJenkinsServer(jenkinsServer, 'cloudId', 'accountId');
 		expect(result).toBeTruthy();
 	});
 });

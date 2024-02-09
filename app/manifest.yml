@@ -74,10 +74,8 @@ permissions:
         - https://clientstream.launchdarkly.com
         - https://8k6j5ojiqw-dsn.algolia.net
         - https://support.atlassian.com
-        - https://jenkins-for-jira-analytics.ap-southeast-2.dev.atl-paas.net
       backend:
         - https://app.launchdarkly.com/api/v2/flags/Jenkins
-        - https://jenkins-for-jira-analytics.ap-southeast-2.dev.atl-paas.net
   content:
     styles:
       - unsafe-inline

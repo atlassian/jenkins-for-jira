@@ -30,7 +30,7 @@ const sendConnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
 		eventName: AnalyticsTrackEventsEnum.ConnectionCreatedName,
 		action: 'Connected new Jenkins server',
-		actionSubject: 'REQUEST'
+		actionSubject: 'User action'
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);

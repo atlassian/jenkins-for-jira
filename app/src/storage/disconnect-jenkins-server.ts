@@ -26,7 +26,7 @@ const sendDisconnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
 		eventName: AnalyticsTrackEventsEnum.DisconnectedServerName,
 		action: 'Disconnected Jenkins Server',
-		actionSubject: 'REQUEST'
+		actionSubject: 'User Action'
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);
