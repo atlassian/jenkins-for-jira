@@ -33,7 +33,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
     } = eventPayload;
 
     if (!analyticsClient || !isProductionEnv()) {
-        console.warn('Analytics Node Client module not found or not prod. Ignoring the dependency.');
+        console.warn('Analytics sendEvent skipped: @atlassiansox/analytics-node-client module not found or environment not production.');
         return;
     }
 

@@ -1,4 +1,4 @@
-import { isProductionEnv, createAnonymousId, getAccountDetails, sendAnalytics } from './analytics-client';
+import { isProductionEnv, createAnonymousId, getAccountDetails } from './analytics-client';
 
 jest.mock('./analytics-client', () => ({
     ...jest.requireActual('./analytics-client'),
@@ -6,6 +6,7 @@ jest.mock('./analytics-client', () => ({
 }));
 
 jest.mock('@atlassiansox/analytics-node-client');
+
 describe('isProductionEnv', () => {
     test('should return true for production environment', () => {
         process.env.NODE_ENV = 'prod';
