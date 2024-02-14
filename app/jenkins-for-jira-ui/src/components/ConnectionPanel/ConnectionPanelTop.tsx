@@ -201,7 +201,7 @@ const ConnectionPanelTop = ({
 				</div>
 			</div>
 
-			{serverIsNotDuplicate && (userIsAdmin || CONFIG_PAGE) &&
+			{serverIsNotDuplicate && (userIsAdmin || moduleKey === CONFIG_PAGE) &&
 				<DropdownMenu
 					trigger={({ triggerRef, ...props }) => (
 						<Button
