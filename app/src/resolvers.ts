@@ -30,9 +30,10 @@ resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
 
 resolver.define('connectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
+	const { cloudId, accountId } = req.context;
 	const payload = req.payload as JenkinsServer;
 	internalMetrics.counter(metricResolverEmitter.connectJenkinsServer).incr();
-	return connectJenkinsServer(payload);
+	return connectJenkinsServer(payload, cloudId, accountId);
 });
 
 resolver.define('updateJenkinsServer', async (req) => {
@@ -66,11 +67,11 @@ resolver.define('getJenkinsServerWithSecret', async (req) => {
 
 resolver.define('disconnectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
-	const { cloudId } = req.context;
+	const { cloudId, accountId } = req.context;
 	const jenkinsServerUuid = req.payload.uuid;
 	internalMetrics.counter(metricResolverEmitter.disconnectJenkinsServer).incr();
 	return Promise.all([
-		disconnectJenkinsServer(jenkinsServerUuid),
+		disconnectJenkinsServer(jenkinsServerUuid, cloudId, accountId),
 		deleteBuilds(cloudId, jenkinsServerUuid),
 		deleteDeployments(cloudId, jenkinsServerUuid)
 	]);

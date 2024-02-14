@@ -5,6 +5,8 @@ import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
+import { sendAnalytics } from '../analytics/analytics-client';
+import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
 
 export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
 	const pipelineExists = jenkinsServer.pipelines.some((pipeline) => pipeline.name === incomingPipeline.name);
@@ -83,9 +85,25 @@ async function updateJenkinsServerState(
 	}
 }
 
+function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer): void {
+	const hasConfigData = !!jenkinsServer.pluginConfig?.ipAddress;
+	if (hasConfigData) {
+		return;
+	}
+
+	const eventPayload = {
+		eventName: AnalyticsTrackEventsEnum.ConfigDataReceivedName,
+		action: 'Received config plugin POST request',
+		actionSubject: 'REQUEST'
+	};
+
+	sendAnalytics(cloudId, eventPayload, '', jenkinsServer.pluginConfig?.ipAddress);
+}
+
 async function updateJenkinsPluginConfigState(
 	uuid: string,
 	jenkinsEvent: JenkinsPluginConfigEvent,
+	cloudId: string,
 	logger: Logger
 ): Promise<void> {
 	try {
@@ -102,6 +120,7 @@ async function updateJenkinsPluginConfigState(
 			lastUpdatedOn: new Date()
 		};
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
+		sendConnectionAnalytics(cloudId, jenkinsServer);
 	} catch (error) {
 		logger.error(`Failed to update Jenkins plugin config for server uuid ${uuid}`, { error });
 		throw error;

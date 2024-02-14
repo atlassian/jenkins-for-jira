@@ -57,7 +57,7 @@ async function resetJenkinsServer(cloudId: string, logger: Logger, excludeUuid?:
 		jenkinsServers.forEach((jenkinsServer) => {
 			const jenkinsServerUuid = jenkinsServer.uuid;
 			const disconnectJenkinsServerPromise = Promise.all([
-				disconnectJenkinsServer(jenkinsServerUuid),
+				disconnectJenkinsServer(jenkinsServerUuid, cloudId, ''),
 				deleteBuilds(cloudId, jenkinsServerUuid),
 				deleteDeployments(cloudId, jenkinsServerUuid)
 			]);

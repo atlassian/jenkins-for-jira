@@ -115,7 +115,7 @@ describe('Reset Jenkins Server request suite', () => {
 			};
 
 			expect(getAllJenkinsServers).toBeCalled();
-			expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid);
+			expect(disconnectJenkinsServer).toBeCalledWith(mockSingleJenkinsPipeline.uuid, CLOUD_ID, '');
 			expect(deleteBuilds).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 			expect(deleteDeployments).toBeCalledWith(CLOUD_ID, mockSingleJenkinsPipeline.uuid);
 			expect(resetServer).toEqual(response);
