@@ -27,7 +27,6 @@ const connectJenkinsServer = async (
 		await sendConnectAnalytics(cloudId, accountId);
 		return true;
 	} catch (error) {
-		console.log(error);
 		logger.error('Failed to store Jenkins server configuration', { error });
 		internalMetrics.counter(metricFailedRequests.connectJenkinsServerError).incr();
 		throw new JenkinsServerStorageError('Failed to store jenkins server configuration');
