@@ -61,8 +61,6 @@ const givenStorageQueryReturnsServeMaxPipelines = jest.fn().mockImplementation((
 });
 
 jest.mock('@forge/api', () => {
-	// const mockResolvedValue = jest.fn();
-	// const get = jest.fn(() => ({ mockResolvedValue }));
 	return {
 		__getRuntime: jest.fn(),
 		storage: {
