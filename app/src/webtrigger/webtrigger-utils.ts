@@ -1,11 +1,15 @@
+import { internalMetrics } from '@forge/metrics';
 import { JenkinsAppError } from '../common/error';
 import { WebtriggerRequest, WebtriggerResponse } from './types';
 import { Logger } from '../config/logger';
+import { metricFailedRequests } from '../common/metric-names';
+
 /**
  * Translates certain errors into an appropriate webtrigger response.
  */
 function handleWebtriggerError(request: WebtriggerRequest, error: any, logger: Logger): WebtriggerResponse {
 	if (error instanceof JenkinsAppError) {
+		internalMetrics.counter(metricFailedRequests.jenkinsAppError).incr();
 		return createWebtriggerResponse(400, error.message);
 	}
 

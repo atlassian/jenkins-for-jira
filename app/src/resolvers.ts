@@ -27,7 +27,6 @@ resolver.define('fetchJenkinsEventHandlerUrl', async (req) => {
 		url: await webTrigger.getUrl('jenkins-webtrigger')
 	};
 });
-
 resolver.define('connectJenkinsServer', async (req) => {
 	await adminPermissionCheck(req);
 	const { cloudId, accountId } = req.context;

@@ -1,4 +1,5 @@
 import { storage } from '@forge/api';
+import { internalMetrics } from '@forge/metrics';
 import { uniq } from 'lodash';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
@@ -7,6 +8,7 @@ import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 import { sendAnalytics } from '../analytics/analytics-client';
 import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
+import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
 	const pipelineExists = jenkinsServer.pipelines.some((pipeline) => pipeline.name === incomingPipeline.name);
@@ -53,9 +55,12 @@ export const getUniqueEnvironmentNames = (existingEnvNames: string[] = [], incom
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
+	console.log('UUID getJenkinsServer', uuid);
 	const jenkinsServer: JenkinsServer = await storage.get(
 		`${SERVER_STORAGE_KEY_PREFIX}${uuid}`
 	);
+
+	console.log('blah', !jenkinsServer);
 
 	if (!jenkinsServer) {
 		const errorMsg = `No Jenkins Server found for UUID ${uuid}`;
@@ -71,7 +76,9 @@ async function updateJenkinsServerState(
 	logger?: Logger
 ): Promise<void> {
 	try {
+		console.log('UUID: ', uuid);
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
+		console.log('jenkinsServer', jenkinsServer);
 
 		updateOrInsertPipeline(jenkinsServer, pipelineToUpdate);
 
@@ -79,8 +86,10 @@ async function updateJenkinsServerState(
 			`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`,
 			jenkinsServer
 		);
+		internalMetrics.counter(metricSuccessfulRequests.updateJenkinsServer).incr();
 	} catch (error) {
 		logger?.error(`Failed to update Jenkins server uuid ${uuid}`);
+		internalMetrics.counter(metricFailedRequests.updateJenkinsServerStateError).incr();
 		throw error;
 	}
 }
@@ -119,6 +128,7 @@ async function updateJenkinsPluginConfigState(
 			autoDeploymentsRegex,
 			lastUpdatedOn: new Date()
 		};
+		console.log('jenkinsServer', jenkinsServer);
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
 		sendConnectionAnalytics(cloudId, jenkinsServer);
 	} catch (error) {

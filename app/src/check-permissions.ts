@@ -1,4 +1,6 @@
 import api, { route } from '@forge/api';
+import { internalMetrics } from '@forge/metrics';
+import { metricFailedRequests } from './common/metric-names';
 
 // Forge does not export their Request type, so we have to resort to 'any' for now.
 export const adminPermissionCheck = async (req: any): Promise<void> => {
@@ -21,6 +23,7 @@ export const adminPermissionCheck = async (req: any): Promise<void> => {
 	});
 
 	if (permissions.status === 403) {
+		internalMetrics.counter(metricFailedRequests.notJiraAdminError).incr();
 		throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
 	}
 

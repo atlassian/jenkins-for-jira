@@ -1,9 +1,11 @@
 import {
 	startsWith, storage, ListResult, Result
 } from '@forge/api';
+import { internalMetrics } from '@forge/metrics';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
 import { SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
+import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 	const logger = Logger.getInstance('getAllJenkinsServers');
@@ -20,9 +22,11 @@ async function getAllJenkinsServers(): Promise<JenkinsServer[]> {
 		}
 
 		const jenkinsServers = transformToJenkinsServers(results);
+		internalMetrics.counter(metricSuccessfulRequests.getAllJenkinsServer).incr();
 		return jenkinsServers;
 	} catch (error) {
 		logger.error('Failed to fetch Jenkins server list', { error });
+		internalMetrics.counter(metricFailedRequests.getAllJenkinsServerError).incr();
 		throw error;
 	}
 }
