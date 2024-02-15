@@ -36,7 +36,7 @@ describe('Connect Jenkins Server Suite', () => {
 	it('Should store Jenkins server configuration to Forge Storage', async () => {
 		const jenkinsServer: JenkinsServer = {
 			name: 'test-jenkins-server',
-			uuid: 'unique-uid',
+			uuid: 'unique-uuid',
 			secret: 'secret!!!',
 			pipelines: []
 		};

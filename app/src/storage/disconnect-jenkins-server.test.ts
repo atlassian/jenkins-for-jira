@@ -33,7 +33,7 @@ describe('Delete Jenkins Server Suite', () => {
 	});
 
 	it('Should delete Jenkins server configuration from Forge Storage', async () => {
-		const result = await disconnectJenkinsServer('test-uid', 'cloudId', 'accountId');
+		const result = await disconnectJenkinsServer('test-uuid', 'cloudId', 'accountId');
 		expect(result).toBe(true);
 	});
 });

@@ -55,12 +55,9 @@ export const getUniqueEnvironmentNames = (existingEnvNames: string[] = [], incom
 };
 
 async function getJenkinsServer(uuid: string, logger?: Logger): Promise<JenkinsServer> {
-	console.log('UUID getJenkinsServer', uuid);
 	const jenkinsServer: JenkinsServer = await storage.get(
 		`${SERVER_STORAGE_KEY_PREFIX}${uuid}`
 	);
-
-	console.log('blah', !jenkinsServer);
 
 	if (!jenkinsServer) {
 		const errorMsg = `No Jenkins Server found for UUID ${uuid}`;
@@ -76,9 +73,7 @@ async function updateJenkinsServerState(
 	logger?: Logger
 ): Promise<void> {
 	try {
-		console.log('UUID: ', uuid);
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
-		console.log('jenkinsServer', jenkinsServer);
 
 		updateOrInsertPipeline(jenkinsServer, pipelineToUpdate);
 
@@ -128,7 +123,6 @@ async function updateJenkinsPluginConfigState(
 			autoDeploymentsRegex,
 			lastUpdatedOn: new Date()
 		};
-		console.log('jenkinsServer', jenkinsServer);
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
 		sendConnectionAnalytics(cloudId, jenkinsServer);
 	} catch (error) {
