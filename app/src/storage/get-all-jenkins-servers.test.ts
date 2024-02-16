@@ -5,20 +5,29 @@ import { JenkinsServer } from '../common/types';
 import { getAllJenkinsServers } from './get-all-jenkins-servers';
 
 jest.mock('@forge/api', () => ({
+	__getRuntime: jest.fn(),
 	storage: {
-		get: jest.fn(),
-		set: jest.fn(),
-		setSecret: jest.fn(),
-		getSecret: jest.fn(),
-		delete: jest.fn(),
-		deleteSecret: jest.fn(),
 		query: jest.fn(() => new MockQueryBuilder())
-	},
-	webTrigger: {
-		getUrl: jest.fn()
 	},
 	startsWith: jest.fn()
 }));
+
+jest.mock('@forge/metrics', () => {
+	const incr = jest.fn();
+	const counter = jest.fn(() => ({ incr }));
+
+	return {
+		__esModule: true,
+		default: {
+			internalMetrics: {
+				counter
+			}
+		},
+		internalMetrics: {
+			counter
+		}
+	};
+});
 
 class MockQueryBuilder implements QueryBuilder {
 	limit(): QueryBuilder {
@@ -67,6 +76,10 @@ const mockListResult: ListResult = {
 };
 
 describe('Get All Jenkins Servers Suite', () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it('Should return all Jenkins servers sorted by last event timestamp', async () => {
 		const allJenkinsServers: JenkinsServer[] = await getAllJenkinsServers();
 

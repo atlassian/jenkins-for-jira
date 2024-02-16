@@ -1,4 +1,5 @@
 import { storage } from '@forge/api';
+import { internalMetrics } from '@forge/metrics';
 import { uniq } from 'lodash';
 import { NoJenkinsServerError } from '../common/error';
 import { JenkinsPipeline, JenkinsServer } from '../common/types';
@@ -7,6 +8,7 @@ import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 import { sendAnalytics } from '../analytics/analytics-client';
 import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
+import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
 	const pipelineExists = jenkinsServer.pipelines.some((pipeline) => pipeline.name === incomingPipeline.name);
@@ -79,8 +81,10 @@ async function updateJenkinsServerState(
 			`${SERVER_STORAGE_KEY_PREFIX}${jenkinsServer.uuid}`,
 			jenkinsServer
 		);
+		internalMetrics.counter(metricSuccessfulRequests.updateJenkinsServer).incr();
 	} catch (error) {
 		logger?.error(`Failed to update Jenkins server uuid ${uuid}`);
+		internalMetrics.counter(metricFailedRequests.updateJenkinsServerStateError).incr();
 		throw error;
 	}
 }

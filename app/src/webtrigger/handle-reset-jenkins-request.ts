@@ -1,3 +1,4 @@
+import { internalMetrics } from '@forge/metrics';
 import { deleteBuilds } from '../jira-client/delete-builds';
 import { deleteDeployments } from '../jira-client/delete-deployments';
 import { disconnectJenkinsServer } from '../storage/disconnect-jenkins-server';
@@ -11,6 +12,7 @@ import { createWebtriggerResponse, handleWebtriggerError } from './webtrigger-ut
 import { Errors } from '../common/error-messages';
 import { Logger } from '../config/logger';
 import { extractBodyFromSymmetricJwt, verifySymmetricJwt } from './jwt';
+import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 async function handleResetJenkinsRequest(
 	request: WebtriggerRequest,
@@ -27,17 +29,21 @@ async function handleResetJenkinsRequest(
 
 		if (jenkinsRequest.requestType === RequestType.RESET_JENKINS_SERVER) {
 			await resetJenkinsServer(cloudId, logger, jenkinsRequest.data?.excludeUuid);
+			internalMetrics.counter(metricSuccessfulRequests.resetJenkinsRequest).incr();
 			return createWebtriggerResponse(200, '{"success": true}');
 		}
 
 		if (jenkinsRequest.requestType === RequestType.DELETE_BUILDS_DEPLOYMENTS) {
 			if (jenkinsRequest.data?.uuid) {
 				await deleteBuildsAndDeployments(cloudId, jenkinsRequest.data.uuid, logger);
+				internalMetrics.counter(metricSuccessfulRequests.resetJenkinsRequest).incr();
 				return createWebtriggerResponse(200, '{"success": true}');
 			}
+			internalMetrics.counter(metricFailedRequests.resetJenkinsRequestNoUuidError).incr();
 			return createWebtriggerResponse(400, `{"error": ${Errors.MISSING_UUID}`);
 		}
 
+		internalMetrics.counter(metricFailedRequests.unsupportedResetJenkinsRequestError).incr();
 		logger.error('handleResetJenkinsRequest error', { error: Errors.UNSUPPORTED_REQUEST_TYPE });
 		throw new UnsupportedRequestTypeError(Errors.UNSUPPORTED_REQUEST_TYPE);
 	} catch (error) {
@@ -61,12 +67,14 @@ async function resetJenkinsServer(cloudId: string, logger: Logger, excludeUuid?:
 				deleteBuilds(cloudId, jenkinsServerUuid),
 				deleteDeployments(cloudId, jenkinsServerUuid)
 			]);
+			internalMetrics.counter(metricSuccessfulRequests.resetJenkinsServerInvocation).incr();
 			disconnectJenkinsServerPromises.push(disconnectJenkinsServerPromise);
 		});
 
 		return await Promise.all(disconnectJenkinsServerPromises);
 	} catch (error) {
 		logger.error('resetJenkinsServer error', { error: Errors.INVOCATION_ERROR });
+		internalMetrics.counter(metricFailedRequests.resetJenkinsServerInvocationError).incr();
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }
@@ -75,8 +83,10 @@ async function deleteBuildsAndDeployments(cloudId: string, uuid: string, logger:
 	try {
 		await deleteBuilds(cloudId, uuid);
 		await deleteDeployments(cloudId, uuid);
+		internalMetrics.counter(metricSuccessfulRequests.deleteBuildsAndDeployments).incr();
 	} catch (error) {
 		logger.error('deleteBuildsAndDeployments error', { error: Errors.INVOCATION_ERROR });
+		internalMetrics.counter(metricFailedRequests.deleteBuildsAndDeploymentsError).incr();
 		throw new InvocationError(Errors.INVOCATION_ERROR);
 	}
 }

@@ -22,6 +22,34 @@ import { Errors } from '../common/error-messages';
 jest.mock('../jira-client/send-event-to-jira');
 jest.mock('../jira-client/get-gating-status-from-jira');
 
+jest.mock('@forge/api', () => {
+	return {
+		__getRuntime: jest.fn(),
+		storage: {
+			getSecret: jest.fn(),
+			get: jest.fn(),
+			set: jest.fn()
+		}
+	};
+});
+
+jest.mock('@forge/metrics', () => {
+	const incr = jest.fn();
+	const counter = jest.fn(() => ({ incr }));
+
+	return {
+		__esModule: true,
+		default: {
+			internalMetrics: {
+				counter
+			}
+		},
+		internalMetrics: {
+			counter
+		}
+	};
+});
+
 const CLOUD_ID = '97eaf652-4b6e-46cf-80c2-d99327a63bc1';
 const JENKINS_SERVER_UUID = '1aaf4ea5-bca5-4ec9-86ed-c359e359eb97';
 

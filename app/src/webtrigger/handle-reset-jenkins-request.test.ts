@@ -28,7 +28,34 @@ jest.mock('atlassian-jwt', () => {
 	};
 });
 
+jest.mock('@forge/api', () => {
+	return {
+		__getRuntime: jest.fn()
+	};
+});
+
+jest.mock('@forge/metrics', () => {
+	const incr = jest.fn();
+	const counter = jest.fn(() => ({ incr }));
+
+	return {
+		__esModule: true,
+		default: {
+			internalMetrics: {
+				counter
+			}
+		},
+		internalMetrics: {
+			counter
+		}
+	};
+});
+
 describe('Reset Jenkins Server request suite', () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	const now = Date.now() / 1000; // Convert milliseconds to seconds
 	const iat = now - 2; // Subtract 2 seconds
 

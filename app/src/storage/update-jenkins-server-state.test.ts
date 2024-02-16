@@ -60,16 +60,53 @@ const givenStorageQueryReturnsServeMaxPipelines = jest.fn().mockImplementation((
 	};
 });
 
+jest.mock('@forge/api', () => {
+	return {
+		__getRuntime: jest.fn(),
+		storage: {
+			set: jest.fn(),
+			get: jest.fn(),
+			query: jest.fn()
+		},
+		startsWith: jest.fn()
+	};
+});
+
+jest.mock('@forge/metrics', () => {
+	const incr = jest.fn();
+	const counter = jest.fn(() => ({ incr }));
+
+	return {
+		__esModule: true,
+		default: {
+			internalMetrics: {
+				counter
+			}
+		},
+		internalMetrics: {
+			counter
+		}
+	};
+});
+
 describe('Update Jenkins Plugin Config State Suite', () => {
 	const mockLogger = {
-		error: jest.fn(),
+		error: jest.fn()
 	} as unknown as Logger;
 
-	beforeEach(() => {
+	afterEach(() => {
 		jest.clearAllMocks();
 	});
 
 	it('Should update Jenkins plugin config state to Forge Storage', async () => {
+		const mockResolvedValue = jest.fn();
+		mockResolvedValue.mockResolvedValue({
+			key: 'unique-uuid',
+			pipelines: []
+		});
+
+		storage.get = mockResolvedValue;
+
 		const jenkinsEvent = {
 			ipAddress: '192.168.0.1',
 			autoBuildEnabled: true,
@@ -78,10 +115,10 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 			autoDeploymentsRegex: ''
 		} as unknown as JenkinsPluginConfigEvent;
 
-		await updateJenkinsPluginConfigState('unique-uid', jenkinsEvent, 'cloudId', mockLogger);
+		await updateJenkinsPluginConfigState('unique-uuid', jenkinsEvent, 'cloudId', mockLogger);
 
 		expect(storage.set).toBeCalledWith(
-			`jenkinsServer-unique-uid`,
+			`jenkinsServer-unique-uuid`,
 			expect.objectContaining({
 				pluginConfig: {
 					ipAddress: '192.168.0.1',
@@ -96,6 +133,10 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 	});
 
 	it('Should throw an error if updating Jenkins plugin config fails', async () => {
+		const mockResolvedValue = jest.fn();
+		mockResolvedValue.mockResolvedValue(undefined);
+		storage.get = mockResolvedValue;
+
 		const jenkinsEvent = {
 			ipAddress: '192.168.0.1'
 		} as unknown as JenkinsPluginConfigEvent;
@@ -112,8 +153,20 @@ describe('Update Jenkins Plugin Config State Suite', () => {
 });
 
 describe('Update Jenkins Server Suite', () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it('Should update Jenkins server state to Forge Storage', async () => {
-		await updateJenkinsServerState('unique-uid', {
+		const mockResolvedValue = jest.fn();
+		mockResolvedValue.mockResolvedValue({
+			key: 'unique-uuid',
+			pipelines: []
+		});
+
+		storage.get = mockResolvedValue;
+
+		await updateJenkinsServerState('unique-uuid', {
 			name: 'PipelineA',
 			lastEventType: EventType.BUILD,
 			lastEventStatus: 'successful',
@@ -123,8 +176,12 @@ describe('Update Jenkins Server Suite', () => {
 	});
 
 	it('Should throw NoJenkinsServerError when invalid uid is passed', async () => {
+		const mockResolvedValue = jest.fn();
+		mockResolvedValue.mockResolvedValue(undefined);
+		storage.get = mockResolvedValue;
+
 		expect(async () => {
-			await updateJenkinsServerState('error-uid', {
+			await updateJenkinsServerState('error-uuid', {
 				name: 'PipelineA',
 				lastEventType: EventType.BUILD,
 				lastEventStatus: 'successful',
@@ -134,6 +191,10 @@ describe('Update Jenkins Server Suite', () => {
 	});
 
 	it('Should throw an error if the server does not exist', async () => {
+		const mockResolvedValue = jest.fn();
+		mockResolvedValue.mockResolvedValue(undefined);
+		storage.get = mockResolvedValue;
+
 		try {
 			await updateJenkinsServerState(
 				mockSingleJenkinsPipeline.uuid,
