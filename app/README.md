@@ -71,15 +71,18 @@ The filter `setid` is used in `/app/.gitattributes` so that it replaces your app
 #### Install the app to your Jira instance
 
 1. Build your app by running `yarn build` in **/app/jenkins-for-jira-ui**.
-2. Deploy your app by running `forge deploy` in **/app**. `forge deploy --no-verify` if encounter invalidation of package.
-3. Install your app to your Jira site by running `forge install` in **/app**.
+2. Deploy your app by running `forge deploy` in **/app**.
+   1.   If everything is good except for 2 acceptable errors...`invalid value 'devops:deploymentInfoProvider' in modules`
+`invalid value 'devops:buildInfoProvider' in modules` 
+  Run `forge deploy --no-verify`
+1. Install your app to your Jira site by running `forge install` in **/app**.
 
 Follow the instructions in this setup wizard. Enter the hostname for your Jira site (e.g. `<your-site-name>.atlassian.net`).
 
 > NOTE: This is the *only* step that needs to be repeated to install on different Jira sites. Do not repeat the steps above `forge deploy`. To run your app, follow the steps below.
 
 ## Running the app
-To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. Sign up [ngrok](https://ngrok.com/) if you have not done so. To do this:
+To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. Sign up to [ngrok](https://ngrok.com/) if you have not done so. To do this:
 1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config>`.
 2. Confirm this was set correctly by running `forge settings list`. You should see a table that includes this variable with a value set to your ngrok config path.
 
