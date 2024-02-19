@@ -45,8 +45,8 @@ To get up and running, follow the steps below.
 #### Initial setup
 
 1. Create your `.env` file and add `BROWSER=none`. This will prevent a tab opening at http:localhost:3000 when you run `yarn start`.
-2. Switch to the correct `node` version. You can run `nvm use` in the folders: **/app/jenkins-for-jira-ui** and **/app**.
-3. In the folders **/app** and **/app/jenkins-for-jira-ui**, run `yarn install`.
+2. Run `nvm use` in the folders: **/app** and **/app/jenkins-for-jira-ui** to switch to the correct `node` version.
+3. Run `yarn install` in the folders **/app** and **/app/jenkins-for-jira-ui**.
 
 #### Register your Forge app
 
@@ -71,7 +71,7 @@ The filter `setid` is used in `/app/.gitattributes` so that it replaces your app
 #### Install the app to your Jira instance
 
 1. Build your app by running `yarn build` in **/app/jenkins-for-jira-ui**.
-2. Deploy your app by running `forge deploy` in **/app**.
+2. Deploy your app by running `forge deploy` in **/app**. See [Common Issues](#common-issues) if unsuccessful.
 3. Install your app to your Jira site by running `forge install` in **/app**.
 
 Follow the instructions in this setup wizard. Enter the hostname for your Jira site (e.g. `<your-site-name>.atlassian.net`).
@@ -79,7 +79,7 @@ Follow the instructions in this setup wizard. Enter the hostname for your Jira s
 > NOTE: This is the *only* step that needs to be repeated to install on different Jira sites. Do not repeat the steps above `forge deploy`. To run your app, follow the steps below.
 
 ## Running the app
-To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. To do this:
+To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. Sign up to [ngrok](https://ngrok.com/) if you have not done so. To do this:
 1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config>`.
 2. Confirm this was set correctly by running `forge settings list`. You should see a table that includes this variable with a value set to your ngrok config path.
 
@@ -108,3 +108,10 @@ Your local changes will be propagated to **all Jira sites that have the app inst
 ## Tests
 
 In the **/app/jenkins-for-jira-ui** dir, run `yarn test`.
+
+## Common Issues
+
+1. For unsuccessful `forge deploy`, run `forge deploy --no-verify` if everything is good except for 2 acceptable errors...
+     - `invalid value 'devops:deploymentInfoProvider' in modules`
+     - `invalid value 'devops:buildInfoProvider' in modules` 
+    
