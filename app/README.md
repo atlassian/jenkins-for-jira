@@ -111,6 +111,7 @@ In the **/app/jenkins-for-jira-ui** dir, run `yarn test`.
 
 ## Common Issues
 
-- When run `forge deploy`, if everything is good except for 2 acceptable errors...`invalid value 'devops:deploymentInfoProvider' in modules`
-`invalid value 'devops:buildInfoProvider' in modules` 
-  Run `forge deploy --no-verify`
+1. For unsuccessful `forge deploy`, run `forge deploy --no-verify` if everything is good except for 2 acceptable errors...
+     - `invalid value 'devops:deploymentInfoProvider' in modules`
+     - `invalid value 'devops:buildInfoProvider' in modules` 
+    
