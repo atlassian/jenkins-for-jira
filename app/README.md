@@ -71,11 +71,8 @@ The filter `setid` is used in `/app/.gitattributes` so that it replaces your app
 #### Install the app to your Jira instance
 
 1. Build your app by running `yarn build` in **/app/jenkins-for-jira-ui**.
-2. Deploy your app by running `forge deploy` in **/app**.
-   1.   If everything is good except for 2 acceptable errors...`invalid value 'devops:deploymentInfoProvider' in modules`
-`invalid value 'devops:buildInfoProvider' in modules` 
-  Run `forge deploy --no-verify`
-1. Install your app to your Jira site by running `forge install` in **/app**.
+2. Deploy your app by running `forge deploy` in **/app**. See [Common Issues](#common-issues) if unsuccessful.
+3. Install your app to your Jira site by running `forge install` in **/app**.
 
 Follow the instructions in this setup wizard. Enter the hostname for your Jira site (e.g. `<your-site-name>.atlassian.net`).
 
@@ -111,3 +108,9 @@ Your local changes will be propagated to **all Jira sites that have the app inst
 ## Tests
 
 In the **/app/jenkins-for-jira-ui** dir, run `yarn test`.
+
+## Common Issues
+
+- When run `forge deploy`, if everything is good except for 2 acceptable errors...`invalid value 'devops:deploymentInfoProvider' in modules`
+`invalid value 'devops:buildInfoProvider' in modules` 
+  Run `forge deploy --no-verify`
