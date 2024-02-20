@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+// import { fetch } from '@forge/api';
 
 interface AnalyticsAttributes {
     [key: string]: any;
@@ -25,7 +26,7 @@ export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload,
         .catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
-// eslint-disable-next-line max-len
+// eslint-disable-next-line max-len,@typescript-eslint/no-unused-vars
 const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
     const analyticsClient = await getAnalyticsClient();
     const {
@@ -52,6 +53,42 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
                 }
         }
     });
+
+    // const body = {
+    //     jiraHost: 'https://jkay.jira-dev.com',
+    //     eventPayload: {
+    //         eventType: 'screen',
+    //         eventProps: {
+    //             name: 'banananas',
+    //             fooProp: 'bar'
+    //         },
+    //         eventAttributes: {
+    //             attr1: 'value1'
+    //         }
+    //     }
+    // };
+
+    //
+    // const resulthc = await fetch(
+    //     'https://jenkins-for-jira-analytics.dev.services.atlassian.com/openapi.json'
+    // );
+    //
+    // console.log('resulthc');
+    // console.log('resulthc');
+    // console.log(resulthc);
+    //
+    // const result = await fetch(
+	// 	'https://jenkins-for-jira-analytics.dev.services.atlassian.com/analytics', {
+    //         method: 'POST',
+    //         body: JSON.stringify(body),
+    //         headers: { 'Content-Type': 'application/json' }
+    //     }
+    // );
+    //
+    // const { status } = result;
+    // console.log('GOT ME A STATUS');
+    // console.log(status);
+    // console.log(result);
 };
 
 export const isProductionEnv = (): boolean => {
@@ -80,7 +117,7 @@ export const getAnalyticsClient = async (): Promise<any> => {
         const { analyticsClient } = await import('@atlassiansox/analytics-node-client');
 
         const analyticsNodeClient = analyticsClient({
-            env: EnvType.PROD,
+            env: EnvType.DEV,
             product: 'jenkinsForJira'
         });
 

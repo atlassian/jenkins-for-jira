@@ -76,6 +76,8 @@ permissions:
         - https://support.atlassian.com
       backend:
         - https://app.launchdarkly.com/api/v2/flags/Jenkins
+        - https://jenkins-for-jira-analytics.dev.services.atlassian.com/analytics
+        - https://as.atlassian.com
   content:
     styles:
       - unsafe-inline
