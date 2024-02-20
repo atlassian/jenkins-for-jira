@@ -20,7 +20,6 @@ import {
 import {
 	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
-import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
@@ -198,14 +197,6 @@ const SetUpGuide = ({
 					</ol>
 				</li>
 			</ol>
-
-			<InfoPanel
-				content="Not sure who should use this guide?"
-				iphLabel="Here's what you need to know."
-				iphType={InProductHelpActionType.HelpLink}
-				screenName={SET_UP_GUIDE_SCREEN_NAME}
-				searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
-			/>
 		</>
 	);
 };

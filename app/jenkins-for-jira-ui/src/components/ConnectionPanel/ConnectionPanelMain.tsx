@@ -3,14 +3,18 @@ import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import {
 	connectionPanelMainConnectedPendingSetUp,
 	connectionPanelMainConnectedTabs,
 	connectionPanelMainContainer,
 	connectionPanelMainNotConnectedTabs,
 	setUpGuideContainer,
+	setUpGuideParagraph,
 	setUpGuideUpdateAvailableContainer,
-	setUpGuideUpdateAvailableLoadingContainer
+	setUpGuideUpdateAvailableLoadingContainer,
+	setupGuideSharePageContainer,
+	setupGuideSharePageParagraph
 } from './ConnectionPanel.styles';
 import { ConnectedState } from '../StatusLabel/StatusLabel';
 import { NotConnectedState } from './NotConnectedState';
@@ -25,7 +29,10 @@ import {
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
-import { CONFIG_PAGE } from '../../common/constants';
+import { CONFIG_PAGE, SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
+import { SharePage } from '../SharePage/SharePage';
+import { InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -83,6 +90,26 @@ const ConnectionPanelMain = ({
 	const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 	const [isCheckingPipelineData, setIsCheckingPipelineData] = useState<boolean>(false);
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
+	const [showSharePageContainer, setShowSharePageContainer] = useState<boolean>(false);
+	const [showSharePage, setShowSharePage] = useState<boolean>(false);
+
+	const handleShowSharePageModal = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.SharePageName,
+			{
+				source: AnalyticsUiEventsEnum.SetUpGuideName,
+				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
+				actionSubject: 'button'
+			}
+		);
+
+		setShowSharePage(true);
+	};
+
+	const handleCloseShowSharePageModal = async () => {
+		setShowSharePage(false);
+	};
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
@@ -94,6 +121,7 @@ const ConnectionPanelMain = ({
 
 	const handleTabSelect = async (index: number) => {
 		if (index === SET_UP_GUIDE_TAB) {
+			setShowSharePageContainer(true);
 			await analyticsClient.sendAnalytics(
 				AnalyticsEventTypes.UiEvent,
 				AnalyticsUiEventsEnum.SetUpGuideName,
@@ -103,6 +131,8 @@ const ConnectionPanelMain = ({
 					actionSubject: 'tab'
 				}
 			);
+		} else {
+			setShowSharePageContainer(false);
 		}
 
 		setSelectedTabIndex(index);
@@ -240,6 +270,30 @@ const ConnectionPanelMain = ({
 						<TabPanel>{setUpGuideUpdateAvailableContent}</TabPanel>
 					</Tabs>
 			}
+			{showSharePageContainer &&
+					<div className={cx(setupGuideSharePageContainer)}>
+						<div className={cx(setupGuideSharePageParagraph)}>
+							<p className={cx(setUpGuideParagraph)}>In most cases, your developers or
+							jenkins admin will perform the steps in this guide.
+							Share this page to help them get data flowing.</p>
+						</div>
+						<ButtonGroup>
+							<Button appearance="primary" onClick={() => handleShowSharePageModal()}>Share page</Button>
+							<Button><InProductHelpAction
+								label="Learn more"
+								type={InProductHelpActionType.HelpNone}
+								appearance={InProductHelpActionButtonAppearance.None}
+								searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
+								screenName={SET_UP_GUIDE_SCREEN_NAME}
+							/></Button>
+						</ButtonGroup>
+						<SharePage
+							showSharePage={showSharePage}
+							analyticsSourceEnumName={AnalyticsUiEventsEnum.SetUpGuideName}
+							handleCloseShowSharePageModal={handleCloseShowSharePageModal} />
+					</div>
+			}
+
 		</div>
 	);
 };

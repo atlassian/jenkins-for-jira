@@ -17,12 +17,14 @@ import envVars from '../../common/env';
 
 export enum InProductHelpActionButtonAppearance {
 	Primary = 'primary',
-	Default = 'default'
+	Default = 'default',
+	None = 'none'
 }
 
 export enum InProductHelpActionType {
 	HelpLink = 'link',
-	HelpButton = 'button'
+	HelpButton = 'button',
+	HelpNone = 'none'
 }
 
 type InProductHelpActionProps = {
@@ -68,15 +70,37 @@ export const InProductHelpAction = ({
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [hasError, setHasError] = useState(false);
 
-	const inProductHelpTypeClassName =
-		type === InProductHelpActionType.HelpLink
-			? inProductHelpActionLink
-			: inProductHelpActionButton;
-	const actionRole = InProductHelpActionType.HelpLink ? 'link' : 'button';
-	const inProductHelpButtonStyles =
-		appearance === InProductHelpActionButtonAppearance.Primary
-			? inProductHelpActionButtonPrimary
-			: inProductHelpActionButtonDefault;
+	const inProductHelpTypeClassName = () => {
+		if (type === InProductHelpActionType.HelpLink) {
+			return inProductHelpActionLink;
+		}
+
+		if (type === InProductHelpActionType.HelpButton) {
+			return inProductHelpActionButton;
+		}
+
+		return '';
+	};
+
+	const actionRole = () => {
+		if (type === InProductHelpActionType.HelpLink) {
+			return 'link';
+		}
+		if (type === InProductHelpActionType.HelpButton) {
+			return 'button';
+		}
+		return '';
+	};
+
+	const inProductHelpButtonStyles = () => {
+		if (appearance === InProductHelpActionButtonAppearance.Primary) {
+			return inProductHelpActionButtonPrimary;
+		}
+		if (appearance === InProductHelpActionButtonAppearance.None) {
+			return '';
+		}
+		return inProductHelpActionButtonDefault;
+	};
 
 	const openDrawer = async () => {
 		setIsDrawerOpen(true);
@@ -148,8 +172,8 @@ export const InProductHelpAction = ({
 	return (
 		<>
 			<span
-				role={actionRole}
-				className={cx(inProductHelpTypeClassName, inProductHelpButtonStyles)}
+				role={actionRole()}
+				className={cx(inProductHelpTypeClassName(), inProductHelpButtonStyles())}
 				onClick={(e) => {
 					e.preventDefault();
 					openDrawer();

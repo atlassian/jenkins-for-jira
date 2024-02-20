@@ -236,3 +236,16 @@ export const setUpGuideUpdateAvailableButtonContainer = css`
 	gap: 10px;
 	justify-content: center;
 `;
+
+export const setupGuideSharePageContainer = css`
+	border-top:1px solid #EBECF0;
+	display:flex;
+	padding-top: ${token('space.200')};
+`;
+
+export const setupGuideSharePageParagraph = css`
+	font-size: 14px;
+	line-height: 20px;
+	margin-bottom: ${token('space.400')};
+	margin-right: ${token('space.200')};
+`;
