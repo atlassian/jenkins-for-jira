@@ -78,6 +78,7 @@ permissions:
         - https://app.launchdarkly.com/api/v2/flags/Jenkins
         - https://jenkins-for-jira-analytics.dev.services.atlassian.com/analytics
         - https://as.atlassian.com
+        - http://as.staging.atl-paas-us-gov-mod.net/
   content:
     styles:
       - unsafe-inline
