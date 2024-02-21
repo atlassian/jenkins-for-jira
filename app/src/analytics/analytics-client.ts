@@ -21,8 +21,9 @@ enum EnvType {
 
 // eslint-disable-next-line max-len
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
+    console.info('SEND ANALYTICS');
     sendEvent(cloudId, eventPayload, accountId, anonymousId)
-        .then(() => console.log('Analytics event processed'))
+        .then(() => console.info('Analytics event processed'))
         .catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
@@ -33,10 +34,13 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
         eventName, attributes, actionSubject, action
     } = eventPayload;
 
-    if (!analyticsClient || !isProductionEnv()) {
+    if (!analyticsClient) {
+    // if (!analyticsClient || !isProductionEnv()) {
         console.warn('Analytics sendEvent skipped: @atlassiansox/analytics-node-client module not found or environment not production.');
         return;
     }
+
+    console.warn('analyticsClient found');
 
     const accountDetails = getAccountDetails(accountId, anonymousId);
 
@@ -53,7 +57,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
                 }
         }
     });
-
+    //
     // const body = {
     //     jiraHost: 'https://jkay.jira-dev.com',
     //     eventPayload: {
@@ -67,7 +71,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
     //         }
     //     }
     // };
-
+    //
     //
     // const resulthc = await fetch(
     //     'https://jenkins-for-jira-analytics.dev.services.atlassian.com/openapi.json'
@@ -117,7 +121,7 @@ export const getAnalyticsClient = async (): Promise<any> => {
         const { analyticsClient } = await import('@atlassiansox/analytics-node-client');
 
         const analyticsNodeClient = analyticsClient({
-            env: EnvType.DEV,
+            env: EnvType.STAGING,
             product: 'jenkinsForJira'
         });
 
