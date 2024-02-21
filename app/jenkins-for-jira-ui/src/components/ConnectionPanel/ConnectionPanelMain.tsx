@@ -3,7 +3,7 @@ import { cx } from '@emotion/css';
 import Tabs, { Tab, TabList, TabPanel } from '@atlaskit/tabs';
 import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import {
 	connectionPanelMainConnectedPendingSetUp,
 	connectionPanelMainConnectedTabs,
@@ -13,6 +13,7 @@ import {
 	setUpGuideParagraph,
 	setUpGuideUpdateAvailableContainer,
 	setUpGuideUpdateAvailableLoadingContainer,
+	setupGuideButtonContainer,
 	setupGuideSharePageContainer,
 	setupGuideSharePageParagraph
 } from './ConnectionPanel.styles';
@@ -277,16 +278,17 @@ const ConnectionPanelMain = ({
 							jenkins admin will perform the steps in this guide.
 							Share this page to help them get data flowing.</p>
 						</div>
-						<ButtonGroup>
+						<div className={cx(setupGuideButtonContainer)}>
 							<Button appearance="primary" onClick={() => handleShowSharePageModal()}>Share page</Button>
-							<Button><InProductHelpAction
-								label="Learn more"
-								type={InProductHelpActionType.HelpNone}
-								appearance={InProductHelpActionButtonAppearance.None}
-								searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
-								screenName={SET_UP_GUIDE_SCREEN_NAME}
-							/></Button>
-						</ButtonGroup>
+							<Button>
+								<InProductHelpAction
+									label="Learn more"
+									type={InProductHelpActionType.HelpNone}
+									appearance={InProductHelpActionButtonAppearance.None}
+									searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
+									screenName={SET_UP_GUIDE_SCREEN_NAME}/>
+							</Button>
+						</div>
 						<SharePage
 							showSharePage={showSharePage}
 							analyticsSourceEnumName={AnalyticsUiEventsEnum.SetUpGuideName}

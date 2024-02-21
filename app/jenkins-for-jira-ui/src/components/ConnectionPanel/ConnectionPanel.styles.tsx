@@ -249,3 +249,12 @@ export const setupGuideSharePageParagraph = css`
 	margin-bottom: ${token('space.400')};
 	margin-right: ${token('space.200')};
 `;
+
+export const setupGuideButtonContainer = css`
+	display: flex;
+	gap: 8px;
+`;
+
+export const indentedParagraphContainer = css`
+	padding-left: ${token('space.100')};
+`;
