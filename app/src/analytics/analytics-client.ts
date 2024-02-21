@@ -21,12 +21,13 @@ enum EnvType {
 // eslint-disable-next-line max-len
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
     sendEvent(cloudId, eventPayload, accountId, anonymousId)
-        .then(() => console.log('Analytics event processed'))
+        .then(() => console.info('Analytics event processed'))
         .catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
 // eslint-disable-next-line max-len
 const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
+    console.info('Analytics event starting');
     const analyticsClient = await getAnalyticsClient();
     const {
         eventName, attributes, actionSubject, action
@@ -39,6 +40,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
 
     const accountDetails = getAccountDetails(accountId, anonymousId);
 
+    console.info('Analytics event tracking');
     await analyticsClient.sendTrackEvent({
         ...accountDetails,
         tenantIdType: 'cloudId',
