@@ -98,8 +98,13 @@ const baseHeaders = {
 const logger = Logger.getInstance('featureFlags');
 
 async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
+    const REQUEST_TIMEOUT_MILLISECONDS = 2000;
+    const controller = new AbortController();
+    const { signal } = controller;
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MILLISECONDS);
+
     try {
-        const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders });
+        const response = await fetch(`${BASE_URL}/${featureFlagKey}`, { ...baseHeaders, signal });
 
         if (response.status === 200) {
             logger.info(`Successfully retrieved ${featureFlagKey}`);
@@ -108,8 +113,14 @@ async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
 
         throw new Error('fetching feature flag unexpected status');
     } catch (error) {
+        // @ts-ignore
+        if (error.name === 'AbortError') {
+            throw new Error('Request timed out');
+        }
         logger.error('Failed to fetch feature flag', { error });
         throw error;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
@@ -172,6 +183,6 @@ export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string)
 		return targetedInRollout || false;
 	} catch (error) {
 		logger.error('Fetch feature flag error', { error });
-		throw new Error(`Failed to retrieve feature flag: ${error}`);
+        return false;
 	}
 };
