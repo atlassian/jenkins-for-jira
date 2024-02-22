@@ -158,7 +158,7 @@ export const SetUpGuideInstructions = ({
 	return (
 		<li className={cx(nestedOrderedListItem)}>
 			Must edit your project's Jenkinsfile(s) to choose what
-			&nbsp;<strong>{eventType} events</strong> are sent to Jira. To do this:
+			&nbsp;<strong>{eventType} events</strong> are sent to Jira
 			{contentToRender}
 		</li>
 	);
