@@ -13,13 +13,14 @@
     "prepare": "cd ../ && husky install"
   },
   "dependencies": {
-    "@atlassiansox/analytics-node-client": "3.2.1",
+    "@atlassiansox/analytics-node-client": "2.2.1",
     "@forge/api": "3.0.0",
     "@forge/metrics": "^0.2.2",
     "@forge/resolver": "1.5.14",
     "atlassian-jwt": "^2.0.2",
     "crypto": "^1.0.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/jest": "27.5.2",

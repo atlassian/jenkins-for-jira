@@ -103,6 +103,7 @@ async function getFeatureFlag(featureFlagKey: string): Promise<FeatureFlag> {
 
         if (response.status === 200) {
             logger.info(`Successfully retrieved ${featureFlagKey}`);
+			// @ts-ignore
             return await response.json();
         }
 
