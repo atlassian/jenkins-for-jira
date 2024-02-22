@@ -68,14 +68,27 @@ export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload,
 		.catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
-// TODO BETTER NAMING AND PULL FROM ENVVARS TO HIDE PATH
 const getAnalyticsEnvironmentUrl = () => {
-	return 'a';
+	console.info('GET STAGE ENVIRONEMENT URL');
+	console.info(process.env.ANALYTICS_STAGE_URL);
+	console.info('GET ENVIRONEMENT URL');
+	console.info(process.env.ANALYTICS_URL);
+	console.info('fin');
+	console.info(process.env);
+	if (isProductionEnv()) {
+        // return process.env.ANALYTICS_URL;
+		return process.env.ANALYTICS_STAGE_URL;
+	}
+	return process.env.ANALYTICS_STAGE_URL;
 };
 
 // eslint-disable-next-line max-len,@typescript-eslint/no-unused-vars
 const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
 	const url = getAnalyticsEnvironmentUrl();
+	if (!url) {
+		console.warn('No analytics path found.');
+		return;
+	}
 	const trackEvent: Event = createTrackEvent(cloudId, eventPayload, accountId, anonymousId);
 	const timestamp = new Date().toISOString();
 	const payload: Payload = {

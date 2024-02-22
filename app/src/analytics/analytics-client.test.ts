@@ -28,6 +28,9 @@ describe('createAnonymousId', () => {
 
 describe('sendAnalytics', () => {
     it('should send analytics', async () => {
+        process.env.NODE_ENV = 'prod';
+        process.env.ANALYTICS_URL = 'epic-url';
+        process.env.ANALYTICS_STAGE_URL = 'epic-url'; // TODO REMOVE BEFORE MERGE
         const eventPayload = { eventName: 'event', action: 'action', actionSubject: 'subject' };
         await sendAnalytics('cloudId', eventPayload, 'accountId', 'anonymousId');
         expect(fetch).toHaveBeenCalled();
