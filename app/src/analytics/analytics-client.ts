@@ -70,11 +70,7 @@ export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload,
 
 // TODO BETTER NAMING AND PULL FROM ENVVARS TO HIDE PATH
 const getAnalyticsEnvironmentUrl = () => {
-	// if is prod
-	if (isProductionEnv()) {
-        return 'https://as.atlassian.com/api';
-	}
-	return 'https://as.staging.atl-paas.net/api/v1/batch';
+	return 'a';
 };
 
 // eslint-disable-next-line max-len,@typescript-eslint/no-unused-vars
