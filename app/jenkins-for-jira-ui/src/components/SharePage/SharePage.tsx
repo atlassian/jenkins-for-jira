@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Button from '@atlaskit/button';
 import TextArea from '@atlaskit/textarea';
 import { cx } from '@emotion/css';
 import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
@@ -42,20 +43,20 @@ ${versionRequirementMessage}`;
 };
 
 type SharePageProps = {
-	showSharePage: boolean;
-	handleCloseShowSharePageModal: () => Promise<void>;
-	analyticsSourceEnumName: string;
+	analyticsUIScreenNameEnum: AnalyticsUiEventsEnum;
+	buttonAppearance?: string;
 };
 
 export const SharePage = ({
-	showSharePage,
-	analyticsSourceEnumName,
-	handleCloseShowSharePageModal
+	analyticsUIScreenNameEnum,
+	buttonAppearance
 }:SharePageProps): JSX.Element => {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
 	const isMountedRef = React.useRef<boolean>(true);
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const [showSharePage, setShowSharePage] = useState<boolean>(false);
+	const buttonStyleAppearance = buttonAppearance === 'primary' ? 'primary' : 'default';
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -75,6 +76,23 @@ export const SharePage = ({
 		};
 	}, []);
 
+	const handleShowSharePageModal = async () => {
+		await analyticsClient.sendAnalytics(
+			AnalyticsEventTypes.UiEvent,
+			AnalyticsUiEventsEnum.SharePageName,
+			{
+				source: analyticsUIScreenNameEnum,
+				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
+				actionSubject: 'button'
+			}
+		);
+		setShowSharePage(true);
+	};
+
+	const handleCloseShowSharePageModal = async () => {
+		setShowSharePage(false);
+	};
+
 	const sharePageMessage = getSharePageMessage(globalPageUrl);
 
 	const handleCopyToClipboard = async () => {
@@ -82,7 +100,7 @@ export const SharePage = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: analyticsSourceEnumName,
+				source: analyticsUIScreenNameEnum,
 				action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
 				actionSubject: 'button'
 			}
@@ -104,6 +122,7 @@ export const SharePage = ({
 	};
 	return (
 		<>
+			<Button appearance={buttonStyleAppearance} onClick={() => handleShowSharePageModal()}>Share page</Button>
 			{
 				showSharePage && <JenkinsModal
 					dataTestId="share-page-modal"

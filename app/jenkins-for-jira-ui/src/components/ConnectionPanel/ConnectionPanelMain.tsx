@@ -92,25 +92,6 @@ const ConnectionPanelMain = ({
 	const [isCheckingPipelineData, setIsCheckingPipelineData] = useState<boolean>(false);
 	const [serverWithUpdatedPipelines, setServerWithUpdatedPipelines] = useState<JenkinsServer>(jenkinsServer);
 	const [showSharePageContainer, setShowSharePageContainer] = useState<boolean>(false);
-	const [showSharePage, setShowSharePage] = useState<boolean>(false);
-
-	const handleShowSharePageModal = async () => {
-		await analyticsClient.sendAnalytics(
-			AnalyticsEventTypes.UiEvent,
-			AnalyticsUiEventsEnum.SharePageName,
-			{
-				source: AnalyticsUiEventsEnum.SetUpGuideName,
-				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
-				actionSubject: 'button'
-			}
-		);
-
-		setShowSharePage(true);
-	};
-
-	const handleCloseShowSharePageModal = async () => {
-		setShowSharePage(false);
-	};
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
@@ -279,7 +260,9 @@ const ConnectionPanelMain = ({
 							Share this page to help them get data flowing.</p>
 						</div>
 						<div className={cx(setupGuideButtonContainer)}>
-							<Button appearance="primary" onClick={() => handleShowSharePageModal()}>Share page</Button>
+							<SharePage
+								analyticsUIScreenNameEnum={AnalyticsUiEventsEnum.SetUpGuideName}
+								buttonAppearance='primary'/>
 							<Button>
 								<InProductHelpAction
 									label="Learn more"
@@ -289,10 +272,6 @@ const ConnectionPanelMain = ({
 									screenName={SET_UP_GUIDE_SCREEN_NAME}/>
 							</Button>
 						</div>
-						<SharePage
-							showSharePage={showSharePage}
-							analyticsSourceEnumName={AnalyticsUiEventsEnum.SetUpGuideName}
-							handleCloseShowSharePageModal={handleCloseShowSharePageModal} />
 					</div>
 			}
 
