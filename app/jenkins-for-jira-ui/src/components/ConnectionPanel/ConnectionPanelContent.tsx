@@ -10,7 +10,7 @@ import {
 import { ConnectionPendingIcon } from '../icons/ConnectionPendingIcon';
 import { NoDataIcon } from '../icons/NoDataIcon';
 import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
-import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
 type NotConnectedStateProps = {
@@ -18,13 +18,13 @@ type NotConnectedStateProps = {
 	contentHeader: string,
 	contentInstructionOne: string,
 	contentInstructionTwo?: string,
-	buttonAppearance: Appearance,
+	buttonOneAppearance?: Appearance,
 	firstButtonLabel?: string,
 	secondButtonLabel?: string,
-	buttonOneOnClick(data?: any): void,
+	buttonOneOnClick?(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
-	testId?: string,
-	isIph?: boolean,
+	buttonTwoTestId?: string,
+	isButtonOneIph?: boolean,
 	jenkinsServerUuid?: string
 };
 
@@ -33,16 +33,17 @@ const ConnectionPanelContent = ({
 	contentHeader,
 	contentInstructionOne,
 	contentInstructionTwo,
-	buttonAppearance,
+	buttonOneAppearance,
 	firstButtonLabel,
 	secondButtonLabel,
 	buttonOneOnClick,
 	buttonTwoOnClick,
-	testId,
-	isIph,
+	buttonTwoTestId,
+	isButtonOneIph,
 	jenkinsServerUuid
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
+	console.log('button one ', buttonOneAppearance);
 
 	if (connectedState === ConnectedState.UPDATE_AVAILABLE) {
 		icon = <NoDataIcon />;
@@ -52,19 +53,27 @@ const ConnectionPanelContent = ({
 		icon = <DuplicateServerIcon />;
 	}
 
-	let secondaryButton;
+	let firstButton;
 
-	if (isIph) {
-		secondaryButton =
+	if (isButtonOneIph) {
+		firstButton =
+			firstButtonLabel &&
 			<InProductHelpAction
-				label="Learn more"
+				label={firstButtonLabel}
+				appearance={InProductHelpActionButtonAppearance.Primary}
 				type={InProductHelpActionType.HelpButton}
 				searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}
 			/>;
 	} else {
-		secondaryButton =
-			buttonTwoOnClick &&
-			<Button onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>{secondButtonLabel}</Button>;
+		console.log('button one not iph ', buttonOneAppearance);
+		firstButton =
+			firstButtonLabel &&
+			<Button
+				appearance={buttonOneAppearance}
+				onClick={buttonOneOnClick}
+			>
+				{firstButtonLabel}
+			</Button>;
 	}
 
 	return (
@@ -75,19 +84,15 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			<ButtonGroup>
 				{
-					firstButtonLabel &&
-					<Button
-						appearance={buttonAppearance}
-						onClick={buttonOneOnClick}
-						testId={testId}
-					>
-						{firstButtonLabel}
-					</Button>
+					<>{ firstButton }</>
 				}
 				{
-					secondButtonLabel
-						? <>{secondaryButton}</>
-						: <></>
+					secondButtonLabel &&
+					<Button
+						onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}
+						testId={buttonTwoTestId}>
+						{secondButtonLabel}
+					</Button>
 				}
 			</ButtonGroup>
 		</div>
