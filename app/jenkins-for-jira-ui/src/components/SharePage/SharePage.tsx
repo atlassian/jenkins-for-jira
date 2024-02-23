@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useRef,
+	useState
+} from 'react';
+
 import Button from '@atlaskit/button';
 import TextArea from '@atlaskit/textarea';
 import { cx } from '@emotion/css';
@@ -55,10 +61,11 @@ export const SharePage = ({
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
 	const isMountedRef = React.useRef<boolean>(true);
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const [sharePageMessage, setSharePageMessage] = useState<string>('');
 	const [showSharePage, setShowSharePage] = useState<boolean>(false);
 	const buttonStyleAppearance = buttonAppearance === 'primary' ? 'primary' : 'default';
 
-	useEffect(() => {
+	const constructSharePageMessage = useCallback(async () => {
 		const fetchData = async () => {
 			try {
 				const url = await fetchGlobalPageUrl();
@@ -68,13 +75,17 @@ export const SharePage = ({
 			}
 		};
 
-		fetchData();
+		await fetchData();
+		setSharePageMessage(getSharePageMessage(globalPageUrl));
+	}, [globalPageUrl]);
 
+	useEffect(() => {
+		constructSharePageMessage();
 		return () => {
 			// Cleanup function to set isMountedRef to false when the component is unmounted
 			isMountedRef.current = false;
 		};
-	}, []);
+	}, [constructSharePageMessage]);
 
 	const handleShowSharePageModal = async () => {
 		await analyticsClient.sendAnalytics(
@@ -89,11 +100,10 @@ export const SharePage = ({
 		setShowSharePage(true);
 	};
 
-	const handleCloseShowSharePageModal = async () => {
+	const handleCloseShowSharePageModal = () => {
 		setShowSharePage(false);
+		setIsCopiedToClipboard(false);
 	};
-
-	const sharePageMessage = getSharePageMessage(globalPageUrl);
 
 	const handleCopyToClipboard = async () => {
 		await analyticsClient.sendAnalytics(
@@ -108,7 +118,7 @@ export const SharePage = ({
 
 		if (textAreaRef.current) {
 			textAreaRef.current.select();
-			document.execCommand('copy');
+			navigator.clipboard.writeText(textAreaRef.current.textContent || '');
 			textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
 
 			setIsCopiedToClipboard(true);

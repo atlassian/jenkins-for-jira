@@ -256,7 +256,7 @@ const ConnectionPanelMain = ({
 					<div className={cx(setupGuideSharePageContainer)}>
 						<div className={cx(setupGuideSharePageParagraph)}>
 							<p className={cx(setUpGuideParagraph)}>In most cases, your developers or
-							jenkins admin will perform the steps in this guide.
+							Jenkins admin will perform the steps in this guide.
 							Share this page to help them get data flowing.</p>
 						</div>
 						<div className={cx(setupGuideButtonContainer)}>

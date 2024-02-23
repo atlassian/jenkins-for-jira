@@ -238,7 +238,7 @@ export const setUpGuideUpdateAvailableButtonContainer = css`
 `;
 
 export const setupGuideSharePageContainer = css`
-	border-top:1px solid #EBECF0;
+	border-top: 1px solid #EBECF0;
 	display: flex;
 	padding-top: ${token('space.200')};
 `;

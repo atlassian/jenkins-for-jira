@@ -67,7 +67,7 @@ const SetUpGuidePipelineStepInstruction = ({
 	searchQuery
 }: SetUpGuidePipelineStepInstructionProps): JSX.Element => {
 	return (
-		<p>add a&nbsp;
+		<p>Add a&nbsp;
 			<InProductHelpAction
 				label={pipelineStepLabel}
 				type={InProductHelpActionType.HelpLink}
@@ -124,7 +124,7 @@ export const SetUpGuideInstructions = ({
 					searchQuery={infoSearchQuery}
 				/>
 				<p><strong>OR</strong></p>
-				<p> Name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
+				<p>Name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
 					&nbsp;stages to match this regex:&nbsp;
 					<InProductHelpAction
 						label={regex || '<regex>'}

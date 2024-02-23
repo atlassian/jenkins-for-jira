@@ -24,12 +24,17 @@ const testJenkinsServer: JenkinsServer = {
     ]
 }
 
-document.execCommand = jest.fn();
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
 
 describe('SharePage Component', () => {
     test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {
+		const mockWriteText = jest.fn().mockResolvedValueOnce(undefined);
+		Object.defineProperty(navigator, 'clipboard', {
+		value: {
+			writeText: mockWriteText,
+		},
+		});
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([testJenkinsServer]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
@@ -37,7 +42,7 @@ describe('SharePage Component', () => {
 		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
 		await waitFor(() => fireEvent.click(screen.getByText('Copy to clipboard')));
 		await waitFor(() => screen.getByText('Copied to clipboard'));
-		expect(document.execCommand).toHaveBeenCalledWith('copy');
+		expect(navigator.clipboard.writeText).toBeCalled();
 	});
 
     test('should close the share modal when "Close" is clicked', async () => {
