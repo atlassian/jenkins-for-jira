@@ -23,7 +23,7 @@ type NotConnectedStateProps = {
 	secondButtonLabel?: string,
 	buttonOneOnClick?(data?: any): void,
 	buttonTwoOnClick?(data: any): void,
-	buttonTwoTestId?: string,
+	buttonOneTestId?: string,
 	isButtonOneIph?: boolean,
 	jenkinsServerUuid?: string
 };
@@ -38,7 +38,7 @@ const ConnectionPanelContent = ({
 	secondButtonLabel,
 	buttonOneOnClick,
 	buttonTwoOnClick,
-	buttonTwoTestId,
+	buttonOneTestId,
 	isButtonOneIph,
 	jenkinsServerUuid
 }: NotConnectedStateProps): JSX.Element => {
@@ -70,6 +70,7 @@ const ConnectionPanelContent = ({
 			firstButtonLabel &&
 			<Button
 				appearance={buttonOneAppearance}
+				testId={buttonOneTestId}
 				onClick={buttonOneOnClick}
 			>
 				{firstButtonLabel}
@@ -89,8 +90,7 @@ const ConnectionPanelContent = ({
 				{
 					secondButtonLabel &&
 					<Button
-						onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}
-						testId={buttonTwoTestId}>
+						onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>
 						{secondButtonLabel}
 					</Button>
 				}

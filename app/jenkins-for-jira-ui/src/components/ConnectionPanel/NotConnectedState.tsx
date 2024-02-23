@@ -130,7 +130,7 @@ const NotConnectedState = ({
 								buttonOneAppearance='danger'
 								firstButtonLabel={firstButtonLabel}
 								buttonOneOnClick={deleteServerWrapper}
-								buttonTwoTestId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
+								buttonOneTestId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
 								jenkinsServerUuid={serverToDeleteUuid}
 							/>}
 						</>
