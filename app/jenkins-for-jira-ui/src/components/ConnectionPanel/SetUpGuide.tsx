@@ -3,6 +3,7 @@ import { cx } from '@emotion/css';
 import Button from '@atlaskit/button/standard-button';
 import { Code } from '@atlaskit/code';
 import {
+	indentedParagraphContainer,
 	setUpGuideOrderListItemHeader,
 	setUpGuideParagraph,
 	setUpGuideUpdateAvailableButtonContainer,
@@ -20,7 +21,6 @@ import {
 import {
 	nestedOrderedList, nestedOrderedListItem, orderedList, orderedListItem
 } from '../../GlobalStyles.styles';
-import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { SET_UP_GUIDE_SCREEN_NAME } from '../../common/constants';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
@@ -73,7 +73,7 @@ const SetUpGuidePipelineStepInstruction = ({
 				type={InProductHelpActionType.HelpLink}
 				searchQuery={searchQuery}
 				screenName={SET_UP_GUIDE_SCREEN_NAME}
-			/>&nbsp;step to the end of {eventType} stages.
+			/>&nbsp;instruction to the end of {eventType} stages.
 		</p>
 	);
 };
@@ -117,13 +117,14 @@ export const SetUpGuideInstructions = ({
 			(eventType === PipelineEventType.BUILD && regex?.length))
 	) {
 		contentToRender = (
-			<>
+			<div className={cx(indentedParagraphContainer)}>
 				<SetUpGuidePipelineStepInstruction
 					eventType={eventType}
 					pipelineStepLabel={pipelineStepLabel}
 					searchQuery={infoSearchQuery}
 				/>
-				<p><strong>OR</strong> name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
+				<p><strong>OR</strong></p>
+				<p>Name {eventType === PipelineEventType.DEPLOYMENT ? 'deployment' : 'build'}
 					&nbsp;stages to match this regex:&nbsp;
 					<InProductHelpAction
 						label={regex || '<regex>'}
@@ -132,7 +133,7 @@ export const SetUpGuideInstructions = ({
 						screenName={SET_UP_GUIDE_SCREEN_NAME}
 					/>
 				</p>
-			</>
+			</div>
 		);
 	} else if (eventType === PipelineEventType.BUILD && globalSettings && !regex?.length) {
 		contentToRender =
@@ -156,7 +157,8 @@ export const SetUpGuideInstructions = ({
 
 	return (
 		<li className={cx(nestedOrderedListItem)}>
-			Must choose what <strong>{eventType} events</strong> are sent to Jira. To do this:
+			Must edit your project's Jenkinsfile(s) to choose what
+			&nbsp;<strong>{eventType} events</strong> are sent to Jira
 			{contentToRender}
 		</li>
 	);
@@ -183,7 +185,11 @@ const SetUpGuide = ({
 					</p>
 				</li>
 
-				<li className={cx(orderedListItem)}><strong>The person setting up your Jenkinsfile(s)</strong>
+				<li className={cx(orderedListItem)}>
+					<strong>
+						Developers in your project teams,
+						or your Jenkins admin:
+					</strong>
 					<ol className={cx(nestedOrderedList)} type="A" id="nested-list">
 						<SetUpGuideInstructions
 							eventType={PipelineEventType.BUILD}
@@ -198,14 +204,6 @@ const SetUpGuide = ({
 					</ol>
 				</li>
 			</ol>
-
-			<InfoPanel
-				content="Not sure who should use this guide?"
-				iphLabel="Here's what you need to know."
-				iphType={InProductHelpActionType.HelpLink}
-				screenName={SET_UP_GUIDE_SCREEN_NAME}
-				searchQuery={InProductHelpIds.SET_UP_GUIDE_WHAT_YOU_NEED_TO_KNOW}
-			/>
 		</>
 	);
 };
