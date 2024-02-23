@@ -4,7 +4,7 @@ import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constant
 import { JenkinsServerStorageError } from '../common/error';
 import { Logger } from '../config/logger';
 import { sendAnalytics } from '../analytics/analytics-client';
-import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
+import { AnalyticsTrackEventActionSubjectsEnum, AnalyticsTrackEventActionsEnum } from '../analytics/analytics-events';
 import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 export const disconnectJenkinsServer = async (uuid: string, cloudId: string, accountId: string): Promise<boolean> => {
@@ -27,9 +27,8 @@ export const disconnectJenkinsServer = async (uuid: string, cloudId: string, acc
 
 const sendDisconnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
-		eventName: AnalyticsTrackEventsEnum.DisconnectedServerName,
-		action: 'Disconnected Jenkins Server',
-		actionSubject: 'User Action'
+		action: AnalyticsTrackEventActionsEnum.DisconnectedServer,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.User
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);

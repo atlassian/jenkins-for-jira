@@ -7,10 +7,13 @@ export enum AnalyticsEventTypes {
 	OperationalEvent = 'operational' // help measure usages or performance of implementation detail
 }
 
-export enum AnalyticsTrackEventsEnum {
-	ConfigDataReceivedName = 'ConfigDataReceived',
-	DisconnectedServerName = 'DisconnectedServer',
-	ConnectionCreatedName = 'ConnectionCreated'
+export enum AnalyticsTrackEventActionsEnum {
+	ConnectionCreated = 'created new Jenkins server',
+	DisconnectedServer = 'disconnected Jenkins server',
+	ConfigDataReceived = 'received Jenkins plugin config data'
 }
 
-export enum AnalyticsOperationalEventsEnum {}
+export enum AnalyticsTrackEventActionSubjectsEnum {
+	User = 'User action',
+	RequestHandling = 'Request handling',
+}

@@ -5,8 +5,15 @@ interface AnalyticsAttributes {
 	[key: string]: any;
 }
 
+interface Metadata {
+	nodeVersion: string;
+}
+
+interface Context {
+	library: any
+}
+
 interface EventPayload {
-	eventName: string,
 	action: string,
 	actionSubject: string,
 	attributes?: AnalyticsAttributes
@@ -24,13 +31,14 @@ interface Event {
 		eventType: string;
 		origin: string;
 		product: string;
-		source: string;
 		tenantId: string;
 		tenantIdType: string;
 		userIdType?: string;
 	};
 	type: string;
 	timestamp: string;
+	_metadata: Metadata;
+	context: Context;
 	messageId: string;
   }
 
@@ -62,22 +70,16 @@ interface Options {
 
 // eslint-disable-next-line max-len
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
-	console.info('SEND ANALYTICS');
+	console.info('Analytics Request'); // TODO REMOVE
+
 	sendEvent(cloudId, eventPayload, accountId, anonymousId)
 		.then(() => console.info('Analytics event processed'))
 		.catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
 
 const getAnalyticsEnvironmentUrl = () => {
-	console.info('GET STAGE ENVIRONEMENT URL');
-	console.info(process.env.ANALYTICS_STAGE_URL);
-	console.info('GET ENVIRONEMENT URL');
-	console.info(process.env.ANALYTICS_URL);
-	console.info('fin');
-	console.info(process.env);
 	if (isProductionEnv()) {
-        // return process.env.ANALYTICS_URL;
-		return process.env.ANALYTICS_STAGE_URL;
+        return process.env.ANALYTICS_URL;
 	}
 	return process.env.ANALYTICS_STAGE_URL;
 };
@@ -90,6 +92,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
 		return;
 	}
 	const trackEvent: Event = createTrackEvent(cloudId, eventPayload, accountId, anonymousId);
+	console.log(trackEvent);
 	const timestamp = new Date().toISOString();
 	const payload: Payload = {
 		batch: [trackEvent],
@@ -106,6 +109,7 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
 	};
 
 	console.info('Sending Analytics');
+
 	await fetch(url, options);
 };
 
@@ -113,28 +117,34 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
 export const createTrackEvent = (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Event => {
 	const timestamp = new Date().toISOString();
 	const {
-		eventName, attributes, actionSubject, action
+		attributes, actionSubject, action
 	} = eventPayload;
-
 	return {
 		userId: accountId,
 		anonymousId: createAnonymousId(anonymousId || 'default'),
 		event: `${actionSubject} ${action}`,
 		properties: {
-			source: eventName,
 			action,
 			actionSubject,
 			attributes: attributes || {},
 			product: PRODUCT,
 			env: isProductionEnv() ? environments.PROD : environments.STAGING,
 			eventType: TRACK_EVENT_TYPE,
-			userIdType: accountId ? 'atlassianAccount' : undefined, // TODO DO BETTER
+			userIdType: accountId ? 'atlassianAccount' : undefined,
 			tenantIdType: TENANT_ID_TYPE,
 			tenantId: cloudId,
 			origin: ORIGIN
 		},
 		type: TRACK_EVENT_TYPE,
 		timestamp,
+		_metadata: {
+			nodeVersion: process.versions.node
+		},
+		context: {
+			library: {
+				name: 'analytics-node'
+			}
+		},
 		messageId: createMessageId()
 	};
 };
