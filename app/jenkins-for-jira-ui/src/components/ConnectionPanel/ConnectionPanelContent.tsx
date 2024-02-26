@@ -43,7 +43,6 @@ const ConnectionPanelContent = ({
 	jenkinsServerUuid
 }: NotConnectedStateProps): JSX.Element => {
 	let icon;
-	console.log('button one ', buttonOneAppearance);
 
 	if (connectedState === ConnectedState.UPDATE_AVAILABLE) {
 		icon = <NoDataIcon />;
@@ -65,13 +64,12 @@ const ConnectionPanelContent = ({
 				searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}
 			/>;
 	} else {
-		console.log('button one not iph ', buttonOneAppearance);
 		firstButton =
 			firstButtonLabel &&
 			<Button
 				appearance={buttonOneAppearance}
-				testId={buttonOneTestId}
 				onClick={buttonOneOnClick}
+				testId={buttonOneTestId}
 			>
 				{firstButtonLabel}
 			</Button>;
