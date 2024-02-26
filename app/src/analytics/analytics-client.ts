@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import fetch from 'node-fetch';
+import { v4 as uuidv4 } from 'uuid';
 
 interface AnalyticsAttributes {
 	[key: string]: any;
@@ -164,7 +165,5 @@ export const createAnonymousId = (input: string): string => {
 };
 
 export const createMessageId = () => {
-	const now = new Date().valueOf();
-	const random = Math.floor(Math.random() * 1000000);
-	return `j4j-be-${now}-${random}`;
+	return `j4j-server-${uuidv4()}`;
 };
