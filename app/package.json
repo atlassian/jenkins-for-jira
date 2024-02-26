@@ -19,13 +19,15 @@
     "atlassian-jwt": "^2.0.2",
     "crypto": "^1.0.1",
     "lodash": "^4.17.21",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/jest": "27.5.2",
     "@types/jest-when": "3.5.2",
     "@types/jsonwebtoken": "8.5.9",
     "@types/lodash": "^4.14.197",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "5.61.0",
     "@typescript-eslint/parser": "5.61.0",
     "eslint": "8.50.0",
