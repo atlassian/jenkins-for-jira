@@ -136,8 +136,7 @@ export const GlobalPage = ({ checkUserPermissionsFlag }: GlobalPageProps): JSX.E
 				</Button>
 			}
 			<SharePage
-				analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.GlobalPageScreenName}
-				buttonAppearance='primary'/>
+				analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.GlobalPageScreenName}/>
 		</ButtonGroup>
 	);
 
