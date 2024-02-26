@@ -27,12 +27,9 @@ export const adminPermissionCheck = async (req: any): Promise<void> => {
 		throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
 	}
 
-	// TODO JOSH UNCOMMENT
+	const permissionDetails = await permissions.json();
 
-	// const permissionDetails = await permissions.json();
-
-	// @ts-ignore
-	// if (!permissionDetails?.globalPermissions?.includes('ADMINISTER')) {
-	// 	throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
-	// }
+	if (!permissionDetails?.globalPermissions?.includes('ADMINISTER')) {
+		throw new Error('Only Jira administrators can access the Jenkins for Jira admin page.');
+	}
 };
