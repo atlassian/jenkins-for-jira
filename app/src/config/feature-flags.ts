@@ -183,6 +183,6 @@ export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string)
 		return targetedInRollout || false;
 	} catch (error) {
 		logger.error('Fetch feature flag error', { error });
-		return true; // TODO CHANGE BACK TO FALSE!!
+		return false;
 	}
 };
