@@ -142,7 +142,7 @@ export const createTrackEvent = (cloudId: string, eventPayload: EventPayload, ac
 		timestamp,
 		_metadata: {
 			nodeVersion: process.versions.node,
-			version: "1"
+			version: '0'
 		},
 		context: {
 			library: {
