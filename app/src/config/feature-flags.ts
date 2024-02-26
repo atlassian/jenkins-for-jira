@@ -151,7 +151,7 @@ async function evaluateFeatureFlagDefault(
 		return isVariationOn;
 	} catch (error) {
 		console.error('Failed to evaluate feature flag manually:', error);
-		return true; // TODO TOGLE THIS BACK!!!
+		return false;
 	}
 }
 
@@ -183,6 +183,6 @@ export const fetchFeatureFlag = async (featureFlagKey: string, cloudId?: string)
 		return targetedInRollout || false;
 	} catch (error) {
 		logger.error('Fetch feature flag error', { error });
-		return false;
+		return true; // TODO CHANGE BACK TO FALSE!!
 	}
 };

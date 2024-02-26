@@ -96,8 +96,8 @@ function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer):
 	}
 
 	const eventPayload = {
-		action: AnalyticsTrackEventActionsEnum.ConfigDataReceived,
-		actionSubject: AnalyticsTrackEventActionSubjectsEnum.RequestHandling
+		action: AnalyticsTrackEventActionsEnum.RequestHandling,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.ConfigDataReceived
 	};
 
 	sendAnalytics(cloudId, eventPayload, '', jenkinsServer.pluginConfig?.ipAddress);

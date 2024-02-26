@@ -35,8 +35,8 @@ const connectJenkinsServer = async (
 
 const sendConnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
-		action: AnalyticsTrackEventActionsEnum.ConnectionCreated,
-		actionSubject: AnalyticsTrackEventActionSubjectsEnum.User
+		action: AnalyticsTrackEventActionsEnum.User,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.ConnectionCreated
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);

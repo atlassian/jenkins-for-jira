@@ -8,12 +8,12 @@ export enum AnalyticsEventTypes {
 }
 
 export enum AnalyticsTrackEventActionsEnum {
-	ConnectionCreated = 'created new Jenkins server',
-	DisconnectedServer = 'disconnected Jenkins server',
-	ConfigDataReceived = 'received Jenkins plugin config data'
+	User = 'User action',
+	RequestHandling = 'Request handling'
 }
 
 export enum AnalyticsTrackEventActionSubjectsEnum {
-	User = 'User action',
-	RequestHandling = 'Request handling',
+	ConnectionCreated = 'created new Jenkins server',
+	DisconnectedServer = 'disconnected Jenkins server',
+	ConfigDataReceived = 'received Jenkins plugin config data'
 }

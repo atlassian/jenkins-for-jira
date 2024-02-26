@@ -27,8 +27,8 @@ export const disconnectJenkinsServer = async (uuid: string, cloudId: string, acc
 
 const sendDisconnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
-		action: AnalyticsTrackEventActionsEnum.DisconnectedServer,
-		actionSubject: AnalyticsTrackEventActionSubjectsEnum.User
+		action: AnalyticsTrackEventActionsEnum.User,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.DisconnectedServer
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);

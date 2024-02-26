@@ -7,6 +7,7 @@ interface AnalyticsAttributes {
 
 interface Metadata {
 	nodeVersion: string;
+	version: string;
 }
 
 interface Context {
@@ -33,6 +34,7 @@ interface Event {
 		product: string;
 		tenantId: string;
 		tenantIdType: string;
+		source: string;
 		userIdType?: string;
 	};
 	type: string;
@@ -70,7 +72,7 @@ interface Options {
 
 // eslint-disable-next-line max-len
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
-	console.info('Analytics Request'); // TODO REMOVE
+	console.info('Analytics Request');
 
 	sendEvent(cloudId, eventPayload, accountId, anonymousId)
 		.then(() => console.info('Analytics event processed'))
@@ -133,12 +135,14 @@ export const createTrackEvent = (cloudId: string, eventPayload: EventPayload, ac
 			userIdType: accountId ? 'atlassianAccount' : undefined,
 			tenantIdType: TENANT_ID_TYPE,
 			tenantId: cloudId,
+			source: 'server',
 			origin: ORIGIN
 		},
 		type: TRACK_EVENT_TYPE,
 		timestamp,
 		_metadata: {
-			nodeVersion: process.versions.node
+			nodeVersion: process.versions.node,
+			version: "1"
 		},
 		context: {
 			library: {
