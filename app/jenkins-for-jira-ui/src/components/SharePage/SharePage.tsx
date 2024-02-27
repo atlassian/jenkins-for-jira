@@ -31,20 +31,19 @@ export const getSiteNameFromUrl = (url: string): string => {
 const getSharePageMessage = (globalPageUrl: string, moduleKey?: string): string => {
 	const versionRequirementMessage = moduleKey === CONFIG_PAGE
 		? `
-Can’t see a page when you follow this link? Ask your Jira admin to update Jenkins for Jira at:
+Not a member of this Jira site? You can follow the instructions here instead:
 
-Apps > Manage your apps > Jenkins for Jira (Official)` : '';
+https://support.atlassian.com/jira-cloud-administration/docs/how-jenkins-for-jira-works/` : '';
 
 	return `Hi there,
-Jenkins for Jira is now installed and connected on
 
-${getSiteNameFromUrl(globalPageUrl)}.
+Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
 
-To get data flowing from Jenkins to Jira, follow the set up guide(s) on this page:
+To set up what build and deployment events Jenkins send to Jira, follow the set up guide(s) on this page:
 
 ${globalPageUrl}
 
-You'll need to follow the guide for each server connected.
+You'll need to follow the set up guide for each connected server.
 ${versionRequirementMessage}`;
 };
 
