@@ -54,6 +54,8 @@ describe('createMessageId', () => {
     it('should create a messageId', () => {
         const messageId = createMessageId();
         expect(messageId).toBeDefined();
-        expect(messageId).toMatch(/^j4j-be-\d+-\d+$/);
+        // This regex validates a UUID
+        const uuidRegex = /^j4j-server-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        expect(messageId).toMatch(uuidRegex);
     });
 });
