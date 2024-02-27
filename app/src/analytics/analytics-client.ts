@@ -95,7 +95,6 @@ const sendEvent = async (cloudId: string, eventPayload: EventPayload, accountId?
 		return;
 	}
 	const trackEvent: Event = createTrackEvent(cloudId, eventPayload, accountId, anonymousId);
-	console.log(trackEvent);
 	const timestamp = new Date().toISOString();
 	const payload: Payload = {
 		batch: [trackEvent],

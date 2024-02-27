@@ -21,7 +21,6 @@ const fetchUserPerms = async (req: any): Promise<boolean> => {
     });
 
     const permissionDetails = await permissions.json();
-    // @tts-ignore
     return !!permissionDetails?.globalPermissions?.includes('ADMINISTER');
 };
 
