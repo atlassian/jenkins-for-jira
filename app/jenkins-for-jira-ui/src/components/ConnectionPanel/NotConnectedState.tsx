@@ -94,7 +94,7 @@ const NotConnectedState = ({
 	} else if (connectedState === ConnectedState.DUPLICATE && !userIsAdmin) {
 		firstButtonLabel = undefined;
 	} else {
-		firstButtonLabel = 'Refresh';
+		firstButtonLabel = 'Learn more';
 	}
 
 	const closeRetryServerDelete = async () => {
@@ -111,27 +111,28 @@ const NotConnectedState = ({
 							<Spinner size='large' />
 						</div>
 					) : (
-						<>
-							<ConnectionPanelContent
+						<> {isPending
+							? <ConnectionPanelContent
 								connectedState={connectedState}
-								contentHeader={isPending ? 'Connection pending' : 'Duplicate server'}
+								contentHeader= 'Connection pending'
 								contentInstructionOne=
-									{
-										isPending
-											? 'This connection is pending completion by a Jenkins admin.'
-											: `Use ${jenkinsServer.originalConnection} to manage this connection.`
-									}
-								buttonAppearance={isPending ? 'primary' : 'danger'}
-								firstButtonLabel={firstButtonLabel}
-								secondButtonLabel={isPending ? 'Learn more' : undefined}
-								buttonOneOnClick={
-									isPending
-										? () => refreshServersAfterUpdate(jenkinsServer.uuid) : deleteServerWrapper
-								}
-								testId={!isPending ? `delete-button-${jenkinsServer.name}` : undefined}
-								isIph={true}
+									'This connection is pending completion by a Jenkins admin.'
+								primaryButtonLabel={firstButtonLabel}
+								secondaryButtonLabel='Refresh'
+								secondaryActionOnClick={() => refreshServersAfterUpdate(jenkinsServer.uuid)}
+								isPrimaryButtonInProductHelp={true}
+								jenkinsServerUuid={serverToDeleteUuid}/>
+							: <ConnectionPanelContent
+								connectedState={connectedState}
+								contentHeader='Duplicate server'
+								contentInstructionOne={`Use ${jenkinsServer.originalConnection} ` +
+									'to manage this connection.'}
+								primaryButtonAppearance='danger'
+								primaryButtonLabel={firstButtonLabel}
+								primaryActionOnClick={deleteServerWrapper}
+								primaryButtonTestId={`delete-button-${jenkinsServer.name}`}
 								jenkinsServerUuid={serverToDeleteUuid}
-							/>
+							/>}
 						</>
 					)}
 
