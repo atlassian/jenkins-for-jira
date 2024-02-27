@@ -95,6 +95,7 @@ const ConnectionPanelMain = ({
 
 	const handleClickSetupGuide = () => {
 		setSelectedTabIndex(SET_UP_GUIDE_TAB);
+		setShowSharePageContainer(true);
 	};
 
 	const pageSource =
@@ -261,7 +262,7 @@ const ConnectionPanelMain = ({
 						</div>
 						<div className={cx(setupGuideButtonContainer)}>
 							<SharePage
-								analyticsUIScreenNameEnum={AnalyticsUiEventsEnum.SetUpGuideName}
+								analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.JenkinsSetupScreenName}
 								buttonAppearance='primary'/>
 							<Button>
 								<InProductHelpAction

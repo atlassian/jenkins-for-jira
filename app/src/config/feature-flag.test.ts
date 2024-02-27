@@ -174,6 +174,6 @@ describe('fetchFeatureFlag', () => {
 
 	it('handles fetch errors', async () => {
 		fetch.mockRejectedValueOnce(new Error('Fetch error'));
-		await expect(fetchFeatureFlag('test-flag', 'test')).rejects.toThrow('Fetch error');
+		expect(await fetchFeatureFlag('test-flag', 'test')).toEqual(false);
 	});
 });
