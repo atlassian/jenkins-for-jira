@@ -8,7 +8,7 @@ import React, {
 import Button from '@atlaskit/button';
 import TextArea from '@atlaskit/textarea';
 import { cx } from '@emotion/css';
-import { AnalyticsEventTypes, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
+import { AnalyticsEventTypes, AnalyticsScreenEventsEnum, AnalyticsUiEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal';
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
@@ -28,7 +28,7 @@ export const getSiteNameFromUrl = (url: string): string => {
 	}
 };
 
-export const getSharePageMessage = (globalPageUrl: string, moduleKey?: string): string => {
+const getSharePageMessage = (globalPageUrl: string, moduleKey?: string): string => {
 	const versionRequirementMessage = moduleKey === CONFIG_PAGE
 		? `
 Can’t see a page when you follow this link? Ask your Jira admin to update Jenkins for Jira at:
@@ -49,13 +49,15 @@ ${versionRequirementMessage}`;
 };
 
 type SharePageProps = {
-	analyticsUIScreenNameEnum: AnalyticsUiEventsEnum;
+	analyticsScreenEventNameEnum: AnalyticsScreenEventsEnum;
 	buttonAppearance?: string;
+	moduleKey?: string;
 };
 
 export const SharePage = ({
-	analyticsUIScreenNameEnum,
-	buttonAppearance
+	analyticsScreenEventNameEnum,
+	buttonAppearance,
+	moduleKey
 }:SharePageProps): JSX.Element => {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
@@ -76,8 +78,8 @@ export const SharePage = ({
 		};
 
 		await fetchData();
-		setSharePageMessage(getSharePageMessage(globalPageUrl));
-	}, [globalPageUrl]);
+		setSharePageMessage(getSharePageMessage(globalPageUrl, moduleKey));
+	}, [globalPageUrl, moduleKey]);
 
 	useEffect(() => {
 		constructSharePageMessage();
@@ -92,7 +94,7 @@ export const SharePage = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.SharePageName,
 			{
-				source: analyticsUIScreenNameEnum,
+				source: analyticsScreenEventNameEnum,
 				action: `clicked - ${AnalyticsUiEventsEnum.SharePageName}`,
 				actionSubject: 'button'
 			}
@@ -110,7 +112,7 @@ export const SharePage = ({
 			AnalyticsEventTypes.UiEvent,
 			AnalyticsUiEventsEnum.CopiedToClipboardName,
 			{
-				source: analyticsUIScreenNameEnum,
+				source: analyticsScreenEventNameEnum,
 				action: `clicked - ${AnalyticsUiEventsEnum.CopiedToClipboardName}`,
 				actionSubject: 'button'
 			}

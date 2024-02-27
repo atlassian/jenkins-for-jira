@@ -173,18 +173,6 @@ describe('ServerManagement Component', () => {
 		expect(screen.getByTestId('connection-wizard')).toBeInTheDocument();
 	});
 
-	test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {
-		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([servers[4]]);
-		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
-		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
-
-		await waitFor(() => render(<ServerManagement />));
-		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
-		await waitFor(() => fireEvent.click(screen.getByText('Copy to clipboard')));
-		await waitFor(() => screen.getByText('Copied to clipboard'));
-		expect(document.execCommand).toHaveBeenCalledWith('copy');
-	});
-
 	test('should close the share modal when "Close" is clicked', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce(servers);
 		jest.spyOn(redirectFromGetStartedModule, 'redirectFromGetStarted').mockResolvedValueOnce(CONFIG_PAGE);
