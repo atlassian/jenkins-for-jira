@@ -180,11 +180,11 @@ const ConnectionPanelMain = ({
 				contentHeader="No data received"
 				contentInstructionOne="This server is connected but hasn't sent any data to Jira yet."
 				contentInstructionTwo="Use this server's set up guide to choose what data this server sends to Jira."
-				buttonOneAppearance="primary"
-				firstButtonLabel="Open set up guide"
-				secondButtonLabel="Refresh"
-				buttonOneOnClick={handleClickSetupGuide}
-				buttonTwoOnClick={handleRefreshToCheckServerPipelines}
+				primaryButtonAppearance="primary"
+				primaryButtonLabel="Open set up guide"
+				secondaryButtonLabel="Refresh"
+				primaryActionOnClick={handleClickSetupGuide}
+				secondaryActionOnClick={handleRefreshToCheckServerPipelines}
 				jenkinsServerUuid={jenkinsServer.uuid}
 			/>
 		);

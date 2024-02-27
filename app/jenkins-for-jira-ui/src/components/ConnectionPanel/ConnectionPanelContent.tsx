@@ -13,18 +13,18 @@ import { DuplicateServerIcon } from '../icons/DuplicateServerIcon';
 import { InProductHelpAction, InProductHelpActionButtonAppearance, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 
-type NotConnectedStateProps = {
+type ConnectionPanelContentProps = {
 	connectedState: ConnectedState;
 	contentHeader: string,
 	contentInstructionOne: string,
 	contentInstructionTwo?: string,
-	buttonOneAppearance?: Appearance,
-	firstButtonLabel?: string,
-	secondButtonLabel?: string,
-	buttonOneOnClick?(data?: any): void,
-	buttonTwoOnClick?(data: any): void,
-	buttonOneTestId?: string,
-	isButtonOneIph?: boolean,
+	primaryButtonAppearance?: Appearance,
+	primaryButtonLabel?: string,
+	secondaryButtonLabel?: string,
+	primaryActionOnClick?(data?: any): void,
+	secondaryActionOnClick?(data: any): void,
+	primaryButtonTestId?: string,
+	isPrimaryButtonInProductHelp?: boolean,
 	jenkinsServerUuid?: string
 };
 
@@ -33,15 +33,15 @@ const ConnectionPanelContent = ({
 	contentHeader,
 	contentInstructionOne,
 	contentInstructionTwo,
-	buttonOneAppearance,
-	firstButtonLabel,
-	secondButtonLabel,
-	buttonOneOnClick,
-	buttonTwoOnClick,
-	buttonOneTestId,
-	isButtonOneIph,
+	primaryButtonAppearance,
+	primaryButtonLabel,
+	secondaryButtonLabel,
+	primaryActionOnClick,
+	secondaryActionOnClick,
+	primaryButtonTestId,
+	isPrimaryButtonInProductHelp,
 	jenkinsServerUuid
-}: NotConnectedStateProps): JSX.Element => {
+}: ConnectionPanelContentProps): JSX.Element => {
 	let icon;
 
 	if (connectedState === ConnectedState.UPDATE_AVAILABLE) {
@@ -52,29 +52,6 @@ const ConnectionPanelContent = ({
 		icon = <DuplicateServerIcon />;
 	}
 
-	let firstButton;
-
-	if (isButtonOneIph) {
-		firstButton =
-			firstButtonLabel &&
-			<InProductHelpAction
-				label={firstButtonLabel}
-				appearance={InProductHelpActionButtonAppearance.Primary}
-				type={InProductHelpActionType.HelpButton}
-				searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}
-			/>;
-	} else {
-		firstButton =
-			firstButtonLabel &&
-			<Button
-				appearance={buttonOneAppearance}
-				onClick={buttonOneOnClick}
-				testId={buttonOneTestId}
-			>
-				{firstButtonLabel}
-			</Button>;
-	}
-
 	return (
 		<div className={cx(connectionPanelContainerContainer)}>
 			{icon}
@@ -83,13 +60,24 @@ const ConnectionPanelContent = ({
 			<p className={cx(connectionPanelContainerParagraph)}>{contentInstructionTwo}</p>
 			<ButtonGroup>
 				{
-					<>{ firstButton }</>
+					isPrimaryButtonInProductHelp && primaryButtonLabel
+						? <InProductHelpAction
+							label={primaryButtonLabel}
+							appearance={InProductHelpActionButtonAppearance.Primary}
+							type={InProductHelpActionType.HelpButton}
+							searchQuery={InProductHelpIds.PENDING_SERVER_LEARN_MORE}/>
+						: <Button
+							appearance={primaryButtonAppearance}
+							onClick={primaryActionOnClick}
+							testId={primaryButtonTestId}>
+							{primaryButtonLabel}
+						</Button>
 				}
 				{
-					secondButtonLabel &&
+					secondaryButtonLabel &&
 					<Button
-						onClick={() => buttonTwoOnClick?.(jenkinsServerUuid)}>
-						{secondButtonLabel}
+						onClick={() => secondaryActionOnClick?.(jenkinsServerUuid)}>
+						{secondaryButtonLabel}
 					</Button>
 				}
 			</ButtonGroup>

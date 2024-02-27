@@ -117,20 +117,20 @@ const NotConnectedState = ({
 								contentHeader= 'Connection pending'
 								contentInstructionOne=
 									'This connection is pending completion by a Jenkins admin.'
-								firstButtonLabel={firstButtonLabel}
-								secondButtonLabel='Refresh'
-								buttonTwoOnClick={() => refreshServersAfterUpdate(jenkinsServer.uuid)}
-								isButtonOneIph={true}
+								primaryButtonLabel={firstButtonLabel}
+								secondaryButtonLabel='Refresh'
+								secondaryActionOnClick={() => refreshServersAfterUpdate(jenkinsServer.uuid)}
+								isPrimaryButtonInProductHelp={true}
 								jenkinsServerUuid={serverToDeleteUuid}/>
 							: <ConnectionPanelContent
 								connectedState={connectedState}
 								contentHeader='Duplicate server'
 								contentInstructionOne={`Use ${jenkinsServer.originalConnection} ` +
 									'to manage this connection.'}
-								buttonOneAppearance='danger'
-								firstButtonLabel={firstButtonLabel}
-								buttonOneOnClick={deleteServerWrapper}
-								buttonOneTestId={`delete-button-${jenkinsServer.name}`}
+								primaryButtonAppearance='danger'
+								primaryButtonLabel={firstButtonLabel}
+								primaryActionOnClick={deleteServerWrapper}
+								primaryButtonTestId={`delete-button-${jenkinsServer.name}`}
 								jenkinsServerUuid={serverToDeleteUuid}
 							/>}
 						</>
