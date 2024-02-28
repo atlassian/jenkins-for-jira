@@ -640,14 +640,14 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
-"@atlaskit/theme@12.5.5", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.5.0":
-  version "12.5.5"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/theme/-/theme-12.5.5.tgz"
-  integrity sha512-VbZTKDme4OYEvzC1m4kgqhPLW2NC/H6fd03JI/xFktIbYtA1SRq3fdj8Rbr6xbD7IujxaZoS54hPyJ/0VSr6dQ==
+"@atlaskit/theme@12.5.6", "@atlaskit/theme@^12.1.0", "@atlaskit/theme@^12.5.0":
+  version "12.5.6"
+  resolved "https://registry.npmjs.org/@atlaskit/theme/-/theme-12.5.6.tgz"
+  integrity sha512-GyQZ+rh2bbXmFhBCy8jZly/Q5m9KamFjy8qU8IM9u45ROQErNAqSPTITzrPVcSLgOQDRsp8o2ZsR4vOFGmOpCQ==
   dependencies:
     "@atlaskit/codemod-utils" "^4.2.0"
     "@atlaskit/ds-lib" "^2.2.0"
-    "@atlaskit/tokens" "^1.13.0"
+    "@atlaskit/tokens" "^1.14.0"
     "@babel/runtime" "^7.0.0"
 
 "@atlaskit/theme@^12.6.0":
