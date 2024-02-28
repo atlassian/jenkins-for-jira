@@ -682,18 +682,18 @@
     "@babel/types" "^7.20.0"
     bind-event-listener "^2.1.1"
 
-"@atlaskit/tooltip@17.8.4":
-  version "17.8.4"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/tooltip/-/tooltip-17.8.4.tgz"
-  integrity sha512-7wPxNNVNHdNu1oVs4plHP5xG6GIWw7PCrEHd3qU+3D7iyClmRHFtCh338EguCUYxfzXq8p89+nwjRWzMemaHEA==
+"@atlaskit/tooltip@17.8.10":
+  version "17.8.10"
+  resolved "https://registry.npmjs.org/@atlaskit/tooltip/-/tooltip-17.8.10.tgz"
+  integrity sha512-rNH/AygzNjVXUB7uoJ6QZcgvptGMsFr5K8vYLywmXMjNuyjRIBatcvllnO8P6n7I3Rg+v4Hyn5w9xQhHTUcyZA==
   dependencies:
     "@atlaskit/analytics-next" "^9.1.0"
     "@atlaskit/ds-lib" "^2.2.0"
-    "@atlaskit/motion" "^1.4.0"
+    "@atlaskit/motion" "^1.5.0"
     "@atlaskit/popper" "^5.5.0"
-    "@atlaskit/portal" "^4.3.0"
-    "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/portal" "^4.4.0"
+    "@atlaskit/theme" "^12.6.0"
+    "@atlaskit/tokens" "^1.28.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
     bind-event-listener "^2.1.1"
