@@ -111,6 +111,7 @@ async function updateJenkinsPluginConfigState(
 ): Promise<void> {
 	try {
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
+		sendConnectionAnalytics(cloudId, jenkinsServer);
 		const {
 			ipAddress, autoBuildEnabled, autoBuildRegex, autoDeploymentsEnabled, autoDeploymentsRegex
 		} = jenkinsEvent;
@@ -123,7 +124,6 @@ async function updateJenkinsPluginConfigState(
 			lastUpdatedOn: new Date()
 		};
 		await storage.set(`${SERVER_STORAGE_KEY_PREFIX}${uuid}`, jenkinsServer);
-		sendConnectionAnalytics(cloudId, jenkinsServer);
 	} catch (error) {
 		logger.error(`Failed to update Jenkins plugin config for server uuid ${uuid}`, { error });
 		throw error;
