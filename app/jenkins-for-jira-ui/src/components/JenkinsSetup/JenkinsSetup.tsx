@@ -322,7 +322,6 @@ const JenkinsSetup = (): JSX.Element => {
 
 	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
-		console.log('path', path);
 
 		if (path === 'global') {
 			router.navigate(globalPageUrl);
