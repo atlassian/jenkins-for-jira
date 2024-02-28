@@ -2,8 +2,9 @@ import { css } from '@emotion/css';
 import { token } from '@atlaskit/tokens';
 
 export const connectionWizardContentContainer = css`
-	margin-left: ${token('space.negative.400')};
 	width: 100%;
+	text-align: center;
+	margin-bottom: ${token('space.400')};
 
 	#connection-wizard-instruction {
 		margin-top: ${token('space.400')};
@@ -32,4 +33,24 @@ export const connectionWizardButton = css`
 		align-items: center;
 		display: flex;
 	}
+`;
+
+export const connectionInfoContainer = css`
+	background-color: #F7F8F9;
+	border: 3px;
+	display: inline;
+	width: 330px;
+	padding: ${token('space.250')};
+
+	[role=img] {
+		margin-right: ${token('space.200')};
+	}
+
+	p {
+		margin-top: ${token('space.0')};
+	}
+`;
+
+export const iconContainer = css`
+	margin-right: ${token('space.100')};
 `;

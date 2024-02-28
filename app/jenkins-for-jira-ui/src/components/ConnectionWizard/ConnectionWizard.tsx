@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
 import { cx } from '@emotion/css';
 import Button from '@atlaskit/button';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
+import UserAvatarCircleIcon from '@atlaskit/icon/glyph/user-avatar-circle';
 import { useHistory, useParams } from 'react-router';
 import {
-	connectionWizardNestedOrderedListItem,
-	connectionWizardOrderedListItem,
 	connectionWizardContentContainer,
-	connectionWizardButton
+	connectionWizardButton,
+	connectionInfoContainer,
+	iconContainer
 } from './ConnectionWizard.styles';
 import {
-	connectionFlowContainer,
-	orderedList,
-	orderedListItem
+	connectionFlowContainer
 } from '../../GlobalStyles.styles';
-import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
+import { InProductHelpAction, InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { ConnectionFlowHeader } from './ConnectionFlowHeader';
-import { InfoPanel } from '../InfoPanel/InfoPanel';
 import { AnalyticsEventTypes, AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { CONNECTION_WIZARD_SCREEN_NAME } from '../../common/constants';
@@ -47,40 +46,33 @@ const ConnectionWizard = (): JSX.Element => {
 
 			<div className={cx(connectionWizardContentContainer)}>
 				<p id="connection-wizard-instruction">To complete this connection you'll need:</p>
-
-				<ol className={cx(orderedList)}>
-					<li className={cx(orderedListItem, connectionWizardOrderedListItem)}>An active Jenkins server</li>
-					<li className={cx(orderedListItem, connectionWizardOrderedListItem)}>Team knowledge</li>
-					<p className={cx(connectionWizardNestedOrderedListItem)}>
-						How your teams use Jenkins
-					</p>
-					<li
-						className={cx(orderedListItem, connectionWizardOrderedListItem)}
-					>
-						The help of your Jenkins admin
-					</li>
-					<p className={cx(connectionWizardNestedOrderedListItem)}>
-						Unless you're an admin yourself
-					</p>
-				</ol>
 			</div>
-
-			<InfoPanel
-				content="If this is your first time connecting a Jenkins server, take a few minutes to talk to your team."
-				iphContainerWidth="340px"
-				iphLabel="What to discuss with your team before connecting Jenkins"
-				iphType={InProductHelpActionType.HelpLink}
-				screenName={CONNECTION_WIZARD_SCREEN_NAME}
-				searchQuery={InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM}
-			/>
-
+			<div className={cx(connectionInfoContainer)}>
+				<div style={{ display: 'flex', marginBottom: '5px' }}>
+					<div className={cx(iconContainer)}>
+						<CheckCircleIcon label='' size='small' primaryColor='grey'/>
+					</div>
+					<p>An active Jenkins server</p>
+				</div>
+				<div style={{ display: 'flex' }}>
+					<div className={cx(iconContainer)}><UserAvatarCircleIcon label='' size='small' primaryColor='grey'/></div>
+					<p>The help of your Jenkins admin, unless you're an admin yourself<br/>
+						<InProductHelpAction
+							label="What you'll be doing and how your team can help"
+							type={InProductHelpActionType.HelpLink}
+							searchQuery={InProductHelpIds.CONNECTION_WIZARD_DISCUSS_WITH_TEAM}
+							screenName={CONNECTION_WIZARD_SCREEN_NAME}
+						/>
+					</p>
+				</div>
+			</div>
 			<Button
 				appearance="primary"
 				className={cx(connectionWizardButton)}
 				onClick={(e) => handleNavigateToServerNameScreen(e)}
-				testId="team-gathered"
+				testId="continue"
 			>
-				I've gathered my team
+				Continue
 				<ArrowRightIcon label="Continue to next screen" />
 			</Button>
 		</div>
