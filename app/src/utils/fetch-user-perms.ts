@@ -1,6 +1,5 @@
 import api, { route } from '@forge/api';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fetchUserPerms = async (req: any): Promise<boolean> => {
     const { accountId } = req.context;
 
