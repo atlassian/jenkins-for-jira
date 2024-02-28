@@ -12,7 +12,7 @@
     "@atlaskit/code": "^15.1.0",
     "@atlaskit/css-reset": "6.5.4",
     "@atlaskit/drawer": "^7.6.5",
-    "@atlaskit/dropdown-menu": "11.14.2",
+    "@atlaskit/dropdown-menu": "11.14.4",
     "@atlaskit/dynamic-table": "14.11.11",
     "@atlaskit/empty-state": "7.6.3",
     "@atlaskit/form": "8.11.13",
