@@ -320,26 +320,14 @@ const JenkinsSetup = (): JSX.Element => {
 		);
 	};
 
-	const handleNavigateToConnectionCompleteScreen = (e: React.MouseEvent) => {
+	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
 
-		let pathParam = '';
-
-		if (showMyJenkinsAdmin) {
-			pathParam = 'requires-jenkins-admin';
-		} else {
-			pathParam = 'is-admin';
+		if (path === 'global') {
+			router.navigate(globalPageUrl);
 		}
 
-		if (connectionSettings) {
-			if (path === 'admin') {
-				history.push('/');
-			} else {
-				router.navigate(globalPageUrl);
-			}
-		} else {
-			history.push(`/connection-complete/${uuid}/${pathParam}/${path}`);
-		}
+		history.push('/');
 	};
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
@@ -403,7 +391,7 @@ const JenkinsSetup = (): JSX.Element => {
 								<Button
 									type="button"
 									appearance="primary"
-									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
+									onClick={(e) => handleNavigateToConnectionServerManagementScreen(e)}
 									testId="jenkins-set-up-next-btn"
 								>
 									{connectionSettings ? 'Done' : 'Next'}

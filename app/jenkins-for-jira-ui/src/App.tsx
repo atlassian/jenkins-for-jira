@@ -19,7 +19,6 @@ import { fetchFeatureFlagFromBackend } from './api/fetchFeatureFlagFromBackend';
 import { ServerManagement } from './components/ServerManagement/ServerManagement';
 import { ServerNameForm } from './components/ServerNameForm/ServerNameForm';
 import { JenkinsSetup } from './components/JenkinsSetup/JenkinsSetup';
-import { ConnectionComplete } from './components/ConnectionComplete/ConnectionComplete';
 import { GlobalPage } from './components/GlobalPage/GlobalPage';
 import { fetchModuleKey } from './api/fetchModuleKey';
 import { ConnectionWizard } from './components/ConnectionWizard/ConnectionWizard';
@@ -149,9 +148,6 @@ const App: React.FC = () => {
 							</Route>
 							<Route path="/setup/:id/:settings/:path">
 								<JenkinsSetup />
-							</Route>
-							<Route path="/connection-complete/:id/:admin/:path">
-								<ConnectionComplete />
 							</Route>
 							<Route path="/connection-info/:path">
 								<ConnectionWizard />
