@@ -5,7 +5,7 @@ import { SECRET_STORAGE_KEY_PREFIX, SERVER_STORAGE_KEY_PREFIX } from './constant
 import { JenkinsServerStorageError } from '../common/error';
 import { Logger } from '../config/logger';
 import { sendAnalytics } from '../analytics/analytics-client';
-import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
+import { AnalyticsTrackEventActionSubjectsEnum, AnalyticsTrackEventActionsEnum } from '../analytics/analytics-events';
 import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 const connectJenkinsServer = async (
@@ -35,9 +35,8 @@ const connectJenkinsServer = async (
 
 const sendConnectAnalytics = async (cloudId: string, accountId: string) => {
 	const eventPayload = {
-		eventName: AnalyticsTrackEventsEnum.ConnectionCreatedName,
-		action: 'Connected new Jenkins server',
-		actionSubject: 'User action'
+		action: AnalyticsTrackEventActionsEnum.User,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.ConnectionCreated
 	};
 
 	await sendAnalytics(cloudId, eventPayload, accountId);

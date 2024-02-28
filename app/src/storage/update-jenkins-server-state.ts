@@ -7,7 +7,7 @@ import { MAX_JENKINS_PIPELINES, SERVER_STORAGE_KEY_PREFIX } from './constants';
 import { Logger } from '../config/logger';
 import { JenkinsPluginConfigEvent } from '../webtrigger/types';
 import { sendAnalytics } from '../analytics/analytics-client';
-import { AnalyticsTrackEventsEnum } from '../analytics/analytics-events';
+import { AnalyticsTrackEventActionSubjectsEnum, AnalyticsTrackEventActionsEnum } from '../analytics/analytics-events';
 import { metricFailedRequests, metricSuccessfulRequests } from '../common/metric-names';
 
 export const updateOrInsertPipeline = (jenkinsServer: JenkinsServer, incomingPipeline: JenkinsPipeline): void => {
@@ -96,9 +96,8 @@ function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer):
 	}
 
 	const eventPayload = {
-		eventName: AnalyticsTrackEventsEnum.ConfigDataReceivedName,
-		action: 'Received config plugin POST request',
-		actionSubject: 'REQUEST'
+		action: AnalyticsTrackEventActionsEnum.RequestHandling,
+		actionSubject: AnalyticsTrackEventActionSubjectsEnum.ConfigDataReceived
 	};
 
 	sendAnalytics(cloudId, eventPayload, '', jenkinsServer.pluginConfig?.ipAddress);
