@@ -34,21 +34,18 @@ import {
 } from './JenkinsSetup.styles';
 import { getJenkinsServerWithSecret } from '../../api/getJenkinsServerWithSecret';
 import { serverNameFormOuterContainer } from '../ServerNameForm/ServerNameForm.styles';
-import { InProductHelpActionType } from '../InProductHelpDrawer/InProductHelpAction';
 import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
-import { ConnectionFlowHeader, ConnectionFlowServerNameSubHeader } from '../ConnectionWizard/ConnectionFlowHeader';
+import { ConnectionFlowHeader } from '../ConnectionWizard/ConnectionFlowHeader';
 import { SecretTokenContent, WebhookGuideContent } from '../CopiedToClipboard/CopyToClipboardContent';
 import { getWebhookUrl } from '../../common/util/jenkinsConnectionsUtils';
 import { fetchGlobalPageUrl, fetchSiteName } from '../../api/fetchGlobalPageUrl';
-import { HELP_LINK, JENKINS_SETUP_SCREEN_NAME } from '../../common/constants';
-import { InfoPanel } from '../InfoPanel/InfoPanel';
+import { HELP_LINK } from '../../common/constants';
 import {
 	AnalyticsEventTypes,
 	AnalyticsScreenEventsEnum,
 	AnalyticsUiEventsEnum
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
-import { InProductHelpIds } from '../InProductHelpDrawer/InProductHelpIds';
 import { ParamTypes } from '../../common/types';
 
 const analyticsClient = new AnalyticsClient();
@@ -119,39 +116,34 @@ const MyJenkinsAdmin = ({
 			<ol className={cx(orderedList, jenkinsSetupOrderedList)}>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL and step-by-step guide
-					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={webhookGuideRef} testId="copy-webhook-url-guide" />
+					<CopyButton
+						handleCopyToClipboard={handleCopyToClipboard}
+						copyRef={webhookGuideRef}
+						testId="copy-webhook-url-guide" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
-					Secret token
+					Secret
 					<Tooltip content={tooltipContent} position="bottom-start">
 						<InfoIcon label="help" size="small" />
 					</Tooltip>
 					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretTokenRef} testId="copy-secret-token-guide" />
 				</li>
 			</ol>
-
-			<InfoPanel
-				content="Your Jenkins admin may need your input as they set up this server."
-				iphLabel="How to set up Jenkins servers to suit your team's needs"
-				iphType={InProductHelpActionType.HelpLink}
-				screenName={JENKINS_SETUP_SCREEN_NAME}
-				searchQuery={InProductHelpIds.JENKINS_SET_UP_NON_ADMIN_HOW_TO}
-			/>
 		</div>
 	);
 };
 
 type IAmTheJenkinsAdminProps = {
+	siteNameRef: RefObject<HTMLDivElement>,
 	webhookUrlRef: RefObject<HTMLDivElement>,
 	secretRef: RefObject<HTMLDivElement>,
-	connectionSettings: boolean
 };
 
 const IAmTheJenkinsAdmin = ({
 	handleCopyToClipboard,
+	siteNameRef,
 	webhookUrlRef,
-	secretRef,
-	connectionSettings
+	secretRef
 }: CopyProps & IAmTheJenkinsAdminProps): JSX.Element => {
 	const handleFollowLink = async (e: React.MouseEvent): Promise<void> => {
 		e.preventDefault();
@@ -188,18 +180,24 @@ const IAmTheJenkinsAdmin = ({
 					</div>
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
+					Site name
+					<CopyButton
+						handleCopyToClipboard={handleCopyToClipboard}
+						copyRef={siteNameRef} testId="site-name" />
+				</li>
+				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						copyRef={webhookUrlRef} testId="copy-webhook-url" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
-					Secret token
+					Secret
 					<CopyButton handleCopyToClipboard={handleCopyToClipboard} copyRef={secretRef} testId="copy-secret-token" />
 				</li>
 			</ol>
 
-			<p className={cx(jenkinsSetupContent)}>When you're done, select {connectionSettings ? 'Done' : 'Next'}</p>
+			<p className={cx(jenkinsSetupContent)}>When you're done, select Finish</p>
 		</div>
 	);
 };
@@ -210,6 +208,7 @@ const JenkinsSetup = (): JSX.Element => {
 	const webhookGuideRef = useRef<HTMLDivElement>(null);
 	const secretTokenRef = useRef<HTMLDivElement>(null);
 	const secretRef = useRef<HTMLDivElement>(null);
+	const siteNameRef = useRef<HTMLDivElement>(null);
 	const webhookUrlRef = useRef<HTMLDivElement>(null);
 	const { id: uuid, settings } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
@@ -354,15 +353,23 @@ const JenkinsSetup = (): JSX.Element => {
 				</div>
 			) : (
 				<>
-					<ConnectionFlowServerNameSubHeader serverName={serverName} />
 					<div className={cx(serverNameFormOuterContainer)}>
 						<div className={cx(connectionFlowInnerContainer)}>
 							<div className={cx(jenkinsSetupContainer)}>
 								<h3 className={cx(jenkinsSetupHeader)}>Set up Jenkins</h3>
-								<p className={cx(jenkinsSetupContent)}>
-									A Jenkins admin needs to set up your server to complete this connection.
-									Select the appropriate option:
-								</p>
+								<div className={cx(jenkinsSetupContent)}>
+									<p>
+										To complete the connection for <strong>{serverName}</strong>,
+										you'll need to set up your Jenkins
+										server and enter the webhook URL and secret we'll provide.
+									</p>
+									<p>
+										In many teams, Jira admins delegate this task to a member familiar with Jenkins.
+									</p>
+									<p>
+										Who's setting up this server?
+									</p>
+								</div>
 
 								<ButtonGroup>
 									<Button
@@ -370,14 +377,14 @@ const JenkinsSetup = (): JSX.Element => {
 										appearance={showMyJenkinsAdmin ? 'primary' : 'default'}
 										testId="my-jenkins-admin"
 									>
-										A Jenkins admin is helping me
+										A Jenkins admin on my team
 									</Button>
 									<Button
 										onClick={(e) => handleIAmTheJenkinsAdminClick(e)}
 										appearance={showIAmTheJenkinsAdmin ? 'primary' : 'default'}
 										testId="i-am-the-jenkins-admin"
 									>
-										I'm logging into Jenkins myself
+										I am a Jenkins admin
 									</Button>
 								</ButtonGroup>
 
@@ -392,9 +399,9 @@ const JenkinsSetup = (): JSX.Element => {
 								{showIAmTheJenkinsAdmin ? (
 									<IAmTheJenkinsAdmin
 										handleCopyToClipboard={handleCopyToClipboard}
+										siteNameRef={siteNameRef}
 										webhookUrlRef={webhookUrlRef}
 										secretRef={secretRef}
-										connectionSettings={connectionSettings}
 									/>
 								) : null}
 							</div>
@@ -406,7 +413,7 @@ const JenkinsSetup = (): JSX.Element => {
 									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
 									testId="jenkins-set-up-next-btn"
 								>
-									{connectionSettings ? 'Done' : 'Next'}
+								Finish
 								</Button>
 							) : null}
 
@@ -419,6 +426,7 @@ const JenkinsSetup = (): JSX.Element => {
 								<SecretTokenContent divRef={secretTokenRef} siteName={siteName} secret={secret} />
 								<div ref={secretRef}>{secret}</div>
 								<div ref={webhookUrlRef}>{webhookUrl}</div>
+								<div ref={siteNameRef}>{siteName}</div>
 							</div>
 						</div>
 					</div>
