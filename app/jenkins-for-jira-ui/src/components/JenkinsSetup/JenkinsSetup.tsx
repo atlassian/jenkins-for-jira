@@ -183,7 +183,7 @@ const IAmTheJenkinsAdmin = ({
 					Site name
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
-						copyRef={siteNameRef} testId="site-name" />
+						copyRef={siteNameRef} testId="site-name-copy-button" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
 					Webhook URL

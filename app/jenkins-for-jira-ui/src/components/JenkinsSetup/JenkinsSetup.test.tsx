@@ -173,7 +173,7 @@ describe('JenkinsSetup Component', () => {
 		});
 
 		await act(async () => {
-			fireEvent.click(getByTestId('site-name'));
+			fireEvent.click(getByTestId('site-name-copy-button'));
 		});
 
 		expect(document.execCommand).toHaveBeenCalledWith('copy');
