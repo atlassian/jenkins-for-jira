@@ -56,7 +56,7 @@ const ServerNameFormField = ({
 	return (
 		<>
 			<StyledTextfieldErrorContainer hasError={hasError}>
-				<Field label='Server name' name='server-name-label' isRequired>
+				<Field label='Connection name' name='server-name-label' isRequired>
 					{() => (
 						<>
 							<div className={textfieldContainer}>
@@ -239,10 +239,9 @@ const ServerNameForm = (): JSX.Element => {
 			<div className={cx(serverNameFormOuterContainer)}>
 				<div className={cx(connectionFlowInnerContainer)}>
 
-					{editingServerUuid ? <h3>Update server name</h3> : <>
-						<h3>Get started</h3>
-						<p>Give your Jenkins server a name. We'll use this as a display name in
-						Jira to keep track of your connection.</p>
+					{editingServerUuid ? <h3>Update connection name</h3> : <>
+						<h3>Name connection</h3>
+						<p>Get started by giving this connection a name, so you can keep track of it in Jira.</p>
 					</>}
 
 					<Form onSubmit={handleFormSubmit}>

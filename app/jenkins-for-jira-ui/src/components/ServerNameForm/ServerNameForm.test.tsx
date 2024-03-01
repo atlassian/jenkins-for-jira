@@ -23,7 +23,7 @@ describe('Create - ServerNameForm suite', () => {
 		render(<ServerNameForm />);
 
 		expect(getByLabelText('server name field')).toBeInTheDocument();
-		expect(getByText('Give your Jenkins server a name.', { exact: false })).toBeInTheDocument();
+		expect(getByText('Get started by giving this connection a name', { exact: false })).toBeInTheDocument();
 		expect(getByText('Next')).toBeInTheDocument();
 	});
 
@@ -55,7 +55,7 @@ describe('Update - ServerNameForm', () => {
 		render(<ServerNameForm />);
 
 		expect(getByLabelText('server name field')).toBeInTheDocument();
-		expect(getByText('Update server name', { exact: false })).toBeInTheDocument();
+		expect(getByText('Update connection name', { exact: false })).toBeInTheDocument();
 		expect(getByText('Save')).toBeInTheDocument();
 	});
 
