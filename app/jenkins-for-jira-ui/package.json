@@ -20,7 +20,7 @@
     "@atlaskit/logo": "13.14.8",
     "@atlaskit/modal-dialog": "12.6.10",
     "@atlaskit/page-header": "10.4.4",
-    "@atlaskit/progress-tracker": "8.5.2",
+    "@atlaskit/progress-tracker": "8.5.7",
     "@atlaskit/spinner": "15.5.3",
     "@atlaskit/tabs": "^13.4.9",
     "@atlaskit/textarea": "^5.0.0",
