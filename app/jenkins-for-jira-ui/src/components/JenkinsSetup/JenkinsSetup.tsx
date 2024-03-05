@@ -47,12 +47,14 @@ import {
 } from '../../common/analytics/analytics-events';
 import { AnalyticsClient } from '../../common/analytics/analytics-client';
 import { ParamTypes } from '../../common/types';
+import { CopiedToClipboard } from '../CopiedToClipboard/CopiedToClipboard';
 
 const analyticsClient = new AnalyticsClient();
 
 type CopyProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => Promise<void> | void;
 	setCopyButtonStateToTrue: (copyButton: CopyButtonNameEnum) => void;
+	primaryButtonName: CopyButtonNameEnum;
 	copyButtonName: CopyButtonNameEnum;
 	testId?: string
 };
@@ -61,10 +63,26 @@ const CopyButton = ({
 	handleCopyToClipboard,
 	copyRef,
 	setCopyButtonStateToTrue,
+	primaryButtonName,
 	copyButtonName,
 	testId
 }: CopyProps & { copyRef: React.RefObject<HTMLDivElement> }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
+	const [showIsCopiedClipBoard, setShowIsCopiedClipBoard] = useState(false);
+
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+		if (showIsCopiedClipBoard) {
+			timeoutId = setTimeout(() => {
+				setShowIsCopiedClipBoard(false);
+			}, 2000);
+		}
+		return () => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+		};
+	}, [showIsCopiedClipBoard]);
 
 	return (
 		<div className={cx(jenkinsSetupCopyButtonContainer)} >
@@ -74,14 +92,16 @@ const CopyButton = ({
 					if (copyRef && copyRef.current) {
 						handleCopyToClipboard(copyRef, testId);
 						setIsCopied(true);
+						setShowIsCopiedClipBoard(true);
 						setCopyButtonStateToTrue(copyButtonName);
 					}
 				}}
-				appearance= {isCopied ? 'primary' : 'default'}
+				appearance= {primaryButtonName === copyButtonName && !isCopied ? 'primary' : 'default'}
 				testId={testId}
 			>
                 Copy
 			</Button>
+			{showIsCopiedClipBoard && <CopiedToClipboard leftPositionPercent="110%" />}
 		</div>
 	);
 };
@@ -90,14 +110,16 @@ type MyJenkinsAdminProps = {
 	handleCopyToClipboard: (copyRef: React.RefObject<HTMLDivElement>, elementName?: string) => Promise<void> | void;
 	setCopyButtonStateToTrue: (copyButton: CopyButtonNameEnum) => void,
 	webhookGuideRef: RefObject<HTMLDivElement>,
-	secretTokenRef: RefObject<HTMLDivElement>
+	secretTokenRef: RefObject<HTMLDivElement>,
+	primaryButtonName: CopyButtonNameEnum,
 };
 
 const MyJenkinsAdmin = ({
 	handleCopyToClipboard,
 	setCopyButtonStateToTrue,
 	webhookGuideRef,
-	secretTokenRef
+	secretTokenRef,
+	primaryButtonName
 }: MyJenkinsAdminProps): JSX.Element => {
 	const tooltipContent =
 		'Send this token separately to the webhook URL and step-by-step guide. It\'s best practice to use a secure channel like a password management tool.';
@@ -112,6 +134,7 @@ const MyJenkinsAdmin = ({
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
+						primaryButtonName={primaryButtonName}
 						copyButtonName={CopyButtonNameEnum.NonAdminWebhook}
 						copyRef={webhookGuideRef}
 						testId="copy-webhook-url-guide" />
@@ -124,6 +147,7 @@ const MyJenkinsAdmin = ({
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
+						primaryButtonName={primaryButtonName}
 						copyButtonName={CopyButtonNameEnum.NonAdminSecret}
 						copyRef={secretTokenRef} testId="copy-secret-token-guide" />
 				</li>
@@ -138,6 +162,7 @@ type IAmTheJenkinsAdminProps = {
 	siteNameRef: RefObject<HTMLDivElement>,
 	webhookUrlRef: RefObject<HTMLDivElement>,
 	secretRef: RefObject<HTMLDivElement>,
+	primaryButtonName: CopyButtonNameEnum,
 };
 
 const IAmTheJenkinsAdmin = ({
@@ -145,7 +170,8 @@ const IAmTheJenkinsAdmin = ({
 	setCopyButtonStateToTrue,
 	siteNameRef,
 	webhookUrlRef,
-	secretRef
+	secretRef,
+	primaryButtonName
 }: IAmTheJenkinsAdminProps): JSX.Element => {
 	const handleFollowLink = async (e: React.MouseEvent): Promise<void> => {
 		e.preventDefault();
@@ -186,6 +212,7 @@ const IAmTheJenkinsAdmin = ({
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
+						primaryButtonName={primaryButtonName}
 						copyButtonName={CopyButtonNameEnum.AdminSiteName}
 						copyRef={siteNameRef} testId="site-name-copy-button" />
 				</li>
@@ -194,6 +221,7 @@ const IAmTheJenkinsAdmin = ({
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
+						primaryButtonName={primaryButtonName}
 						copyButtonName={CopyButtonNameEnum.AdminWebhook}
 						copyRef={webhookUrlRef} testId="copy-webhook-url" />
 				</li>
@@ -202,6 +230,7 @@ const IAmTheJenkinsAdmin = ({
 					<CopyButton
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
+						primaryButtonName={primaryButtonName}
 						copyButtonName={CopyButtonNameEnum.AdminSecret}
 						copyRef={secretRef} testId="copy-secret-token" />
 				</li>
@@ -241,6 +270,8 @@ const JenkinsSetup = (): JSX.Element => {
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
+	const [primaryCopyButtonName, setPrimaryCopyButtonName] =
+	useState<CopyButtonNameEnum>(CopyButtonNameEnum.NonAdminWebhook);
 	const connectionSettings = settings === 'connection-settings';
 
 	const getServer = useCallback(async () => {
@@ -279,15 +310,28 @@ const JenkinsSetup = (): JSX.Element => {
 		switch (copyButtonName) {
 			case CopyButtonNameEnum.AdminSiteName:
 				setIsCopyAdminSiteName(true);
+				if (!isCopyAdminWebhook) {
+					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminWebhook);
+				} else if (!isCopyAdminSecret) {
+					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSecret);
+				}
 				break;
 			case CopyButtonNameEnum.AdminWebhook:
 				setIsCopyAdminWebhook(true);
+				if (!isCopyAdminSiteName) {
+					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSiteName);
+				} else if (!isCopyAdminSecret) {
+					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSecret);
+				}
 				break;
 			case CopyButtonNameEnum.AdminSecret:
 				setIsCopyAdminSecret(true);
 				break;
 			case CopyButtonNameEnum.NonAdminWebhook:
 				setIsCopyNonAdminWebhook(true);
+				if (!isCopyNonAdminSecret) {
+					setPrimaryCopyButtonName(CopyButtonNameEnum.NonAdminSecret);
+				}
 				break;
 			case CopyButtonNameEnum.NonAdminSecret:
 				setIsCopyNonAdminSecret(true);
@@ -345,6 +389,7 @@ const JenkinsSetup = (): JSX.Element => {
 
 		if (!showMyJenkinsAdmin) {
 			clearCopiedButtonStates();
+			setPrimaryCopyButtonName(CopyButtonNameEnum.NonAdminWebhook);
 		}
 		setShowMyJenkinsAdmin(true);
 		setShowIAmTheJenkinsAdmin(false);
@@ -364,6 +409,7 @@ const JenkinsSetup = (): JSX.Element => {
 
 		if (!showIAmTheJenkinsAdmin) {
 			clearCopiedButtonStates();
+			setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSiteName);
 		}
 		setShowIAmTheJenkinsAdmin(true);
 		setShowMyJenkinsAdmin(false);
@@ -453,6 +499,7 @@ const JenkinsSetup = (): JSX.Element => {
 									<MyJenkinsAdmin
 										handleCopyToClipboard={handleCopyToClipboard}
 										setCopyButtonStateToTrue={setCopiedButtonStateToTrue}
+										primaryButtonName={primaryCopyButtonName}
 										webhookGuideRef={webhookGuideRef}
 										secretTokenRef={secretTokenRef}
 									/>
@@ -462,6 +509,7 @@ const JenkinsSetup = (): JSX.Element => {
 									<IAmTheJenkinsAdmin
 										handleCopyToClipboard={handleCopyToClipboard}
 										setCopyButtonStateToTrue={setCopiedButtonStateToTrue}
+										primaryButtonName={primaryCopyButtonName}
 										siteNameRef={siteNameRef}
 										webhookUrlRef={webhookUrlRef}
 										secretRef={secretRef}
