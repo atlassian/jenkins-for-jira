@@ -66,11 +66,6 @@ const CopyButton = ({
 }: CopyProps & { copyRef: React.RefObject<HTMLDivElement> }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
 
-	const handleCopyFlow = () => {
-		setIsCopied(true);
-		setCopyButtonStateToTrue(copyButtonName);
-	};
-
 	return (
 		<div className={cx(jenkinsSetupCopyButtonContainer)} >
 			<Button
@@ -78,7 +73,8 @@ const CopyButton = ({
 				onClick={() => {
 					if (copyRef && copyRef.current) {
 						handleCopyToClipboard(copyRef, testId);
-						handleCopyFlow();
+						setIsCopied(true);
+						setCopyButtonStateToTrue(copyButtonName);
 					}
 				}}
 				appearance= {isCopied ? 'primary' : 'default'}
@@ -239,8 +235,8 @@ const JenkinsSetup = (): JSX.Element => {
 	const [isCopyAdminSiteName, setIsCopyAdminSiteName] = useState(false);
 	const [isCopyAdminWebhook, setIsCopyAdminWebhook] = useState(false);
 	const [isCopyAdminSecret, setIsCopyAdminSecret] = useState(false);
-	const [isCopyWebhook, setIsCopyWebhook] = useState(false);
-	const [isCopySecret, setIsCopySecret] = useState(false);
+	const [isCopyNonAdminWebhook, setIsCopyNonAdminWebhook] = useState(false);
+	const [isCopyNonAdminSecret, setIsCopyNonAdminSecret] = useState(false);
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
@@ -291,10 +287,10 @@ const JenkinsSetup = (): JSX.Element => {
 				setIsCopyAdminSecret(true);
 				break;
 			case CopyButtonNameEnum.NonAdminWebhook:
-				setIsCopyWebhook(true);
+				setIsCopyNonAdminWebhook(true);
 				break;
 			case CopyButtonNameEnum.NonAdminSecret:
-				setIsCopySecret(true);
+				setIsCopyNonAdminSecret(true);
 				break;
 			default:
 				break;
@@ -305,8 +301,8 @@ const JenkinsSetup = (): JSX.Element => {
 		setIsCopyAdminSiteName(false);
 		setIsCopyAdminWebhook(false);
 		setIsCopyAdminSecret(false);
-		setIsCopyWebhook(false);
-		setIsCopySecret(false);
+		setIsCopyNonAdminWebhook(false);
+		setIsCopyNonAdminSecret(false);
 	};
 
 	const handleCopyToClipboard =
@@ -407,7 +403,7 @@ const JenkinsSetup = (): JSX.Element => {
 	const isFetchingData = !serverName || !webhookUrl || !secret;
 
 	const enableFinishButton = (isCopyAdminSecret && isCopyAdminSiteName && isCopyAdminWebhook) ||
-								(isCopySecret && isCopyWebhook);
+								(isCopyNonAdminSecret && isCopyNonAdminWebhook);
 	return (
 		<div className={cx(connectionFlowContainer)}>
 			<ConnectionFlowHeader />
