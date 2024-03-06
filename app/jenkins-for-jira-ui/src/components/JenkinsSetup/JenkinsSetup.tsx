@@ -68,13 +68,13 @@ const CopyButton = ({
 	testId
 }: CopyProps & { copyRef: React.RefObject<HTMLDivElement> }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
-	const [showIsCopiedClipBoard, setShowIsCopiedClipBoard] = useState(false);
+	const [showIsCopiedToClipboardTooltip, setShowIsCopiedToClipboardTooltip] = useState(false);
 
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
-		if (showIsCopiedClipBoard) {
+		if (showIsCopiedToClipboardTooltip) {
 			timeoutId = setTimeout(() => {
-				setShowIsCopiedClipBoard(false);
+				setShowIsCopiedToClipboardTooltip(false);
 			}, 2000);
 		}
 		return () => {
@@ -82,7 +82,7 @@ const CopyButton = ({
 				clearTimeout(timeoutId);
 			}
 		};
-	}, [showIsCopiedClipBoard]);
+	}, [showIsCopiedToClipboardTooltip]);
 
 	return (
 		<div className={cx(jenkinsSetupCopyButtonContainer)} >
@@ -92,7 +92,7 @@ const CopyButton = ({
 					if (copyRef && copyRef.current) {
 						handleCopyToClipboard(copyRef, testId);
 						setIsCopied(true);
-						setShowIsCopiedClipBoard(true);
+						setShowIsCopiedToClipboardTooltip(true);
 						handleCopyButton(copyButtonName);
 					}
 				}}
@@ -101,7 +101,7 @@ const CopyButton = ({
 			>
                 Copy
 			</Button>
-			{showIsCopiedClipBoard && <CopiedToClipboard leftPositionPercent="110%" />}
+			{showIsCopiedToClipboardTooltip && <CopiedToClipboard leftPositionPercent="110%" />}
 		</div>
 	);
 };
