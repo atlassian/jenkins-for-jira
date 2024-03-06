@@ -135,7 +135,7 @@ const MyJenkinsAdmin = ({
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
 						primaryButtonName={primaryButtonName}
-						copyButtonName={CopyButtonNameEnum.NonAdminWebhook}
+						copyButtonName="nonAdminWebhook"
 						copyRef={webhookGuideRef}
 						testId="copy-webhook-url-guide" />
 				</li>
@@ -148,7 +148,7 @@ const MyJenkinsAdmin = ({
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
 						primaryButtonName={primaryButtonName}
-						copyButtonName={CopyButtonNameEnum.NonAdminSecret}
+						copyButtonName="nonAdminSecret"
 						copyRef={secretTokenRef} testId="copy-secret-token-guide" />
 				</li>
 			</ol>
@@ -213,7 +213,7 @@ const IAmTheJenkinsAdmin = ({
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
 						primaryButtonName={primaryButtonName}
-						copyButtonName={CopyButtonNameEnum.AdminSiteName}
+						copyButtonName="adminSiteName"
 						copyRef={siteNameRef} testId="site-name-copy-button" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
@@ -222,7 +222,7 @@ const IAmTheJenkinsAdmin = ({
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
 						primaryButtonName={primaryButtonName}
-						copyButtonName={CopyButtonNameEnum.AdminWebhook}
+						copyButtonName="adminWebhook"
 						copyRef={webhookUrlRef} testId="copy-webhook-url" />
 				</li>
 				<li className={cx(orderedListItem, jenkinsSetupListItem)}>
@@ -231,7 +231,7 @@ const IAmTheJenkinsAdmin = ({
 						handleCopyToClipboard={handleCopyToClipboard}
 						setCopyButtonStateToTrue={setCopyButtonStateToTrue}
 						primaryButtonName={primaryButtonName}
-						copyButtonName={CopyButtonNameEnum.AdminSecret}
+						copyButtonName="adminSecret"
 						copyRef={secretRef} testId="copy-secret-token" />
 				</li>
 			</ol>
@@ -241,13 +241,7 @@ const IAmTheJenkinsAdmin = ({
 	);
 };
 
-const enum CopyButtonNameEnum {
-	AdminSiteName = 'adminSiteName',
-	AdminWebhook = 'adminWebhook',
-	AdminSecret = 'adminSecret',
-	NonAdminWebhook = 'nonAdminWebhook',
-	NonAdminSecret = 'nonAdminSecret'
-}
+type CopyButtonNameEnum = 'adminSiteName' | 'adminWebhook' | 'adminSecret' | 'nonAdminWebhook' | 'nonAdminSecret';
 
 const JenkinsSetup = (): JSX.Element => {
 	const history = useHistory();
@@ -261,18 +255,27 @@ const JenkinsSetup = (): JSX.Element => {
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
-	const [isCopyAdminSiteName, setIsCopyAdminSiteName] = useState(false);
-	const [isCopyAdminWebhook, setIsCopyAdminWebhook] = useState(false);
-	const [isCopyAdminSecret, setIsCopyAdminSecret] = useState(false);
-	const [isCopyNonAdminWebhook, setIsCopyNonAdminWebhook] = useState(false);
-	const [isCopyNonAdminSecret, setIsCopyNonAdminSecret] = useState(false);
+	const [copyButtonStates, setCopyButtonStates] = useState({
+		isCopyAdminSiteName: false,
+		isCopyAdminWebhook: false,
+		isCopyAdminSecret: false,
+		isCopyNonAdminWebhook: false,
+		isCopyNonAdminSecret: false
+	});
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const [primaryCopyButtonName, setPrimaryCopyButtonName] =
-	useState<CopyButtonNameEnum>(CopyButtonNameEnum.NonAdminWebhook);
+	useState<CopyButtonNameEnum>('nonAdminWebhook');
 	const connectionSettings = settings === 'connection-settings';
+
+	const updateCopyButtonState = (key: string, newValue: boolean) => {
+		setCopyButtonStates((prevState) => ({
+		  ...prevState,
+		  [key]: newValue
+		}));
+	};
 
 	const getServer = useCallback(async () => {
 		try {
@@ -308,33 +311,33 @@ const JenkinsSetup = (): JSX.Element => {
 
 	const setCopiedButtonStateToTrue = (copyButtonName: CopyButtonNameEnum) => {
 		switch (copyButtonName) {
-			case CopyButtonNameEnum.AdminSiteName:
-				setIsCopyAdminSiteName(true);
-				if (!isCopyAdminWebhook) {
-					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminWebhook);
-				} else if (!isCopyAdminSecret) {
-					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSecret);
+			case 'adminSiteName':
+				updateCopyButtonState('isCopyAdminSiteName', true);
+				if (!copyButtonStates.isCopyAdminWebhook) {
+					setPrimaryCopyButtonName('adminWebhook');
+				} else if (!copyButtonStates.isCopyAdminSecret) {
+					setPrimaryCopyButtonName('adminSecret');
 				}
 				break;
-			case CopyButtonNameEnum.AdminWebhook:
-				setIsCopyAdminWebhook(true);
-				if (!isCopyAdminSiteName) {
-					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSiteName);
-				} else if (!isCopyAdminSecret) {
-					setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSecret);
+			case 'adminWebhook':
+				updateCopyButtonState('isCopyAdminWebhook', true);
+				if (!copyButtonStates.isCopyAdminSiteName) {
+					setPrimaryCopyButtonName('adminSiteName');
+				} else if (!copyButtonStates.isCopyAdminSecret) {
+					setPrimaryCopyButtonName('adminSecret');
 				}
 				break;
-			case CopyButtonNameEnum.AdminSecret:
-				setIsCopyAdminSecret(true);
+			case 'adminSecret':
+				updateCopyButtonState('isCopyAdminSecret', true);
 				break;
-			case CopyButtonNameEnum.NonAdminWebhook:
-				setIsCopyNonAdminWebhook(true);
-				if (!isCopyNonAdminSecret) {
-					setPrimaryCopyButtonName(CopyButtonNameEnum.NonAdminSecret);
+			case 'nonAdminWebhook':
+				updateCopyButtonState('isCopyNonAdminWebhook', true);
+				if (!copyButtonStates.isCopyNonAdminSecret) {
+					setPrimaryCopyButtonName('nonAdminSecret');
 				}
 				break;
-			case CopyButtonNameEnum.NonAdminSecret:
-				setIsCopyNonAdminSecret(true);
+			case 'nonAdminSecret':
+				updateCopyButtonState('isCopyNonAdminSecret', true);
 				break;
 			default:
 				break;
@@ -342,11 +345,13 @@ const JenkinsSetup = (): JSX.Element => {
 	};
 
 	const clearCopiedButtonStates = () => {
-		setIsCopyAdminSiteName(false);
-		setIsCopyAdminWebhook(false);
-		setIsCopyAdminSecret(false);
-		setIsCopyNonAdminWebhook(false);
-		setIsCopyNonAdminSecret(false);
+		setCopyButtonStates({
+			isCopyAdminSiteName: false,
+			isCopyAdminWebhook: false,
+			isCopyAdminSecret: false,
+			isCopyNonAdminWebhook: false,
+			isCopyNonAdminSecret: false
+		});
 	};
 
 	const handleCopyToClipboard =
@@ -389,7 +394,7 @@ const JenkinsSetup = (): JSX.Element => {
 
 		if (!showMyJenkinsAdmin) {
 			clearCopiedButtonStates();
-			setPrimaryCopyButtonName(CopyButtonNameEnum.NonAdminWebhook);
+			setPrimaryCopyButtonName('nonAdminWebhook');
 		}
 		setShowMyJenkinsAdmin(true);
 		setShowIAmTheJenkinsAdmin(false);
@@ -409,7 +414,7 @@ const JenkinsSetup = (): JSX.Element => {
 
 		if (!showIAmTheJenkinsAdmin) {
 			clearCopiedButtonStates();
-			setPrimaryCopyButtonName(CopyButtonNameEnum.AdminSiteName);
+			setPrimaryCopyButtonName('adminSiteName');
 		}
 		setShowIAmTheJenkinsAdmin(true);
 		setShowMyJenkinsAdmin(false);
@@ -448,8 +453,9 @@ const JenkinsSetup = (): JSX.Element => {
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
 
-	const enableFinishButton = (isCopyAdminSecret && isCopyAdminSiteName && isCopyAdminWebhook) ||
-								(isCopyNonAdminSecret && isCopyNonAdminWebhook);
+	const enableFinishButton = (copyButtonStates.isCopyAdminSecret && copyButtonStates.isCopyAdminSiteName &&
+		copyButtonStates.isCopyAdminWebhook) || (copyButtonStates.isCopyNonAdminSecret &&
+			copyButtonStates.isCopyNonAdminWebhook);
 	return (
 		<div className={cx(connectionFlowContainer)}>
 			<ConnectionFlowHeader />
