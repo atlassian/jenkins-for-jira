@@ -243,7 +243,23 @@ const IAmTheJenkinsAdmin = ({
 
 type CopyButtonNameEnum = 'adminSiteName' | 'adminWebhook' | 'adminSecret' | 'nonAdminWebhook' | 'nonAdminSecret';
 
+interface CopyButtonMetadata {
+	name: CopyButtonNameEnum;
+	isClicked: boolean;
+}
+
 const JenkinsSetup = (): JSX.Element => {
+	const initialAdminButtonStates: CopyButtonMetadata[] = [
+		{ name: 'adminSiteName', isClicked: false },
+		{ name: 'adminWebhook', isClicked: false },
+		{ name: 'adminSecret', isClicked: false }
+	];
+
+	const initialNonAdminButtonStates: CopyButtonMetadata[] = [
+		{ name: 'nonAdminWebhook', isClicked: false },
+		{ name: 'nonAdminSecret', isClicked: false }
+	];
+
 	const history = useHistory();
 	const { path } = useParams<ParamTypes>();
 	const webhookGuideRef = useRef<HTMLDivElement>(null);
@@ -255,13 +271,9 @@ const JenkinsSetup = (): JSX.Element => {
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
-	const [copyButtonStates, setCopyButtonStates] = useState({
-		isCopyAdminSiteName: false,
-		isCopyAdminWebhook: false,
-		isCopyAdminSecret: false,
-		isCopyNonAdminWebhook: false,
-		isCopyNonAdminSecret: false
-	});
+	const [copyAdminButtonStates, setCopyAdminButtonStates] = useState<CopyButtonMetadata[]>(initialAdminButtonStates);
+	const [copyNonAdminButtonStates, setCopyNonAdminButtonStates] =
+	useState<CopyButtonMetadata[]>(initialNonAdminButtonStates);
 	const [webhookUrl, setWebhookUrl] = useState('');
 	const [secret, setSecret] = useState<string>('');
 	const [siteName, setSiteName] = useState<string>('');
@@ -270,11 +282,24 @@ const JenkinsSetup = (): JSX.Element => {
 	useState<CopyButtonNameEnum>('nonAdminWebhook');
 	const connectionSettings = settings === 'connection-settings';
 
-	const updateCopyButtonState = (key: string, newValue: boolean) => {
-		setCopyButtonStates((prevState) => ({
-		  ...prevState,
-		  [key]: newValue
-		}));
+	const updateAdminCopyButtonState = (key: CopyButtonNameEnum, isClicked: boolean) => {
+		const existingItemIndex = copyAdminButtonStates.findIndex((item) => item.name === key);
+
+		if (existingItemIndex !== -1) {
+			const updatedButtons = [...copyAdminButtonStates];
+			updatedButtons[existingItemIndex].isClicked = isClicked;
+			setCopyAdminButtonStates(updatedButtons);
+		}
+	};
+
+	const updateNonAdminCopyButtonState = (key: CopyButtonNameEnum, isClicked: boolean) => {
+		const existingItemIndex = copyNonAdminButtonStates.findIndex((item) => item.name === key);
+
+		if (existingItemIndex !== -1) {
+			const updatedButtons = [...copyNonAdminButtonStates];
+			updatedButtons[existingItemIndex].isClicked = isClicked;
+			setCopyNonAdminButtonStates(updatedButtons);
+		}
 	};
 
 	const getServer = useCallback(async () => {
@@ -309,49 +334,29 @@ const JenkinsSetup = (): JSX.Element => {
 		fetchData();
 	}, [uuid, getServer]);
 
-	const setCopiedButtonStateToTrue = (copyButtonName: CopyButtonNameEnum) => {
-		switch (copyButtonName) {
-			case 'adminSiteName':
-				updateCopyButtonState('isCopyAdminSiteName', true);
-				if (!copyButtonStates.isCopyAdminWebhook) {
-					setPrimaryCopyButtonName('adminWebhook');
-				} else if (!copyButtonStates.isCopyAdminSecret) {
-					setPrimaryCopyButtonName('adminSecret');
-				}
-				break;
-			case 'adminWebhook':
-				updateCopyButtonState('isCopyAdminWebhook', true);
-				if (!copyButtonStates.isCopyAdminSiteName) {
-					setPrimaryCopyButtonName('adminSiteName');
-				} else if (!copyButtonStates.isCopyAdminSecret) {
-					setPrimaryCopyButtonName('adminSecret');
-				}
-				break;
-			case 'adminSecret':
-				updateCopyButtonState('isCopyAdminSecret', true);
-				break;
-			case 'nonAdminWebhook':
-				updateCopyButtonState('isCopyNonAdminWebhook', true);
-				if (!copyButtonStates.isCopyNonAdminSecret) {
-					setPrimaryCopyButtonName('nonAdminSecret');
-				}
-				break;
-			case 'nonAdminSecret':
-				updateCopyButtonState('isCopyNonAdminSecret', true);
-				break;
-			default:
-				break;
+	const findNextPrimaryButtonIndex = (buttonStates: CopyButtonMetadata[]) => {
+		return buttonStates.findIndex((item) => item.isClicked === false);
+	};
+
+	const setAdminCopiedButtonStateToTrue = (copyButtonName: CopyButtonNameEnum) => {
+		updateAdminCopyButtonState(copyButtonName, true);
+		const nextPrimaryButtonIndex = findNextPrimaryButtonIndex(copyAdminButtonStates);
+		if (nextPrimaryButtonIndex !== -1) {
+			setPrimaryCopyButtonName(copyAdminButtonStates[nextPrimaryButtonIndex].name);
+		}
+	};
+
+	const setNonAdminCopiedButtonStateToTrue = (copyButtonName: CopyButtonNameEnum) => {
+		updateNonAdminCopyButtonState(copyButtonName, true);
+		const nextPrimaryButtonIndex = findNextPrimaryButtonIndex(copyNonAdminButtonStates);
+		if (nextPrimaryButtonIndex !== -1) {
+			setPrimaryCopyButtonName(copyNonAdminButtonStates[nextPrimaryButtonIndex].name);
 		}
 	};
 
 	const clearCopiedButtonStates = () => {
-		setCopyButtonStates({
-			isCopyAdminSiteName: false,
-			isCopyAdminWebhook: false,
-			isCopyAdminSecret: false,
-			isCopyNonAdminWebhook: false,
-			isCopyNonAdminSecret: false
-		});
+		setCopyAdminButtonStates(initialAdminButtonStates);
+		setCopyNonAdminButtonStates(initialNonAdminButtonStates);
 	};
 
 	const handleCopyToClipboard =
@@ -453,9 +458,9 @@ const JenkinsSetup = (): JSX.Element => {
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
 
-	const enableFinishButton = (copyButtonStates.isCopyAdminSecret && copyButtonStates.isCopyAdminSiteName &&
-		copyButtonStates.isCopyAdminWebhook) || (copyButtonStates.isCopyNonAdminSecret &&
-			copyButtonStates.isCopyNonAdminWebhook);
+	const isAllRequiredButtonsClicked = copyAdminButtonStates.every((button) => button.isClicked) ||
+	(copyNonAdminButtonStates.every((button) => button.isClicked));
+
 	return (
 		<div className={cx(connectionFlowContainer)}>
 			<ConnectionFlowHeader />
@@ -504,7 +509,7 @@ const JenkinsSetup = (): JSX.Element => {
 								{showMyJenkinsAdmin ? (
 									<MyJenkinsAdmin
 										handleCopyToClipboard={handleCopyToClipboard}
-										setCopyButtonStateToTrue={setCopiedButtonStateToTrue}
+										setCopyButtonStateToTrue={setNonAdminCopiedButtonStateToTrue}
 										primaryButtonName={primaryCopyButtonName}
 										webhookGuideRef={webhookGuideRef}
 										secretTokenRef={secretTokenRef}
@@ -514,7 +519,7 @@ const JenkinsSetup = (): JSX.Element => {
 								{showIAmTheJenkinsAdmin ? (
 									<IAmTheJenkinsAdmin
 										handleCopyToClipboard={handleCopyToClipboard}
-										setCopyButtonStateToTrue={setCopiedButtonStateToTrue}
+										setCopyButtonStateToTrue={setAdminCopiedButtonStateToTrue}
 										primaryButtonName={primaryCopyButtonName}
 										siteNameRef={siteNameRef}
 										webhookUrlRef={webhookUrlRef}
@@ -527,7 +532,7 @@ const JenkinsSetup = (): JSX.Element => {
 								<Button
 									type="button"
 									appearance="primary"
-									isDisabled={!enableFinishButton}
+									isDisabled={!isAllRequiredButtonsClicked}
 									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
 									testId="jenkins-set-up-next-btn"
 								>
