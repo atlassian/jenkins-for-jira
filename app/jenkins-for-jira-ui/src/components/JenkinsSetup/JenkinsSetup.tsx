@@ -267,7 +267,7 @@ const JenkinsSetup = (): JSX.Element => {
 	const secretRef = useRef<HTMLDivElement>(null);
 	const siteNameRef = useRef<HTMLDivElement>(null);
 	const webhookUrlRef = useRef<HTMLDivElement>(null);
-	const { id: uuid, settings } = useParams<ParamTypes>();
+	const { id: uuid } = useParams<ParamTypes>();
 	const [serverName, setServerName] = useState('');
 	const [showMyJenkinsAdmin, setShowMyJenkinsAdmin] = useState(false);
 	const [showIAmTheJenkinsAdmin, setShowIAmTheJenkinsAdmin] = useState(false);
@@ -280,7 +280,6 @@ const JenkinsSetup = (): JSX.Element => {
 	const [globalPageUrl, setGlobalPageUrl] = useState<string>('');
 	const [primaryCopyButtonName, setPrimaryCopyButtonName] =
 	useState<CopyButtonNameEnum>('nonAdminWebhook');
-	const connectionSettings = settings === 'connection-settings';
 
 	const updateAdminCopyButtonState = (key: CopyButtonNameEnum, isClicked: boolean) => {
 		const existingItemIndex = copyAdminButtonStates.findIndex((item) => item.name === key);
@@ -434,26 +433,13 @@ const JenkinsSetup = (): JSX.Element => {
 		);
 	};
 
-	const handleNavigateToConnectionCompleteScreen = (e: React.MouseEvent) => {
+	const handleNavigateToConnectionServerManagementScreen = (e: React.MouseEvent) => {
 		e.preventDefault();
 
-		let pathParam = '';
-
-		if (showMyJenkinsAdmin) {
-			pathParam = 'requires-jenkins-admin';
-		} else {
-			pathParam = 'is-admin';
+		if (path === 'global') {
+			router.navigate(globalPageUrl);
 		}
-
-		if (connectionSettings) {
-			if (path === 'admin') {
-					history.push('/');
-} else {
-				router.navigate(globalPageUrl);
-			}
-		} else {
-			history.push(`/connection-complete/${uuid}/${pathParam}/${path}`);
-		}
+		history.push('/');
 	};
 
 	const isFetchingData = !serverName || !webhookUrl || !secret;
@@ -533,7 +519,7 @@ const JenkinsSetup = (): JSX.Element => {
 									type="button"
 									appearance="primary"
 									isDisabled={!isAllRequiredButtonsClicked}
-									onClick={(e) => handleNavigateToConnectionCompleteScreen(e)}
+									onClick={(e) => handleNavigateToConnectionServerManagementScreen(e)}
 									testId="jenkins-set-up-next-btn"
 								>
 								Finish

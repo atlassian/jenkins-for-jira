@@ -8,32 +8,32 @@ import { AnalyticsScreenEventsEnum } from '../../common/analytics/analytics-even
 import { SharePage } from './SharePage';
 
 const testJenkinsServer: JenkinsServer = {
-    name: 'server four',
-    uuid: '56046af9-d0eb-4efb-8896-sjnd893rsd',
-    pluginConfig: {
-        ipAddress: '10.10.10.12',
-        lastUpdatedOn: new Date()
-    },
-    pipelines: [
-        {
-            name: '#3456',
-            lastEventType: EventType.BUILD,
-            lastEventStatus: 'successful',
-            lastEventDate: new Date()
-        }
-    ]
-}
+	name: 'server four',
+	uuid: '56046af9-d0eb-4efb-8896-sjnd893rsd',
+	pluginConfig: {
+		ipAddress: '10.10.10.12',
+		lastUpdatedOn: new Date()
+	},
+	pipelines: [
+		{
+			name: '#3456',
+			lastEventType: EventType.BUILD,
+			lastEventStatus: 'successful',
+			lastEventDate: new Date()
+		}
+	]
+};
 
 jest.mock('../../api/fetchGlobalPageUrl');
 jest.mock('../../api/redirectFromGetStarted');
 
 describe('SharePage Component', () => {
-    test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {
+	test('should copy to clipboard when "Copy to clipboard" is clicked', async () => {
 		const mockWriteText = jest.fn().mockResolvedValueOnce(undefined);
 		Object.defineProperty(navigator, 'clipboard', {
-		value: {
-			writeText: mockWriteText,
-		},
+			value: {
+				writeText: mockWriteText
+			}
 		});
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([testJenkinsServer]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
@@ -45,7 +45,7 @@ describe('SharePage Component', () => {
 		expect(navigator.clipboard.writeText).toBeCalled();
 	});
 
-    test('should close the share modal when "Close" is clicked', async () => {
+	test('should close the share modal when "Close" is clicked', async () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([testJenkinsServer]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
@@ -62,4 +62,4 @@ describe('SharePage Component', () => {
 			expect(screen.queryByText('Copy to clipboard')).not.toBeInTheDocument();
 		});
 	});
-})
+});
