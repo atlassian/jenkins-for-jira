@@ -25,6 +25,7 @@ export const jenkinsSetupHeader = css`
 
 export const jenkinsSetupContent = css`
 	font-size: 14px;
+	color: #626F86;
 	margin: ${token('space.300')} auto !important;
 `;
 

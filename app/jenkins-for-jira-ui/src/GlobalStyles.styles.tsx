@@ -16,7 +16,6 @@ export const orderedListItem = css`
 	padding-left: ${token('space.200')};
 
 	counter-increment: item;
-	margin-bottom: ${token('space.075')};
 
 	::before {
 		background: #F7F8F9;
