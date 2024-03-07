@@ -14,7 +14,6 @@ import { JenkinsModal } from '../JenkinsServerList/ConnectedServer/JenkinsModal'
 import { shareModalInstruction } from '../ServerManagement/ServerManagement.styles';
 
 import { fetchGlobalPageUrl } from '../../api/fetchGlobalPageUrl';
-import { CONFIG_PAGE } from '../../common/constants';
 
 const analyticsClient = new AnalyticsClient();
 
@@ -28,13 +27,7 @@ export const getSiteNameFromUrl = (url: string): string => {
 	}
 };
 
-const getSharePageMessage = (globalPageUrl: string, moduleKey?: string): string => {
-	const versionRequirementMessage = moduleKey === CONFIG_PAGE
-		? `
-Not a member of this Jira site? You can follow the instructions here instead:
-
-https://support.atlassian.com/jira-cloud-administration/docs/how-jenkins-for-jira-works/` : '';
-
+const getSharePageMessage = (globalPageUrl: string): string => {
 	return `Hi there,
 
 Jenkins for Jira is now installed and connected on ${getSiteNameFromUrl(globalPageUrl)}.
@@ -44,19 +37,20 @@ To set up what build and deployment events Jenkins send to Jira, follow the set 
 ${globalPageUrl}
 
 You'll need to follow the set up guide for each connected server.
-${versionRequirementMessage}`;
+
+Not a member of this Jira site? You can follow the instructions here instead:
+
+https://support.atlassian.com/jira-cloud-administration/docs/how-jenkins-for-jira-works/`;
 };
 
 type SharePageProps = {
 	analyticsScreenEventNameEnum: AnalyticsScreenEventsEnum;
 	buttonAppearance?: string;
-	moduleKey?: string;
 };
 
 export const SharePage = ({
 	analyticsScreenEventNameEnum,
-	buttonAppearance,
-	moduleKey
+	buttonAppearance
 }:SharePageProps): JSX.Element => {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const [isCopiedToClipboard, setIsCopiedToClipboard] = useState(false);
@@ -77,8 +71,8 @@ export const SharePage = ({
 		};
 
 		await fetchData();
-		setSharePageMessage(getSharePageMessage(globalPageUrl, moduleKey));
-	}, [globalPageUrl, moduleKey]);
+		setSharePageMessage(getSharePageMessage(globalPageUrl));
+	}, [globalPageUrl]);
 
 	useEffect(() => {
 		constructSharePageMessage();

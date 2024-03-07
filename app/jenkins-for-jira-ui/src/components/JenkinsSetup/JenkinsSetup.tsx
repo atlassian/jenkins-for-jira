@@ -447,8 +447,8 @@ const JenkinsSetup = (): JSX.Element => {
 
 		if (connectionSettings) {
 			if (path === 'admin') {
-				history.push('/');
-			} else {
+					history.push('/');
+} else {
 				router.navigate(globalPageUrl);
 			}
 		} else {

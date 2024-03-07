@@ -241,8 +241,7 @@ const ServerManagement = (): JSX.Element => {
 				Connect a new Jenkins server
 			</Button>
 			<SharePage
-				analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.ServerManagementScreenName}
-				moduleKey={moduleKey}/>
+				analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.ServerManagementScreenName}/>
 		</ButtonGroup>
 	);
 
