@@ -38,7 +38,9 @@ describe('SharePage Component', () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([testJenkinsServer]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
-		await waitFor(() => render(<SharePage analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.JenkinsSetupScreenName}/>));
+		await waitFor(() => render(<SharePage analyticsScreenEventNameEnum={
+			AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+		}/>));
 		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
 		await waitFor(() => fireEvent.click(screen.getByText('Copy to clipboard')));
 		await waitFor(() => screen.getByText('Copied to clipboard'));
@@ -49,7 +51,9 @@ describe('SharePage Component', () => {
 		jest.spyOn(getAllJenkinsServersModule, 'getAllJenkinsServers').mockResolvedValueOnce([testJenkinsServer]);
 		jest.spyOn(fetchGlobalPageUrlModule, 'fetchGlobalPageUrl').mockResolvedValueOnce('https://somesite.atlassian.net/blah');
 
-		await waitFor(() => render(<SharePage analyticsScreenEventNameEnum={AnalyticsScreenEventsEnum.JenkinsSetupScreenName}/>));
+		await waitFor(() => render(<SharePage analyticsScreenEventNameEnum={
+			AnalyticsScreenEventsEnum.JenkinsSetupScreenName
+		}/>));
 		await waitFor(() => fireEvent.click(screen.getByText('Share page')));
 
 		expect(screen.getByText('Copy to clipboard')).toBeInTheDocument();
