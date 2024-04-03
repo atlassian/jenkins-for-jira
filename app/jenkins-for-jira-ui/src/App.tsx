@@ -8,7 +8,6 @@ import styled from '@emotion/styled';
 import { view } from '@forge/bridge';
 import { token, setGlobalTheme } from '@atlaskit/tokens';
 import { InstallJenkins } from './components/ConnectJenkins/InstallJenkins/InstallJenkins';
-import { JenkinsServerList } from './components/JenkinsServerList/JenkinsServerList';
 import { ConnectJenkins } from './components/ConnectJenkins/ConnectJenkins/ConnectJenkins';
 import { ManageConnection } from './components/ManageConnection/ManageConnection';
 import { spinnerHeight } from './common/styles/spinner.styles';
@@ -39,7 +38,6 @@ const GlobalContainer = styled.div`
 const App: React.FC = () => {
 	const [history, setHistory] = useState<any>(null);
 	const [isFetchingFlag, setIsFetchingFlag] = useState<boolean>(false);
-	const [renovateConfigFlag, setRenovateConfigFlag] = useState<boolean>(false);
 	const [moduleKey, setModuleKey] = useState<string>('');
 	const [checkUserPermissionsFlag, setCheckUserPermissionsFlag] = useState<boolean>(false);
 
@@ -55,10 +53,6 @@ const App: React.FC = () => {
 			setIsFetchingFlag(true);
 
 			try {
-				const renovatedJenkinsFeatureFlag = await fetchFeatureFlagFromBackend(
-					FeatureFlags.RENOVATED_JENKINS_FOR_JIRA_CONFIG_FLOW
-				);
-
 				const checkUserPermissions = await fetchFeatureFlagFromBackend(
 					FeatureFlags.CHECK_USER_PERMISSIONS
 				);
@@ -66,7 +60,6 @@ const App: React.FC = () => {
 				getModuleKey();
 
 				if (isMounted) {
-					setRenovateConfigFlag(renovatedJenkinsFeatureFlag);
 					setCheckUserPermissionsFlag(checkUserPermissions);
 					setIsFetchingFlag(false);
 				}
@@ -118,10 +111,7 @@ const App: React.FC = () => {
 					<Router history={history}>
 						<Switch>
 							<Route exact path="/">
-								{renovateConfigFlag
-									? <ServerManagement />
-									: <JenkinsServerList />
-								}
+								<ServerManagement />
 							</Route>
 
 							{/* TODO - delete routes for old version post renovate rollout */}
