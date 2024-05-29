@@ -16,10 +16,18 @@ jest.mock('algoliasearch', () => {
 						{
 							id: '12323445345',
 							objectID: '12323445345',
-							title: 'Search Results',
+							title: 'Search Results 1',
+							body: '',
+							bodyText: ''
+						},
+						{
+							id: '22323445345',
+							objectID: '22323445345',
+							title: 'Search Results 2',
 							body: '',
 							bodyText: ''
 						}
+
 					]
 				}))
 			}))
@@ -188,9 +196,9 @@ describe('InProductHelpDrawer Suite', () => {
 			<InProductHelpDrawer
 				isDrawerOpen
 				setIsDrawerOpen={() => {}}
-				searchResults={[{
-					id: '1', title: 'Result 1', body: 'Body 1', bodyText: 'Body Text 1'
-				}]}
+				searchResults={[
+					{id: '1', title: 'Result 1', body: 'Body 1', bodyText: 'Body Text 1'},
+					{id: '2', title: 'Result 2', body: 'Body 2', bodyText: 'Body Text 2'}]}
 				isLoading={false}
 				searchQuery=""
 				setIsLoading={() => {}}
@@ -202,8 +210,8 @@ describe('InProductHelpDrawer Suite', () => {
 		);
 
 		await waitFor(() => {
-			expect(screen.getByText('Result 1')).toBeInTheDocument();
-			expect(screen.getByText('Body 1')).toBeInTheDocument();
+			expect(screen.getByText('Result 2')).toBeInTheDocument();
+			expect(screen.getByText('Body 2')).toBeInTheDocument();
 		});
 	});
 
