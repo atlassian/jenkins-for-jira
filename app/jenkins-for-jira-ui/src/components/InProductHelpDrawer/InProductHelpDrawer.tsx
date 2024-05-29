@@ -150,18 +150,22 @@ export const InProductHelpDrawer = ({
 	};
 
 	const results = Array.isArray(searchResults) ? searchResults : searchResults.hits;
-
-	const {
-		tempDiv: tempDivBody
-	} = (!isLoading && !hasError && replaceAnchorsWithSpanElement(results[0]?.body)) as {
-		tempDiv: HTMLDivElement;
-	};
-
-	const {
-		tempDiv: tempDivBodyText
-	} = (!isLoading && !hasError && replaceAnchorsWithSpanElement(results[0]?.bodyText)) as {
-		tempDiv: HTMLDivElement;
-	};
+	let tempDivBody: HTMLDivElement | undefined;
+	let tempDivBodyText: HTMLDivElement | undefined;
+	if (results.length !== 2) {
+		setHasError(true);
+	} else {
+		setHasError(false);
+		const { tempDiv: tempDivB } = (!isLoading && !hasError && replaceAnchorsWithSpanElement(results[1]?.body)) as {
+			tempDiv: HTMLDivElement;
+		};
+		tempDivBody = tempDivB;
+		const { tempDiv: tempDivBT } = (
+			!isLoading && !hasError && replaceAnchorsWithSpanElement(results[1]?.bodyText)) as {
+			tempDiv: HTMLDivElement;
+		};
+		tempDivBodyText = tempDivBT;
+	}
 
 	const search = useCallback(async (searchId: string) => {
 		setIsLoading(true);
@@ -266,10 +270,10 @@ export const InProductHelpDrawer = ({
 					hasError
 						? <InProductHelpDrawerError onClick={() => search(searchQuery || innerSearchQuery)} />
 						: <div className={cx(inProductHelpDrawerContainer)}>
-							<h3 className={cx(inProductHelpDrawerTitle)}>{results[0]?.title}</h3>
+							<h3 className={cx(inProductHelpDrawerTitle)}>{results[1]?.title}</h3>
 							<div
 								dangerouslySetInnerHTML={{
-									__html: tempDivBody.innerHTML || tempDivBodyText.innerHTML || ''
+									__html: tempDivBody?.innerHTML || tempDivBodyText?.innerHTML || ''
 								}}
 							/>
 						</div>

@@ -41,9 +41,9 @@ const ALGOLIA_APP_ID = '8K6J5OJIQW';
 const { ALGOLIA_API_KEY, ENVIRONMENT } = envVars;
 
 enum AlgoliaEnvironmentIndicies {
-	Development = 'product_help_dev_copsi',
-	Staging = 'product_help_stg_copsi',
-	Production = 'product_help_prod_copsi'
+	Development = 'product_help_dev',
+	Staging = 'product_help_stg',
+	Production = 'product_help_prod'
 }
 
 const getIndexNameForEnvironment = (): string => {
