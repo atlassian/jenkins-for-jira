@@ -15,7 +15,7 @@ async function deleteBuilds(cloudId: string, jenkinsServerUuid?: string): Promis
 	let deleteBuildsRoute: Route;
 	if (jenkinsServerUuid) {
 		// eslint-disable-next-line max-len
-		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}&jenkinsServerUuid=${jenkinsServerUuid}`;
+		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?jenkinsServerUuid=${jenkinsServerUuid}`;
 	} else {
 		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}`;
 	}
