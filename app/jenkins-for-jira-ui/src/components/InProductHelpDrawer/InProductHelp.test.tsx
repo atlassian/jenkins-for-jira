@@ -197,8 +197,12 @@ describe('InProductHelpDrawer Suite', () => {
 				isDrawerOpen
 				setIsDrawerOpen={() => {}}
 				searchResults={[
-					{id: '1', title: 'Result 1', body: 'Body 1', bodyText: 'Body Text 1'},
-					{id: '2', title: 'Result 2', body: 'Body 2', bodyText: 'Body Text 2'}]}
+					{
+						id: '1', title: 'Result 1', body: 'Body 1', bodyText: 'Body Text 1'
+					},
+					{
+						id: '2', title: 'Result 2', body: 'Body 2', bodyText: 'Body Text 2'
+					}]}
 				isLoading={false}
 				searchQuery=""
 				setIsLoading={() => {}}
