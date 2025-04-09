@@ -71,7 +71,7 @@ The filter `setid` is used in `/app/.gitattributes` so that it replaces your app
 #### Install the app to your Jira instance
 
 1. Build your app by running `yarn build` in **/app/jenkins-for-jira-ui**.
-2. Deploy your app by running `forge deploy` in **/app**. See [Common Issues](#common-issues) if unsuccessful.
+2. Deploy your app by running `forge deploy --no-verify` in **/app**. See [Common Issues](#common-issues) if unsuccessful.
 3. Install your app to your Jira site by running `forge install` in **/app**.
 
 Follow the instructions in this setup wizard. Enter the hostname for your Jira site (e.g. `<your-site-name>.atlassian.net`).
@@ -79,9 +79,6 @@ Follow the instructions in this setup wizard. Enter the hostname for your Jira s
 > NOTE: This is the *only* step that needs to be repeated to install on different Jira sites. Do not repeat the steps above `forge deploy`. To run your app, follow the steps below.
 
 ## Running the app
-To run the app, make sure you have installed the app on your site as described above. You'll also need to your `ngrok-config-path` so you can create a local tunnel. Sign up to [ngrok](https://ngrok.com/) if you have not done so. To do this:
-1. Run `forge settings set ngrok-config-path <path-to-your-ngrok-config>`.
-2. Confirm this was set correctly by running `forge settings list`. You should see a table that includes this variable with a value set to your ngrok config path.
 
 ### Run the app locally
 
@@ -89,7 +86,7 @@ To start the app locally, run `yarn start` in **/app/jenkins-for-jira-ui**.
 
 The command line will suggest navigating to `localhost:3000` but this does not work for `Custom UI` Forge apps. For more information, see [here](https://community.developer.atlassian.com/t/forge-tunneling-customui-with-ui-resolver-error-cannot-read-property-callbridge-of-undefined/47010/3).
 
-To see your local app in the Jira instance you installed the app into, run `forge tunnel` in the **/app** folder. If this fails, ensure you have correctly set `ngrok-config-path`. 
+To see your local app in the Jira instance you installed the app into, run `forge tunnel` in the **/app** folder. 
 
 All your changes are instantly propagated to your Jira site and you can see them without the need to rebuild or redeploy your app.
 
@@ -114,4 +111,3 @@ In the **/app/jenkins-for-jira-ui** dir, run `yarn test`.
 1. For unsuccessful `forge deploy`, run `forge deploy --no-verify` if everything is good except for 2 acceptable errors...
      - `invalid value 'devops:deploymentInfoProvider' in modules`
      - `invalid value 'devops:buildInfoProvider' in modules` 
-    
