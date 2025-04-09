@@ -355,13 +355,15 @@
     "@emotion/react" "^11.7.1"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/ds-lib@^2.1.0", "@atlaskit/ds-lib@^2.2.0":
-  version "2.2.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/ds-lib/-/ds-lib-2.2.3.tgz"
-  integrity sha512-e+qn7miSyHDgMHP2zpHwDufalPKzRiaof9hd5WIskVs0BQpTR1bO2w7YkjMy5cMbYrQ+QYM64eiEv1SaDLCuIQ==
+"@atlaskit/ds-lib@^2.1.0", "@atlaskit/ds-lib@^2.2.0", "@atlaskit/ds-lib@^2.6.0":
+  version "2.7.0"
+  resolved "https://registry.npmjs.org/@atlaskit/ds-lib/-/ds-lib-2.7.0.tgz"
+  integrity sha512-+U4aPE2dBRFUBYWCM9vkrwJGrLAYVcK30ZpEiQDNpM2D7K41223TfEijC8azaN4VM3tsCgwSKBWwniloNxqYbA==
   dependencies:
+    "@atlaskit/platform-feature-flags" "^0.3.0"
     "@babel/runtime" "^7.0.0"
-    bind-event-listener "^2.1.1"
+    bind-event-listener "^3.0.0"
+    react-uid "^2.2.0"
 
 "@atlaskit/dynamic-table@14.11.11":
   version "14.11.11"
@@ -415,13 +417,13 @@
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/icon@21.12.7", "@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.12.0":
-  version "21.12.7"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/icon/-/icon-21.12.7.tgz"
-  integrity sha512-aJ/wsmLMVIcYxyF7P9vOZohv1XQ9HSvYELxjuzThToZ/zy/4SdRDOc7Zjm/MLmtCOqcLRne3f68mM9s3/a5dqg==
+"@atlaskit/icon@21.12.8", "@atlaskit/icon@^21.10.0", "@atlaskit/icon@^21.12.0":
+  version "21.12.8"
+  resolved "https://registry.npmjs.org/@atlaskit/icon/-/icon-21.12.8.tgz"
+  integrity sha512-cKqjg51VHZv8RTsncGhaSJAk8tWx6lrgRLM4zMexHbP3MBS1vcW7A+jZa2zggA3NOW7rsGZ3yFdbq8J6kPGT+A==
   dependencies:
-    "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.14.0"
+    "@atlaskit/theme" "^12.6.0"
+    "@atlaskit/tokens" "^1.28.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
@@ -547,6 +549,13 @@
   version "0.2.4"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/platform-feature-flags/-/platform-feature-flags-0.2.4.tgz"
   integrity sha512-7nmpYu4BiYL3+2sjkqaFh1aho2EtQo69CgIOwpKajrbbMAp4o+MYKIzpofqzZoZk2QBMalsyRYkudG7tWi3+gg==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
+"@atlaskit/platform-feature-flags@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@atlaskit/platform-feature-flags/-/platform-feature-flags-0.3.0.tgz"
+  integrity sha512-/0u5fFJ0Rw2j4M5wzsXgaHO6Ey12oekPCDTRvmmAIp4GO9T2Swbl80bavLAPSOmSHMhHTSuvRxiJveZXfQ21IQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
 
@@ -729,16 +738,16 @@
     "@babel/types" "^7.15.0"
 
 "@atlaskit/tokens@^1.11.0", "@atlaskit/tokens@^1.13.0", "@atlaskit/tokens@^1.14.0", "@atlaskit/tokens@^1.18.0", "@atlaskit/tokens@^1.21.0", "@atlaskit/tokens@^1.25.0", "@atlaskit/tokens@^1.26.0", "@atlaskit/tokens@^1.28.0", "@atlaskit/tokens@^1.28.1", "@atlaskit/tokens@^1.29.0", "@atlaskit/tokens@^1.33.0", "@atlaskit/tokens@^1.35.0", "@atlaskit/tokens@^1.38.0", "@atlaskit/tokens@^1.5.0":
-  version "1.38.0"
-  resolved "https://registry.npmjs.org/@atlaskit/tokens/-/tokens-1.38.0.tgz"
-  integrity sha512-XMpvGxnZZTkjSWFJT+pLXsMYbTMNJUzS9WF5Ga06Rv+LybxRCoPGaI4EGJHdOYrnGqZR0ub7BBQXATkx1dupiA==
+  version "1.61.0"
+  resolved "https://registry.npmjs.org/@atlaskit/tokens/-/tokens-1.61.0.tgz"
+  integrity sha512-gRkBDZOaQffJHg9g+hYFgPjQ0Hz4XIDaK5WEttIGyhi2USsGsvDvUeED8liqcQNwssH/5UFxIFp3FmEwo0DoFA==
   dependencies:
-    "@atlaskit/ds-lib" "^2.2.0"
-    "@atlaskit/platform-feature-flags" "^0.2.0"
+    "@atlaskit/ds-lib" "^2.6.0"
+    "@atlaskit/platform-feature-flags" "^0.3.0"
     "@babel/runtime" "^7.0.0"
     "@babel/traverse" "^7.23.2"
     "@babel/types" "^7.20.0"
-    bind-event-listener "^2.1.1"
+    bind-event-listener "^3.0.0"
 
 "@atlaskit/tooltip@17.8.10":
   version "17.8.10"
@@ -4053,6 +4062,11 @@ bind-event-listener@^2.1.1:
   version "2.1.1"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/bind-event-listener/-/bind-event-listener-2.1.1.tgz"
   integrity sha512-O+a5c0D2se/u2VlBJmPRn45IB6R4mYMh1ok3dWxrIZ2pmLqzggBhb875mbq73508ylzofc0+hT9W41x4Y2s8lg==
+
+bind-event-listener@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/bind-event-listener/-/bind-event-listener-3.0.0.tgz"
+  integrity sha512-PJvH288AWQhKs2v9zyfYdPzlPqf5bXbGMmhmUIY9x4dAUGIWgomO771oBQNwJnMQSnUIXhKu6sgzpBRXTlvb8Q==
 
 bluebird@^3.5.5:
   version "3.7.2"
