@@ -56,6 +56,7 @@ const JENKINS_SERVER_UUID = '1aaf4ea5-bca5-4ec9-86ed-c359e359eb97';
 // You can paste the JWT into https://jwt.io to see its contents
 /* eslint-disable-next-line max-len */
 const BUILD_EVENT_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcImV2ZW50XCIsXCJldmVudFR5cGVcIjpcImJ1aWxkXCIsXCJwaXBlbGluZU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwic3RhdHVzXCI6XCJzdWNjZXNzZnVsXCIsXCJsYXN0VXBkYXRlZFwiOlwiMjAyMi0wMy0wN1QwNDozOTozMy4xNDE5NjNaXCIsXCJwYXlsb2FkXCI6e1wicHJvcGVydGllc1wiOntcInNvdXJjZVwiOlwiamVua2luc1wifSxcInByb3ZpZGVyTWV0YWRhdGFcIjp7XCJwcm9kdWN0XCI6XCJqZW5raW5zXCJ9LFwiYnVpbGRzXCI6W3tcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIixcImJ1aWxkTnVtYmVyXCI6MTIsXCJ1cGRhdGVTZXF1ZW5jZU51bWJlclwiOjEyLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwiZGVzY3JpcHRpb25cIjpcImRlc2NyaXB0aW9uXCIsXCJsYWJlbFwiOlwibGFiZWxcIixcInVybFwiOlwiaHR0cHM6Ly91cmwuY29tXCIsXCJzdGF0ZVwiOlwic3VjY2Vzc2Z1bFwiLFwibGFzdFVwZGF0ZWRcIjpcIjIwMjItMDMtMDdUMDQ6Mzk6MzMuMTQyMjAxWlwiLFwiaXNzdWVLZXlzXCI6W1wiSkVOLTI1XCJdLFwicmVmZXJlbmNlc1wiOlt7XCJjb21taXRcIjp7XCJpZFwiOlwiY2FmZWJhYmVcIixcInJlcG9zaXRvcnlVcmlcIjpcImh0dHBzOi8vcmVwby51cmxcIn0sXCJyZWZcIjp7XCJuYW1lXCI6XCJyZWZuYW1lXCIsXCJ1cmlcIjpcImh0dHBzOnJlZi51cmlcIn19XSxcInRlc3RJbmZvXCI6e1widG90YWxOdW1iZXJcIjowLFwibnVtYmVyUGFzc2VkXCI6MCxcIm51bWJlckZhaWxlZFwiOjAsXCJudW1iZXJTa2lwcGVkXCI6MH0sXCJzY2hlbWFWZXJzaW9uXCI6XCIxLjBcIn1dfSxcInBpcGVsaW5lSWRcIjpcInBpcGVsaW5lSWRcIn0iLCJpc3MiOiJqZW5raW5zLXBsdWdpbiIsImV4cCI6MzI0NzQ4MzkxNzEsImlhdCI6MTY0NjYyNzk3M30.N5ZcLeoBVLlnZYok0AWqzYkxoS-O3vBilmiOXoobiko';
+const BUILD_EVENT_LAST_UPDATED = '2022-03-07T04:39:33.141963Z';
 const BUILD_EVENT_PAYLOAD = {
 	properties: { source: 'jenkins' },
 	providerMetadata: { product: 'jenkins' },
@@ -94,6 +95,7 @@ const BUILD_EVENT_PAYLOAD = {
 // You can paste the JWT into https://jwt.io to see its contents
 /* eslint-disable-next-line max-len */
 const DEPLOYMENT_EVENT_JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqZW5raW5zLWZvcmdlLWFwcCIsInJlcXVlc3RfYm9keV9qc29uIjoie1wicmVxdWVzdFR5cGVcIjpcImV2ZW50XCIsXCJldmVudFR5cGVcIjpcImRlcGxveW1lbnRcIixcInBpcGVsaW5lTmFtZVwiOlwicGlwZWxpbmVOYW1lXCIsXCJzdGF0dXNcIjpcInN1Y2Nlc3NmdWxcIixcImxhc3RVcGRhdGVkXCI6XCIyMDIyLTAzLTA3VDA2OjMwOjQ4Ljg3MDMwOVpcIixcInBheWxvYWRcIjp7XCJwcm9wZXJ0aWVzXCI6e1wic291cmNlXCI6XCJqZW5raW5zXCJ9LFwicHJvdmlkZXJNZXRhZGF0YVwiOntcInByb2R1Y3RcIjpcImplbmtpbnNcIn0sXCJkZXBsb3ltZW50c1wiOlt7XCJkZXBsb3ltZW50U2VxdWVuY2VOdW1iZXJcIjo0MixcInVwZGF0ZVNlcXVlbmNlTnVtYmVyXCI6NDUsXCJhc3NvY2lhdGlvbnNcIjpbe1widmFsdWVzXCI6W1wiSkVOLTI1XCJdLFwiYXNzb2NpYXRpb25UeXBlXCI6XCJpc3N1ZUtleXNcIn1dLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwidXJsXCI6XCJodHRwczovL3VybC5jb21cIixcImRlc2NyaXB0aW9uXCI6XCJkZXNjcmlwdGlvblwiLFwibGFzdFVwZGF0ZWRcIjpcIjIwMjItMDMtMDdUMDY6MzA6NDguODcwNTkzWlwiLFwibGFiZWxcIjpcImxhYmVsXCIsXCJzdGF0ZVwiOlwic3VjY2Vzc2Z1bFwiLFwicGlwZWxpbmVcIjp7XCJpZFwiOlwicGlwZWxpbmVJZFwiLFwiZGlzcGxheU5hbWVcIjpcInBpcGVsaW5lTmFtZVwiLFwidXJsXCI6XCJodHRwczovL3VybC5jb21cIn0sXCJlbnZpcm9ubWVudFwiOntcImlkXCI6XCJzdGctZWFzdFwiLFwiZGlzcGxheU5hbWVcIjpcIlN0YWdpbmcgZWFzdFwiLFwidHlwZVwiOlwic3RhZ2luZ1wifSxcInNjaGVtYVZlcnNpb25cIjpcIjEuMFwifV19LFwicGlwZWxpbmVJZFwiOlwicGlwZWxpbmVJZFwifSIsImlzcyI6ImplbmtpbnMtcGx1Z2luIiwiZXhwIjozMjQ3NDg0NTg0NywiaWF0IjoxNjQ2NjM0NjQ4fQ.D1JP5439A3CQ-8ys6gGCrMfhpeaFuMITaFwqSo86MbU';
+const DEPLOYMENT_EVENT_LAST_UPDATED = '2022-03-07T06:30:48.870309Z';
 const DEPLOYMENT_EVENT_PAYLOAD = {
 	properties: { source: 'jenkins' },
 	providerMetadata: { product: 'jenkins' },
@@ -226,6 +228,30 @@ describe('Jenkins webtrigger', () => {
 		expect(response.body).toBe(JSON.stringify(jiraResponse.body));
 	});
 
+	it('should save a build to server state', async () => {
+		// given
+		const jiraResponse = createJiraResponse(200);
+		givenStorageReturnsJenkinsServerSecret();
+		givenStorageReturnsJenkinsServer();
+		givenJiraRespondsToEvent(EventType.BUILD, BUILD_EVENT_PAYLOAD, jiraResponse);
+
+		// when
+		await handleJenkinsRequest(createWebtriggerRequest(BUILD_EVENT_JWT), context);
+
+		// then
+		expect(storage.set).toBeCalledWith(`jenkinsServer-${JENKINS_SERVER_UUID}`, {
+			name: 'Jenkins Server',
+			pipelines: [{
+				name: 'pipelineName',
+				environmentNames: undefined,
+				lastEventDate: BUILD_EVENT_LAST_UPDATED,
+				lastEventType: EventType.BUILD,
+				lastEventStatus: BUILD_EVENT_PAYLOAD.builds[0].state
+			}],
+			uuid: JENKINS_SERVER_UUID
+		});
+	});
+
 	it('should send a deployment event to Jira and return the Jira response', async () => {
 		// given
 		const jiraResponse = createJiraResponse(200);
@@ -240,6 +266,30 @@ describe('Jenkins webtrigger', () => {
 		// then
 		expect(response.statusCode).toBe(jiraResponse.status);
 		expect(response.body).toBe(JSON.stringify(jiraResponse.body));
+	});
+
+	it('should save a deployment to server state', async () => {
+		// given
+		const jiraResponse = createJiraResponse(200);
+		givenStorageReturnsJenkinsServerSecret();
+		givenStorageReturnsJenkinsServer();
+		givenJiraRespondsToEvent(EventType.DEPLOYMENT, DEPLOYMENT_EVENT_PAYLOAD, jiraResponse);
+
+		// when
+		await handleJenkinsRequest(createWebtriggerRequest(DEPLOYMENT_EVENT_JWT), context);
+
+		// then
+		expect(storage.set).toBeCalledWith(`jenkinsServer-${JENKINS_SERVER_UUID}`, {
+			name: 'Jenkins Server',
+			pipelines: [{
+				name: 'pipelineName',
+				environmentNames: [DEPLOYMENT_EVENT_PAYLOAD.deployments[0].environment.displayName],
+				lastEventDate: DEPLOYMENT_EVENT_LAST_UPDATED,
+				lastEventType: EventType.DEPLOYMENT,
+				lastEventStatus: DEPLOYMENT_EVENT_PAYLOAD.deployments[0].state
+			}],
+			uuid: JENKINS_SERVER_UUID
+		});
 	});
 
 	it('should return 400 on invalid request type', async () => {

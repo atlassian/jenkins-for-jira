@@ -85,7 +85,10 @@ export default async function handleJenkinsRequest(
 	}
 }
 
-function extractEnvironmentName(event: JenkinsEvent): string {
+function extractEnvironmentName(event: JenkinsEvent): string | undefined {
+	if (event.eventType === EventType.BUILD) {
+		return undefined;
+	}
 	const { payload } = event;
 
 	return (
@@ -107,8 +110,10 @@ async function handleEvent(
 		return createWebtriggerResponse(400, `invalid event type: ${event.eventType}`);
 	}
 
-	const pipeline: JenkinsPipeline = convertToPipeline(event);
-	await updateJenkinsServerState(jenkinsServerUuid, pipeline, logger);
+	{
+		const pipeline: JenkinsPipeline = convertToPipeline(event);
+		await updateJenkinsServerState(jenkinsServerUuid, pipeline, logger);
+	}
 	event.payload.properties = event.payload.properties || {};
 	event.payload.properties.cloudId = cloudId;
 	event.payload.properties.jenkinsServerUuid = jenkinsServerUuid;
@@ -169,11 +174,12 @@ function isBuildOrDeploymentEvent(type: EventType): boolean {
 }
 
 function convertToPipeline(event: JenkinsEvent): JenkinsPipeline {
+	const maybeEnvName = extractEnvironmentName(event);
 	return {
 		name: event.pipelineName!,
 		lastEventType: event.eventType,
 		lastEventStatus: event.status!,
 		lastEventDate: event.lastUpdated!,
-		environmentNames: [extractEnvironmentName(event)]
+		environmentNames: maybeEnvName ? [maybeEnvName] : undefined
 	};
 }
