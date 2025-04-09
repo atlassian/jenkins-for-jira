@@ -89,7 +89,7 @@ async function updateJenkinsServerState(
 	}
 }
 
-function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer): void {
+async function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer): Promise<void> {
 	const hasConfigData = !!jenkinsServer.pluginConfig?.ipAddress;
 	if (hasConfigData) {
 		return;
@@ -100,7 +100,7 @@ function sendConnectionAnalytics(cloudId: string, jenkinsServer: JenkinsServer):
 		actionSubject: AnalyticsTrackEventActionSubjectsEnum.ConfigDataReceived
 	};
 
-	sendAnalytics(cloudId, eventPayload, '', jenkinsServer.pluginConfig?.ipAddress);
+	await sendAnalytics(cloudId, eventPayload, '', jenkinsServer.pluginConfig?.ipAddress);
 }
 
 async function updateJenkinsPluginConfigState(
@@ -111,7 +111,7 @@ async function updateJenkinsPluginConfigState(
 ): Promise<void> {
 	try {
 		const jenkinsServer = await getJenkinsServer(uuid, logger);
-		sendConnectionAnalytics(cloudId, jenkinsServer);
+		await sendConnectionAnalytics(cloudId, jenkinsServer);
 		const {
 			ipAddress, autoBuildEnabled, autoBuildRegex, autoDeploymentsEnabled, autoDeploymentsRegex
 		} = jenkinsEvent;

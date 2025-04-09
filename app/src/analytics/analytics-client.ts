@@ -75,7 +75,7 @@ interface Options {
 export const sendAnalytics = async (cloudId: string, eventPayload: EventPayload, accountId?: string, anonymousId?: string): Promise<void> => {
 	console.info('Analytics Request');
 
-	sendEvent(cloudId, eventPayload, accountId, anonymousId)
+	await sendEvent(cloudId, eventPayload, accountId, anonymousId)
 		.then(() => console.info('Analytics event processed'))
 		.catch((e) => console.error({ e }, 'Failed to send analytics event'));
 };
