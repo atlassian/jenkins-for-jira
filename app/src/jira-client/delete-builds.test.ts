@@ -6,7 +6,7 @@ import { InvalidPayloadError } from '../common/error';
 jest.mock('@forge/api', () => ({
 	...jest.requireActual('@forge/api'),
 	asApp: jest.fn().mockReturnValue({
-		requestConnectedData: jest.fn()
+		requestJira: jest.fn()
 	})
 }));
 
@@ -18,7 +18,7 @@ describe('deleteBuilds suite', () => {
 
 	it('Should return status for successful response', async () => {
 		const mockResponse = { status: 200 };
-		api.asApp().requestConnectedData = jest.fn().mockImplementation(() => ({
+		api.asApp().requestJira = jest.fn().mockImplementation(() => ({
 			then: (callback: any) => Promise.resolve(callback(mockResponse))
 		}));
 
