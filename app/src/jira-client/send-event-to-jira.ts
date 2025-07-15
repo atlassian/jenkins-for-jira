@@ -34,7 +34,7 @@ async function invokeApi(
 ): Promise<JiraResponse> {
 	const apiResponse = await api
 		.asApp()
-		.requestConnectedData(sendEventToJiraRoute, {
+		.requestJira(sendEventToJiraRoute, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -80,9 +80,9 @@ async function sendEventToJira(
 
 	switch (eventType) {
 		case EventType.BUILD:
-			return invokeApi(route`/builds/0.1/cloud/${cloudId}/bulk`, payload, logger);
+			return invokeApi(route`/rest/builds/0.1/bulk`, payload, logger);
 		case EventType.DEPLOYMENT:
-			return invokeApi(route`/deployments/0.1/cloud/${cloudId}/bulk`, payload, logger);
+			return invokeApi(route`/rest/deployments/0.1/bulk`, payload, logger);
 		default:
 			logger.error(Errors.INVALID_EVENT_TYPE);
 			throw new InvalidPayloadError(Errors.INVALID_EVENT_TYPE);

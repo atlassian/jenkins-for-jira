@@ -15,16 +15,16 @@ async function deleteDeployments(cloudId: string, jenkinsServerUuid?: string): P
 	let deleteDeploymentsRoute: Route;
 	if (jenkinsServerUuid) {
 		// eslint-disable-next-line max-len
-		deleteDeploymentsRoute = route`/deployments/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}&jenkinsServerUuid=${jenkinsServerUuid}`;
+		deleteDeploymentsRoute = route`/rest/deployments/0.1/bulkByProperties?cloudId=${cloudId}&jenkinsServerUuid=${jenkinsServerUuid}`;
 	} else {
-		deleteDeploymentsRoute = route`/deployments/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}`;
+		deleteDeploymentsRoute = route`/rest/deployments/0.1/bulkByProperties?cloudId=${cloudId}`;
 	}
 
 	// @ts-ignore // required so that Typescript doesn't complain about the missing "api" property
 	// eslint-disable-next-line no-underscore-dangle
 	const apiResponse = await api
 		.asApp()
-		.requestConnectedData(deleteDeploymentsRoute, {
+		.requestJira(deleteDeploymentsRoute, {
 			method: 'DELETE'
 		});
 
