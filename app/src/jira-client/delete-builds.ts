@@ -15,14 +15,14 @@ async function deleteBuilds(cloudId: string, jenkinsServerUuid?: string): Promis
 	let deleteBuildsRoute: Route;
 	if (jenkinsServerUuid) {
 		// eslint-disable-next-line max-len
-		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?jenkinsServerUuid=${jenkinsServerUuid}`;
+		deleteBuildsRoute = route`/rest/builds/0.1/bulkByProperties?jenkinsServerUuid=${jenkinsServerUuid}`;
 	} else {
-		deleteBuildsRoute = route`/builds/0.1/cloud/${cloudId}/bulkByProperties?cloudId=${cloudId}`;
+		deleteBuildsRoute = route`/rest/builds/0.1/bulkByProperties?cloudId=${cloudId}`;
 	}
 
 	const apiResponse = await api
 		.asApp()
-		.requestConnectedData(deleteBuildsRoute, {
+		.requestJira(deleteBuildsRoute, {
 			method: 'DELETE'
 		});
 

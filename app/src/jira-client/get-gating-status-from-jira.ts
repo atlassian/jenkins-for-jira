@@ -19,11 +19,11 @@ async function getGatingStatusFromJira(
 	}
 
 	// eslint-disable-next-line max-len
-	const getGatingStatusRoute = route`/deployments/0.1/cloud/${encodeURIComponent(cloudId)}/pipelines/${encodeURIComponent(pipelineId)}/environments/${encodeURIComponent(environmentId)}/deployments/${encodeURIComponent(deploymentId)}/gating-status`;
+	const getGatingStatusRoute = route`/rest/deployments/0.1/pipelines/${encodeURIComponent(pipelineId)}/environments/${encodeURIComponent(environmentId)}/deployments/${encodeURIComponent(deploymentId)}/gating-status`;
 
 	const apiResponse = await api
 		.asApp()
-		.requestConnectedData(getGatingStatusRoute, {
+		.requestJira(getGatingStatusRoute, {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json'
