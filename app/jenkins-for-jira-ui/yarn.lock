@@ -627,14 +627,14 @@
     "@emotion/react" "^11.7.1"
     react-transition-group "^4.4.1"
 
-"@atlaskit/spinner@15.5.3", "@atlaskit/spinner@^15.5.0":
-  version "15.5.3"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@atlaskit/spinner/-/spinner-15.5.3.tgz"
-  integrity sha512-KnFey43KQhUg/XvusGldXXAVckAecIda1Xwtni8k1DqG0p6qV3IwyLcKgAKlG/Y9GNwZ6/HVPS8Z0gTTsaMlEA==
+"@atlaskit/spinner@15.5.4", "@atlaskit/spinner@^15.5.0":
+  version "15.5.4"
+  resolved "https://registry.npmjs.org/@atlaskit/spinner/-/spinner-15.5.4.tgz"
+  integrity sha512-URq3m4KJIueYQn8/KfNtuelpAhGJYEz84XKtlX595HSH1E9iJVY5r+eu2ibjoYYfeU45lJPiUw/R5/yvTSll1A==
   dependencies:
     "@atlaskit/interaction-context" "^2.1.0"
     "@atlaskit/theme" "^12.5.0"
-    "@atlaskit/tokens" "^1.11.0"
+    "@atlaskit/tokens" "^1.15.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/react" "^11.7.1"
 
@@ -728,7 +728,7 @@
     "@babel/traverse" "^7.15.0"
     "@babel/types" "^7.15.0"
 
-"@atlaskit/tokens@^1.11.0", "@atlaskit/tokens@^1.13.0", "@atlaskit/tokens@^1.14.0", "@atlaskit/tokens@^1.18.0", "@atlaskit/tokens@^1.21.0", "@atlaskit/tokens@^1.25.0", "@atlaskit/tokens@^1.26.0", "@atlaskit/tokens@^1.28.0", "@atlaskit/tokens@^1.28.1", "@atlaskit/tokens@^1.29.0", "@atlaskit/tokens@^1.33.0", "@atlaskit/tokens@^1.35.0", "@atlaskit/tokens@^1.38.0", "@atlaskit/tokens@^1.5.0":
+"@atlaskit/tokens@^1.11.0", "@atlaskit/tokens@^1.13.0", "@atlaskit/tokens@^1.14.0", "@atlaskit/tokens@^1.15.0", "@atlaskit/tokens@^1.18.0", "@atlaskit/tokens@^1.21.0", "@atlaskit/tokens@^1.25.0", "@atlaskit/tokens@^1.26.0", "@atlaskit/tokens@^1.28.0", "@atlaskit/tokens@^1.28.1", "@atlaskit/tokens@^1.29.0", "@atlaskit/tokens@^1.33.0", "@atlaskit/tokens@^1.35.0", "@atlaskit/tokens@^1.38.0", "@atlaskit/tokens@^1.5.0":
   version "1.38.0"
   resolved "https://registry.npmjs.org/@atlaskit/tokens/-/tokens-1.38.0.tgz"
   integrity sha512-XMpvGxnZZTkjSWFJT+pLXsMYbTMNJUzS9WF5Ga06Rv+LybxRCoPGaI4EGJHdOYrnGqZR0ub7BBQXATkx1dupiA==
