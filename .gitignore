@@ -10,3 +10,7 @@ build
 
 #log
 yarn-error.log
+
+# This repo uses yarn; npm lockfiles should not be checked in
+package-lock.json
+**/package-lock.json
