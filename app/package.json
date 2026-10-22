@@ -20,7 +20,7 @@
     "crypto": "^1.0.1",
     "lodash": "^4.18.0",
     "node-fetch": "^2.6.1",
-    "uuid": "^9.0.1"
+    "uuid": "^11.0.0"
   },
   "resolutions": {
     "lodash": "^4.18.0"
