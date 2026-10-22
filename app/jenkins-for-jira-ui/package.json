@@ -50,7 +50,7 @@
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-router": "5.2.1",
-    "uuid": "8.3.2"
+    "uuid": "11.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
